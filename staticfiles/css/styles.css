@@ -1,0 +1,875 @@
+@import url(reset.css);
+@import url(typography.css);
+@import url(media.css);
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, #fff, lightgray);
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+header .site-section.nav-bar {
+    background-color: aqua;
+    padding: 0.5em;
+}
+
+header .nav-bar-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+}
+
+/* logo */
+header .logo a.home-link {
+    display: none;
+}
+
+header .logo img {
+    max-width: 42px;
+    border-radius: 50%;
+    opacity: 0.8;
+    transition: transform 0.3s ease;
+}
+
+header .logo img:hover {
+    transform: scale(1.1);
+    opacity: 1;
+}
+
+/* nav menu */
+header .language-select {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+
+header .language-select img {
+    width: 24px;
+    height: auto;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: transform 0.3s ease;
+}
+
+header .language-select img:hover {
+    transform: scale(1.1);
+    opacity: 1;
+}
+
+header ul#nav-menu {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    text-align: center;
+}
+
+header ul#nav-menu li {
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+header ul#nav-menu li:hover {
+    transform: scale(1.1);
+}
+
+header ul#nav-menu li a {
+    text-wrap: nowrap;
+    color: grey;
+    font-size: 0.8rem;
+    padding: 0.5rem 0.5rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+header ul#nav-menu li a:hover {
+    background-color: lightgray;
+    color: black;
+    border-radius: 5px;
+
+}
+
+/* footer */
+footer {
+    margin-top: auto;
+    background-color: aqua;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.8rem;
+}
+
+/* index page */
+.site-section.index {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.index .inner {
+    max-width: 800px;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+}
+
+.index .title h2 {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.index .two-columns {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.index .column {
+    flex: 1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); ;
+    border-radius: 0.5rem;
+    padding: 2rem 1rem;
+}
+
+.index .column h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.index .column ul {
+    list-style: disc inside;
+    padding: 0;
+    margin: 0;
+}
+
+.index .column ul li {
+    margin-bottom: 0.5rem;
+}
+
+.index .additional {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.index .additional h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.index .additional p {
+    margin-bottom: 1rem;
+}
+
+/* buttons */
+.buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.buttons .btn {
+    background: aqua;
+    color: grey;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    padding: 0.8rem 1.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+}
+
+.buttons .btn:hover {
+    background-color: lightgray;
+    color: #333;
+    transform: scale(1.05);
+}
+
+
+/* Login Section */
+.site-section.register,
+.site-section.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.register .inner,
+.login .inner {
+    max-width: 500px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+}
+
+.register .inner {
+    max-width: 700px;
+}
+
+.register .title h2, 
+.login .title h2 {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.register .title h3,
+.login .title h3 {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+
+.register .form,
+.login .form {
+    width: 100%;
+}
+
+.register-form p,
+.login-form p {
+    margin: 1rem 0;
+    text-align: left;
+}
+
+.login-form .fieldWrapper,
+.register-form .fieldWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.register-form .fieldWrapper:nth-child(2),
+.register-form .fieldWrapper:nth-child(3) {
+    flex-direction: row;
+    gap: 1rem
+}
+
+.register-form label,
+.login-form label {
+    font-weight: bold;
+    display: block;
+}
+
+.register-form input[type="text"],
+.register-form input[type="email"],
+.register-form input[type="password"],
+.login-form input[type="text"],
+.login-form input[type="email"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.register-form input:focus,
+.login-form input:focus {
+    outline: none;
+    border-color: aqua;
+}
+
+.login-form input {
+    margin-bottom: 1rem;
+}
+
+ul.messages {
+    padding-bottom: 1rem;
+}
+
+ul.messages li {
+    color: red;
+}
+
+/* profile section, pet section */
+.pet-container,
+.profile-container {
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 850px;
+    margin: 0 auto;
+}
+.pet-container h2,
+.profile-container h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    color: #333;
+}
+.pet-container form,
+.profile-container form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+.pet-container .card,
+.profile-container .card {
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    margin-bottom: 1.5rem;
+}
+.pet-container #form #image,
+.profile-container #form #image {
+    flex: 0 0 30%;
+}
+.pet-container #form #pet-personal,
+.profile-container #form #personal {
+    flex: 1 0 60%
+}
+
+.pet-container #form .buttons,
+.profile-container #form .buttons {
+    flex-grow: 1;    
+}
+.pet-container .pet-photo,
+.profile-container .profile-photo {
+    position: relative;
+}
+.pet-container .pet-photo span::after,
+.profile-container .profile-photo span::after {    
+    display: inline-block;
+    width: 16px;
+    height: 16px; 
+    margin-left: 8px; 
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.pet-container .pet-photo span.add::after,
+.profile-container .profile-photo span.add::after {
+    content: url("../svgs/plus-solid.svg");
+}
+
+.pet-container .pet-photo span.delete::after,
+.profile-container .profile-photo span.delete::after {
+    content: url("../svgs/trash-solid.svg");
+}
+.pet-container .pet-photo img,
+.profile-container .profile-photo img {
+    max-width: 50%;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto;
+}
+.pet-container .form-wrap,
+.profile-container .form-wrap {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.pet-container .form-wrap span.readonly::after,
+.profile-container .form-wrap span.readonly::after {
+    content: url("../svgs/pencil-solid.svg");
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin-left: 8px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+.pet-container .form-wrap span::after,
+.profile-container .form-wrap span::after {
+    content: url("../svgs/check-solid.svg");
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin-left: 8px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+.pet-container .pet-photo span:hover::after,
+.pet-container .form-wrap span:hover::after,
+.profile-container .profile-photo span:hover::after,
+.profile-container .form-wrap span:hover::after {
+    transform: scale(1.5);
+}
+.pet-container .form-wrap label,
+.profile-container .form-wrap label {
+    width: 150px;
+    margin-right: 1rem;
+    text-align: right;
+    font-size: 1rem;
+    color: #555;
+}
+
+.pet-container .form-wrap input,
+.pet-container .form-wrap select,
+.profile-container .form-wrap input,
+.profile-container .form-wrap select {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: #f0f0f0;
+}
+.pet-container .form-wrap input:focus,
+.pet-container .form-wrap select:focus,
+.profile-container .form-wrap input:focus,
+.profile-container .form-wrap select:focus {
+    outline: none;
+    border-color: aqua;
+}
+.pet-container .form-wrap input[readonly]:focus,
+.profile-container .form-wrap input[readonly]:focus {
+    border-color: red;
+}
+.pet-container .form-wrap input[readonly],
+.pet-container .form-wrap select[disabled],
+.profile-container .form-wrap input[readonly],
+.profile-container .form-wrap select[disabled] {
+    background-color: #e9e9e9;
+    cursor: not-allowed;
+    border-color: none;
+}
+
+/* passport section */
+.passport-container {
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    gap: 1.5rem;
+    align-items: stretch;
+    justify-content: center;
+}
+
+.passport-container .card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    max-width: 45%;
+}
+
+.page-footer {
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
+    padding: 0.5rem;
+    margin-inline: 6em;
+}
+
+.page-footer h5.passport-number {
+    padding-bottom: 0;
+    color: black;
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
+    line-height: 1.2em;
+}
+
+.passport-contents {
+    padding: 0.5rem;
+    flex: 0 0 35%
+}
+
+
+section.content .main.page {
+    padding: 0.8rem 0.5rem;
+    width: 100%;
+}
+
+.card.content {
+    max-width: 65%;
+    flex-grow: 1;
+}
+
+section .main.page div {
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    text-align: left;
+}
+
+section .main.page div span:first-child {
+    flex: 0;
+    text-wrap: nowrap;
+}
+
+section .main.page div span:nth-child(2) {
+    border-bottom: 1px solid black;
+    flex: 1;
+    padding-left: 1rem;
+    font-weight: bold;
+}
+
+/* cover page */
+
+
+.cover-section {
+    background-color: #000099;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 0.2rem;
+}
+
+
+section.content div.page {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3rem;
+}
+
+
+section.content div.page h3,
+section.content div.page h4,
+section.content div.page h5,
+section.content div.page h6,
+section.content div.page p,
+section.content div.page li {
+    font-family: 'Inter', sans-serif;
+    text-wrap: wrap;
+}
+.header.cover.page {
+    border: 3px solid white;
+    width: 40%;
+    margin-top: 7rem;
+}
+
+.aside.cover.page,
+.main.cover.page,
+.page-footer {
+    background-color: white;
+    width: 60%;
+    border-radius: 0.3rem;
+    text-align: center; 
+}
+
+.aside.cover.page h6 {
+    letter-spacing: 1.5px;
+}
+
+.main.cover.page,
+.aside.cover.page {
+    padding: 0.5rem 1.0rem;
+}
+
+.cover.page h4,
+.cover.page h5,
+.cover.page h6 {
+    font-weight: bold;
+    color: #000099;
+    line-height: 1.2em;
+}
+
+.cover.page h4:first-child,
+.cover.page h5:first-child {
+    padding-bottom: 0.3em;
+}
+
+section.content .main.cover.page {
+    width: 70%;
+}
+
+
+/* notes section */
+.card.content {
+    background-color: #BDBDC7;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+section.content .main.notes.page {
+    padding: 0 0.5em 0.5em 2rem;
+    width: 100%
+}
+
+.notes.page li {
+    list-style: circle;
+    list-style-position: outside;
+    font-size: 13px;
+}
+
+.notes.page h6 {
+    font-size: 15px;
+}
+
+.section.content section:not(:first-of-type) div.page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.2rem;
+}
+
+.section.content section:not(:first-of-type) div.page > * {
+    border: 1px solid black;
+    border-radius: 0.3rem;
+    background-color: #E9DFD3;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header.page {
+    width: 100%;
+    padding: 0.5rem;
+}
+
+.header.page h6 {
+    text-align: center;
+    color: #000099;
+    font-weight: bold;
+}
+
+
+/*  owner page */
+.main.pet.page div:not(:first-child) {
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    text-align: left;
+}
+
+.main.pet.page div:not(:first-child) span:first-child {
+    flex: 0;
+    text-wrap: nowrap;
+}
+
+
+.main.pet.page div:not(:first-child) span:nth-child(2) {
+    border-bottom: 1px solid black;
+    flex: 1;
+    padding-left: 1rem;
+    font-weight: bold;
+}
+
+/* animal section */
+.main.pet.page {
+    display: flex;
+    flex-direction: column;
+    padding: 0.8rem 0.5rem;
+}
+
+div.pet-photo {
+    align-self: center;
+    background-color: #BDBDC7;
+    border: 1px dashed #5E6192;
+    border-radius: 0.3rem;
+    text-align: center;
+    text-wrap: wrap;
+    max-width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-content: space-evenly;
+    margin-bottom: 1rem;
+}
+
+div.pet-photo h6 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    color: #5E6192;
+    font-weight: 500;
+    opacity: 0.8;
+    font-size: 1.1rem;
+}
+
+div.pet-photo img {
+    max-width: 280px;
+    max-height: 190px;
+}
+
+.main.pet.page div:last-child {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.main.pet.page div:last-child span:first-child {
+    text-wrap: wrap;
+    flex: 1 0 100%
+}
+
+/* marking */
+.main.marking.page div {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.main.marking.page div:nth-child(2) {
+    flex-direction: column;
+}
+
+.main.marking.page div:nth-child(2) span:first-child {
+    text-wrap: wrap;
+}
+
+/* issuing */
+.main.issuing.page div:first-child {
+    flex-wrap: wrap;
+}
+
+.main.issuing.page div:first-child span:first-child {
+    flex-wrap: wrap;
+}
+
+
+/* rabies vaccination */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: transparent;
+    background-color: #BDBDC7;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    
+}
+th {
+    font-size: 0.8rem;
+}
+
+.vaccination-table tbody tr:not(:last-child) {
+    border-bottom: 2px solid black;
+}
+
+.multi-row-header {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.multi-row-header div {
+    display: table-row;
+    border-bottom: 1px solid #ddd;
+    text-wrap: nowrap;
+    justify-content: center;
+} 
+
+/*  rabies test */
+.rabies-antibody-test .main div:first-child {
+    display: block;
+}
+
+section .main.rabies-antibody-test.page div:first-child span:first-child {
+    text-wrap: wrap;
+}
+
+section .main.rabies-antibody-test.page div:nth-child(4) {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#access-code {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+}
+
+#access-code h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.code-input-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.code-input {
+    width: 50px;
+    height: 50px;
+    font-size: 2rem;
+    text-align: center;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+}
+
+.code-input:focus {
+    border-color: aqua;
+    outline: none;
+}
+
+.code-input-btn {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    background-color: aqua;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+@media (max-width: 800px) {
+    .profile-container form {
+        flex-direction: column;
+    }
+    
+    .form-wrap {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-wrap span {
+        display: none;
+    }
+
+    .form-wrap label {
+        display: none;
+    }
+
+    .form-wrap input {
+        width: 100%;
+    }
+}
+
+
+.hidden {
+    display: none;
+}
+
+.highlight {
+    background-color: aqua;
+    font-weight: bold;
+}

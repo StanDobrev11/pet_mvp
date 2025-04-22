@@ -10,6 +10,7 @@ from pet_mvp.common.mixins import TimeStampMixin
 # Create your models here.
 class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
     USERNAME_FIELD = 'email'
+    PHONE_NUMBER_LENGTH = 10
 
     email = models.EmailField(
         unique=True,
@@ -35,13 +36,6 @@ class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
 
     objects = UserManager()
 
-    def __str__(self):
-        return self.email
-
-
-class Owner(models.Model):
-    PHONE_NUMBER_LENGTH = 10
-
     first_name = models.CharField(
         max_length=255,
     )
@@ -61,8 +55,5 @@ class Owner(models.Model):
         max_length=255,
     )
 
-    user = models.OneToOneField(
-        to=AppUser,
-        on_delete=models.CASCADE,
-        related_name='owner',
-    )
+    def __str__(self):
+        return self.email

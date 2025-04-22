@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+
+{% block content %}
+<section class="site-section index">
+    <div class="inner">
+        <div class="title">
+            <h2>{% trans "Join the Pet Passport Web app if you have a pet or you are a pet doctor!" %}</h2>
+        </div>
+        <div class="two-columns">
+            <div class="column">
+                <h3>{% trans "If you are a vet..." %}</h3>
+                <ul>
+                    <li>{% trans "Access patients' files instantly!" %}</li>
+                    <li>{% trans "Complete track of Pedical history!" %}</li>
+                    <li>{% trans "Something else I can't think of ... " %}</li>
+                </ul>
+
+            </div>
+            <div class="column">
+                <h3>{% trans "or if you care for a pet..." %}</h3>
+                <ul>
+                    <li>{% trans "Get all your pet details in one place!" %}</li>
+                    <li>{% trans "Track the doctors' visits!" %}</li>
+                    <li>{% trans "Never miss a vaccine or a medication!" %}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="additional">
+            <h3>{% trans "Join us now!" %}</h3>
+            <p>{% trans "And you will get overview of the clinics in your area, animal stores, grooming parlows and so much more..." %}</p>
+            <p>{% trans "Discount at the metioned places with a 'JOIN-NOW-VOUCHER' " %}</p>
+        </div>
+        <div class="buttons">
+            <a href="{% url 'login' %}" class="btn">{% trans "Login" %}</a>
+            <a href="{% url 'register' %}" class="btn btn-secondary">{% trans "Register" %}</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+
+{% block scripts %}
+{% endblock %}
