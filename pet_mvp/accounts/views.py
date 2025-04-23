@@ -14,9 +14,11 @@ from django.views.decorators.debug import sensitive_post_parameters
 
 from pet_mvp.accounts.forms import UserCreationForm
 
+UserModel = get_user_model()
+
 
 # Create your views here.
-class RegisterUserView(views.CreateView):
+class RegisterView(views.CreateView):
     class RegisterUserView(views.CreateView):
         """
         Newly created user will be handled by this view.
@@ -85,3 +87,25 @@ class RegisterUserView(views.CreateView):
             login(self.request, user)
 
             return True
+
+
+
+class LoginUserView(auth_views.LoginView):
+    # this view requires template and 'next' to be used
+    # 'next' is defined in settings.py LOGIN_REDIRECT_URL using reverse_lazy
+    template_name = 'accounts/login.html'
+
+    # this is needed to redirect the user out of the login page
+    redirect_authenticated_user = True
+
+    def form_valid(self, form):
+        # attempting to clear the messages
+        storage = messages.get_messages(self.request)
+        storage.used = True
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        # this form handles error msgs upon passing invalid credentials and
+        # can be used in the template as {{ messages }} tag
+        messages.error(self.request, 'Invalid email or password.')
+        return super().form_invalid(form)

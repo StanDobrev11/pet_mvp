@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load filters %}
+
+{% load static %}
+
+
+{% block content %}
+    <section class="site-section login">
+        <div class="inner">
+            <div class="title">
+                <h2>{% trans "Welcome to your pet's medical records!" %}</h2>
+                <h3>{% trans "Please login:" %}</h3>
+            </div>
+            <div class="form">
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <form action="{% url 'login' %}?next={{ next }}" method="post" class="login-form">
+                    {{ form.username|placeholder:'Enter Email' }}
+                    {{ form.password|placeholder:'Enter Password' }}
+                    {% csrf_token %}
+                    <div class="buttons">
+                        <button type="submit" class="btn login-btn">{% trans "Log In" %}</button>
+                        <button class="btn btn-secondary"
+                                onclick="window.location.href='../register/';">{% trans "Register instead?" %}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </section>
+{% endblock %}

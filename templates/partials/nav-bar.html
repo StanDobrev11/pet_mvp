@@ -1,0 +1,39 @@
+{% load i18n %}
+{% load static %}
+
+<section class="site-section nav-bar">
+    <div class="nav-bar-inner">
+        <div class="logo">
+            <a href="{% url 'index' %}">
+                <img src="{% static 'imgs/logo.png' %}" alt="PetPassport Logo">
+            </a>
+            <a href="{% url 'index' %}" class="home-link">HOME</a>
+        </div>
+        <div class="nav-menu">
+            <ul id="nav-menu" class="nav-menu-items">
+                <div class="language-select">
+                    <a href="#" id="lang-en" onclick="changeLanguage('en')">
+                        <img src="{% static 'svgs/uk-flag.svg' %}" alt="{% trans 'English' %}">                        
+                    </a>
+                    <a href="#" id="lang-bg" onclick="changeLanguage('bg')">
+                        <img src="{% static 'svgs/bg-flag.svg' %}" alt="{% trans 'Bulgarian' %}">
+                    </a>
+                </div>
+                {% if user.is_authenticated and user.is_owner %}
+                    <li><a href="#dashboard" id="dashboard">{% trans "Dashboard" %}</a></li>
+                    <li><a href="#pets">{% trans "My Pets" %}</a></li>
+                    <li><a href="#appointments">{% trans "Appointments" %}</a></li>
+                    <li><a href="#profile" id="profile">{% trans "Profile" %}</a></li>
+                    <li><a href="{% url 'logout' %}">{% trans "Logout" %}</a></li>
+                {% elif user.is_authenticated and user.is_doctor %}
+                    <li><a href="#profile" id="profile">{% trans "Profile" %}</a></li>
+                    <li><a href="{% url 'logout' %}">{% trans "Logout" %}</a></li>
+                {% else %}
+                    <li id="nav-login"><a href="{% url 'login' %}">{% trans "Login" %}</a></li>
+                    <li id="nav-register"><a href="{% url 'register' %}">{% trans "Register" %}</a></li>
+                    <li id="nav-about"><a href="#">{% trans "About" %}</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</section>
