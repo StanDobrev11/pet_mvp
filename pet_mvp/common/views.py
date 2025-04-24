@@ -19,3 +19,4 @@ class IndexView(views.TemplateView):
         if request.user.is_authenticated:
             return redirect('dashboard')
         return super().get(request, *args, **kwargs)
+

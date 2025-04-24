@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('pet_mvp.common.urls')),
     path('accounts/', include('pet_mvp.accounts.urls')),
     path('admin/', admin.site.urls),
+    path('pets/', include("pet_mvp.pets.urls"))
 ]
 
 

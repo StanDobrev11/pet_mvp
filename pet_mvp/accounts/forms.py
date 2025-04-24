@@ -7,3 +7,4 @@ class UserCreationForm(auth_forms.UserCreationForm):
     class Meta:
         model=UserModel
         fields=('email', 'first_name', 'last_name', 'phone_number', 'city')
+
