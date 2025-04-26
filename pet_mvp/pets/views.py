@@ -69,7 +69,7 @@ class MarkingAddView(views.FormView):
 
 
 class MarkingDetailsView(views.DetailView):
-    template_name = 'partials/marking-card.html'
+    template_name = 'pet/marking-details.html'
 
     def get_queryset(self):
         return Pet.objects.filter(pk=self.kwargs['pk'])
@@ -88,3 +88,9 @@ class MarkingDetailsView(views.DetailView):
             return pet.tattoo
         except ObjectDoesNotExist:
             return None
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['pet_pk'] = self.kwargs['pk']
+
+        return context

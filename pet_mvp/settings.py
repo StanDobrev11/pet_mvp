@@ -47,7 +47,9 @@ INSTALLED_APPS = [
     # my apps
     'pet_mvp.accounts.apps.AccountsConfig',
     'pet_mvp.common.apps.CommonConfig',
-    'pet_mvp.pets.apps.PetsConfig'
+    'pet_mvp.medicine.apps.MedicineConfig',
+    'pet_mvp.pets.apps.PetsConfig',
+    'pet_mvp.records.apps.RecordsConfig',
 ]
 
 MIDDLEWARE = [

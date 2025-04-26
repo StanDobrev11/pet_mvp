@@ -4,6 +4,7 @@ from datetime import datetime
 import django
 from django.contrib.auth import get_user_model
 from django.db import IntegrityError
+from django.utils.timezone import make_aware
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pet_mvp.settings')
 django.setup()
@@ -70,6 +71,12 @@ def create_pets():
         print('Pets created')
     except IntegrityError:
         print('Pets already exist')
+
+def populate_vaccines():
+   vaccines = [
+       'Canine Distemper',
+       'Rabies',
+   ]
 
 
 

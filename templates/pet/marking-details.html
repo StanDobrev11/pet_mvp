@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="marking">
+        <h3>Marking</h3>
+        <ul>
+            <li>Marking type: {{ object.type }}</li>
+            <li>Unique Code Identification: {{ object.code }}</li>
+            <li>Location of the marking: {{ object.location }}</li>
+            <li>Date of application: {{ object.date_of_application }}</li>
+        </ul>
+        <a href="{% url 'pet-details' pk=pet_pk %}" class="btn btn-secondary">Back to Pet's details</a>
+    </div>
+{% endblock %}
