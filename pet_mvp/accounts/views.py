@@ -109,3 +109,7 @@ class LoginUserView(auth_views.LoginView):
         # can be used in the template as {{ messages }} tag
         messages.error(self.request, 'Invalid email or password.')
         return super().form_invalid(form)
+
+def logout_view(request):
+    logout(request)
+    return redirect('index')

@@ -1,4 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <section class="site-section dashboard">
+        <div class="title">
+            <h2>Pets</h2>
+        </div>
+        <p>{{ user }}</p>
+        {% for pet in pets %}
+            <li><a href="{% url "pet-details" pk=pet.pk %}">{{ pet.name }}</a></li>
+        {% endfor %}
+        <div>
+            <a href="{% url 'logout' %}">Logout</a>
+            <a href="{% url 'pet-add' %}">Add Pet</a>
+        </div>
+    </section>
 {% endblock %}

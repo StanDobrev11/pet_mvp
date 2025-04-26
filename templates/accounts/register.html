@@ -24,7 +24,8 @@
                 {% csrf_token %}
                 <div class="buttons">
                     <button type="submit" class="btn register-btn">Register</button>
-                    <button class="btn btn-secondary" onclick="{% url "index" %}">Login instead?</button>
+                    <button class="btn btn-secondary"
+                                onclick="window.location.href='../login/';">Login instead?</button>
                 </div>
             </form>
         </div>

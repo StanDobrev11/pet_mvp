@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -8,7 +9,7 @@ from pet_mvp.pets.utils import pet_directory_path
 from pet_mvp.pets.validators import validate_passport_number, validate_transponder_code
 
 
-# Create your models here.
+UserModel = get_user_model()
 class Pet(TimeStampMixin):
     MAX_LENGTH = 50
     PASSPORT_NUMBER_MAX_LENGTH = 12
@@ -69,13 +70,15 @@ class Pet(TimeStampMixin):
     passport_number = models.CharField(
         max_length=PASSPORT_NUMBER_MAX_LENGTH,
         validators=[validate_passport_number],
-        blank=True,
-        null=True,
-        verbose_name=_('Passport Number')
+        verbose_name=_('Passport Number'),
+        unique=True,
+        error_messages={
+            "unique": "A pet with this details already exists.",
+        },
     )
 
     owners = models.ManyToManyField(
-        to=Owner,
+        to=UserModel,
         related_name='pets'
     )
 
@@ -93,7 +96,7 @@ class Pet(TimeStampMixin):
         return _('{} years, {} months and {} days').format(years, months, days)
 
     def __str__(self):
-        return f'{self.name} - {self.breed}'
+        return f'{self.name} - {self.species} - {self.breed}'
 
 
 

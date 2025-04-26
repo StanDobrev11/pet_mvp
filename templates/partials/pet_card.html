@@ -1,0 +1,15 @@
+<div class="pet-card">
+    <h1 class="pet-name"> {{ pet }} - {{ pet.passport_number }}</h1>
+    <p>Species: {{ pet.species }}</p>
+    <p>Breed: {{ pet.breed }}</p>
+    <p>Gender: {{ pet.sex }}</p>
+    <p>DoB: {{ pet.date_of_birth }}</p>
+{#    {% if booking.notes %}#}
+{#        <p>Notes: {{ booking.notes }}</p>#}
+{#    {% endif %}#}
+
+{#    <a href="{% url 'booking delete' pk=booking.pk %}" class="btn btn-danger">Cancel Booking</a>#}
+    <a href="{% url 'dashboard' %}" class="btn btn-secondary">Go back</a>
+    <a href="{% url 'pet-edit' pk=pet.pk %}" class="btn btn-secondary">Edit Pet</a>
+    <a href="{% url 'pet-delete' pk=pet.pk %}" class="btn btn-secondary">Delete Pet</a>
+</div>

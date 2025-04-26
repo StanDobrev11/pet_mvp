@@ -1,7 +1,4 @@
 {% extends 'base.html' %}
-{% load i18n %}
-{% load filters %}
-
 {% load static %}
 
 
@@ -9,8 +6,8 @@
     <section class="site-section login">
         <div class="inner">
             <div class="title">
-                <h2>{% trans "Welcome to your pet's medical records!" %}</h2>
-                <h3>{% trans "Please login:" %}</h3>
+                <h2>Welcome to your pet's medical records!</h2>
+                <h3>Please login:</h3>
             </div>
             <div class="form">
                 {% if messages %}
@@ -21,13 +18,13 @@
                     </ul>
                 {% endif %}
                 <form action="{% url 'login' %}?next={{ next }}" method="post" class="login-form">
-                    {{ form.username|placeholder:'Enter Email' }}
-                    {{ form.password|placeholder:'Enter Password' }}
+                    {{ form.username}}
+                    {{ form.password}}
                     {% csrf_token %}
                     <div class="buttons">
-                        <button type="submit" class="btn login-btn">{% trans "Log In" %}</button>
+                        <button type="submit" class="btn login-btn">Log In</button>
                         <button class="btn btn-secondary"
-                                onclick="window.location.href='../register/';">{% trans "Register instead?" %}</button>
+                                onclick="window.location.href='../register/';">Register instead?</button>
                     </div>
                 </form>
             </div>

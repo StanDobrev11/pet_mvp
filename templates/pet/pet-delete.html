@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form action="{% url 'pet-delete' pk=object.pk %}" method="post">
+        {% csrf_token %}
+
+        <p>Are you sure you want to delete the {{ object }}?</p>
+        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+        <a href="{% url 'pet-details' pk=object.pk %}" class="btn btn-secondary">Cancel</a>
+    </form>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form action="{% url 'pet-edit' pk=pet.pk %}" method="post">
+
+        {{ form.as_p }}
+        {% csrf_token %}
+        <p>
+            <button type="submit" class="btn btn-secondary">Save</button>
+        </p>
+
+        <p>
+            <button type="reset" class="btn btn-secondary">Reset</button>
+        </p>
+        {% if pet.transponder %}
+            <p><a href="{% url 'marking-details' pk=pet.pk %}">{{ pet.transponder }}</a></p>
+        {% elif pet.tattoo %}
+            <p><a href="{% url 'marking-details' pk=pet.pk %}">{{ pet.tattoo }}</a></p>
+        {% else %}
+            <p>No marking of the animal - <a href="{% url 'marking-add' pk=pet.pk %}" class="btn btn-secondary">Add
+                marking?</a></p>
+        {% endif %}
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+        {#                        <a href="{% url 'password change' pk=user.pk %}">Change password??</a>#}
+
+    </form>
+{% endblock %}
