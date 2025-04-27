@@ -1,28 +1,109 @@
 from django.db import models
-
-# Create your models here.
-from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from pet_mvp.common.mixins import TimeStampMixin
-from pet_mvp.medicine.models import Vaccine, BloodTest, Urinalysis, FecalExam, Medication
+from pet_mvp.drugs.models import Vaccine, BloodTest, Urinalysis, FecalExam
 from pet_mvp.pets.models import Pet
 
 
+class VaccinationRecord(TimeStampMixin):
+
+    batch_number = models.CharField(
+        max_length=50,
+        verbose_name=_('Batch number')
+    )
+
+    manufacturer = models.CharField(
+        max_length=50,
+        verbose_name=_('Manufacturer'),
+    )
+
+    manufacture_date = models.DateField(
+        verbose_name=_('Manufacture date')
+    )
+
+    date_of_vaccination = models.DateField(
+        verbose_name=_('Date of vaccination'),
+    )
+
+    valid_from = models.DateField(
+        null=True,
+        blank=True,
+        verbose_name=_('Valid from')
+    )
+
+    valid_until = models.DateField(
+        verbose_name=_('Valid until')
+    )
+
+    pet = models.ForeignKey(
+        to=Pet,
+        on_delete=models.CASCADE,
+        related_name='vaccine_records',
+    )
+
+    vaccine = models.ForeignKey(
+        to=Vaccine,
+        on_delete=models.DO_NOTHING,
+    )
+
+    def __str__(self):
+        return f'{self.vaccine.name} vaccine. Valid untill {self.valid_until}.'
 
 
-class BaseRecord(TimeStampMixin):
-    class Meta:
-        abstract = True
+class MedicationRecord(TimeStampMixin):
+    manufacturer_and_name = models.CharField(
+        max_length=50,
+        verbose_name=_('Manufacturer and name of product')
+    )
 
-    date_of_entry = models.DateField(
-        verbose_name=_('Date of the entry'),
+    date = models.DateField(
+        verbose_name=_('Date')
+    )
+
+    time = models.TimeField(
+        help_text=_('Time'),
+        null=True,
+        blank=True,
+    )
+
+    dosage = models.CharField(
+        max_length=50,
+        verbose_name=_('Dosage'),
+        help_text=_('Specify dosage, e.g. "5mg twice a day"')
+    )
+
+    duration = models.CharField(
+        max_length=50,
+        verbose_name=_('Duration'),
+        help_text=_('Specify duration, e.g. "7 days"')
+    )
+
+    notes = models.TextField(
+        verbose_name=_('Additional Notes'),
+        blank=True,
+        null=True
     )
 
     # doctor = models.ForeignKey(
     #     to=Doctor,
     #     on_delete=models.DO_NOTHING,
     # )
+
+    pet = models.ForeignKey(
+        to=Pet,
+        on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return f'{self.manufacturer_and_name}'
+
+
+class MedicalExaminationRecord(TimeStampMixin):
+    date_of_entry = models.DateField(
+        verbose_name=_('Date of the entry'),
+    )
+
     doctor = models.CharField(
         max_length=100,
     )
@@ -32,47 +113,6 @@ class BaseRecord(TimeStampMixin):
         on_delete=models.CASCADE
     )
 
-
-class RabiesAntibodyTestRecord(BaseRecord):
-    declaration = models.TextField(
-        default=_('I, the undersigned, confirm that I have seen an official record stating that the rabies antibody '
-                  'titration test performed at an EU-approved laboratory on a sample of blood collected on the '
-                  'date mentioned below from the above described animal proved a response to anti-rabies vaccination '
-                  'at a level of serum neutralising antibody equal to or greater than 0.5 IU/ml.')
-    )
-
-    sample_collected_on = models.DateField(
-        verbose_name=_('Sample collected on'),
-    )
-
-
-class ClinicalExaminationRecord(BaseRecord):
-    declaration = models.TextField(
-        default=_('The animal show no signs of diseases and is fit to be transported for the intended journey')
-    )
-
-
-class LegalisationRecord(BaseRecord):
-    legalising_body = models.TextField(
-        verbose_name=_('Legalising body')
-    )
-
-
-class OtherRecord(TimeStampMixin):
-    text_field = models.TextField()
-
-    # doctor = models.ForeignKey(
-    #     to=Doctor,
-    #     on_delete=models.DO_NOTHING,
-    # )
-
-    pet = models.ForeignKey(
-        to=Pet,
-        on_delete=models.CASCADE
-    )
-
-
-class MedicalExaminationRecord(BaseRecord):
     reason_for_visit = models.TextField(
         verbose_name=_('Reason for visit'),
         help_text=_('Description of the problem or reason for the visit')
@@ -146,75 +186,21 @@ class MedicalExaminationRecord(BaseRecord):
         null=True
     )
 
-    medications = models.ManyToManyField(
-        to=Medication,
-        related_name='examinations_medications',
+    medication = models.ForeignKey(
+        to=MedicationRecord,
+        on_delete=models.CASCADE,
+        related_name='examinations',
         verbose_name=_('Medications Prescribed'),
         blank=True,
     )
 
-    vaccinations = models.ManyToManyField(
-        to=Vaccine,
-        related_name='examinations_vaccinations',
+    vaccination = models.ForeignKey(
+        to=VaccinationRecord,
+        on_delete=models.CASCADE,
+        related_name='examinations',
         verbose_name=_('Vaccination Applied'),
         blank=True,
     )
-
-    # vaccinations = models.ManyToManyField(
-    #     to=OtherVaccination,
-    #     related_name='examinations_other_vaccinations',
-    #     verbose_name=_('Vaccination'),
-    #     blank=True,
-    # )
-    #
-    # rabies_vaccinations = models.ManyToManyField(
-    #     to=RabiesVaccination,
-    #     related_name='examinations_rabies_vaccinations',
-    #     verbose_name=_('Rabies Vaccination'),
-    #     blank=True,
-    # )
-    #
-    # rabies_antibody_tests = models.ManyToManyField(
-    #     to=RabiesAntibodyTestRecord,
-    #     related_name='examinations_rabies_antibody',
-    #     verbose_name=_('Rabies Antibody Tests'),
-    #     blank=True,
-    # )
-    #
-    # anti_parasite_treatments = models.ManyToManyField(
-    #     to=OtherAntiParasiteTreatment,
-    #     related_name='examinations_other_parasites',
-    #     verbose_name=_('Parasites Treatments'),
-    #     blank=True,
-    # )
-    #
-    # echino_parasite_treatments = models.ManyToManyField(
-    #     to=AntiEchinococcusTreatment,
-    #     related_name='examinations_echino_parasites',
-    #     verbose_name=_('Anti Echinococcus Treatments'),
-    #     blank=True,
-    # )
-    #
-    # clinical_examination_records = models.ManyToManyField(
-    #     to=ClinicalExaminationRecord,
-    #     related_name='examinations_clinical_record',
-    #     verbose_name=_('Clinical Record'),
-    #     blank=True,
-    # )
-    #
-    # legalisations = models.ManyToManyField(
-    #     to=LegalisationRecord,
-    #     related_name='examinations_legalisations',
-    #     verbose_name=_('Legalisation'),
-    #     blank=True,
-    # )
-    #
-    # others = models.ManyToManyField(
-    #     to=OtherRecord,
-    #     related_name='examinations_other_records',
-    #     verbose_name=_('Other Records'),
-    #     blank=True,
-    # )
 
     blood_test = models.OneToOneField(
         to=BloodTest,

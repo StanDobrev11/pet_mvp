@@ -19,15 +19,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-
 urlpatterns = [
     path('', include('pet_mvp.common.urls')),
     path('accounts/', include('pet_mvp.accounts.urls')),
     path('admin/', admin.site.urls),
-    path('pets/', include("pet_mvp.pets.urls"))
+    path('pets/', include("pet_mvp.pets.urls")),
+    path('records/', include('pet_mvp.drugs.urls')),
 ]
-
-
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

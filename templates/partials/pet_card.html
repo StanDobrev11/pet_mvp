@@ -1,15 +1,30 @@
 <div class="pet-card">
-    <h1 class="pet-name"> {{ pet }} - {{ pet.passport_number }}</h1>
-    <p>Species: {{ pet.species }}</p>
-    <p>Breed: {{ pet.breed }}</p>
-    <p>Gender: {{ pet.sex }}</p>
-    <p>DoB: {{ pet.date_of_birth }}</p>
-{#    {% if booking.notes %}#}
-{#        <p>Notes: {{ booking.notes }}</p>#}
-{#    {% endif %}#}
+    <div class="two-columns">
+        <div class="pet-basics">
+            <h1 class="pet-name"> {{ pet }} - {{ pet.passport_number }}</h1>
+            <p>Species: {{ pet.species }}</p>
+            <p>Breed: {{ pet.breed }}</p>
+            <p>Gender: {{ pet.sex }}</p>
+            <p>DoB: {{ pet.date_of_birth }}</p>
 
-{#    <a href="{% url 'booking delete' pk=booking.pk %}" class="btn btn-danger">Cancel Booking</a>#}
-    <a href="{% url 'dashboard' %}" class="btn btn-secondary">Go back</a>
-    <a href="{% url 'pet-edit' pk=pet.pk %}" class="btn btn-secondary">Edit Pet</a>
-    <a href="{% url 'pet-delete' pk=pet.pk %}" class="btn btn-secondary">Delete Pet</a>
+        </div>
+        <div class="pet-records">
+            <h2>Vaccine and Treatment Records</h2>
+            <div class="vaccines">
+                {% for vaccine in pet.vaccine_records.all %}
+                    <a href={% url "vaccine-details" pk=vaccine.pk %}>{{ vaccine }}</a>
+                {% endfor %}
+            </div>
+            <div class="drugs">
+                {% for drug in drug_records %}
+                    {{ drug }}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="buttons">
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary">Go back</a>
+        <a href="{% url 'pet-edit' pk=pet.pk %}" class="btn btn-secondary">Edit Pet</a>
+        <a href="{% url 'pet-delete' pk=pet.pk %}" class="btn btn-secondary">Delete Pet</a>
+    </div>
 </div>

@@ -13,7 +13,7 @@ urlpatterns = [
                   include([
                       path('add/', MarkingAddView.as_view(), name='marking-add'),
                       path('details/', MarkingDetailsView.as_view(), name='marking-details')
-                  ]))
+                  ])),
          ])
-     )
+         )
 ]

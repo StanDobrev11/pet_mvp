@@ -10,6 +10,8 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pet_mvp.settings')
 django.setup()
 
 from pet_mvp.pets.models import Pet
+from pet_mvp.drugs.models import Vaccine, Drug
+from pet_mvp.records.models import VaccinationRecord
 
 UserModel = get_user_model()
 
@@ -72,14 +74,69 @@ def create_pets():
     except IntegrityError:
         print('Pets already exist')
 
-def populate_vaccines():
-   vaccines = [
-       'Canine Distemper',
-       'Rabies',
-   ]
 
+def populate_drugs():
+    treatment_data = [
+        dict(
+            name='Drontal Puppy',
+            notes='Targets roundworms, hookworms and whipworms. Keeping puppy and family away from internal parasites'
+        )
+    ]
+
+    for data in treatment_data:
+        Drug.objects.get_or_create(data)
+
+
+def populate_vaccines():
+    vaccines = [
+        dict(
+            name='Canine Distemper',
+            core=True,
+            notes='This core vaccine protects against the highly contagious and potentially deadly distemper virus',
+        ),
+        dict(
+            name='Rabies',
+            core=True,
+            notes='Rabies is a fatal, viral disease that attacks the central nervous system and usually is transmitted through the bite of an infected animal',
+        ),
+        dict(
+            name='Parvoviridae',
+            core=True,
+            notes='The vaccine guards against the highly contagious  parvovirus, which causes life-threatening gastrointestinal illness',
+        ),
+        dict(
+            name='Leptospirosis',
+            core=True,
+            notes='The vaccine protects against leptospirosis, a bacterial infection that can cause kidney and liver failures, bleeding disorder etc.',
+        )
+    ]
+
+    for data in vaccines:
+        Vaccine.objects.get_or_create(data)
+
+    print('Vaccines populated')
+
+
+def populate_vaccination_records():
+    vaccines_data = [
+        dict(
+            pet=Pet.objects.get(name='Max'),
+            vaccine=Vaccine.objects.get(name='Canine Distemper'),
+            batch_number='A130D01',
+            manufacturer='Nobivac',
+            manufacture_date=make_aware(datetime.strptime('18.05.2024', '%d.%m.%Y')),
+            date_of_vaccination=make_aware(datetime.strptime('22.03.2025', '%d.%m.%Y')),
+            valid_until=make_aware(datetime.strptime('22.03.2026', '%d.%m.%Y')),
+        )
+    ]
+    for data in vaccines_data:
+        VaccinationRecord.objects.get_or_create(data)
+
+    print('Vaccination records populated')
 
 
 if __name__ == '__main__':
     create_superuser()
     create_pets()
+    populate_vaccines()
+    populate_vaccination_records()

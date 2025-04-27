@@ -8,13 +8,13 @@ from django.views import generic as views
 
 from pet_mvp.pets.forms import PetAddEditForm, MarkingAddForm
 from pet_mvp.pets.models import Pet, BaseMarking, Transponder, Tattoo
+from pet_mvp.records.models import VaccinationRecord
 
 
 # Create your views here.
 class PetDetailView(views.DetailView):
     model = Pet
     template_name = "pet/pet_details.html"
-
 
 class PetEditView(views.UpdateView):
     model = Pet
