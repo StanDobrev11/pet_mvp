@@ -24,7 +24,13 @@ urlpatterns = [
     path('accounts/', include('pet_mvp.accounts.urls')),
     path('admin/', admin.site.urls),
     path('pets/', include("pet_mvp.pets.urls")),
-    path('records/', include('pet_mvp.drugs.urls')),
+    path('records/',
+         include([
+             path('', include("pet_mvp.records.urls")),
+             path('drugs/',
+                  include("pet_mvp.drugs.urls")
+             )
+         ])),
 ]
 
 if settings.DEBUG:

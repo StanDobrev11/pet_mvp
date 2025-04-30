@@ -8,8 +8,9 @@ from pet_mvp.common.mixins import TimeStampMixin
 from pet_mvp.pets.models import Pet
 
 
-# Create your models here.
-class Vaccine(models.Model):
+class BaseMedication(models.Model):
+    class Meta:
+        abstract = True
 
     name = models.CharField(
         max_length=50,
@@ -17,27 +18,24 @@ class Vaccine(models.Model):
         unique=True,
     )
 
+    notes = models.TextField(
+        verbose_name=_('Notes')
+    )
+
+    def __str__(self):
+        return {self.name}
+
+
+# Create your models here.
+class Vaccine(BaseMedication):
     core = models.BooleanField(
         default=False,
         verbose_name=_('Core vaccine')
     )
 
-    notes = models.TextField(
-        verbose_name=_('Notes')
-    )
 
-
-class Drug(models.Model):
-
-    name = models.CharField(
-        max_length=50,
-        verbose_name=_('Name of vaccine'),
-        unique=True,
-    )
-
-    notes = models.TextField(
-        verbose_name=_('Notes')
-    )
+class Drug(BaseMedication):
+    pass
 
 
 class BaseTest(models.Model):

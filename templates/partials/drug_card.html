@@ -1,0 +1,17 @@
+<div class="cards">
+    <div class="drug-card">
+
+        <h3>Name of the medication/treatment: {{ object.medication.name }}</h3>
+
+        <ul>
+            <li>Date and time prescribed: {{ object.date }} / {{ object.time }}</li>
+            <li>Dosage: {{ object.dosage }}</li>
+            <li>Valid until: {{ object.valid_until }}</li>
+            <li>Notes and how to administer the treatment: {{ object.medication.notes }}</li>
+        </ul>
+
+    </div>
+    <div class="buttons">
+        <a href="{% url 'pet-details' pk=pet_pk %}" class="btn btn-secondary">Back</a>
+    </div>
+</div>

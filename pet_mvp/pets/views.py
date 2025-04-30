@@ -1,5 +1,5 @@
-from django.contrib.auth.middleware import LoginRequiredMiddleware
-from django.contrib.auth.mixins import LoginRequiredMixin
+from datetime import date
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404
@@ -7,14 +7,20 @@ from django.urls import reverse_lazy, reverse
 from django.views import generic as views
 
 from pet_mvp.pets.forms import PetAddEditForm, MarkingAddForm
-from pet_mvp.pets.models import Pet, BaseMarking, Transponder, Tattoo
-from pet_mvp.records.models import VaccinationRecord
+from pet_mvp.pets.models import Pet
 
 
 # Create your views here.
 class PetDetailView(views.DetailView):
     model = Pet
     template_name = "pet/pet_details.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pet = Pet.objects.get(pk=self.kwargs['pk'])
+        context['valid_vaccinations'] = pet.vaccine_records.filter(valid_until__gte=date.today())
+        context['valid_treatments'] = pet.medication_records.filter(valid_until__gte=date.today())
+        return context
 
 class PetEditView(views.UpdateView):
     model = Pet

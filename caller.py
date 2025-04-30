@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import django
 from django.contrib.auth import get_user_model
@@ -11,7 +11,7 @@ django.setup()
 
 from pet_mvp.pets.models import Pet
 from pet_mvp.drugs.models import Vaccine, Drug
-from pet_mvp.records.models import VaccinationRecord
+from pet_mvp.records.models import VaccinationRecord, MedicationRecord
 
 UserModel = get_user_model()
 
@@ -77,62 +77,280 @@ def create_pets():
 
 def populate_drugs():
     treatment_data = [
+        # Internal Parasites
         dict(
             name='Drontal Puppy',
-            notes='Targets roundworms, hookworms and whipworms. Keeping puppy and family away from internal parasites'
-        )
+            notes='Targets roundworms, hookworms, and whipworms. Keeps puppy and family safe from internal parasites.',
+        ),
+        dict(
+            name='Panacur',
+            notes='Effective against roundworms, hookworms, tapeworms, and whipworms in dogs and puppies.',
+        ),
+        dict(
+            name='Interceptor Plus',
+            notes='Protects against heartworms, tapeworms, hookworms, and roundworms. A monthly chewable tablet for dogs.',
+        ),
+        # External Parasites
+        dict(
+            name='Frontline Plus',
+            notes='Topical treatment protecting dogs from fleas, ticks, and lice. Apply monthly for prevention.',
+        ),
+        dict(
+            name='Advantix',
+            notes='Protects against fleas, ticks, mosquitoes, and biting flies. External spot-on treatment for dogs.',
+        ),
+        dict(
+            name='NexGard',
+            notes='Chewable tablet for dogs that kills fleas and ticks. Monthly dosage recommended.',
+        ),
+        # Regular Medication
+        dict(
+            name='Thyro-Tabs',
+            notes='Used for treating hypothyroidism in dogs. Provides levothyroxine replacement therapy.',
+        ),
+        dict(
+            name='Vetoryl',
+            notes='Used for treating hyperadrenocorticism (Cushing’s disease) in dogs.',
+        ),
+        dict(
+            name='Carprofen (Rimadyl)',
+            notes='Commonly used as an anti-inflammatory and pain-relief medication for dogs with arthritis or after surgery.',
+        ),
+        dict(
+            name='Apoquel',
+            notes='Provides relief for dogs from itching and inflammation associated with allergies.',
+        ),
     ]
 
     for data in treatment_data:
-        Drug.objects.get_or_create(data)
+        # Use get_or_create by specifying explicit fields for safety
+        Drug.objects.get_or_create(**data)
+
+    print('Drugs populated')
+
 
 
 def populate_vaccines():
     vaccines = [
+        # Core Vaccines
         dict(
             name='Canine Distemper',
             core=True,
-            notes='This core vaccine protects against the highly contagious and potentially deadly distemper virus',
+            notes='This core vaccine protects against the highly contagious and potentially deadly distemper virus.',
         ),
         dict(
             name='Rabies',
             core=True,
-            notes='Rabies is a fatal, viral disease that attacks the central nervous system and usually is transmitted through the bite of an infected animal',
+            notes='Rabies is a fatal, viral disease that attacks the central nervous system and usually is transmitted through the bite of an infected animal.',
         ),
         dict(
             name='Parvoviridae',
             core=True,
-            notes='The vaccine guards against the highly contagious  parvovirus, which causes life-threatening gastrointestinal illness',
+            notes='The vaccine guards against the highly contagious parvovirus, which causes life-threatening gastrointestinal illness.',
         ),
         dict(
             name='Leptospirosis',
             core=True,
-            notes='The vaccine protects against leptospirosis, a bacterial infection that can cause kidney and liver failures, bleeding disorder etc.',
+            notes='The vaccine protects against leptospirosis, a bacterial infection that can cause kidney and liver failures, bleeding disorders, etc.',
+        ),
+        dict(
+            name='Adenovirus (Infectious Hepatitis)',
+            core=True,
+            notes='Protects against canine adenovirus type 1, causing infectious hepatitis, and type 2, a respiratory illness.',
+        ),
+        dict(
+            name='Parainfluenza',
+            core=True,
+            notes='Parainfluenza is part of the core combination vaccine and protects against a virus causing upper respiratory illness.',
+        ),
+        # Non-Core Vaccines
+        dict(
+            name='Bordetella (Kennel Cough)',
+            core=False,
+            notes='This non-core vaccine protects against Bordetella bronchiseptica, a leading cause of kennel cough in dogs.',
+        ),
+        dict(
+            name='Lyme Disease (Borrelia Burgdorferi)',
+            core=False,
+            notes='This non-core vaccine is recommended for dogs at risk of exposure to ticks that carry Lyme disease.',
+        ),
+        dict(
+            name='Canine Influenza',
+            core=False,
+            notes='Canine influenza vaccine helps protect dogs against highly contagious respiratory viruses (H3N8 and H3N2).',
+        ),
+        dict(
+            name='Corona Virus (Canine)',
+            core=False,
+            notes='The canine coronavirus vaccine protects against intestinal upset caused by this specific type of virus. It is non-core and rarely recommended.',
+        ),
+        dict(
+            name='Rattlesnake Vaccine',
+            core=False,
+            notes='An optional vaccine that may help dogs in high-risk areas produce antibodies against rattlesnake venom.',
         )
     ]
 
     for data in vaccines:
-        Vaccine.objects.get_or_create(data)
+        Vaccine.objects.get_or_create(**data)
 
     print('Vaccines populated')
 
+def populate_medication_records():
+    pet = Pet.objects.get(name='Max')
+    medication_data = [
+        # Medication already given
+        dict(
+            pet=pet,
+            medication=Drug.objects.get(name='Drontal Puppy'),
+            date=make_aware(datetime.strptime('15.03.2025', '%d.%m.%Y')),
+            time='08:00',
+            dosage='1 tablet',
+            duration='One-time dose',
+        ),
+        dict(
+            pet=pet,
+            medication=Drug.objects.get(name='NexGard'),
+            date=make_aware(datetime.strptime('01.03.2025', '%d.%m.%Y')),
+            time='09:30',
+            dosage='1 chewable',
+            duration='Monthly preventive',
+        ),
+        # Medication to be given
+        dict(
+            pet=pet,
+            medication=Drug.objects.get(name='Interceptor Plus'),
+            date=make_aware(datetime.strptime('01.04.2025', '%d.%m.%Y')),
+            time='10:00',
+            dosage='1 tablet',
+            duration='Monthly preventive for internal parasites',
+        ),
+        dict(
+            pet=pet,
+            medication=Drug.objects.get(name='Apoquel'),
+            date=make_aware(datetime.strptime('20.03.2025', '%d.%m.%Y')),
+            time='07:30',
+            dosage='1 tablet (16 mg)',
+            duration='Daily for allergy management',
+        )
+    ]
+
+    for data in medication_data:
+        # Ensure unique records using get_or_create
+        MedicationRecord.objects.get_or_create(**data)
+
+    print('Medication records for Max populated')
+
 
 def populate_vaccination_records():
+    pet = Pet.objects.get(name='Max')
     vaccines_data = [
         dict(
-            pet=Pet.objects.get(name='Max'),
+            pet=pet,
             vaccine=Vaccine.objects.get(name='Canine Distemper'),
             batch_number='A130D01',
             manufacturer='Nobivac',
             manufacture_date=make_aware(datetime.strptime('18.05.2024', '%d.%m.%Y')),
             date_of_vaccination=make_aware(datetime.strptime('22.03.2025', '%d.%m.%Y')),
             valid_until=make_aware(datetime.strptime('22.03.2026', '%d.%m.%Y')),
-        )
-    ]
-    for data in vaccines_data:
-        VaccinationRecord.objects.get_or_create(data)
+        ),
+        # Rabies
+        dict(
+            pet=pet,
+            vaccine=Vaccine.objects.get(name='Rabies'),
+            batch_number='R222B12',
+            manufacturer='Pfizer',
+            manufacture_date=make_aware(datetime.strptime('01.04.2024', '%d.%m.%Y')),
+            date_of_vaccination=make_aware(datetime.strptime('15.03.2025', '%d.%m.%Y')),
+            valid_from=make_aware(datetime.strptime('15.03.2025', '%d.%m.%Y') + timedelta(days=7)),  # 7 days after vaccination
+            valid_until=make_aware(datetime.strptime('15.03.2026', '%d.%m.%Y')),
+        ),
+        # Parvoviridae
+        dict(
+            pet=pet,
+            vaccine=Vaccine.objects.get(name='Parvoviridae'),
+            batch_number='P874C09',
+            manufacturer='Zoetis',
+            manufacture_date=make_aware(datetime.strptime('10.06.2023', '%d.%m.%Y')),
+            date_of_vaccination=make_aware(datetime.strptime('20.01.2025', '%d.%m.%Y')),
+            valid_until=make_aware(datetime.strptime('20.01.2026', '%d.%m.%Y')),
+        ),
+        # Leptospirosis
+        dict(
+            pet=pet,
+            vaccine=Vaccine.objects.get(name='Leptospirosis'),
+            batch_number='L390D08',
+            manufacturer='Merial',
+            manufacture_date=make_aware(datetime.strptime('12.05.2023', '%d.%m.%Y')),
+            date_of_vaccination=make_aware(datetime.strptime('25.08.2025', '%d.%m.%Y')),
+            valid_until=make_aware(datetime.strptime('25.08.2026', '%d.%m.%Y')),
+        ),
+        dict(
+            pet=pet,
+            vaccine=Vaccine.objects.get(name='Canine Distemper'),
+            batch_number='D123P01',
+            manufacturer='Zoetis',
+            manufacture_date=make_aware(datetime.strptime('01.12.2019', '%d.%m.%Y')),
+            date_of_vaccination=make_aware(datetime.strptime('01.02.2020', '%d.%m.%Y')),  # 6 weeks old
+            valid_until=make_aware(datetime.strptime('01.02.2021', '%d.%m.%Y')),
+        ),
+        dict(
+            pet=pet,
+            vaccine=Vaccine.objects.get(name='Parvoviridae'),
+            batch_number='P456B01',
+            manufacturer='Merial',
+            manufacture_date=make_aware(datetime.strptime('15.12.2019', '%d.%m.%Y')),
+            date_of_vaccination=make_aware(datetime.strptime('01.03.2020', '%d.%m.%Y')),  # 8 weeks old
+            valid_until=make_aware(datetime.strptime('01.03.2021', '%d.%m.%Y')),
+        ),
+        dict(
+            pet=pet,
+            vaccine=Vaccine.objects.get(name='Leptospirosis'),
+            batch_number='L789C02',
+            manufacturer='Nobivac',
+            manufacture_date=make_aware(datetime.strptime('20.12.2019', '%d.%m.%Y')),
+            date_of_vaccination=make_aware(datetime.strptime('01.05.2020', '%d.%m.%Y')),  # 16 weeks old
+            valid_until=make_aware(datetime.strptime('01.05.2021', '%d.%m.%Y')),
+        ),
+        # Rabies Vaccine (required yearly in many regions)
+        dict(
+            pet=pet,
+            vaccine=Vaccine.objects.get(name='Rabies'),
+            batch_number='R222B01',
+            manufacturer='Pfizer',
+            manufacture_date=make_aware(datetime.strptime('01.01.2020', '%d.%m.%Y')),
+            date_of_vaccination=make_aware(datetime.strptime('01.06.2020', '%d.%m.%Y')),  # First rabies shot
+            valid_from=make_aware(datetime.strptime('01.06.2020', '%d.%m.%Y') + timedelta(days=7)),  # After 7 days
+            valid_until=make_aware(datetime.strptime('01.06.2021', '%d.%m.%Y')),
+        ),
+        # Adult Booster Shots (Subsequent Years)
+        dict(
+            pet=pet,
+            vaccine=Vaccine.objects.get(name='Canine Distemper'),
+            batch_number='D123B02',
+            manufacturer='Zoetis',
+            manufacture_date=make_aware(datetime.strptime('10.12.2020', '%d.%m.%Y')),
+            date_of_vaccination=make_aware(datetime.strptime('01.06.2021', '%d.%m.%Y')),  # Booster shot
+            valid_until=make_aware(datetime.strptime('01.06.2022', '%d.%m.%Y')),
+        ),
+        dict(
+            pet=pet,
+            vaccine=Vaccine.objects.get(name='Rabies'),
+            batch_number='R456B02',
+            manufacturer='Pfizer',
+            manufacture_date=make_aware(datetime.strptime('15.03.2021', '%d.%m.%Y')),
+            date_of_vaccination=make_aware(datetime.strptime('01.06.2021', '%d.%m.%Y')),  # Yearly Rabies booster
+            valid_from=make_aware(datetime.strptime('01.06.2021', '%d.%m.%Y') + timedelta(days=7)),
+            valid_until=make_aware(datetime.strptime('01.06.2022', '%d.%m.%Y')),
+        ),
 
-    print('Vaccination records populated')
+    ]
+
+    for data in vaccines_data:
+        # Use get_or_create with unpacked data to ensure no duplicates
+        VaccinationRecord.objects.get_or_create(**data)
+
+    print('Vaccination records for Max populated')
 
 
 if __name__ == '__main__':
@@ -140,3 +358,5 @@ if __name__ == '__main__':
     create_pets()
     populate_vaccines()
     populate_vaccination_records()
+    populate_drugs()
+    populate_medication_records()

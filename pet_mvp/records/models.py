@@ -2,7 +2,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from pet_mvp.common.mixins import TimeStampMixin
-from pet_mvp.drugs.models import Vaccine, BloodTest, Urinalysis, FecalExam
+from pet_mvp.drugs.apps import DrugsConfig
+from pet_mvp.drugs.models import Vaccine, BloodTest, Urinalysis, FecalExam, Drug
 from pet_mvp.pets.models import Pet
 
 
@@ -48,13 +49,13 @@ class VaccinationRecord(TimeStampMixin):
     )
 
     def __str__(self):
-        return f'{self.vaccine.name} vaccine. Valid untill {self.valid_until}.'
+        return f'{self.vaccine.name}. Valid to: {self.valid_until}.'
 
 
 class MedicationRecord(TimeStampMixin):
-    manufacturer_and_name = models.CharField(
+    manufacturer = models.CharField(
         max_length=50,
-        verbose_name=_('Manufacturer and name of product')
+        verbose_name=_('Manufacturer')
     )
 
     date = models.DateField(
@@ -73,30 +74,25 @@ class MedicationRecord(TimeStampMixin):
         help_text=_('Specify dosage, e.g. "5mg twice a day"')
     )
 
-    duration = models.CharField(
+    valid_until = models.DateField(
         max_length=50,
-        verbose_name=_('Duration'),
-        help_text=_('Specify duration, e.g. "7 days"')
+        verbose_name=_('Valid Until'),
+        help_text=_('Specify valid until date')
     )
-
-    notes = models.TextField(
-        verbose_name=_('Additional Notes'),
-        blank=True,
-        null=True
-    )
-
-    # doctor = models.ForeignKey(
-    #     to=Doctor,
-    #     on_delete=models.DO_NOTHING,
-    # )
 
     pet = models.ForeignKey(
         to=Pet,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='medication_records'
+    )
+
+    medication = models.ForeignKey(
+        to=Drug,
+        on_delete=models.DO_NOTHING
     )
 
     def __str__(self):
-        return f'{self.manufacturer_and_name}'
+        return f'{self.medication.name}. Valid to: {self.valid_until}.'
 
 
 class MedicalExaminationRecord(TimeStampMixin):
@@ -110,7 +106,8 @@ class MedicalExaminationRecord(TimeStampMixin):
 
     pet = models.ForeignKey(
         to=Pet,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='examination_records'
     )
 
     reason_for_visit = models.TextField(

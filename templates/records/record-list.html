@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="vaccines">
+        {% if vaccines %}
+            <h3>Vaccinations:</h3>
+            <ul>
+                {% for vaccine in vaccines %}
+                    <li><a href={% url "vaccine-details" pk=vaccine.pk %}>{{ vaccine }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h3>No vaccinations yet!</h3>
+        {% endif %}
+    </div>
+    <div class="medications">
+        {% if treatments %}
+            <h3>Medications or Treatment</h3>
+            <ul>
+                {% for treatment in treatments %}
+                    <li><a href={% url "treatment-details" pk=treatment.pk %}>{{ treatment }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h3>No any medications or treatments yet!</h3>
+        {% endif %}
+    </div>
+    <div class="exams">
+        {% if examinations %}
+            <h3>Pet Examinations</h3>
+            {% for exam in examinations %}
+                <li><a href="#">{{ exam }}</a></li>
+            {% endfor %}
+        {% else %}
+            <h3>No any examinations yet!</h3>
+        {% endif %}
+    </div>
+    <div class="buttons">
+        <a href="{% url 'pet-details' pk=pet_pk %}" class="btn btn-secondary">Back</a>
+    </div>
+{% endblock %}

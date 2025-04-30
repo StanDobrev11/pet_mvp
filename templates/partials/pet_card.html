@@ -8,23 +8,28 @@
             <p>DoB: {{ pet.date_of_birth }}</p>
 
         </div>
+        <div class="buttons">
+            <a href="{% url 'dashboard' %}" class="btn btn-secondary">Go back</a>
+            <a href="{% url 'pet-edit' pk=pet.pk %}" class="btn btn-secondary">Edit Pet</a>
+            <a href="{% url 'pet-delete' pk=pet.pk %}" class="btn btn-secondary">Delete Pet</a>
+        </div>
         <div class="pet-records">
-            <h2>Vaccine and Treatment Records</h2>
+            <h2>Valid Vaccination Records</h2>
             <div class="vaccines">
-                {% for vaccine in pet.vaccine_records.all %}
+                {% for vaccine in valid_vaccinations %}
                     <a href={% url "vaccine-details" pk=vaccine.pk %}>{{ vaccine }}</a>
                 {% endfor %}
             </div>
-            <div class="drugs">
-                {% for drug in drug_records %}
-                    {{ drug }}
+            <h2>Valid Treatment Records</h2>
+            <div class="treatment">
+                {% for treatment in valid_treatments %}
+                    <a href={% url "treatment-details" pk=treatment.pk %}>{{ treatment }}</a>
                 {% endfor %}
             </div>
         </div>
+        <div class="buttons">
+            <a href="{% url 'record-list' %}?pk={{ pet.pk }}" class="btn btn-secondary">View all history records</a>
+        </div>
     </div>
-    <div class="buttons">
-        <a href="{% url 'dashboard' %}" class="btn btn-secondary">Go back</a>
-        <a href="{% url 'pet-edit' pk=pet.pk %}" class="btn btn-secondary">Edit Pet</a>
-        <a href="{% url 'pet-delete' pk=pet.pk %}" class="btn btn-secondary">Delete Pet</a>
-    </div>
+
 </div>

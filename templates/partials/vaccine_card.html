@@ -1,3 +1,24 @@
-<div class="vaccine-card">
-    {{ object }}
+<div class="cards">
+    <div class="vaccine-card">
+        <h3>Name of the vaccine: {{ object.vaccine.name }}</h3>
+        <ul>
+            <li>Date of vaccination: {{ object.date_of_vaccination }}</li>
+            {% if object.valid_from %}
+                <li>Valid from if different from the date of vaccination: {{ object.valid_from }}</li>
+            {% endif %}
+            <li>Valid until: {{ object.valid_until }}</li>
+            <li>Manufactured by: {{ object.manufacturer }}</li>
+            <li>Date of manufacture: {{ object.manufacture_date }}</li>
+            <li>Batch number: {{ object.batch_number }}</li>
+            {% if object.vaccine.core == True %}
+                <li>This vaccine is compulsory as per the vaccination calendar.</li>
+            {% else %}
+                <li>This vaccine is NOT compulsory as per the vaccination calendar.</li>
+            {% endif %}
+            <li>Notes: {{ object.vaccine.notes }}</li>
+        </ul>
+    </div>
+    <div class="buttons">
+        <a href="{% url 'pet-details' pk=pet_pk %}" class="btn btn-secondary">Back</a>
+    </div>
 </div>
