@@ -4,7 +4,11 @@
     <div class="two-columns">
         <div class="pet-basics">
             <div class="photo">
-                <img src="{{ pet.photo }}" alt="Pet Photo">
+                {% if pet.photo %}
+                    <img src="{{ pet.photo.url }}" alt="Pet Photo">
+                {% else %}
+                    <img src="#" alt="Pet Photo">
+                {% endif %}
             </div>
             <div class="details">
                 <h1 class="pet-name"> {{ pet }} - {{ pet.passport_number }}</h1>

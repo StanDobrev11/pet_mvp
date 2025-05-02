@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form action="{% url 'pet-edit' pk=pet.pk %}" method="post">
+    <form action="{% url 'pet-edit' pk=pet.pk %}" method="post" enctype="multipart/form-data">
 
         {{ form.as_p }}
         {% csrf_token %}
