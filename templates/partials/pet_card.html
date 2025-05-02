@@ -43,7 +43,7 @@
                         <a href={% url "vaccine-details" pk=vaccine.pk %}>{{ vaccine }}</a>
                     {% endfor %}
                 {% else %}
-                    <p><a href="{% url 'vaccine-record-add' %}?pk={{ pet.pk }}">Add Vaccination Record</a></p>
+                    <p><a href="{% url 'vaccine-record-add' %}?pet_id={{ pet.id }}">Add Vaccination Record</a></p>
                 {% endif %}
             </div>
             <h2>Valid Treatment Records</h2>

@@ -5,20 +5,21 @@
         <h3>Add vaccination record</h3>
         <p>This can be done only once. No editing or deleting of the vaccination record is possible.</p>
         <p>Ensure proper and correct data is entered.</p>
-        <form action="{% url 'vaccine-record-add' %}" method="post">
+        <form action="{% url 'vaccine-record-add' %}?pet_id={{ pet_id }}" method="post">
+
 
             {{ form.as_p }}
             {% csrf_token %}
             <p>
-                <button type="submit" class="btn btn-secondary">Save</button>
+                <button type="submit" class="btn btn-secondary">Save and add another</button>
             </p>
 
             <p>
-                <button type="reset" class="btn btn-secondary">Reset</button>
+                <button type="reset" class="btn btn-secondary">Clear fields</button>
             </p>
-
-            <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
-
+            <p>
+                <button><a href="{% url 'vaccine-record-stop' %}?pet_id={{ pet_id }}" class="btn btn-secondary">Done</a></button>
+            </p>
         </form>
     </div>
 {% endblock %}

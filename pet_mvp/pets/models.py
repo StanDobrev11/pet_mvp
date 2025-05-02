@@ -77,6 +77,13 @@ class Pet(TimeStampMixin):
         },
     )
 
+    can_add_vaccines = models.BooleanField(
+        default=True,
+        verbose_name=_('Can add vaccines?'),
+        help_text=_('Controls if the owner can add vaccines.'),
+    )
+
+
     owners = models.ManyToManyField(
         to=UserModel,
         related_name='pets'
