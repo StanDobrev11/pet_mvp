@@ -3,9 +3,13 @@ from django import forms
 from pet_mvp.pets.models import Pet, BaseMarking, Transponder, Tattoo
 
 
-class PetAddEditForm(forms.ModelForm):
+class PetEditForm(forms.ModelForm):
+    class Meta:
+        model = Pet
+        fields = ['photo', 'current_weight']
 
 
+class PetAddForm(forms.ModelForm):
     class Meta:
         model = Pet
         exclude = ['owners']

@@ -26,3 +26,5 @@ class DrugDetailsView(views.DetailView):
         pet = context['object'].pet
         context['pet_pk'] = pet.pk
         return context
+
+

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="form">
+        <h3>Add vaccination record</h3>
+        <p>This can be done only once. No editing or deleting of the vaccination record is possible.</p>
+        <p>Ensure proper and correct data is entered.</p>
+        <form action="{% url 'vaccine-record-add' %}" method="post">
+
+            {{ form.as_p }}
+            {% csrf_token %}
+            <p>
+                <button type="submit" class="btn btn-secondary">Save</button>
+            </p>
+
+            <p>
+                <button type="reset" class="btn btn-secondary">Reset</button>
+            </p>
+
+            <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+
+        </form>
+    </div>
+{% endblock %}

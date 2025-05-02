@@ -8,5 +8,5 @@ urlpatterns = [
     ])),
     path('treatments/', include([
         path('<int:pk>/', DrugDetailsView.as_view(), name='treatment-details')
-    ]))
+    ])),
 ]

@@ -6,7 +6,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import generic as views
 
-from pet_mvp.pets.forms import PetAddEditForm, MarkingAddForm
+from pet_mvp.pets.forms import PetAddForm, MarkingAddForm, PetEditForm
 from pet_mvp.pets.models import Pet
 
 
@@ -20,12 +20,14 @@ class PetDetailView(views.DetailView):
         pet = Pet.objects.get(pk=self.kwargs['pk'])
         context['valid_vaccinations'] = pet.vaccine_records.filter(valid_until__gte=date.today())
         context['valid_treatments'] = pet.medication_records.filter(valid_until__gte=date.today())
+        context['last_examinations'] = pet.examination_records.all()[:3]
         return context
+
 
 class PetEditView(views.UpdateView):
     model = Pet
     template_name = "pet/pet_edit.html"
-    form_class = PetAddEditForm
+    form_class = PetEditForm
 
     def get_success_url(self):
         return reverse_lazy('pet-details', kwargs={'pk': self.object.pk})
@@ -34,7 +36,7 @@ class PetEditView(views.UpdateView):
 class PetAddView(views.CreateView):
     model = Pet
     template_name = "pet/pet_add.html"
-    form_class = PetAddEditForm
+    form_class = PetAddForm
 
     def get_success_url(self):
         return reverse_lazy('dashboard')
@@ -44,7 +46,6 @@ class PetAddView(views.CreateView):
         new_pet.owners.add(self.request.user)
 
         return redirect('dashboard')
-
 
 
 class PetDeleteView(views.DeleteView):

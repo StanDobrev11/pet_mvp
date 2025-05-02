@@ -134,6 +134,7 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = os.environ.get('STATIC_ROOT', BASE_DIR / 'collect_static')
 
+# TODO check to see if this is accessible in production
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
