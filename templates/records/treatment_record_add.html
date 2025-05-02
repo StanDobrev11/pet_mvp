@@ -2,10 +2,10 @@
 
 {% block content %}
     <div class="form">
-        <h3>Add vaccination record</h3>
-        <p>This can be done only once. No editing or deleting of the vaccination record is possible.</p>
+        <h3>Add medication/treatment record</h3>
+        <p>This can be done only once. No editing or deleting of the treatment record is possible.</p>
         <p>Ensure proper and correct data is entered.</p>
-        <form action="{% url 'vaccine-record-add' %}?pet_id={{ pet_id }}" method="post">
+        <form action="{% url 'treatment-record-add' %}?pet_id={{ pet_id }}" method="post">
 
 
             {{ form.as_p }}
@@ -18,7 +18,8 @@
                 <button type="reset" class="btn btn-secondary">Clear fields</button>
             </p>
             <p>
-                <button><a href="{% url 'vaccine-record-stop' %}?pet_id={{ pet_id }}" class="btn btn-secondary">Finish adding vaccines</a></button>
+                <button><a href="{% url 'treatment-record-stop' %}?pet_id={{ pet_id }}" class="btn btn-secondary">Finish
+                    adding treatments</a></button>
             </p>
         </form>
     </div>

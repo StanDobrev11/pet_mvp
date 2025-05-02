@@ -83,6 +83,12 @@ class Pet(TimeStampMixin):
         help_text=_('Controls if the owner can add vaccines.'),
     )
 
+    can_add_treatments = models.BooleanField(
+        default=True,
+        verbose_name=_('Can add treatments?'),
+        help_text=_('Controls if the owner can add treatments.'),
+    )
+
 
     owners = models.ManyToManyField(
         to=UserModel,
