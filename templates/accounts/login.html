@@ -18,15 +18,20 @@
                     </ul>
                 {% endif %}
                 <form action="{% url 'login' %}?next={{ next }}" method="post" class="login-form">
-                    {{ form.username}}
-                    {{ form.password}}
+                    {{ form.username }}
+                    {{ form.password }}
                     {% csrf_token %}
                     <div class="buttons">
                         <button type="submit" class="btn login-btn">Log In</button>
                         <button class="btn btn-secondary"
-                                onclick="window.location.href='../register/';">Register instead?</button>
+                                onclick="window.location.href='../register/';">Register instead?
+                        </button>
+                        <button class="btn btn-secondary"
+                                onclick="window.location.href='/';">Back
+                        </button>
                     </div>
                 </form>
+
             </div>
         </div>
 

@@ -6,6 +6,8 @@ from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import generic as views
 
+from pet_mvp.access_codes.models import PetAccessCode
+from pet_mvp.access_codes.utils import generate_access_code
 from pet_mvp.pets.forms import PetAddForm, MarkingAddForm, PetEditForm
 from pet_mvp.pets.models import Pet
 
@@ -17,10 +19,17 @@ class PetDetailView(views.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        # get the pet
         pet = Pet.objects.get(pk=self.kwargs['pk'])
+
+        # generate code
+        access_code = generate_access_code(pet)
+
         context['valid_vaccinations'] = pet.vaccine_records.filter(valid_until__gte=date.today())
         context['valid_treatments'] = pet.medication_records.filter(valid_until__gte=date.today())
         context['last_examinations'] = pet.examination_records.all()[:3]
+        context['access_code'] = access_code.code
         return context
 
 

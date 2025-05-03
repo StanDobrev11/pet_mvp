@@ -21,6 +21,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('', include('pet_mvp.common.urls')),
+    path('access_codes/', include('pet_mvp.access_codes.urls')),
     path('accounts/', include('pet_mvp.accounts.urls')),
     path('admin/', admin.site.urls),
     path('pets/', include("pet_mvp.pets.urls")),
@@ -29,7 +30,7 @@ urlpatterns = [
              path('', include("pet_mvp.records.urls")),
              path('drugs/',
                   include("pet_mvp.drugs.urls")
-             )
+                  )
          ])),
 ]
 

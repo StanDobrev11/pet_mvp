@@ -27,14 +27,21 @@
                     <p>No marking of the animal - <a href="{% url 'marking-add' pk=pet.pk %}" class="btn btn-secondary">Add
                         marking?</a></p>
                 {% endif %}
+                {% if user.is_owner %}
+                    <p>Pet Access Code: {{ access_code }}</p>
+                {% endif %}
 
             </div>
         </div>
         <div class="buttons">
-            <a href="{% url 'dashboard' %}" class="btn btn-secondary">Go back</a>
-            <a href="{% url 'pet-edit' pk=pet.pk %}" class="btn btn-secondary">Edit Pet</a>
-            <a href="{% url 'pet-delete' pk=pet.pk %}" class="btn btn-secondary">Delete Pet</a>
+            {% if user.is_owner %}
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary">Go back</a>
+                <a href="{% url 'pet-edit' pk=pet.pk %}" class="btn btn-secondary">Edit Pet</a>
+                <a href="{% url 'pet-delete' pk=pet.pk %}" class="btn btn-secondary">Delete Pet</a>
+            {% endif %}
         </div>
+
+
         <div class="pet-records">
             <h2>Valid Vaccination Records</h2>
             <div class="vaccines">
@@ -59,17 +66,25 @@
             <h2>Latest Examination Records</h2>
             <div class="examinations">
                 {% if examinations %}
-                {% for exam in last_examinations %}
-                    <a href={% url "exam-details" pk=exam.pk %}>{{ exam }}</a>
-                {% endfor %}
+                    {% for exam in last_examinations %}
+                        <a href={% url "exam-details" pk=exam.pk %}>{{ exam }}</a>
+                    {% endfor %}
                 {% else %}
                     <p>No examinations yet</p>
-            {% endif %}
+                {% endif %}
+                {% if not user.is_owner %}
+                    <a href="#">New examination</a>
+                {% endif %}
             </div>
         </div>
         <div class="buttons">
             <a href="{% url 'record-list' %}?pk={{ pet.pk }}" class="btn btn-secondary">View all history records</a>
         </div>
+        {% if not user.is_owner %}
+            <div class="buttons">
+                <a href="{% url 'logout' %}" class="btn btn-secondary">Finish and logout</a>
+            </div>
+        {% endif %}
     </div>
 
 </div>

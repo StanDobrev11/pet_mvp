@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # my apps
+    'pet_mvp.access_codes.apps.AccessCodesConfig',
     'pet_mvp.accounts.apps.AccountsConfig',
     'pet_mvp.common.apps.CommonConfig',
     'pet_mvp.drugs.apps.DrugsConfig',
@@ -58,7 +59,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.LoginRequiredMiddleware',
+    # 'django.contrib.auth.middleware.LoginRequiredMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="form">
+        <form action="{% url 'clinic-register' %}?next={{ next }}" method="post" class="register-form">
+
+                {% for field in form %}
+                <div class="fieldWrapper">
+                    {{ field.errors }}
+                    {{ field.label_tag }} {{ field }}
+                    {% if field.help_text %}
+                    <p class="help" id="{{ field.auto_id }}_helptext">
+                        {{ field.help_text|safe }}
+                    </p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                {% csrf_token %}
+                <div class="buttons">
+                    <button type="submit" class="btn register-btn">Register</button>
+                    <button class="btn btn-secondary"
+                                onclick="window.location.href='../access-code/';">Back</button>
+                </div>
+            </form>
+    </div>
+{% endblock %}

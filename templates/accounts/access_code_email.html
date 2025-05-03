@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="post">
+    {% csrf_token %}
+    <div>
+        <label for="id_access_code">Access Code</label>
+        {% if form.errors.access_code %}
+            <p class="error">{{ form.errors.access_code }}</p>
+        {% endif %}
+        {{ form.access_code }}
+
+    </div>
+    <div>
+        <label for="id_email">Email Address</label>
+        {% if form.errors.email %}
+            <p class="error">{{ form.errors.email }}</p>
+        {% endif %}
+        {{ form.email }}
+
+    </div>
+    <button type="submit">Continue</button>
+</form>
+
+{% endblock %}

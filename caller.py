@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 
 import django
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.utils.timezone import make_aware
 
@@ -16,14 +17,21 @@ from pet_mvp.records.models import VaccinationRecord, MedicationRecord
 UserModel = get_user_model()
 
 
-def create_superuser(email='admin@pet_mvp.com', password='1234'):
+def create_superuser(email='admin@pet-mvp.com', password='1234'):
     try:
         UserModel.objects.create_superuser(
             email=email,
             password=password,
+            first_name='Admin',
+            last_name='Superuser',
+            city='Varna',
+            country='Bulgaria',
+            phone_number='0887888888',
         )
         print('Superuser created')
     except IntegrityError:
+        print('Superuser already exists')
+    except ValidationError:
         print('Superuser already exists')
 
     print(f'email: {email}\npassword: {password}')
@@ -206,7 +214,7 @@ def populate_medication_records():
             date=make_aware(datetime.strptime('15.03.2025', '%d.%m.%Y')),
             time='08:00',
             dosage='1 tablet',
-            duration='One-time dose',
+            valid_until=make_aware(datetime.strptime('14.04.2025', '%d.%m.%Y')),
         ),
         dict(
             pet=pet,
@@ -214,7 +222,7 @@ def populate_medication_records():
             date=make_aware(datetime.strptime('01.03.2025', '%d.%m.%Y')),
             time='09:30',
             dosage='1 chewable',
-            duration='Monthly preventive',
+            valid_until=make_aware(datetime.strptime('01.04.2025', '%d.%m.%Y'))
         ),
         # Medication to be given
         dict(
@@ -223,7 +231,7 @@ def populate_medication_records():
             date=make_aware(datetime.strptime('01.04.2025', '%d.%m.%Y')),
             time='10:00',
             dosage='1 tablet',
-            duration='Monthly preventive for internal parasites',
+            valid_until=make_aware(datetime.strptime('12.04.2025', '%d.%m.%Y')),
         ),
         dict(
             pet=pet,
@@ -231,7 +239,7 @@ def populate_medication_records():
             date=make_aware(datetime.strptime('20.03.2025', '%d.%m.%Y')),
             time='07:30',
             dosage='1 tablet (16 mg)',
-            duration='Daily for allergy management',
+            valid_until=make_aware(datetime.strptime('27.03.2025', '%d.%m.%Y')),
         )
     ]
 
