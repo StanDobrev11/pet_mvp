@@ -12,7 +12,7 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 
-from pet_mvp.accounts.forms import UserCreationForm
+from pet_mvp.accounts.forms import OwnerCreationForm
 
 UserModel = get_user_model()
 
@@ -26,7 +26,7 @@ class RegisterUserView(views.CreateView):
     If user is already registered, the dispatch method will handle the redirection of authenticated users.
     """
     # important here is to use form which is created by the user in forms.py
-    form_class = UserCreationForm
+    form_class = OwnerCreationForm
     template_name = 'accounts/register.html'
     success_url = reverse_lazy('index')
 

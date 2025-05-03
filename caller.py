@@ -31,7 +31,7 @@ def create_superuser(email='admin@pet_mvp.com', password='1234'):
 
 def create_user(email, password):
     try:
-        UserModel.objects.create_user(
+        UserModel.objects.create_owner(
             email=email,
             password=password,
         )
