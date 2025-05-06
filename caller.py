@@ -11,10 +11,70 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pet_mvp.settings')
 django.setup()
 
 from pet_mvp.pets.models import Pet
-from pet_mvp.drugs.models import Vaccine, Drug
-from pet_mvp.records.models import VaccinationRecord, MedicationRecord
+from pet_mvp.drugs.models import Vaccine, Drug, BloodTest, UrineAlysis, FecalExam
+from pet_mvp.records.models import VaccinationRecord, MedicationRecord, MedicalExaminationRecord
 
 UserModel = get_user_model()
+
+
+def create_complete_examination_record_for_max():
+    max_pet = Pet.objects.get(name='Max')
+
+    blood_test = BloodTest.objects.get_or_create(
+        test_name="Complete Blood Count",
+        result="WBC and RBC levels normal, low platelets detected",
+        white_blood_cells=10.2,
+        red_blood_cells=4.8,
+        hemoglobin=12.5,
+        platelets=150.0
+    )
+    urine_test = UrineAlysis.objects.get_or_create(
+        test_name="Routine Urinalysis",
+        result="Clear urine, neutral pH",
+        color="Yellow",
+        clarity="Clear",
+        ph=7.0,
+        specific_gravity=1.015
+    )
+    fecal_test = FecalExam.objects.get_or_create(
+        test_name="Parasite Check",
+        result="Parasites detected, blood in sample found",
+        consistency="Watery",
+        parasites_detected=True,
+        parasite_type="Roundworms",
+        blood_presence=True
+    )
+
+    medication_record = MedicationRecord.objects.filter(pet=max_pet).first()
+    vaccination_record = VaccinationRecord.objects.filter(pet=max_pet).first()
+
+    MedicalExaminationRecord.objects.get_or_create(
+        date_of_entry=make_aware(datetime.strptime('15.03.2025', '%d.%m.%Y')),
+        doctor="Dr. John Doe",
+        pet=max_pet,
+        reason_for_visit="Routine checkup and swelling on left leg",
+        general_health="Good overall health",
+        body_condition_score=5,
+        temperature=38.5,
+        heart_rate=80,
+        respiratory_rate=18,
+        mucous_membrane_color="Pink",
+        hydration_status="Well hydrated",
+        skin_and_coat_condition="Shiny and smooth",
+        teeth_and_gums="Clean with no signs of tartar",
+        eyes_ears_nose="Clear and healthy",
+        medication=medication_record,
+        vaccination=vaccination_record,
+        blood_test=blood_test[0],
+        urine_test=urine_test[0],
+        fecal_exam=fecal_test[0],
+        treatment_performed="Applied anti-inflammatory ointment",
+        diagnosis="Mild swelling due to recent injury",
+        follow_up=True,
+        notes="Owner advised to return in 2 weeks for follow-up."
+    )
+
+    print(f"Medical Examination Record created for {max_pet.name}.")
 
 
 def create_superuser(email='admin@pet-mvp.com', password='1234'):
@@ -137,7 +197,6 @@ def populate_drugs():
     print('Drugs populated')
 
 
-
 def populate_vaccines():
     vaccines = [
         # Core Vaccines
@@ -203,6 +262,7 @@ def populate_vaccines():
         Vaccine.objects.get_or_create(**data)
 
     print('Vaccines populated')
+
 
 def populate_medication_records():
     pet = Pet.objects.get(name='Max')
@@ -270,7 +330,8 @@ def populate_vaccination_records():
             manufacturer='Pfizer',
             manufacture_date=make_aware(datetime.strptime('01.04.2024', '%d.%m.%Y')),
             date_of_vaccination=make_aware(datetime.strptime('15.03.2025', '%d.%m.%Y')),
-            valid_from=make_aware(datetime.strptime('15.03.2025', '%d.%m.%Y') + timedelta(days=7)),  # 7 days after vaccination
+            valid_from=make_aware(datetime.strptime('15.03.2025', '%d.%m.%Y') + timedelta(days=7)),
+            # 7 days after vaccination
             valid_until=make_aware(datetime.strptime('15.03.2026', '%d.%m.%Y')),
         ),
         # Parvoviridae
@@ -368,3 +429,4 @@ if __name__ == '__main__':
     populate_vaccination_records()
     populate_drugs()
     populate_medication_records()
+    create_complete_examination_record_for_max()

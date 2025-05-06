@@ -28,7 +28,7 @@ class PetDetailView(views.DetailView):
 
         context['valid_vaccinations'] = pet.vaccine_records.filter(valid_until__gte=date.today())
         context['valid_treatments'] = pet.medication_records.filter(valid_until__gte=date.today())
-        context['last_examinations'] = pet.examination_records.all()[:3]
+        context['last_examinations'] = pet.examination_records.all().order_by('-date_of_entry')[:3]
         context['access_code'] = access_code.code
         return context
 

@@ -1,5 +1,127 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load record_tags %}
 
 {% block content %}
-    {% include 'partials/exam_card.html' %}
+    <section class="main">
+        <div>
+            <h1>Medical Examination Record for {{ object.pet.name }}</h1>
+
+            <div>
+                <p><strong>Date of Entry:</strong> {{ object.date_of_entry }}</p>
+
+                <p><strong>Doctor:</strong> {{ object.doctor }}</p>
+
+                <p><strong>Reason for Visit:</strong></p>
+                <p>{{ object.reason_for_visit }}</p>
+
+                <p><strong>General Health:</strong></p>
+                <p>{{ object.general_health }}</p>
+
+                <p><strong>Body Condition Score:</strong> {{ object.body_condition_score }}</p>
+
+                <p><strong>Temperature (°C):</strong> {{ object.temperature }}</p>
+
+                <p><strong>Heart Rate (bpm):</strong> {{ object.heart_rate }}</p>
+
+                <p><strong>Respiratory Rate:</strong> {{ object.respiratory_rate }}</p>
+
+                <p><strong>Treatment Performed:</strong></p>
+                <p>{{ object.treatment_performed }}</p>
+
+                <p><strong>Diagnosis:</strong></p>
+                <p>{{ object.diagnosis }}</p>
+
+                <p><strong>Follow-up Required:</strong> {{ object.follow_up|yesno:"Yes,No" }}</p>
+
+                <p><strong>Additional Notes:</strong></p>
+                <p>{{ object.notes }}</p>
+            </div>
+
+            <h2>Related Records</h2>
+
+            <div>
+                <h3>Vaccination</h3>
+                <ul>
+                    {% for record in object.vaccination|ensure_iterable %}
+                        <li>
+                            <a href="{% url 'vaccine-details' pk=record.pk %}">
+                                <strong>Vaccine:</strong> {{ record.vaccine }}
+                                <strong>Date Administered:</strong> {{ record.date_of_vaccination }}
+                                <strong>Valid to:</strong> {{ record.valid_until }}
+                            </a>
+                        </li>
+                    {% empty %}
+                        <li>No vaccination records available.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div>
+                <h3>Medication</h3>
+                <ul>
+                    {% for record in object.medication|ensure_iterable %}
+                        <li>
+                            <a href="{% url 'treatment-details' pk=record.pk %}">
+                                <strong>Drug:</strong> {{ record.drug }}
+                                <strong>Dosage:</strong> {{ record.dosage }}
+                                <strong>Date Given:</strong> {{ record.date_given }}
+                                <strong>Valid until:</strong> {{ record.valid_until }}
+                                <strong>Notes:</strong> {{ record.valid_until }}
+                            </a>
+                        </li>
+                    {% empty %}
+                        <li>No medication records available.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div>
+                <h3>Blood Test</h3>
+                <ul>
+                    {% for record in object.blood_test|ensure_iterable %}
+                        <li>
+                            <strong>Test Name:</strong> {{ record.test_name }}
+                            <strong>Result:</strong> {{ record.result }}
+                            <strong>Date Conducted:</strong> {{ record.date_conducted }}
+                        </li>
+                    {% empty %}
+                        <li>No blood test records available.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div>
+                <h3>Urine Test</h3>
+                <ul>
+                    {% for record in object.urine_test|ensure_iterable %}
+                        <li>
+                            <strong>Test Name:</strong> {{ record.test_name }}
+                            <strong>Result:</strong> {{ record.result }}
+                            <strong>Date Conducted:</strong> {{ record.date_conducted }}
+                        </li>
+                    {% empty %}
+                        <li>No urine test records available.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div>
+                <h3>Fecal Test</h3>
+                <ul>
+                    {% for record in object.fecal_test|ensure_iterable %}
+                        <li>
+                            <strong>Test Name:</strong> {{ record.test_name }}
+                            <strong>Result:</strong> {{ record.result }}
+                            <strong>Date Conducted:</strong> {{ record.date_conducted }}
+                        </li>
+                    {% empty %}
+                        <li>No fecal test records available.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            {#        <a href="{% url 'edit_medical_record' object.id %}">Edit Record</a>#}
+            {#        <a href="{% url 'list_medical_records' object.pet.id %}">Back to Records List</a>#}
+        </div>
+    </section>
 {% endblock %}

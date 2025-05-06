@@ -33,6 +33,12 @@ class ExaminationDetailsView(views.DetailView):
     model = MedicalExaminationRecord
     template_name = 'records/examination_details.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pet = context['object'].pet
+        context['pet_pk'] = pet.pk
+        return context
+
 
 class BaseRecordAddView(views.CreateView, ABC):
 

@@ -71,7 +71,7 @@
             </div>
             <h2>Latest Examination Records</h2>
             <div class="examinations">
-                {% if examinations %}
+                {% if last_examinations %}
                     {% for exam in last_examinations %}
                         <a href={% url "exam-details" pk=exam.pk %}>{{ exam }}</a>
                     {% endfor %}

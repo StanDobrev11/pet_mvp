@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 from pet_mvp.common.mixins import TimeStampMixin
 from pet_mvp.drugs.apps import DrugsConfig
-from pet_mvp.drugs.models import Vaccine, BloodTest, Urinalysis, FecalExam, Drug
+from pet_mvp.drugs.models import Vaccine, BloodTest, UrineAlysis, FecalExam, Drug
 from pet_mvp.pets.models import Pet
 
 
@@ -199,7 +199,7 @@ class MedicalExaminationRecord(TimeStampMixin):
         blank=True,
     )
 
-    blood_test = models.OneToOneField(
+    blood_test = models.ForeignKey(
         to=BloodTest,
         verbose_name=_('Blood Test'),
         on_delete=models.CASCADE,
@@ -207,15 +207,15 @@ class MedicalExaminationRecord(TimeStampMixin):
         null=True
     )
 
-    urine_test = models.OneToOneField(
-        to=Urinalysis,
+    urine_test = models.ForeignKey(
+        to=UrineAlysis,
         verbose_name=_('Urine Analysis'),
         on_delete=models.CASCADE,
         blank=True,
         null=True,
     )
 
-    fecal_exam = models.OneToOneField(
+    fecal_test = models.ForeignKey(
         to=FecalExam,
         verbose_name=_('Fecal Analysis'),
         on_delete=models.CASCADE,
