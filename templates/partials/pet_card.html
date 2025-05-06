@@ -50,7 +50,10 @@
                         <a href={% url "vaccine-details" pk=vaccine.pk %}>{{ vaccine }}</a>
                     {% endfor %}
                 {% else %}
-                    <p><a href="{% url 'vaccine-record-add' %}?pet_id={{ pet.id }}">Add Vaccination Record</a></p>
+                    <p>No vaccination records</p>
+                    {% if user.is_owner %}
+                        <p><a href="{% url 'vaccine-record-add' %}?pet_id={{ pet.id }}">Add Vaccination Record</a></p>
+                    {% endif %}
                 {% endif %}
             </div>
             <h2>Valid Treatment Records</h2>
@@ -60,7 +63,10 @@
                         <a href={% url "treatment-details" pk=treatment.pk %}>{{ treatment }}</a>
                     {% endfor %}
                 {% else %}
-                    <p><a href="{% url 'treatment-record-add' %}?pet_id={{ pet.id }}">Add Treatment Record</a></p>
+                    <p>No treatment records</p>
+                    {% if user.is_owner %}
+                        <p><a href="{% url 'treatment-record-add' %}?pet_id={{ pet.id }}">Add Treatment Record</a></p>
+                    {% endif %}
                 {% endif %}
             </div>
             <h2>Latest Examination Records</h2>
@@ -70,7 +76,7 @@
                         <a href={% url "exam-details" pk=exam.pk %}>{{ exam }}</a>
                     {% endfor %}
                 {% else %}
-                    <p>No examinations yet</p>
+                    <p>No examination records</p>
                 {% endif %}
                 {% if not user.is_owner %}
                     <a href="#">New examination</a>

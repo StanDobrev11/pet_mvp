@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="form">
-        <form action="{% url 'clinic-register' %}?next={{ next }}" method="post" class="register-form">
+        <form action="{% url 'clinic-register' %}?code={{ code }}" method="post" class="register-form">
 
                 {% for field in form %}
                 <div class="fieldWrapper">

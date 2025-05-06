@@ -129,7 +129,8 @@ class AccessCodeEmailView(views.FormView):
             user = UserModel.objects.get(email=email)
             if not user.is_owner:
                 # Redirect to password page if email exists and access code is valid
-                return redirect(reverse_lazy('password-entry') + f'?email={email}&code={access_code}')
+                url = reverse_lazy('password-entry') + f'?email={email}&code={access_code}'
+                return redirect(url)
             else:
                 # Add a message explaining why they were redirected
                 messages.error(self.request, 'You cannot log in as a veterinarian.')
@@ -137,7 +138,8 @@ class AccessCodeEmailView(views.FormView):
                 return redirect(reverse_lazy('index'))
         else:
             # If email doesn’t exist but is valid, redirect to registration
-            return redirect(reverse_lazy('clinic-register') + f'?email={email}&code={access_code}')
+            url = reverse_lazy('clinic-register') + f'?email={email}&code={access_code}'
+            return redirect(url)
 
     def form_invalid(self, form):
         # If the form has errors, re-render it with the errors displayed
@@ -194,6 +196,11 @@ class ClinicRegistrationView(BaseUserRegisterView):
         context = super().get_context_data(**kwargs)
         context['code'] = self.request.GET.get('code')
         return context
+
+    def form_valid(self, form):
+        form = super().form_valid(form)
+        login(self.request, self.object)
+        return form
 
 
 def logout_view(request):
