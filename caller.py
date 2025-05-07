@@ -11,7 +11,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pet_mvp.settings')
 django.setup()
 
 from pet_mvp.pets.models import Pet
-from pet_mvp.drugs.models import Vaccine, Drug, BloodTest, UrineAlysis, FecalExam
+from pet_mvp.drugs.models import Vaccine, Drug, BloodTest, UrineTest, FecalTest
 from pet_mvp.records.models import VaccinationRecord, MedicationRecord, MedicalExaminationRecord
 
 UserModel = get_user_model()
@@ -28,7 +28,7 @@ def create_complete_examination_record_for_max():
         hemoglobin=12.5,
         platelets=150.0
     )
-    urine_test = UrineAlysis.objects.get_or_create(
+    urine_test = UrineTest.objects.get_or_create(
         test_name="Routine Urinalysis",
         result="Clear urine, neutral pH",
         color="Yellow",
@@ -36,7 +36,7 @@ def create_complete_examination_record_for_max():
         ph=7.0,
         specific_gravity=1.015
     )
-    fecal_test = FecalExam.objects.get_or_create(
+    fecal_test = FecalTest.objects.get_or_create(
         test_name="Parasite Check",
         result="Parasites detected, blood in sample found",
         consistency="Watery",

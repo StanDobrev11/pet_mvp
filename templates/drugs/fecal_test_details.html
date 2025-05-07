@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="cards">
+        <div class="fecal-test-card">
+
+            <h3>Name of the test: {{ object.name }}</h3>
+
+            <ul>
+                <li>Date conducted: {{ object.date_conducted }}</li>
+                <li>Result: {{ object.result }}</li>
+                <li>Consistency: {% if object.consistency %}{{ object.consistency }}{% else %}Not measured{% endif %}</li>
+                <li>Parasites detected: {% if object.parasites_detected %}Yes{% else %}No{% endif %}</li>
+                <li>Parasite type: {% if object.parasite_type %}{{ object.parasite_type }}{% else %}None detected{% endif %}</li>
+                <li>Blood presence: {% if object.blood_presence %}Yes{% else %}No{% endif %}</li>
+                <li>Notes: {{ object.additional_notes }}</li>
+            </ul>
+
+        </div>
+        {% include 'partials/back_buttons.html' %}
+    </div>
+{% endblock %}

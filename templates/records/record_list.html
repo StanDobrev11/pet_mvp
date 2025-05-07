@@ -6,7 +6,7 @@
             <h3>Vaccinations:</h3>
             <ul>
                 {% for vaccine in vaccines %}
-                    <li><a href={% url "vaccine-details" pk=vaccine.pk %}>{{ vaccine }}</a></li>
+                    <li><a href={% url "vaccine-details" pk=vaccine.pk %}?source=hist&id={{ id }}>{{ vaccine }}</a></li>
                 {% endfor %}
             </ul>
         {% else %}
@@ -18,7 +18,7 @@
             <h3>Medications or Treatment</h3>
             <ul>
                 {% for treatment in treatments %}
-                    <li><a href={% url "treatment-details" pk=treatment.pk %}>{{ treatment }}</a></li>
+                    <li><a href={% url "treatment-details" pk=treatment.pk %}?source=hist&id={{ id }}>{{ treatment }}</a></li>
                 {% endfor %}
             </ul>
         {% else %}
@@ -29,13 +29,11 @@
         {% if examinations %}
             <h3>Pet Examinations</h3>
             {% for exam in examinations %}
-                <li><a href="#">{{ exam }}</a></li>
+                <li><a href="{% url 'exam-details' pk=exam.pk %}?source=hist&id={{ id }}">{{ exam }}</a></li>
             {% endfor %}
         {% else %}
             <h3>No any examinations yet!</h3>
         {% endif %}
     </div>
-    <div class="buttons">
-        <a href="{% url 'pet-details' pk=pet_pk %}" class="btn btn-secondary">Back</a>
-    </div>
+{#{% include 'partials/back_buttons.html' %}#}
 {% endblock %}

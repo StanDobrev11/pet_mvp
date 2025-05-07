@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="cards">
+        <div class="urine-test-card">
+
+            <h3>Name of the test: {{ object.name }}</h3>
+
+            <ul>
+                <li>Date conducted: {{ object.date_conducted }}</li>
+                <li>Result: {{ object.result }}</li>
+                <li>Color: {% if object.color %}{{ object.color }}{% else %}Not measured{% endif %}</li>
+                <li>Clarity: {% if object.clarity %}{{ object.clarity }}{% else %}Not measured{% endif %}</li>
+                <li>pH: {% if object.ph %}{{ object.ph }}{% else %}Not measured{% endif %}</li>
+                <li>Specific Gravity: {% if object.specific_gravity %}{{ object.specific_gravity }}{% else %}Not measured{% endif %}</li>
+                <li>Protein: {% if object.protein %}{{ object.protein }} mg/dL{% else %}Not measured{% endif %}</li>
+                <li>Glucose: {% if object.glucose %}{{ object.glucose }} mg/dL{% else %}Not measured{% endif %}</li>
+                <li>White blood cells: {% if object.white_blood_cells %}{{ object.white_blood_cells }} /HPF{% else %}Not measured{% endif %}</li>
+                <li>Red blood cells: {% if object.red_blood_cells %}{{ object.red_blood_cells }} /HPF{% else %}Not measured{% endif %}</li>
+                <li>Notes: {{ object.additional_notes }}</li>
+            </ul>
+
+        </div>
+        {% include 'partials/back_buttons.html' %}
+    </div>
+{% endblock %}

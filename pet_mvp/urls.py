@@ -28,7 +28,7 @@ urlpatterns = [
     path('records/',
          include([
              path('', include("pet_mvp.records.urls")),
-             path('drugs/',
+             path('',
                   include("pet_mvp.drugs.urls")
                   )
          ])),

@@ -3,12 +3,11 @@ from django.utils.translation import gettext_lazy as _
 
 from pet_mvp.common.mixins import TimeStampMixin
 from pet_mvp.drugs.apps import DrugsConfig
-from pet_mvp.drugs.models import Vaccine, BloodTest, UrineAlysis, FecalExam, Drug
+from pet_mvp.drugs.models import Vaccine, BloodTest, UrineTest, FecalTest, Drug
 from pet_mvp.pets.models import Pet
 
 
 class VaccinationRecord(TimeStampMixin):
-
     batch_number = models.CharField(
         max_length=50,
         verbose_name=_('Batch number')
@@ -96,6 +95,20 @@ class MedicationRecord(TimeStampMixin):
 
 
 class MedicalExaminationRecord(TimeStampMixin):
+
+    EXAM_TYPE_CHOICES = [
+        ('primary', _('Primary Examination')),
+        ('follow_up', _('Follow-up Examination')),
+    ]
+
+    exam_type = models.CharField(
+        max_length=20,
+        choices=EXAM_TYPE_CHOICES,
+        default='primary',
+        verbose_name=_('Examination Type'),
+        help_text=_('Indicates whether this is an initial examination or a follow-up')
+    )
+
     date_of_entry = models.DateField(
         verbose_name=_('Date of the entry'),
     )
@@ -183,32 +196,31 @@ class MedicalExaminationRecord(TimeStampMixin):
         null=True
     )
 
-    medication = models.ForeignKey(
+    medications = models.ManyToManyField(
         to=MedicationRecord,
-        on_delete=models.CASCADE,
         related_name='examinations',
         verbose_name=_('Medications Prescribed'),
         blank=True,
     )
 
-    vaccination = models.ForeignKey(
+    vaccinations = models.ManyToManyField(
         to=VaccinationRecord,
-        on_delete=models.CASCADE,
         related_name='examinations',
-        verbose_name=_('Vaccination Applied'),
+        verbose_name=_('Vaccinations Applied'),
         blank=True,
     )
+
 
     blood_test = models.ForeignKey(
-        to=BloodTest,
-        verbose_name=_('Blood Test'),
-        on_delete=models.CASCADE,
-        blank=True,
-        null=True
-    )
+            to=BloodTest,
+            verbose_name=_('Blood Test'),
+            on_delete=models.CASCADE,
+            blank=True,
+            null=True
+        )
 
     urine_test = models.ForeignKey(
-        to=UrineAlysis,
+        to=UrineTest,
         verbose_name=_('Urine Analysis'),
         on_delete=models.CASCADE,
         blank=True,
@@ -216,7 +228,7 @@ class MedicalExaminationRecord(TimeStampMixin):
     )
 
     fecal_test = models.ForeignKey(
-        to=FecalExam,
+        to=FecalTest,
         verbose_name=_('Fecal Analysis'),
         on_delete=models.CASCADE,
         blank=True,

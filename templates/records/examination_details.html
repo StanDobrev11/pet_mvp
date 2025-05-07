@@ -44,7 +44,7 @@
                 <ul>
                     {% for record in object.vaccination|ensure_iterable %}
                         <li>
-                            <a href="{% url 'vaccine-details' pk=record.pk %}">
+                            <a href="{% url 'vaccine-details' pk=record.pk %}?source=exam&id={{ object.id }}">
                                 <strong>Vaccine:</strong> {{ record.vaccine }}
                                 <strong>Date Administered:</strong> {{ record.date_of_vaccination }}
                                 <strong>Valid to:</strong> {{ record.valid_until }}
@@ -61,7 +61,7 @@
                 <ul>
                     {% for record in object.medication|ensure_iterable %}
                         <li>
-                            <a href="{% url 'treatment-details' pk=record.pk %}">
+                            <a href="{% url 'treatment-details' pk=record.pk %}?source=exam&id={{ object.id }}">
                                 <strong>Drug:</strong> {{ record.drug }}
                                 <strong>Dosage:</strong> {{ record.dosage }}
                                 <strong>Date Given:</strong> {{ record.date_given }}
@@ -80,9 +80,11 @@
                 <ul>
                     {% for record in object.blood_test|ensure_iterable %}
                         <li>
-                            <strong>Test Name:</strong> {{ record.test_name }}
-                            <strong>Result:</strong> {{ record.result }}
-                            <strong>Date Conducted:</strong> {{ record.date_conducted }}
+                            <a href="{% url 'blood-test-details' pk=record.pk %}?source=exam&id={{ object.id }}">
+                                <strong>Test Name:</strong> {{ record.test_name }}
+                                <strong>Result:</strong> {{ record.result }}
+                                <strong>Date Conducted:</strong> {{ record.date_conducted }}
+                            </a>
                         </li>
                     {% empty %}
                         <li>No blood test records available.</li>
@@ -95,9 +97,11 @@
                 <ul>
                     {% for record in object.urine_test|ensure_iterable %}
                         <li>
-                            <strong>Test Name:</strong> {{ record.test_name }}
-                            <strong>Result:</strong> {{ record.result }}
-                            <strong>Date Conducted:</strong> {{ record.date_conducted }}
+                            <a href="{% url 'urine-test-details' pk=record.pk %}?source=exam&id={{ object.id }}">
+                                <strong>Test Name:</strong> {{ record.test_name }}
+                                <strong>Result:</strong> {{ record.result }}
+                                <strong>Date Conducted:</strong> {{ record.date_conducted }}
+                            </a>
                         </li>
                     {% empty %}
                         <li>No urine test records available.</li>
@@ -110,18 +114,20 @@
                 <ul>
                     {% for record in object.fecal_test|ensure_iterable %}
                         <li>
-                            <strong>Test Name:</strong> {{ record.test_name }}
-                            <strong>Result:</strong> {{ record.result }}
-                            <strong>Date Conducted:</strong> {{ record.date_conducted }}
+                            <a href="{% url 'fecal-test-details' pk=record.pk %}?source=exam&id={{ object.id }}">
+                                <strong>Test Name:</strong> {{ record.test_name }}
+                                <strong>Result:</strong> {{ record.result }}
+                                <strong>Date Conducted:</strong> {{ record.date_conducted }}
+                            </a>
                         </li>
+
                     {% empty %}
                         <li>No fecal test records available.</li>
                     {% endfor %}
                 </ul>
             </div>
 
-            {#        <a href="{% url 'edit_medical_record' object.id %}">Edit Record</a>#}
-            {#        <a href="{% url 'list_medical_records' object.pet.id %}">Back to Records List</a>#}
         </div>
+
     </section>
 {% endblock %}

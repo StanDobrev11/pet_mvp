@@ -53,7 +53,6 @@ class BaseTest(models.Model):
     )
     date_conducted = models.DateField(
         verbose_name=_('Date Conducted'),
-        auto_now_add=True,
         help_text=_('Date when the test was conducted')
     )
     additional_notes = models.TextField(
@@ -102,7 +101,7 @@ class BloodTest(BaseTest):
     )
 
 
-class UrineAlysis(BaseTest):
+class UrineTest(BaseTest):
     color = models.CharField(
         max_length=50,
         verbose_name=_('Color'),
@@ -163,7 +162,7 @@ class UrineAlysis(BaseTest):
     )
 
 
-class FecalExam(BaseTest):
+class FecalTest(BaseTest):
     consistency = models.CharField(
         max_length=50,
         verbose_name=_('Consistency'),

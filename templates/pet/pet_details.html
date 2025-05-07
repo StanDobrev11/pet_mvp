@@ -1,5 +1,100 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {%  include "partials/pet_card.html" %}
+    {% load static %}
+
+<div class="pet-card">
+    <div class="two-columns">
+        <div class="pet-basics">
+            <div class="photo">
+                {% if pet.photo %}
+                    <img src="{{ pet.photo.url }}" alt="Pet Photo">
+                {% else %}
+                    <img src="#" alt="Pet Photo">
+                {% endif %}
+            </div>
+            <div class="details">
+                <h1 class="pet-name"> {{ pet }} - {{ pet.passport_number }}</h1>
+                <p>Species: {{ pet.species }}</p>
+                <p>Breed: {{ pet.breed }}</p>
+                <p>Gender: {{ pet.sex }}</p>
+                <p>DoB: {{ pet.date_of_birth }}</p>
+                <p>Weight: {{ pet.current_weight }} kgs</p>
+                <p>Color: {{ pet.color }}</p>
+                <p>Features: {{ pet.features }}</p>
+                {% if pet.transponder %}
+                    <p><a href="{% url 'marking-details' pk=pet.pk %}">{{ pet.transponder }}</a></p>
+                {% elif pet.tattoo %}
+                    <p><a href="{% url 'marking-details' pk=pet.pk %}">{{ pet.tattoo }}</a></p>
+                {% else %}
+                    <p>No marking of the animal - <a href="{% url 'marking-add' pk=pet.pk %}" class="btn btn-secondary">Add
+                        marking?</a></p>
+                {% endif %}
+                {% if user.is_owner %}
+                    <p>Pet Access Code: {{ access_code }}</p>
+                {% endif %}
+
+            </div>
+        </div>
+        <div class="buttons">
+            {% if user.is_owner %}
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary">Go back</a>
+                <a href="{% url 'pet-edit' pk=pet.pk %}" class="btn btn-secondary">Edit Pet</a>
+                <a href="{% url 'pet-delete' pk=pet.pk %}" class="btn btn-secondary">Delete Pet</a>
+            {% endif %}
+        </div>
+
+
+        <div class="pet-records">
+            <h2>Valid Vaccination Records</h2>
+            <div class="vaccines">
+                {% if valid_vaccinations %}
+                    {% for vaccine in valid_vaccinations %}
+                        <a href={% url "vaccine-details" pk=vaccine.pk %}?source=pet&id={{ pet.id }}>{{ vaccine }}</a>
+                    {% endfor %}
+                {% else %}
+                    <p>No vaccination records</p>
+                    {% if user.is_owner %}
+                        <p><a href="{% url 'vaccine-record-add' %}?pet_id={{ pet.id }}">Add Vaccination Record</a></p>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <h2>Valid Treatment Records</h2>
+            <div class="treatment">
+                {% if valid_treatments %}
+                    {% for treatment in valid_treatments %}
+                        <a href={% url "treatment-details" pk=treatment.pk %}?source=pet&id={{ pet.id }}>{{ treatment }}</a>
+                    {% endfor %}
+                {% else %}
+                    <p>No treatment records</p>
+                    {% if user.is_owner %}
+                        <p><a href="{% url 'treatment-record-add' %}?pet_id={{ pet.id }}">Add Treatment Record</a></p>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <h2>Latest Examination Records</h2>
+            <div class="examinations">
+                {% if last_examinations %}
+                    {% for exam in last_examinations %}
+                        <a href={% url "exam-details" pk=exam.pk %}>{{ exam }}</a>
+                    {% endfor %}
+                {% else %}
+                    <p>No examination records</p>
+                {% endif %}
+{#                {% if not user.is_owner %}#}
+                    <a href="{% url 'exam-add' %}?pet_id={{ pet.id }}">New examination</a>
+{#                {% endif %}#}
+            </div>
+        </div>
+        <div class="buttons">
+            <a href="{% url 'record-list' %}?pk={{ pet.pk }}" class="btn btn-secondary">View all history records</a>
+        </div>
+        {% if not user.is_owner %}
+            <div class="buttons">
+                <a href="{% url 'logout' %}" class="btn btn-secondary">Finish and logout</a>
+            </div>
+        {% endif %}
+    </div>
+
+</div>
 {% endblock %}

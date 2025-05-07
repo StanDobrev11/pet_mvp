@@ -1,0 +1,9 @@
+    <div class="buttons">
+        {% if source == 'exam' %}
+            <a href="{% url 'exam-details' pk=id %}" class="btn btn-secondary">Back</a>
+        {% elif source == 'pet' %}
+            <a href="{% url 'pet-details' pk=id %}" class="btn btn-secondary">Back</a>
+        {% elif source == 'hist' %}
+            <a href="{% url 'record-list' %}?pk={{ id }}" class="btn btn-secondary">Back</a>
+        {% endif %}
+    </div>
