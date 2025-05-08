@@ -1,3 +1,5 @@
+from sys import prefix
+
 from pet_mvp.drugs.models import Vaccine, Drug, FecalTest, UrineTest, BloodTest
 from pet_mvp.records.models import VaccinationRecord, MedicationRecord, MedicalExaminationRecord
 
@@ -5,7 +7,7 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 
 
-class VaccineRecordAddForm(forms.ModelForm):
+class VaccinationRecordForm(forms.ModelForm):
     class Meta:
         model = VaccinationRecord
         exclude = ['pet']  # Exclude the `pet` field, it will be assigned automatically
@@ -21,7 +23,7 @@ class VaccineRecordAddForm(forms.ModelForm):
     )
 
 
-class TreatmentRecordAddForm(forms.ModelForm):
+class MedicationRecordForm(forms.ModelForm):
     class Meta:
         model = MedicationRecord
         exclude = ['pet']  # Exclude the `pet` field, it will be assigned automatically
@@ -35,62 +37,6 @@ class TreatmentRecordAddForm(forms.ModelForm):
             }
         ),
     )
-
-
-class ExaminationForm(forms.ModelForm):
-    # Fields for related tests
-    blood_test_needed = forms.BooleanField(required=False, label=_("Add Blood Test"))
-    urine_test_needed = forms.BooleanField(required=False, label=_("Add Urine Test"))
-    fecal_test_needed = forms.BooleanField(required=False, label=_("Add Fecal Test"))
-
-    class Meta:
-        model = MedicalExaminationRecord
-        exclude = ['medication', 'vaccination', 'blood_test', 'urine_test', 'fecal_test']
-        widgets = {
-            'date_of_entry': forms.DateInput(attrs={'type': 'date'}),
-            'reason_for_visit': forms.Textarea(attrs={'rows': 3}),
-            'general_health': forms.Textarea(attrs={'rows': 3}),
-            'notes': forms.Textarea(attrs={'rows': 3}),
-            'diagnosis': forms.Textarea(attrs={'rows': 3}),
-            'treatment_performed': forms.Textarea(attrs={'rows': 3}),
-        }
-
-    def __init__(self, *args, **kwargs):
-        pet_id = kwargs.pop('pet_id', None)
-        super(ExaminationForm, self).__init__(*args, **kwargs)
-        if pet_id:
-            self.fields['pet'].initial = pet_id
-            self.fields['pet'].widget = forms.HiddenInput()
-
-
-class VaccinationRecordForm(forms.ModelForm):
-    class Meta:
-        model = VaccinationRecord
-        fields = [
-            'vaccine', 'batch_number', 'manufacturer',
-            'manufacture_date', 'date_of_vaccination',
-            'valid_from', 'valid_until'
-        ]
-        widgets = {
-            'manufacture_date': forms.DateInput(attrs={'type': 'date'}),
-            'date_of_vaccination': forms.DateInput(attrs={'type': 'date'}),
-            'valid_from': forms.DateInput(attrs={'type': 'date'}),
-            'valid_until': forms.DateInput(attrs={'type': 'date'}),
-        }
-
-
-class MedicationRecordForm(forms.ModelForm):
-    class Meta:
-        model = MedicationRecord
-        fields = [
-            'medication', 'manufacturer', 'date', 'time',
-            'dosage', 'valid_until'
-        ]
-        widgets = {
-            'date': forms.DateInput(attrs={'type': 'date'}),
-            'time': forms.TimeInput(attrs={'type': 'time'}),
-            'valid_until': forms.DateInput(attrs={'type': 'date'}),
-        }
 
 
 class BloodTestForm(forms.ModelForm):
@@ -125,3 +71,23 @@ class FecalTestForm(forms.ModelForm):
             'date_conducted': forms.DateInput(attrs={'type': 'date'}),
             'additional_notes': forms.Textarea(attrs={'rows': 2}),
         }
+
+
+class MedicalExaminationRecordForm(forms.ModelForm):
+    class Meta:
+        model = MedicalExaminationRecord
+        exclude = ['pet', 'vaccinations', 'medications', 'blood_test', 'urine_test', 'fecal_test']
+
+VaccineFormSet = forms.modelformset_factory(
+    VaccinationRecord,
+    form=VaccinationRecordForm,
+    extra=0,
+    can_delete=True
+)
+
+TreatmentFormSet = forms.modelformset_factory(
+    MedicationRecord,
+    form=MedicationRecordForm,
+    extra=0,
+    can_delete=True
+)

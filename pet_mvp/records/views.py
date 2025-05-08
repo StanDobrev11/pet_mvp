@@ -7,9 +7,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic as views
 
+from pet_mvp.drugs.models import BloodTest, UrineTest, FecalTest
 from pet_mvp.pets.models import Pet
-from pet_mvp.records.forms import VaccineRecordAddForm, TreatmentRecordAddForm, FecalTestForm, UrineTestForm, \
-    BloodTestForm, VaccinationRecordForm, MedicationRecordForm, ExaminationForm
+from pet_mvp.records.forms import VaccinationRecordForm, MedicationRecordForm, FecalTestForm, UrineTestForm, \
+    BloodTestForm, VaccinationRecordForm, MedicationRecordForm, VaccineFormSet, TreatmentFormSet, \
+    MedicalExaminationRecordForm
 from pet_mvp.records.models import VaccinationRecord, MedicalExaminationRecord, MedicationRecord
 
 
@@ -82,7 +84,7 @@ class BaseRecordAddView(views.CreateView, ABC):
 class VaccineRecordAddView(BaseRecordAddView):
     model = VaccinationRecord
     template_name = 'records/vaccine_record_add.html'
-    form_class = VaccineRecordAddForm
+    form_class = VaccinationRecordForm
 
     def get_success_url(self):
         pet = self.get_pet()
@@ -96,7 +98,7 @@ class VaccineRecordAddView(BaseRecordAddView):
 class TreatmentRecordAddView(BaseRecordAddView):
     model = MedicationRecord
     template_name = 'records/treatment_record_add.html'
-    form_class = TreatmentRecordAddForm
+    form_class = MedicationRecordForm
 
     def get_success_url(self):
         pet = self.get_pet()
@@ -133,105 +135,42 @@ class StopTreatmentAdditionsView(BaseStopAddingRecordsView):
         pet.can_add_treatments = value
 
 
-class ExaminationAddView(views.FormView):
+class MedicalExaminationReportCreateView(views.FormView):
     template_name = 'records/examination_add.html'
-    form_class = ExaminationForm
-    success_url = reverse_lazy('pet_list')  # Change to appropriate URL
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        if self.request.GET.get('pet_id'):
-            kwargs['pet_id'] = self.request.GET.get('pet_id')
-        return kwargs
+    form_class = MedicalExaminationRecordForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         pet_id = self.request.GET.get('pet_id')
         context['pet'] = get_object_or_404(Pet, pk=pet_id)
+        context['pet_id'] = pet_id
 
-        # Initialize formsets
-        VaccinationFormSet = formset_factory(VaccinationRecordForm, extra=1)
-        MedicationFormSet = formset_factory(MedicationRecordForm, extra=1)
-
+        # Dynamically load formsets or initialize them
         if self.request.POST:
-            context['vaccination_formset'] = VaccinationFormSet(self.request.POST, prefix='vaccinations')
-            context['medication_formset'] = MedicationFormSet(self.request.POST, prefix='medications')
-            context['blood_test_form'] = BloodTestForm(self.request.POST, prefix='blood_test')
-            context['urine_test_form'] = UrineTestForm(self.request.POST, prefix='urine_test')
-            context['fecal_test_form'] = FecalTestForm(self.request.POST, prefix='fecal_test')
+            context['report_form'] = MedicalExaminationRecordForm(self.request.POST)
+            context['vaccine_formset'] = VaccineFormSet(self.request.POST, prefix='vaccines')
+            context['treatment_formset'] = TreatmentFormSet(self.request.POST, prefix='treatments')
         else:
-            context['vaccination_formset'] = VaccinationFormSet(prefix='vaccinations')
-            context['medication_formset'] = MedicationFormSet(prefix='medications')
-            context['blood_test_form'] = BloodTestForm(prefix='blood_test')
-            context['urine_test_form'] = UrineTestForm(prefix='urine_test')
-            context['fecal_test_form'] = FecalTestForm(prefix='fecal_test')
+            context['report_form'] = MedicalExaminationRecordForm()
+            context['vaccine_formset'] = VaccineFormSet(queryset=VaccinationRecord.objects.none(),
+                                                            prefix='vaccines')
+            context['treatment_formset'] = TreatmentFormSet(queryset=MedicationRecord.objects.none(),
+                                                             prefix='treatments')
 
         return context
 
-    @transaction.atomic
     def form_valid(self, form):
-        context = self.get_context_data()
-        vaccination_formset = context['vaccination_formset']
-        medication_formset = context['medication_formset']
-        blood_test_form = context['blood_test_form']
-        urine_test_form = context['urine_test_form']
-        fecal_test_form = context['fecal_test_form']
+        # Handle vaccine and treatment formsets
+        vaccine_formset = VaccineFormSet(self.request.POST, prefix='vaccines')
+        treatment_formset = TreatmentFormSet(self.request.POST, prefix='treatments')
 
-        pet_id = self.request.GET.get('pet_id')
-        pet = get_object_or_404(Pet, pk=pet_id)
-
-        # Check if all forms are valid
-        if (vaccination_formset.is_valid() and medication_formset.is_valid() and
-                (not form.cleaned_data.get('blood_test_needed') or blood_test_form.is_valid()) and
-                (not form.cleaned_data.get('urine_test_needed') or urine_test_form.is_valid()) and
-                (not form.cleaned_data.get('fecal_test_needed') or fecal_test_form.is_valid())):
-
-            # Save the examination instance first without committing
-            examination = form.save(commit=False)
-            examination.pet = pet
-
-            # Save related tests if needed
-            if form.cleaned_data.get('blood_test_needed'):
-                blood_test = blood_test_form.save()
-                examination.blood_test = blood_test
-
-            if form.cleaned_data.get('urine_test_needed'):
-                urine_test = urine_test_form.save()
-                examination.urine_test = urine_test
-
-            if form.cleaned_data.get('fecal_test_needed'):
-                fecal_test = fecal_test_form.save()
-                examination.fecal_test = fecal_test
-
-            # Save examination record
-            examination.save()
-
-            # Since the model has ForeignKey relationships for medication and vaccination,
-            # we'll need to update the model to handle multiple records,
-            # or modify this code to handle the current structure
-
-            # For now, let's create the records separately:
-
-            # Process and save vaccinations
-            for vaccination_form in vaccination_formset:
-                if vaccination_form.is_valid() and vaccination_form.has_changed():
-                    vaccination = vaccination_form.save(commit=False)
-                    vaccination.pet = pet
-                    vaccination.save()
-                    # You'll need to handle the relationship with examination
-                    # This might need model changes to support many-to-many
-
-            # Process and save medications
-            for medication_form in medication_formset:
-                if medication_form.is_valid() and medication_form.has_changed():
-                    medication = medication_form.save(commit=False)
-                    medication.pet = pet
-                    medication.save()
-                    # You'll need to handle the relationship with examination
-                    # This might need model changes to support many-to-many
-
-            messages.success(self.request, "Examination record created successfully!")
-            # Redirect to the pet's detail page or somewhere appropriate
-            return redirect('pet_detail', pk=pet_id)
+        if vaccine_formset.is_valid() and treatment_formset.is_valid():
+            # Save individual vaccination records
+            vaccine_formset.save()
+            # Save individual treatment records
+            treatment_formset.save()
+            messages.success(self.request, "Examination data saved successfully!")
+            return redirect('pet_detail', pk=self.kwargs['pet_id'])
         else:
             return self.form_invalid(form)
+

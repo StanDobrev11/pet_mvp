@@ -21,7 +21,7 @@ def create_complete_examination_record_for_max():
     max_pet = Pet.objects.get(name='Max')
 
     blood_test = BloodTest.objects.get_or_create(
-        test_name="Complete Blood Count",
+        name="Complete Blood Count",
         result="WBC and RBC levels normal, low platelets detected",
         white_blood_cells=10.2,
         red_blood_cells=4.8,
@@ -29,7 +29,7 @@ def create_complete_examination_record_for_max():
         platelets=150.0
     )
     urine_test = UrineTest.objects.get_or_create(
-        test_name="Routine Urinalysis",
+        name="Routine Urinalysis",
         result="Clear urine, neutral pH",
         color="Yellow",
         clarity="Clear",
@@ -37,7 +37,7 @@ def create_complete_examination_record_for_max():
         specific_gravity=1.015
     )
     fecal_test = FecalTest.objects.get_or_create(
-        test_name="Parasite Check",
+        name="Parasite Check",
         result="Parasites detected, blood in sample found",
         consistency="Watery",
         parasites_detected=True,
@@ -48,7 +48,7 @@ def create_complete_examination_record_for_max():
     medication_record = MedicationRecord.objects.filter(pet=max_pet).first()
     vaccination_record = VaccinationRecord.objects.filter(pet=max_pet).first()
 
-    MedicalExaminationRecord.objects.get_or_create(
+    medical_record = MedicalExaminationRecord.objects.get_or_create(
         date_of_entry=make_aware(datetime.strptime('15.03.2025', '%d.%m.%Y')),
         doctor="Dr. John Doe",
         pet=max_pet,
@@ -63,17 +63,16 @@ def create_complete_examination_record_for_max():
         skin_and_coat_condition="Shiny and smooth",
         teeth_and_gums="Clean with no signs of tartar",
         eyes_ears_nose="Clear and healthy",
-        medication=medication_record,
-        vaccination=vaccination_record,
         blood_test=blood_test[0],
         urine_test=urine_test[0],
-        fecal_exam=fecal_test[0],
+        fecal_test=fecal_test[0],
         treatment_performed="Applied anti-inflammatory ointment",
         diagnosis="Mild swelling due to recent injury",
         follow_up=True,
         notes="Owner advised to return in 2 weeks for follow-up."
     )
-
+    medical_record[0].vaccinations.add(vaccination_record)
+    medical_record[0].medications.add(medication_record)
     print(f"Medical Examination Record created for {max_pet.name}.")
 
 

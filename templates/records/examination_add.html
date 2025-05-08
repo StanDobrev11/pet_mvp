@@ -3,8 +3,101 @@
 {% block content %}
     <form action="{% url 'exam-add' %}?pet_id={{ pet.id }}" method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-secondary">Save</button>
-        <button type="reset" class="btn btn-secondary">Reset</button>
+
+        {{ report_form.as_p }}
+
+        <h3>Vaccines</h3>
+        <div id="vaccination-forms">
+            {{ vaccine_formset.management_form }}
+            {% for form in vaccine_formset %}
+                <div class="vaccine-form">
+                    {{ form.as_p }}
+                    <button type="button" class="remove-vaccine-form">Remove</button>
+                </div>
+            {% endfor %}
+        </div>
+        <!-- store empty form safely -->
+        <template id="empty-vaccine-form">
+            <div class="vaccine-form">
+                {{ vaccine_formset.empty_form.as_p }}
+                <button type="button" class="remove-vaccine-form">Remove</button>
+            </div>
+        </template>
+        <button type="button" id="add-vaccine-form">Add Vaccine</button>
+
+        <h3>Treatments</h3>
+        <div id="treatment-forms" data-empty-form="{{ treatment_formset.empty_form.as_p|escape }}">
+            {{ treatment_formset.management_form }}
+            {% for form in treatment_formset %}
+                <div class="treatment-form">
+                    {{ form.as_p }}
+                    <button type="button" class="remove-treatment-form">Remove</button>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="button" id="add-treatment-form">Add Treatment</button>
+
+
+        <h3>Blood Test</h3>
+        {{ blood_test_form.as_p }}
+
+        <h3>Urine Test</h3>
+        {{ urine_test_form.as_p }}
+
+        <h3>Fecal Test</h3>
+        {{ fecal_test_form.as_p }}
+
+        <button type="submit" class="btn btn-primary">Save</button>
     </form>
+
+    <script>
+        // ========== Vaccines ==========
+        const vaccinationFormsContainer = document.getElementById('vaccination-forms');
+        const addVaccineButton = document.getElementById('add-vaccine-form');
+        let vaccineFormIndex = {{ vaccine_formset.total_form_count }};
+        const vaccineTotalFormsInput = document.querySelector('input[name="vaccine-TOTAL_FORMS"]');
+        const vaccineTemplate = document.getElementById("empty-vaccine-form").innerHTML;
+
+        addVaccineButton.addEventListener('click', () => {
+            const newFormHTML = vaccineTemplate.replace(/__prefix__/g, vaccineFormIndex);
+            vaccinationFormsContainer.insertAdjacentHTML('beforeend', newFormHTML);
+            vaccineFormIndex++;
+            vaccineTotalFormsInput.value = vaccineFormIndex;
+        });
+
+        vaccinationFormsContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-vaccine-form')) {
+                e.target.closest('.vaccine-form').remove();
+                vaccineFormIndex--;
+                vaccineTotalFormsInput.value = vaccineFormIndex;
+            }
+        });
+
+        // ========== Treatments ==========
+        const treatmentFormsContainer = document.getElementById('treatment-forms');
+        const addTreatmentButton = document.getElementById('add-treatment-form');
+        let treatmentFormIndex = {{ treatment_formset.total_form_count }};
+        const treatmentTotalFormsInput = document.querySelector('input[name="treatment-TOTAL_FORMS"]');
+
+        addTreatmentButton.addEventListener('click', () => {
+            const emptyForm = treatmentFormsContainer.dataset.emptyForm;
+            const newFormHTML = emptyForm.replace(/__prefix__/g, treatmentFormIndex);
+            const newForm = document.createElement('div');
+            newForm.classList.add('treatment-form');
+            newForm.innerHTML = newFormHTML + '<button type="button" class="remove-treatment-form">Remove</button>';
+            treatmentFormsContainer.appendChild(newForm);
+
+            treatmentFormIndex++;
+            treatmentTotalFormsInput.value = treatmentFormIndex;
+        });
+
+        treatmentFormsContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-treatment-form')) {
+                e.target.closest('.treatment-form').remove();
+                treatmentFormIndex--;
+                treatmentTotalFormsInput.value = treatmentFormIndex;
+            }
+        });
+    </script>
+
 {% endblock %}

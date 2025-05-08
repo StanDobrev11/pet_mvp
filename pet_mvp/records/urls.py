@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 from pet_mvp.records.views import RecordListView, ExaminationDetailsView, VaccineRecordAddView, \
-    StopVaccineAdditionsView, TreatmentRecordAddView, StopTreatmentAdditionsView, ExaminationAddView
+    StopVaccineAdditionsView, TreatmentRecordAddView, StopTreatmentAdditionsView, MedicalExaminationReportCreateView
 
 urlpatterns = [
     path('', RecordListView.as_view(), name='record-list'),
@@ -15,6 +15,6 @@ urlpatterns = [
     ])),
     path('examinations/', include([
         path('<int:pk>/', ExaminationDetailsView.as_view(), name='exam-details'),
-        path('add/', ExaminationAddView.as_view(), name='exam-add'),
+        path('add/', MedicalExaminationReportCreateView.as_view(), name='exam-add'),
     ]))
 ]
