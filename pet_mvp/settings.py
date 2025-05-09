@@ -51,6 +51,9 @@ INSTALLED_APPS = [
     'pet_mvp.drugs.apps.DrugsConfig',
     'pet_mvp.pets.apps.PetsConfig',
     'pet_mvp.records.apps.RecordsConfig',
+
+    # 3rd party apps
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [

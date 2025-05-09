@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 
 # Create your models here.
@@ -53,7 +55,8 @@ class BaseTest(models.Model):
     )
     date_conducted = models.DateField(
         verbose_name=_('Date Conducted'),
-        help_text=_('Date when the test was conducted')
+        help_text=_('Date when the test was conducted'),
+        default=datetime.date.today,
     )
     additional_notes = models.TextField(
         verbose_name=_('Additional Notes'),

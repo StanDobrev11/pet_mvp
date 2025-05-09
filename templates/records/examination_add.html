@@ -1,56 +1,159 @@
 {% extends 'base.html' %}
+{% load widget_tweaks %}
 
 {% block content %}
     <form action="{% url 'exam-add' %}?pet_id={{ pet.id }}" method="post">
         {% csrf_token %}
+        <div class="container py-4">
+            <h2 class="mb-4 text-center">Medical Examination Report for {{ pet.name }}</h2>
 
-        {{ report_form.as_p }}
+            <h4>Basic Information</h4>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="id_date_of_entry" class="form-label">{{ form.date_of_entry.label }}</label>
+                    {{ form.date_of_entry|add_class:"form-control" }}
+                    {{ form.date_of_entry.errors }}
 
-        <h3>Vaccines</h3>
-        <div id="vaccination-forms">
-            {{ vaccine_formset.management_form }}
-            {% for form in vaccine_formset %}
-                <div class="vaccine-form">
-                    {{ form.as_p }}
-                    <button type="button" class="remove-vaccine-form">Remove</button>
+
+                    <label class="form-label">{{ form.doctor.label }}</label>
+                    {{ form.doctor|add_class:"form-control" }}
+                    {{ form.doctor.errors }}
+
+                    <label for="id_exam_type" class="form-label">{{ form.exam_type.label }}</label>
+                    {{ form.exam_type|add_class:"form-check rounded" }}
+                    {{ form.exam_type.errors }}
+
+
+                    <label class="form-label">{{ form.follow_up.label }}</label>
+                    {{ form.follow_up|add_class:"form-check-input" }}
+                    {{ form.follow_up.errors }}
+
                 </div>
-            {% endfor %}
-        </div>
-        <!-- store empty form safely -->
-        <template id="empty-vaccine-form">
-            <div class="vaccine-form">
-                {{ vaccine_formset.empty_form.as_p }}
-                <button type="button" class="remove-vaccine-form">Remove</button>
+
+                <div class="col-md-6">
+                    <label class="form-label">{{ form.reason_for_visit.label }}</label>
+                    {{ form.reason_for_visit|add_class:"form-control" }}
+                    {{ form.reason_for_visit.errors }}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">{{ form.treatment_performed.label }}</label>
+                    {{ form.treatment_performed|add_class:"form-control" }}
+                    {{ form.treatment_performed.errors }}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">{{ form.notes.label }}</label>
+                    {{ form.notes|add_class:"form-control" }}
+                    {{ form.notes.errors }}
+                </div>
+
+
             </div>
-        </template>
-        <button type="button" id="add-vaccine-form">Add Vaccine</button>
 
-        <h3>Treatments</h3>
-        <div id="treatment-forms" data-empty-form="{{ treatment_formset.empty_form.as_p|escape }}">
-            {{ treatment_formset.management_form }}
-            {% for form in treatment_formset %}
-                <div class="treatment-form">
-                    {{ form.as_p }}
-                    <button type="button" class="remove-treatment-form">Remove</button>
+            <h4 class="mt-4">Additional Information</h4>
+            <button type="button" id="add-info-form-button" class="btn btn-outline-secondary mb-3">Show</button>
+            <div id="add-info-container"></div>
+
+            <template id="add-info-form-template">
+                <div class="row g-3">
+                    {% for field in form %}
+                        {% if field.name in additional_info_fields %}
+                            <div class="col-md-6">
+                                <label class="form-label">{{ field.label }}</label>
+                                {{ field|add_class:"form-control" }}
+                                {{ field.errors }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
-            {% endfor %}
+            </template>
+            <h4 class="mt-4">Vaccines</h4>
+            <div id="vaccination-forms">
+                {{ vaccine_formset.management_form }}
+                {% for form in vaccine_formset %}
+                    <div class="border rounded p-3 mb-3 vaccine-form">
+                        {{ form.as_p }}
+                        <button type="button" class="btn btn-danger remove-vaccine-form">Remove</button>
+                    </div>
+                {% endfor %}
+            </div>
+            <template id="empty-vaccine-form">
+                <div class="border rounded p-3 mb-3 vaccine-form">
+                    {{ vaccine_formset.empty_form.as_p }}
+                    <button type="button" class="btn btn-danger remove-vaccine-form">Remove</button>
+                </div>
+            </template>
+            <button type="button" id="add-vaccine-form" class="btn btn-outline-primary">Add Vaccine</button>
+
+            <h4 class="mt-4">Treatments</h4>
+            <div id="treatment-forms">
+                {{ treatment_formset.management_form }}
+                {% for form in treatment_formset %}
+                    <div class="border rounded p-3 mb-3 treatment-form">
+                        {{ form.as_p }}
+                        <button type="button" class="btn btn-danger remove-treatment-form">Remove</button>
+                    </div>
+                {% endfor %}
+            </div>
+            <template id="empty-treatment-form">
+                <div class="border rounded p-3 mb-3 treatment-form">
+                    {{ treatment_formset.empty_form.as_p }}
+                    <button type="button" class="btn btn-danger remove-treatment-form">Remove</button>
+                </div>
+            </template>
+            <button type="button" id="add-treatment-form" class="btn btn-outline-primary">Add Treatment</button>
+
+            <h4 class="mt-4">Blood Test</h4>
+            <div id="blood-test-form-container"></div>
+            <template id="blood-test-template">
+                <div id="blood-test-form" class="border rounded p-3 mb-3">
+                    {{ blood_test_form.as_p }}
+                </div>
+            </template>
+            <button type="button" id="add-remove-blood-test-form" class="btn btn-outline-secondary">Add Blood Test
+            </button>
+
+            <h4 class="mt-4">Urine Test</h4>
+            <div id="urine-test-form-container"></div>
+            <template id="urine-test-template">
+                <div id="urine-test-form" class="border rounded p-3 mb-3">
+                    {{ urine_test_form.as_p }}
+                </div>
+            </template>
+            <button type="button" id="add-remove-urine-test-form" class="btn btn-outline-secondary">Add Urine Test
+            </button>
+
+            <h4 class="mt-4">Fecal Test</h4>
+            <div id="fecal-test-form-container"></div>
+            <template id="fecal-test-template">
+                <div id="fecal-test-form" class="border rounded p-3 mb-3">
+                    {{ fecal_test_form.as_p }}
+                </div>
+            </template>
+            <button type="button" id="add-remove-fecal-test-form" class="btn btn-outline-secondary">Add Fecal Test
+            </button>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success">Save</button>
+            </div>
         </div>
-        <button type="button" id="add-treatment-form">Add Treatment</button>
-
-
-        <h3>Blood Test</h3>
-        {{ blood_test_form.as_p }}
-
-        <h3>Urine Test</h3>
-        {{ urine_test_form.as_p }}
-
-        <h3>Fecal Test</h3>
-        {{ fecal_test_form.as_p }}
-
-        <button type="submit" class="btn btn-primary">Save</button>
     </form>
 
+
     <script>
+        // ======= Add info form ======
+        const addInfoFormButton = document.getElementById('add-info-form-button');
+        const addInfoContainer = document.getElementById('add-info-container');
+        const addInfoFormTemplate = document.getElementById('add-info-form-template');
+
+        addInfoFormButton.addEventListener('click', (e) => {
+            if (addInfoFormButton.innerText === 'Show') {
+                addInfoFormButton.innerText = 'Hide'
+                addInfoContainer.innerHTML = addInfoFormTemplate.innerHTML
+            } else {
+                addInfoFormButton.innerText = 'Show'
+                addInfoContainer.innerHTML = ''
+            }
+        })
+
         // ========== Vaccines ==========
         const vaccinationFormsContainer = document.getElementById('vaccination-forms');
         const addVaccineButton = document.getElementById('add-vaccine-form');
@@ -78,15 +181,12 @@
         const addTreatmentButton = document.getElementById('add-treatment-form');
         let treatmentFormIndex = {{ treatment_formset.total_form_count }};
         const treatmentTotalFormsInput = document.querySelector('input[name="treatment-TOTAL_FORMS"]');
+        const treatmentTemplate = document.getElementById("empty-treatment-form").innerHTML;
+
 
         addTreatmentButton.addEventListener('click', () => {
-            const emptyForm = treatmentFormsContainer.dataset.emptyForm;
-            const newFormHTML = emptyForm.replace(/__prefix__/g, treatmentFormIndex);
-            const newForm = document.createElement('div');
-            newForm.classList.add('treatment-form');
-            newForm.innerHTML = newFormHTML + '<button type="button" class="remove-treatment-form">Remove</button>';
-            treatmentFormsContainer.appendChild(newForm);
-
+            const newFormHTML = treatmentTemplate.replace(/__prefix__/g, treatmentFormIndex);
+            treatmentFormsContainer.insertAdjacentHTML('beforeend', newFormHTML);
             treatmentFormIndex++;
             treatmentTotalFormsInput.value = treatmentFormIndex;
         });
@@ -98,6 +198,35 @@
                 treatmentTotalFormsInput.value = treatmentFormIndex;
             }
         });
+
+        // ========== Toggle Helper ==========
+        function setupSingleToggle(buttonId, containerId, templateId, addText, removeText) {
+            const button = document.getElementById(buttonId);
+            const container = document.getElementById(containerId);
+            const template = document.getElementById(templateId).innerHTML;
+
+            button.addEventListener('click', () => {
+                const formEl = container.querySelector('div');
+                if (!formEl) {
+                    container.innerHTML = template;
+                    button.classList.remove('btn-outline-secondary');
+                    button.classList.add('btn-danger');
+                    button.innerText = removeText;
+                } else {
+                    container.innerHTML = '';
+                    button.classList.remove('btn-danger');
+                    button.classList.add('btn-outline-secondary');
+                    button.innerText = addText;
+                }
+            });
+        }
+
+        // ========== Initialize Toggles ==========
+        setupSingleToggle('add-remove-blood-test-form', 'blood-test-form-container', 'blood-test-template', 'Add Blood Test', 'Remove Blood Test');
+        setupSingleToggle('add-remove-urine-test-form', 'urine-test-form-container', 'urine-test-template', 'Add Urine Test', 'Remove Urine Test');
+        setupSingleToggle('add-remove-fecal-test-form', 'fecal-test-form-container', 'fecal-test-template', 'Add Fecal Test', 'Remove Fecal Test');
+
+
     </script>
 
 {% endblock %}

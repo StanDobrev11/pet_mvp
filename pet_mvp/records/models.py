@@ -1,6 +1,9 @@
+import datetime
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from pet_mvp.accounts.models import Clinic
 from pet_mvp.common.mixins import TimeStampMixin
 from pet_mvp.drugs.apps import DrugsConfig
 from pet_mvp.drugs.models import Vaccine, BloodTest, UrineTest, FecalTest, Drug
@@ -24,12 +27,14 @@ class VaccinationRecord(TimeStampMixin):
 
     date_of_vaccination = models.DateField(
         verbose_name=_('Date of vaccination'),
+        default=datetime.date.today,
     )
 
     valid_from = models.DateField(
         null=True,
         blank=True,
-        verbose_name=_('Valid from')
+        verbose_name=_('Valid from'),
+        default=datetime.date.today,
     )
 
     valid_until = models.DateField(
@@ -58,7 +63,8 @@ class MedicationRecord(TimeStampMixin):
     )
 
     date = models.DateField(
-        verbose_name=_('Date')
+        verbose_name=_('Date'),
+        default=datetime.date.today,
     )
 
     time = models.TimeField(
@@ -95,7 +101,6 @@ class MedicationRecord(TimeStampMixin):
 
 
 class MedicalExaminationRecord(TimeStampMixin):
-
     EXAM_TYPE_CHOICES = [
         ('primary', _('Primary Examination')),
         ('follow_up', _('Follow-up Examination')),
@@ -111,10 +116,16 @@ class MedicalExaminationRecord(TimeStampMixin):
 
     date_of_entry = models.DateField(
         verbose_name=_('Date of the entry'),
+        default=datetime.date.today,
     )
 
     doctor = models.CharField(
         max_length=100,
+    )
+
+    clinic = models.ManyToManyField(
+        to=Clinic,
+        related_name='clinic_records',
     )
 
     pet = models.ForeignKey(
@@ -210,14 +221,13 @@ class MedicalExaminationRecord(TimeStampMixin):
         blank=True,
     )
 
-
     blood_test = models.ForeignKey(
-            to=BloodTest,
-            verbose_name=_('Blood Test'),
-            on_delete=models.CASCADE,
-            blank=True,
-            null=True
-        )
+        to=BloodTest,
+        verbose_name=_('Blood Test'),
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
 
     urine_test = models.ForeignKey(
         to=UrineTest,

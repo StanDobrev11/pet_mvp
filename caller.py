@@ -7,18 +7,41 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.utils.timezone import make_aware
 
+
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pet_mvp.settings')
 django.setup()
 
 from pet_mvp.pets.models import Pet
 from pet_mvp.drugs.models import Vaccine, Drug, BloodTest, UrineTest, FecalTest
 from pet_mvp.records.models import VaccinationRecord, MedicationRecord, MedicalExaminationRecord
+from pet_mvp.accounts.models import Clinic
 
 UserModel = get_user_model()
+
+def create_clinic():
+
+    clinic = Clinic.objects.get_or_create(
+        email='dyana.vet@abv.bg',
+        password='1234',
+        clinic_name='Diana Vet',
+        is_owner=False,
+        phone_number='0887142536',
+        clinic_address='123 Some Address',
+        city='Varna',
+        country='Bulgaria',
+
+    )
+
+    if clinic[1]:
+        print('Clinic created')
+    else:
+        print('Clinic already exists')
 
 
 def create_complete_examination_record_for_max():
     max_pet = Pet.objects.get(name='Max')
+    clinic = Clinic.objects.get(clinic_name='Diana Vet')
 
     blood_test = BloodTest.objects.get_or_create(
         name="Complete Blood Count",
@@ -73,6 +96,7 @@ def create_complete_examination_record_for_max():
     )
     medical_record[0].vaccinations.add(vaccination_record)
     medical_record[0].medications.add(medication_record)
+    medical_record[0].clinic.add(clinic)
     print(f"Medical Examination Record created for {max_pet.name}.")
 
 
@@ -424,6 +448,7 @@ def populate_vaccination_records():
 if __name__ == '__main__':
     create_superuser()
     create_pets()
+    create_clinic()
     populate_vaccines()
     populate_vaccination_records()
     populate_drugs()

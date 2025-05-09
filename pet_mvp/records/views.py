@@ -145,17 +145,23 @@ class MedicalExaminationReportCreateView(views.FormView):
         context['pet'] = get_object_or_404(Pet, pk=pet_id)
         context['pet_id'] = pet_id
 
-        # Dynamically load formsets or initialize them
-        if self.request.POST:
-            context['report_form'] = MedicalExaminationRecordForm(self.request.POST)
-            context['vaccine_formset'] = VaccineFormSet(self.request.POST, prefix='vaccines')
-            context['treatment_formset'] = TreatmentFormSet(self.request.POST, prefix='treatments')
-        else:
-            context['report_form'] = MedicalExaminationRecordForm()
-            context['vaccine_formset'] = VaccineFormSet(queryset=VaccinationRecord.objects.none(),
-                                                            prefix='vaccines')
-            context['treatment_formset'] = TreatmentFormSet(queryset=MedicationRecord.objects.none(),
-                                                             prefix='treatments')
+        post_data = self.request.POST or None
+
+        context['report_form'] = MedicalExaminationRecordForm(post_data)
+        context['vaccine_formset'] = VaccineFormSet(post_data, prefix='vaccines',
+                                                    queryset=VaccinationRecord.objects.none())
+        context['treatment_formset'] = TreatmentFormSet(post_data, prefix='treatments',
+                                                        queryset=MedicationRecord.objects.none())
+        context['blood_test_form'] = BloodTestForm(post_data)
+        context['urine_test_form'] = UrineTestForm(post_data)
+        context['fecal_test_form'] = FecalTestForm(post_data)
+
+        context['additional_info_fields'] = [
+            'general_health', 'body_condition_score', 'temperature',
+            'heart_rate', 'respiratory_rate', 'mucous_membrane_color',
+            'hydration_status', 'skin_and_coat_condition',
+            'teeth_and_gums', 'eyes_ears_nose', 'diagnosis',
+        ]
 
         return context
 
