@@ -1,0 +1,23 @@
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title"><strong>Name of the test:</strong> {{ object.name }}</h5>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Date conducted:</strong> {{ object.date_conducted }}</li>
+            <li class="list-group-item"><strong>Result:</strong> {{ object.result }}</li>
+            <li class="list-group-item"><strong>Consistency:</strong>
+                {% if object.consistency %}{{ object.consistency }}{% else %}Not measured{% endif %}
+            </li>
+            <li class="list-group-item"><strong>Parasites detected:</strong>
+                {% if object.parasites_detected %}Yes{% else %}No{% endif %}
+            </li>
+            <li class="list-group-item"><strong>Parasite type:</strong>
+                {% if object.parasite_type %}{{ object.parasite_type }}{% else %}None detected{% endif %}
+            </li>
+            <li class="list-group-item"><strong>Blood presence:</strong>
+                {% if object.blood_presence %}Yes{% else %}No{% endif %}
+            </li>
+            <li class="list-group-item"><strong>Notes:</strong> {{ object.additional_notes }}</li>
+        </ul>
+    </div>
+
+</div>

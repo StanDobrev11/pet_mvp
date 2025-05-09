@@ -1,22 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="cards">
-        <div class="blood-test-card">
-
-            <h3>Name of the test: {{ object.name }}</h3>
-
-            <ul>
-                <li>Date conducted: {{ object.date_conducted }}</li>
-                <li>Result: {{ object.result }}</li>
-                <li>White blood cells: {% if object.white_blood_cells %}{{ object.white_blood_cells }} × 10³/μL{% else %}Not measured{% endif %}</li>
-                <li>Red blood cells: {% if object.red_blood_cells %}{{ object.red_blood_cells }} × 10⁶/μL{% else %}Not measured{% endif %}</li>
-                <li>Hemoglobin: {% if object.hemoglobin %}{{ object.hemoglobin }} g/dL{% else %}Not measured{% endif %}</li>
-                <li>Platelets: {% if object.platelets %}{{ object.platelets }} × 10³/μL{% else %}Not measured{% endif %}</li>
-                <li>Notes: {{ object.additional_notes }}</li>
-            </ul>
-
-        </div>
-        {% include 'partials/back_buttons.html' %}
-    </div>
+    {% include 'partials/blood_test_card.html' %}
+    {% include 'partials/back_buttons.html' %}
 {% endblock %}

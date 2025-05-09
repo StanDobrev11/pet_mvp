@@ -41,6 +41,7 @@ class ExaminationDetailsView(views.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['clinic'] = self.object.clinic.first()
         pet = context['object'].pet
         context['pet_pk'] = pet.pk
         return context

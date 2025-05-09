@@ -1,0 +1,24 @@
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title"><strong>Name of the vaccine:</strong> {{ object.vaccine.name }}</h5>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Date of vaccination:</strong> {{ object.date_of_vaccination }}</li>
+            {% if object.valid_from %}
+                <li class="list-group-item"><strong>Valid from:</strong> {{ object.valid_from }}</li>
+            {% endif %}
+            <li class="list-group-item"><strong>Valid until:</strong> {{ object.valid_until }}</li>
+            <li class="list-group-item"><strong>Manufacturer:</strong> {{ object.manufacturer }}</li>
+            <li class="list-group-item"><strong>Date of manufacture:</strong> {{ object.manufacture_date }}</li>
+            <li class="list-group-item"><strong>Batch number:</strong> {{ object.batch_number }}</li>
+            <li class="list-group-item">
+                {% if object.vaccine.core %}
+                    This vaccine is <strong class="text-success">compulsory</strong> as per the vaccination calendar.
+                {% else %}
+                    This vaccine is <strong class="text-danger">not compulsory</strong> as per the vaccination calendar.
+                {% endif %}
+            </li>
+            <li class="list-group-item"><strong>Notes:</strong> {{ object.vaccine.notes }}</li>
+        </ul>
+    </div>
+
+</div>

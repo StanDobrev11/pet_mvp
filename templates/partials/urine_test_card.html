@@ -1,0 +1,50 @@
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title"><strong>Name of test: </strong>{{ object.name }}</h5>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Date conducted:</strong> {{ object.date_conducted }}</li>
+            <li class="list-group-item"><strong>Result:</strong> {{ object.result }}</li>
+            <li class="list-group-item"><strong>Color:</strong>
+                {{ object.color|default:"Not measured" }}
+            </li>
+            <li class="list-group-item"><strong>Clarity:</strong>
+                {{ object.clarity|default:"Not measured" }}
+            </li>
+            <li class="list-group-item"><strong>pH:</strong>
+                {{ object.ph|default:"Not measured" }}
+            </li>
+            <li class="list-group-item"><strong>Specific Gravity:</strong>
+                {{ object.specific_gravity|default:"Not measured" }}
+            </li>
+            <li class="list-group-item"><strong>Protein:</strong>
+                {% if object.protein %}
+                    {{ object.protein }} mg/dL
+                {% else %}
+                    Not measured
+                {% endif %}
+            </li>
+            <li class="list-group-item"><strong>Glucose:</strong>
+                {% if object.glucose %}
+                    {{ object.glucose }} mg/dL
+                {% else %}
+                    Not measured
+                {% endif %}
+            </li>
+            <li class="list-group-item"><strong>White blood cells:</strong>
+                {% if object.white_blood_cells %}
+                    {{ object.white_blood_cells }} /HPF
+                {% else %}
+                    Not measured
+                {% endif %}
+            </li>
+            <li class="list-group-item"><strong>Red blood cells:</strong>
+                {% if object.red_blood_cells %}
+                    {{ object.red_blood_cells }} /HPF
+                {% else %}
+                    Not measured
+                {% endif %}
+            </li>
+            <li class="list-group-item"><strong>Notes:</strong> {{ object.additional_notes }}</li>
+        </ul>
+    </div>
+</div>

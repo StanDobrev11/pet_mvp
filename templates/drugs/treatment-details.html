@@ -1,19 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="cards">
-        <div class="drug-card">
-
-            <h3>Name of the medication/treatment: {{ object.medication.name }}</h3>
-
-            <ul>
-                <li>Date and time prescribed: {{ object.date }} / {{ object.time }}</li>
-                <li>Dosage: {{ object.dosage }}</li>
-                <li>Valid until: {{ object.valid_until }}</li>
-                <li>Notes and how to administer the treatment: {{ object.medication.notes }}</li>
-            </ul>
-
-        </div>
+    {% include 'partials/treatment_card.html' %}
         {% include 'partials/back_buttons.html' %}
-    </div>
 {% endblock %}

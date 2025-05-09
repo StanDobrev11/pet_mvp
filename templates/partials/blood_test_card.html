@@ -1,0 +1,38 @@
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title"><strong>Name of the test:</strong> {{ object.name }}</h5>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Date conducted:</strong> {{ object.date_conducted }}</li>
+            <li class="list-group-item"><strong>Result:</strong> {{ object.result }}</li>
+            <li class="list-group-item"><strong>White blood cells:</strong>
+                {% if object.white_blood_cells %}
+                    {{ object.white_blood_cells }} × 10³/μL
+                {% else %}
+                    Not measured
+                {% endif %}
+            </li>
+            <li class="list-group-item"><strong>Red blood cells:</strong>
+                {% if object.red_blood_cells %}
+                    {{ object.red_blood_cells }} × 10⁶/μL
+                {% else %}
+                    Not measured
+                {% endif %}
+            </li>
+            <li class="list-group-item"><strong>Hemoglobin:</strong>
+                {% if object.hemoglobin %}
+                    {{ object.hemoglobin }} g/dL
+                {% else %}
+                    Not measured
+                {% endif %}
+            </li>
+            <li class="list-group-item"><strong>Platelets:</strong>
+                {% if object.platelets %}
+                    {{ object.platelets }} × 10³/μL
+                {% else %}
+                    Not measured
+                {% endif %}
+            </li>
+            <li class="list-group-item"><strong>Notes:</strong> {{ object.additional_notes }}</li>
+        </ul>
+    </div>
+</div>
