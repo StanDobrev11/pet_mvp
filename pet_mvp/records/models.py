@@ -269,4 +269,6 @@ class MedicalExaminationRecord(TimeStampMixin):
     )
 
     def __str__(self):
-        return f"Medical Record for {self.pet.name} on {self.date_of_entry}"
+        pet_name = self.pet.name if self.pet_id else "Unknown Pet"
+        date = self.date_of_entry if self.date_of_entry else "Unknown Date"
+        return f"Medical Record for {pet_name} on {date}"

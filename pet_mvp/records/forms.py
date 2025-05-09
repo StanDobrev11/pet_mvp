@@ -76,7 +76,7 @@ class FecalTestForm(forms.ModelForm):
 class MedicalExaminationRecordForm(forms.ModelForm):
     class Meta:
         model = MedicalExaminationRecord
-        exclude = ['pet', 'vaccinations', 'medications', 'blood_test', 'urine_test', 'fecal_test']
+        exclude = ['pet', 'clinic', 'vaccinations', 'medications', 'blood_test', 'urine_test', 'fecal_test']
 
 VaccineFormSet = forms.modelformset_factory(
     VaccinationRecord,

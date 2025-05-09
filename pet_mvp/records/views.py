@@ -44,6 +44,8 @@ class ExaminationDetailsView(views.DetailView):
         context['clinic'] = self.object.clinic.first()
         pet = context['object'].pet
         context['pet_pk'] = pet.pk
+        context['source'] = self.request.GET.get('source')
+        context['id'] = pet.id
         return context
 
 
@@ -140,11 +142,22 @@ class MedicalExaminationReportCreateView(views.FormView):
     template_name = 'records/examination_add.html'
     form_class = MedicalExaminationRecordForm
 
+    # def get_initial(self):
+    #     code = self.request.GET.get('code')
+    #     pet = get_object_or_404(Pet, pet_access_code__code=code)
+    #     clinic = self.request.user
+    #     return {'pet': pet, 'clinic': clinic}
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        pet_id = self.request.GET.get('pet_id')
-        context['pet'] = get_object_or_404(Pet, pk=pet_id)
-        context['pet_id'] = pet_id
+        code = self.request.GET.get('code')
+        # TODO add pet and clinic to the vaccine report and medicine report
+        pet = get_object_or_404(Pet, pet_access_code__code=code)
+        clinic = self.request.user
+
+        context['pet'] = pet
+        context['code'] = code
+        context['source'] = self.request.GET.get('source')
 
         post_data = self.request.POST or None
 
@@ -167,17 +180,39 @@ class MedicalExaminationReportCreateView(views.FormView):
         return context
 
     def form_valid(self, form):
-        # Handle vaccine and treatment formsets
+
+
         vaccine_formset = VaccineFormSet(self.request.POST, prefix='vaccines')
         treatment_formset = TreatmentFormSet(self.request.POST, prefix='treatments')
+        blood_test_form = BloodTestForm(self.request.POST)
+        urine_test_form = UrineTestForm(self.request.POST)
+        fecal_test_form = FecalTestForm(self.request.POST)
 
-        if vaccine_formset.is_valid() and treatment_formset.is_valid():
-            # Save individual vaccination records
-            vaccine_formset.save()
-            # Save individual treatment records
-            treatment_formset.save()
-            messages.success(self.request, "Examination data saved successfully!")
-            return redirect('pet_detail', pk=self.kwargs['pet_id'])
-        else:
-            return self.form_invalid(form)
+        with transaction.atomic():
+            if vaccine_formset.is_valid() and \
+                    treatment_formset.is_valid() and \
+                    blood_test_form.is_valid() and \
+                    urine_test_form.is_valid() and \
+                    fecal_test_form.is_valid():
 
+                vaccines = vaccine_formset.save()
+                treatments = treatment_formset.save()
+                blood_test = blood_test_form.save()
+                urine_test = urine_test_form.save()
+                fecal_test = fecal_test_form.save()
+
+
+                form.instance.blood_test = blood_test
+                form.instance.urine_test = urine_test
+                form.instance.fecal_test = fecal_test
+
+                form.save()
+                form.instance.pet = get_object_or_404(Pet, pet_access_code__code=form.cleaned_data['code'])
+                form.instance.clinic.set(self.request.user)
+                form.instance.vaccines.set(vaccines)
+                form.instance.treatments.set(treatments)
+
+                messages.success(self.request, "Examination data saved successfully!")
+                return redirect(reverse_lazy('clinic-dashboard') + f'?code={form.cleaned_data["code"]}')
+            else:
+                return self.form_invalid(form)

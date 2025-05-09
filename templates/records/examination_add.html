@@ -2,7 +2,7 @@
 {% load widget_tweaks %}
 
 {% block content %}
-    <form action="{% url 'exam-add' %}?pet_id={{ pet.id }}" method="post">
+    <form action="{% url 'exam-add' %}?source=clinic&code={{ code }}" method="post">
         {% csrf_token %}
         <div class="container py-4">
             <h2 class="mb-4 text-center">Medical Examination Report for {{ pet.name }}</h2>
@@ -133,10 +133,10 @@
             </button>
             <div class="mt-4">
                 <button type="submit" class="btn btn-success">Save</button>
+                {% include 'partials/back_buttons.html' %}
             </div>
         </div>
     </form>
-
 
     <script>
         // ======= Add info form ======

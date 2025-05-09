@@ -5,5 +5,7 @@
         <a href="{% url 'pet-details' pk=id %}" class="btn btn-secondary">Back</a>
     {% elif source == 'hist' %}
         <a href="{% url 'record-list' %}?pk={{ id }}" class="btn btn-secondary">Back</a>
+    {% elif source == 'clinic' %}
+        <a href="{% url 'clinic-dashboard' %}?code={{ code }}" class="btn btn-secondary">Back</a>
     {% endif %}
 </div>
