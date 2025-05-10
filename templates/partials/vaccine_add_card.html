@@ -1,0 +1,80 @@
+{% load widget_tweaks %}
+
+<div class="border rounded p-3 mb-3 vaccine-form">
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label class="form-label">{{ form.vaccine.label }}</label>
+            {{ form.vaccine|add_class:"form-select" }}
+            {{ form.vaccine.errors }}
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">{{ form.date_of_vaccination.label }}</label>
+            {{ form.date_of_vaccination|add_class:"form-control" }}
+            {{ form.date_of_vaccination.errors }}
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">{{ form.valid_until.label }}</label>
+            {{ form.valid_until|add_class:"form-control" }}
+            {{ form.valid_until.errors }}
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">{{ form.manufacturer.label }}</label>
+            {{ form.manufacturer|add_class:"form-control" }}
+            {{ form.manufacturer.errors }}
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">{{ form.manufacture_date.label }}</label>
+            {{ form.manufacture_date|add_class:"form-control" }}
+            {{ form.manufacture_date.errors }}
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">{{ form.batch_number.label }}</label>
+            {{ form.batch_number|add_class:"form-control" }}
+            {{ form.batch_number.errors }}
+        </div>
+    </div>
+{#    {{ form.DELETE }}#}
+{#    <button type="button" class="btn btn-danger mt-3 remove-vaccine-form">Remove</button>#}
+</div>
+{##}
+{##}
+{#template id="empty-vaccine-form">#}
+{#    <div class="border rounded p-3 mb-3 vaccine-form">#}
+{#        <div class="row g-3">#}
+{#            <div class="col-md-4">#}
+{#                <label class="form-label" for="id_vaccines-__prefix__-vaccine">Vaccine</label>#}
+{#                <select name="vaccines-__prefix__-vaccine" class="form-select" id="id_vaccines-__prefix__-vaccine">#}
+{#                    {% for vaccine in vaccine_formset.empty_form.fields.vaccine.queryset %}#}
+{#                        <option value="{{ vaccine.pk }}">{{ vaccine }}</option>#}
+{#                    {% endfor %}#}
+{#                </select>#}
+{#            </div>#}
+{#            <div class="col-md-4">#}
+{#                <label class="form-label" for="id_vaccines-__prefix__-date_of_vaccination">Date of Vaccination</label>#}
+{#                <input type="date" name="vaccines-__prefix__-date_of_vaccination" class="form-control" id="id_vaccines-__prefix__-date_of_vaccination">#}
+{#            </div>#}
+{#            <div class="col-md-4">#}
+{#                <label class="form-label" for="id_vaccines-__prefix__-valid_until">Valid Until</label>#}
+{#                <input type="date" name="vaccines-__prefix__-valid_until" class="form-control" id="id_vaccines-__prefix__-valid_until">#}
+{#            </div>#}
+{##}
+{#            <div class="col-md-4">#}
+{#                <label class="form-label" for="id_vaccines-__prefix__-manufacturer">Manufacturer</label>#}
+{#                <input type="text" name="vaccines-__prefix__-manufacturer" class="form-control" id="id_vaccines-__prefix__-manufacturer">#}
+{#            </div>#}
+{#            <div class="col-md-4">#}
+{#                <label class="form-label" for="id_vaccines-__prefix__-manufacture_date">Manufacture Date</label>#}
+{#                <input type="date" name="vaccines-__prefix__-manufacture_date" class="form-control" id="id_vaccines-__prefix__-manufacture_date">#}
+{#            </div>#}
+{#            <div class="col-md-4">#}
+{#                <label class="form-label" for="id_vaccines-__prefix__-batch_number">Batch Number</label>#}
+{#                <input type="text" name="vaccines-__prefix__-batch_number" class="form-control" id="id_vaccines-__prefix__-batch_number">#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#        <!-- Hidden DELETE field -->#}
+{#        <input type="checkbox" name="vaccines-__prefix__-DELETE" id="id_vaccines-__prefix__-DELETE" style="display:none;">#}
+{##}
+{#        <button type="button" class="btn btn-danger mt-3 remove-vaccine-form">Remove</button>#}
+{#    </div>#}
+{#</template>#}

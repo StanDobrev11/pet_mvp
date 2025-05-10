@@ -1,9 +1,11 @@
+{% load widget_tweaks %}
+
 <div class="card mb-4">
     <div class="card-body">
-        <h5 class="card-title"><strong>Name of test: </strong>{{ object.name }}</h5>
+        <h5 class="card-title"><strong>Type: </strong>{{ object.name }}</h5>
         <ul class="list-group list-group-flush">
             <li class="list-group-item"><strong>Date conducted:</strong> {{ object.date_conducted }}</li>
-            <li class="list-group-item"><strong>Result:</strong> {{ object.result }}</li>
+            <li class="list-group-item"><strong>Result:</strong> {{ object.result|add_class:"form_control" }}</li>
             <li class="list-group-item"><strong>Color:</strong>
                 {{ object.color|default:"Not measured" }}
             </li>

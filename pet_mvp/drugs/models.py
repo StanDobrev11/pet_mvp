@@ -44,11 +44,6 @@ class BaseTest(models.Model):
     class Meta:
         abstract = True
 
-    name = models.CharField(
-        max_length=100,
-        verbose_name=_('Test Name'),
-        help_text=_('Name of the test')
-    )
     result = models.TextField(
         verbose_name=_('Test Result'),
         help_text=_('Description of the test result')
@@ -64,6 +59,10 @@ class BaseTest(models.Model):
         null=True,
         help_text=_('Optional notes or observations about the test')
     )
+
+    @property
+    def name(self):
+        return ' Test'.join(self.__class__.__name__.split('Test'))
 
     def __str__(self):
         return f"{self.name} conducted on {self.date_conducted}"

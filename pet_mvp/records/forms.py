@@ -11,6 +11,11 @@ class VaccinationRecordForm(forms.ModelForm):
     class Meta:
         model = VaccinationRecord
         exclude = ['pet']  # Exclude the `pet` field, it will be assigned automatically
+        widgets = {
+            'manufacture_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'date_of_vaccination': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'valid_until': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        }
 
     vaccine = forms.ModelChoiceField(
         queryset=Vaccine.objects.all(),
@@ -27,6 +32,14 @@ class MedicationRecordForm(forms.ModelForm):
     class Meta:
         model = MedicationRecord
         exclude = ['pet']  # Exclude the `pet` field, it will be assigned automatically
+        widgets = {
+            'manufacturer': forms.TextInput(attrs={'class': 'form-control','placeholder': 'Manufacturer name'}),
+            'date': forms.DateInput(attrs={'type': 'date','class': 'form-control',}),
+            'time': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control',}),
+            'dosage': forms.TextInput(attrs={'class': 'form-control','placeholder': 'e.g. 5mg twice a day'}),
+            'valid_until': forms.DateInput(attrs={'type': 'date', 'class': 'form-control','placeholder': 'Valid until date'}),
+            'medication': forms.Select(attrs={'class': 'form-select',}),
+        }
 
     medication = forms.ModelChoiceField(
         queryset=Drug.objects.all(),
@@ -42,7 +55,7 @@ class MedicationRecordForm(forms.ModelForm):
 class BloodTestForm(forms.ModelForm):
     class Meta:
         model = BloodTest
-        fields = ['name', 'date_conducted', 'result', 'white_blood_cells',
+        fields = ['date_conducted', 'result', 'white_blood_cells',
                   'red_blood_cells', 'hemoglobin', 'platelets', 'additional_notes']
         widgets = {
             # 'date_conducted': forms.DateInput(attrs={'type': 'date'}),
@@ -53,7 +66,7 @@ class BloodTestForm(forms.ModelForm):
 class UrineTestForm(forms.ModelForm):
     class Meta:
         model = UrineTest
-        fields = ['name', 'date_conducted', 'result', 'color', 'clarity',
+        fields = ['date_conducted', 'result', 'color', 'clarity',
                   'ph', 'specific_gravity', 'protein', 'glucose',
                   'white_blood_cells', 'red_blood_cells', 'additional_notes']
         widgets = {
@@ -65,7 +78,7 @@ class UrineTestForm(forms.ModelForm):
 class FecalTestForm(forms.ModelForm):
     class Meta:
         model = FecalTest
-        fields = ['name', 'date_conducted', 'result', 'consistency',
+        fields = ['date_conducted', 'result', 'consistency',
                   'parasites_detected', 'parasite_type', 'blood_presence', 'additional_notes']
         widgets = {
             'date_conducted': forms.DateInput(attrs={'type': 'date'}),

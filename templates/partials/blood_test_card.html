@@ -1,9 +1,10 @@
+{% load widget_tweaks %}
 <div class="card mb-4">
     <div class="card-body">
-        <h5 class="card-title"><strong>Name of the test:</strong> {{ object.name }}</h5>
+        <h5 class="card-title"><strong>Type: </strong> {{ object.name }}</h5>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item"><strong>Date conducted:</strong> {{ object.date_conducted }}</li>
-            <li class="list-group-item"><strong>Result:</strong> {{ object.result }}</li>
+            <li class="list-group-item"><strong>Date conducted:</strong> {{ object.date_conducted|add_class:"form_control" }}</li>
+            <li class="list-group-item"><strong>Result:</strong> {{ object.result|add_class:"form_control" }}</li>
             <li class="list-group-item"><strong>White blood cells:</strong>
                 {% if object.white_blood_cells %}
                     {{ object.white_blood_cells }} × 10³/μL

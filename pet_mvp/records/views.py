@@ -1,4 +1,6 @@
 from abc import ABC, abstractmethod
+from datetime import timedelta
+
 from django.contrib import messages
 from django.db import transaction
 from django.forms import formset_factory
@@ -193,6 +195,8 @@ class MedicalExaminationReportCreateView(views.FormView):
                 vaccines = vaccine_formset.save(commit=False)
                 for vaccine in vaccines:
                     vaccine.pet = pet
+                    if vaccine.vaccine.name in ['Rabies',]:
+                        vaccine.valid_from += timedelta(days=7)
                     vaccine.save()
                 report.vaccinations.set(vaccines)
 

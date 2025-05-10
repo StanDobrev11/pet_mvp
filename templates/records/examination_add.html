@@ -66,19 +66,22 @@
                     {% endfor %}
                 </div>
             </template>
+
             <h4 class="mt-4">Vaccines</h4>
             <div id="vaccination-forms">
                 {{ vaccine_formset.management_form }}
                 {% for form in vaccine_formset %}
                     <div class="border rounded p-3 mb-3 vaccine-form">
-                        {{ form.as_p }}
+
+                        {% include 'partials/vaccine_add_card.html' %}
                         <button type="button" class="btn btn-danger remove-vaccine-form">Remove</button>
                     </div>
                 {% endfor %}
             </div>
             <template id="empty-vaccine-form">
                 <div class="border rounded p-3 mb-3 vaccine-form">
-                    {{ vaccine_formset.empty_form.as_p }}
+
+                    {% include 'partials/vaccine_add_card.html' with form=vaccine_formset.empty_form %}
                     <button type="button" class="btn btn-danger remove-vaccine-form">Remove</button>
                 </div>
             </template>
@@ -89,14 +92,14 @@
                 {{ treatment_formset.management_form }}
                 {% for form in treatment_formset %}
                     <div class="border rounded p-3 mb-3 treatment-form">
-                        {{ form.as_p }}
+                        {% include 'partials/treatment_add_card.html' %}
                         <button type="button" class="btn btn-danger remove-treatment-form">Remove</button>
                     </div>
                 {% endfor %}
             </div>
             <template id="empty-treatment-form">
                 <div class="border rounded p-3 mb-3 treatment-form">
-                    {{ treatment_formset.empty_form.as_p }}
+                    {% include 'partials/treatment_add_card.html' with form=treatment_formset.empty_form %}
                     <button type="button" class="btn btn-danger remove-treatment-form">Remove</button>
                 </div>
             </template>
