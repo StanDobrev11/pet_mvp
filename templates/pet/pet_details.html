@@ -100,8 +100,13 @@
                         <h5 class="card-title">Latest <strong>Examination</strong> Records</h5>
                         {% if last_examinations %}
                             {% for exam in last_examinations %}
-                                <p><a href="{% url 'exam-details' pk=exam.pk %}?source=pet&id={{ pet.id }}"
-                                      class="btn btn-sm btn-outline-info">{{ exam }}</a></p>
+                                {% if user.is_owner %}
+                                    <p><a href="{% url 'exam-details' pk=exam.pk %}?source=pet&id={{ pet.id }}"
+                                          class="btn btn-sm btn-outline-info">{{ exam }}</a></p>
+                                {% else %}
+                                    <p><a href="{% url 'exam-details' pk=exam.pk %}?source=clinic&code={{ code }}"
+                                          class="btn btn-sm btn-outline-info">{{ exam }}</a></p>
+                                {% endif %}
                             {% endfor %}
                         {% else %}
                             <p><strong>No examination records</strong></p>

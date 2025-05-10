@@ -123,9 +123,12 @@ class MedicalExaminationRecord(TimeStampMixin):
         max_length=100,
     )
 
-    clinic = models.ManyToManyField(
+    clinic = models.ForeignKey(
         to=Clinic,
         related_name='clinic_records',
+        on_delete=models.CASCADE,
+        verbose_name=_('Clinic'),
+        help_text=_('Clinic where the examination was conducted'),
     )
 
     pet = models.ForeignKey(

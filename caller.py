@@ -30,7 +30,6 @@ def create_clinic():
         clinic_address='123 Some Address',
         city='Varna',
         country='Bulgaria',
-
     )
 
     if clinic[1]:
@@ -75,6 +74,7 @@ def create_complete_examination_record_for_max():
         date_of_entry=make_aware(datetime.strptime('15.03.2025', '%d.%m.%Y')),
         doctor="Dr. John Doe",
         pet=max_pet,
+        clinic=clinic,
         reason_for_visit="Routine checkup and swelling on left leg",
         general_health="Good overall health",
         body_condition_score=5,
@@ -96,7 +96,7 @@ def create_complete_examination_record_for_max():
     )
     medical_record[0].vaccinations.add(vaccination_record)
     medical_record[0].medications.add(medication_record)
-    medical_record[0].clinic.add(clinic)
+
     print(f"Medical Examination Record created for {max_pet.name}.")
 
 

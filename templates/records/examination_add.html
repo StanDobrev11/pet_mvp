@@ -107,6 +107,7 @@
             <template id="blood-test-template">
                 <div id="blood-test-form" class="border rounded p-3 mb-3">
                     {{ blood_test_form.as_p }}
+                    <input type="hidden" name="has_blood_test" value="1">
                 </div>
             </template>
             <button type="button" id="add-remove-blood-test-form" class="btn btn-outline-secondary">Add Blood Test
@@ -117,6 +118,7 @@
             <template id="urine-test-template">
                 <div id="urine-test-form" class="border rounded p-3 mb-3">
                     {{ urine_test_form.as_p }}
+                    <input type="hidden" name="has_urine_test" value="1">
                 </div>
             </template>
             <button type="button" id="add-remove-urine-test-form" class="btn btn-outline-secondary">Add Urine Test
@@ -127,6 +129,7 @@
             <template id="fecal-test-template">
                 <div id="fecal-test-form" class="border rounded p-3 mb-3">
                     {{ fecal_test_form.as_p }}
+                    <input type="hidden" name="has_fecal_test" value="1">
                 </div>
             </template>
             <button type="button" id="add-remove-fecal-test-form" class="btn btn-outline-secondary">Add Fecal Test
@@ -158,7 +161,7 @@
         const vaccinationFormsContainer = document.getElementById('vaccination-forms');
         const addVaccineButton = document.getElementById('add-vaccine-form');
         let vaccineFormIndex = {{ vaccine_formset.total_form_count }};
-        const vaccineTotalFormsInput = document.querySelector('input[name="vaccine-TOTAL_FORMS"]');
+        const vaccineTotalFormsInput = document.querySelector('input[name="vaccines-TOTAL_FORMS"]');
         const vaccineTemplate = document.getElementById("empty-vaccine-form").innerHTML;
 
         addVaccineButton.addEventListener('click', () => {
@@ -180,7 +183,7 @@
         const treatmentFormsContainer = document.getElementById('treatment-forms');
         const addTreatmentButton = document.getElementById('add-treatment-form');
         let treatmentFormIndex = {{ treatment_formset.total_form_count }};
-        const treatmentTotalFormsInput = document.querySelector('input[name="treatment-TOTAL_FORMS"]');
+        const treatmentTotalFormsInput = document.querySelector('input[name="treatments-TOTAL_FORMS"]');
         const treatmentTemplate = document.getElementById("empty-treatment-form").innerHTML;
 
 
