@@ -1,15 +1,19 @@
+import os
+
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from pet_mvp.settings import MEDIA_ROOT
 from pet_mvp.common.mixins import TimeStampMixin
 from pet_mvp.common.utils import resize_image
-from pet_mvp.pets.utils import pet_directory_path
+from pet_mvp.pets.utils import pet_directory_path, delete_pet_photo
 from pet_mvp.pets.validators import validate_passport_number, validate_transponder_code
 
-
 UserModel = get_user_model()
+
+
 class Pet(TimeStampMixin):
     MAX_LENGTH = 50
     PASSPORT_NUMBER_MAX_LENGTH = 12
@@ -89,16 +93,41 @@ class Pet(TimeStampMixin):
         help_text=_('Controls if the owner can add treatments.'),
     )
 
-
     owners = models.ManyToManyField(
         to=UserModel,
         related_name='pets'
     )
 
     def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
+        is_new = self.pk is None
+
+        super(Pet, self).save(*args, **kwargs)
+
+        # Rename only for newly created objects and only if a photo was uploaded
+        if is_new and self.photo:
+            _, extension = os.path.splitext(self.photo.name)
+            new_name = f'pets/{self.id}_{self.name}{extension}'
+
+            new_path = os.path.join(MEDIA_ROOT, new_name)
+            current_path = self.photo.path
+
+            # Only rename if file path is different
+            if current_path != new_path:
+                # Move file
+                os.makedirs(os.path.dirname(new_path), exist_ok=True)
+                os.rename(current_path, new_path)
+
+                # Update model field with new path
+                self.photo.name = new_name
+                # Save again to update file path in DB without triggering recursion
+                super(Pet, self).save(update_fields=['photo'])
+
+        # Resize after saving
         if self.photo:
-            resize_image(self.photo.path, self.photo.path)
+            from django.db import transaction
+            transaction.on_commit(lambda: resize_image(self.photo.path, self.photo.path))
+        else:
+            delete_pet_photo(self)
 
     @property
     def age(self):
@@ -110,7 +139,6 @@ class Pet(TimeStampMixin):
 
     def __str__(self):
         return f'{self.name} - {self.species} - {self.breed}'
-
 
 
 class BaseMarking(models.Model):

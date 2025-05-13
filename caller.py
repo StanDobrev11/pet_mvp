@@ -43,7 +43,6 @@ def create_complete_examination_record_for_max():
     clinic = Clinic.objects.get(clinic_name='Diana Vet')
 
     blood_test = BloodTest.objects.get_or_create(
-        name="Complete Blood Count",
         result="WBC and RBC levels normal, low platelets detected",
         white_blood_cells=10.2,
         red_blood_cells=4.8,
@@ -51,7 +50,6 @@ def create_complete_examination_record_for_max():
         platelets=150.0
     )
     urine_test = UrineTest.objects.get_or_create(
-        name="Routine Urinalysis",
         result="Clear urine, neutral pH",
         color="Yellow",
         clarity="Clear",
@@ -59,7 +57,6 @@ def create_complete_examination_record_for_max():
         specific_gravity=1.015
     )
     fecal_test = FecalTest.objects.get_or_create(
-        name="Parasite Check",
         result="Parasites detected, blood in sample found",
         consistency="Watery",
         parasites_detected=True,

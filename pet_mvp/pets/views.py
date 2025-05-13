@@ -25,8 +25,10 @@ class PetDetailView(views.DetailView):
         # generate code
         access_code = generate_access_code(pet)
 
-        context['valid_vaccinations'] = pet.vaccine_records.filter(valid_until__gte=date.today()).order_by('-valid_until')
-        context['valid_treatments'] = pet.medication_records.filter(valid_until__gte=date.today()).order_by('-created_at')
+        context['valid_vaccinations'] = pet.vaccine_records.filter(valid_until__gte=date.today()).order_by(
+            '-valid_until')
+        context['valid_treatments'] = pet.medication_records.filter(valid_until__gte=date.today()).order_by(
+            '-created_at')
         context['last_examinations'] = pet.examination_records.all().order_by('-created_at')[:3]
         context['access_code'] = access_code.code
         return context

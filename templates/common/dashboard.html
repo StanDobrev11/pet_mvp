@@ -1,17 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <section class="site-section dashboard">
-        <div class="title">
-            <h2>Pets</h2>
-        </div>
-        <p>{{ user }}</p>
+<section class="container mt-5">
+    <div class="text-center mb-4">
+        <h2>Pets</h2>
+        <p class="text-muted">Welcome, {{ user.first_name }} {{ user.last_name }}</p>
+    </div>
+
+    <ul class="list-group mb-4">
         {% for pet in pets %}
-            <li><a href="{% url "pet-details" pk=pet.pk %}">{{ pet.name }}</a></li>
+            <li class="list-group-item">
+                <a href="{% url 'pet-details' pk=pet.pk %}">{{ pet.name }}</a>
+            </li>
+        {% empty %}
+            <li class="list-group-item text-muted">No pets added yet.</li>
         {% endfor %}
-        <div>
-            <a href="{% url 'logout' %}">Logout</a>
-            <a href="{% url 'pet-add' %}">Add Pet</a>
-        </div>
-    </section>
+    </ul>
+
+    <div class="d-flex justify-content-center gap-3">
+        <a href="{% url 'pet-add' %}" class="btn btn-success">Add Pet</a>
+        <a href="{% url 'logout' %}" class="btn btn-outline-danger">Logout</a>
+    </div>
+</section>
 {% endblock %}

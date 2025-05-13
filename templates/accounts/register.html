@@ -1,34 +1,36 @@
 {% extends "base.html" %}
+{% load widget_tweaks %}
 
 {% block content %}
-    <section class="site-section register">
-        <div class="inner">
-            <div class="title">
+<section class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="text-center mb-4">
                 <h2>Please fill out the form to register</h2>
             </div>
-            <div class="form">
-            <form action="{% url 'register' %}?next={{ next }}" method="post" class="register-form">
+
+            <form action="{% url 'register' %}?next={{ next }}" method="post" class="p-4 border rounded bg-light">
+                {% csrf_token %}
 
                 {% for field in form %}
-                <div class="fieldWrapper">
-                    {{ field.errors }}
-                    {{ field.label_tag }} {{ field }}
-                    {% if field.help_text %}
-                    <p class="help" id="{{ field.auto_id }}_helptext">
-                        {{ field.help_text|safe }}
-                    </p>
-                    {% endif %}
-                </div>
+                    <div class="mb-3">
+                        {{ field.label_tag }}
+                        {{ field|add_class:"form-control" }}
+                        {% if field.help_text %}
+                            <div class="form-text">{{ field.help_text|safe }}</div>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
                 {% endfor %}
 
-                {% csrf_token %}
-                <div class="buttons">
-                    <button type="submit" class="btn register-btn">Register</button>
-                    <button class="btn btn-secondary"
-                                onclick="window.location.href='../login/';">Login instead?</button>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                    <a href="{% url 'login' %}" class="btn btn-secondary">Login instead?</a>
                 </div>
             </form>
         </div>
-        </div>
-    </section>
+    </div>
+</section>
 {% endblock %}

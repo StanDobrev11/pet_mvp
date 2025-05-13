@@ -1,37 +1,32 @@
 {% extends 'base.html' %}
 {% load static %}
 
-
 {% block content %}
-    <section class="site-section index">
-        <div class="inner">
-            <div class="title">
-                <h2>My Pet's Medical Records</h2>
-            </div>
-            <div class="two-columns">
-                <div class="column">
-                    <h3>Join now and get:</h3>
-                    <ul>
-                        <li>Tracking of your pet's vaccinations and medical records!</li>
-                        <li>Notification when it is time for medication or treatment!</li>
-                        <li>Access to the records from everywhere!</li>
-                    </ul>
+<section class="container mt-5">
+    <div class="text-center mb-4">
+        <h2>My Pet's Medical Records</h2>
+    </div>
 
-                </div>
-                <div class="column">
-                    <div class="buttons">
-                        <a href="{% url "login" %}" class="btn">Login</a>
-                        <a href="{% url "register" %}" class="btn btn-secondary">Register</a>
-                        <a href="{% url 'clinic-login' %}" class="btn btn-secondary">Enter Access Code</a>
-                    </div>
-                </div>
-            </div>
-
-
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <h4>Join now and get:</h4>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Tracking of your pet's vaccinations and medical records!</li>
+                <li class="list-group-item">Notification when it is time for medication or treatment!</li>
+                <li class="list-group-item">Access to the records from everywhere!</li>
+            </ul>
         </div>
-    </section>
-{% endblock %}
 
+        <div class="col-md-6 d-flex align-items-center justify-content-center">
+            <div class="d-grid gap-3 w-100">
+                <a href="{% url 'login' %}" class="btn btn-primary btn-lg">Login</a>
+                <a href="{% url 'register' %}" class="btn btn-secondary btn-lg">Register</a>
+                <a href="{% url 'clinic-login' %}" class="btn btn-outline-secondary btn-lg">Enter Access Code</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
 
 {% block scripts %}
 {% endblock %}

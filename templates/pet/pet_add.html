@@ -1,19 +1,35 @@
 {% extends "base.html" %}
+{% load widget_tweaks %}
 
 {% block content %}
-    <form action="{% url 'pet-add'%}" method="post">
+<section class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="mb-4 text-center">Add a New Pet</h2>
 
-        {{ form.as_p }}
-        {% csrf_token %}
-        <p>
-            <button type="submit" class="btn btn-secondary">Save</button>
-        </p>
+            <form action="{% url 'pet-add' %}" method="post" enctype="multipart/form-data" class="p-4 border rounded bg-light">
+                {% csrf_token %}
 
-        <p>
-            <button type="reset" class="btn btn-secondary">Reset</button>
-        </p>
+                {% for field in form %}
+                    <div class="mb-3">
+                        {{ field.label_tag }}
+                        {{ field|add_class:"form-control" }}
+                        {% if field.help_text %}
+                            <div class="form-text">{{ field.help_text|safe }}</div>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
 
-        <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
-
-    </form>
+                <div class="d-flex flex-wrap gap-2 justify-content-between mt-4">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                    <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
 {% endblock %}

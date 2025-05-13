@@ -58,7 +58,8 @@ class BloodTestForm(forms.ModelForm):
         fields = ['date_conducted', 'result', 'white_blood_cells',
                   'red_blood_cells', 'hemoglobin', 'platelets', 'additional_notes']
         widgets = {
-            # 'date_conducted': forms.DateInput(attrs={'type': 'date'}),
+            'result': forms.TextInput(attrs={'class': 'form-control'}),
+            'date_conducted': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'additional_notes': forms.Textarea(attrs={'rows': 2}),
         }
 
@@ -70,7 +71,8 @@ class UrineTestForm(forms.ModelForm):
                   'ph', 'specific_gravity', 'protein', 'glucose',
                   'white_blood_cells', 'red_blood_cells', 'additional_notes']
         widgets = {
-            'date_conducted': forms.DateInput(attrs={'type': 'date'}),
+            'result': forms.TextInput(attrs={'class': 'form-control'}),
+            'date_conducted': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'additional_notes': forms.Textarea(attrs={'rows': 2}),
         }
 
@@ -81,7 +83,8 @@ class FecalTestForm(forms.ModelForm):
         fields = ['date_conducted', 'result', 'consistency',
                   'parasites_detected', 'parasite_type', 'blood_presence', 'additional_notes']
         widgets = {
-            'date_conducted': forms.DateInput(attrs={'type': 'date'}),
+            'result': forms.TextInput(attrs={'class': 'form-control'}),
+            'date_conducted': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'additional_notes': forms.Textarea(attrs={'rows': 2}),
         }
 

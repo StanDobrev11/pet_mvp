@@ -17,7 +17,7 @@ main {
     justify-content: center;
     align-items: center;
     padding: 2rem;
-    background: linear-gradient(135deg, #fff, lightgray);
+    background: linear-gradient(135deg, #fff, #1f8b62);
 }
 
 li {
