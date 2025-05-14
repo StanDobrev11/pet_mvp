@@ -1,25 +1,37 @@
 {% extends 'base.html' %}
+{% load widget_tweaks %}
 
 {% block content %}
-    <form method="post">
-    {% csrf_token %}
-    <div>
-        <label for="id_access_code">Access Code</label>
-        {% if form.errors.access_code %}
-            <p class="error">{{ form.errors.access_code }}</p>
-        {% endif %}
-        {{ form.access_code }}
+<section class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="mb-4 text-center">Enter Access Code</h2>
 
+            <form method="post" class="p-4 border rounded bg-light">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="id_access_code" class="form-label">Access Code</label>
+                    {{ form.access_code|add_class:"form-control" }}
+                    {% if form.errors.access_code %}
+                        <div class="text-danger">{{ form.errors.access_code }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_email" class="form-label">Email Address</label>
+                    {{ form.email|add_class:"form-control" }}
+                    {% if form.errors.email %}
+                        <div class="text-danger">{{ form.errors.email }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Continue</button>
+                    <a href="/" class="btn btn-outline-secondary">Back</a>
+                </div>
+            </form>
+        </div>
     </div>
-    <div>
-        <label for="id_email">Email Address</label>
-        {% if form.errors.email %}
-            <p class="error">{{ form.errors.email }}</p>
-        {% endif %}
-        {{ form.email }}
-
-    </div>
-    <button type="submit">Continue</button>
-</form>
-
+</section>
 {% endblock %}

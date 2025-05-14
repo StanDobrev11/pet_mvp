@@ -1,27 +1,36 @@
 {% extends 'base.html' %}
+{% load widget_tweaks %}
 
 {% block content %}
-    <div class="form">
-        <form action="{% url 'clinic-register' %}?code={{ code }}" method="post" class="register-form">
+<section class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="p-4 border rounded bg-light">
+                <h3 class="mb-4 text-center">Clinic Registration</h3>
 
-                {% for field in form %}
-                <div class="fieldWrapper">
-                    {{ field.errors }}
-                    {{ field.label_tag }} {{ field }}
-                    {% if field.help_text %}
-                    <p class="help" id="{{ field.auto_id }}_helptext">
-                        {{ field.help_text|safe }}
-                    </p>
-                    {% endif %}
-                </div>
-                {% endfor %}
+                <form action="{% url 'clinic-register' %}?code={{ code }}" method="post" class="register-form">
+                    {% csrf_token %}
 
-                {% csrf_token %}
-                <div class="buttons">
-                    <button type="submit" class="btn register-btn">Register</button>
-                    <button class="btn btn-secondary"
-                                onclick="window.location.href='../access-code/';">Back</button>
-                </div>
-            </form>
+                    {% for field in form %}
+                        <div class="mb-3">
+                            {{ field.label_tag }}
+                            {{ field|add_class:"form-control" }}
+                            {% if field.help_text %}
+                                <div class="form-text">{{ field.help_text|safe }}</div>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+
+                    <div class="d-flex flex-wrap gap-2 justify-content-between mt-4">
+                        <button type="submit" class="btn btn-primary">Register</button>
+                        <a href="{% url 'clinic-login' %}" class="btn btn-secondary">Back</a>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
+</section>
 {% endblock %}
