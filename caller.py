@@ -41,28 +41,32 @@ def create_clinic():
 def create_complete_examination_record_for_max():
     max_pet = Pet.objects.get(name='Max')
     clinic = Clinic.objects.get(clinic_name='Diana Vet')
-
-    blood_test = BloodTest.objects.get_or_create(
-        result="WBC and RBC levels normal, low platelets detected",
-        white_blood_cells=10.2,
-        red_blood_cells=4.8,
-        hemoglobin=12.5,
-        platelets=150.0
-    )
-    urine_test = UrineTest.objects.get_or_create(
-        result="Clear urine, neutral pH",
-        color="Yellow",
-        clarity="Clear",
-        ph=7.0,
-        specific_gravity=1.015
-    )
-    fecal_test = FecalTest.objects.get_or_create(
-        result="Parasites detected, blood in sample found",
-        consistency="Watery",
-        parasites_detected=True,
-        parasite_type="Roundworms",
-        blood_presence=True
-    )
+    try:
+        blood_test = BloodTest.objects.create(
+            result="WBC and RBC levels normal, low platelets detected",
+            white_blood_cells=10.2,
+            red_blood_cells=4.8,
+            hemoglobin=12.5,
+            platelets=150.0
+        )
+        urine_test = UrineTest.objects.create(
+            result="Clear urine, neutral pH",
+            color="Yellow",
+            clarity="Clear",
+            ph=7.0,
+            specific_gravity=1.015
+        )
+        fecal_test = FecalTest.objects.create(
+            result="Parasites detected, blood in sample found",
+            consistency="Watery",
+            parasites_detected=True,
+            parasite_type="Roundworms",
+            blood_presence=True
+        )
+    except IntegrityError:
+        blood_test = BloodTest.objects.get(result="WBC and RBC levels normal, low platelets detected")
+        urine_test = UrineTest.objects.get(result="Clear urine, neutral pH")
+        fecal_test = FecalTest.objects.get(result="Parasites detected, blood in sample found")
 
     medication_record = MedicationRecord.objects.filter(pet=max_pet).first()
     vaccination_record = VaccinationRecord.objects.filter(pet=max_pet).first()
@@ -83,9 +87,9 @@ def create_complete_examination_record_for_max():
         skin_and_coat_condition="Shiny and smooth",
         teeth_and_gums="Clean with no signs of tartar",
         eyes_ears_nose="Clear and healthy",
-        blood_test=blood_test[0],
-        urine_test=urine_test[0],
-        fecal_test=fecal_test[0],
+        blood_test=blood_test,
+        urine_test=urine_test,
+        fecal_test=fecal_test,
         treatment_performed="Applied anti-inflammatory ointment",
         diagnosis="Mild swelling due to recent injury",
         follow_up=True,
