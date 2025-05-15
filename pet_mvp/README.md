@@ -10,8 +10,10 @@ This project uses Brevo (formerly Sendinblue) for sending transactional emails. 
 2. Generate an API key in the Brevo dashboard
 3. Add your API key to the Django settings:
 
-# Start Celery Worker
+
+# Terminal 2: Start Celery worker
+celery -A pet_mvp worker --loglevel=info --pool=solo  -> in windows
 celery -A pet_mvp worker --loglevel=info
 
-# Start Celery Beat
+# Terminal 3: Start Celery Beat
 celery -A pet_mvp beat --loglevel=info

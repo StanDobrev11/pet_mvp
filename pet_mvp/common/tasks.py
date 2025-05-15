@@ -1,8 +1,11 @@
 from celery import shared_task
 from datetime import timedelta
+
+from django.contrib.auth import get_user_model
 from django.utils import timezone
 from pet_mvp.common.email_service import EmailService
 
+UserModel = get_user_model()
 
 @shared_task
 def send_reminder_emails():
@@ -47,19 +50,21 @@ def send_weekly_report_emails():
     # Example implementation - you would customize this based on your models
     from pet_mvp.accounts.models import Clinic
     
-    for clinic in Clinic.objects.all():
-        admin_email = clinic.user.email
-        
-        # Send weekly report email
-        EmailService.send_template_email_async.delay(
-            subject=f"Weekly Clinic Report - {timezone.now().strftime('%Y-%m-%d')}",
-            to_email=admin_email,
-            template_name="emails/weekly_report.html",
-            context={
-                "clinic_name": clinic.name,
-                "report_date": timezone.now().date(),
-                # Add other context data as needed
-            }
-        )
+    for user in UserModel.objects.all():
+
+        if user.is_owner:
+            user_email = user.email
+
+            # Send weekly report email
+            EmailService.send_template_email_async.delay(
+                subject=f"Weekly Clinic Report - {timezone.now().strftime('%Y-%m-%d')}",
+                to_email=user_email,
+                template_name='emails/weekly_report.html',
+                context={
+                    "vaccine_due": 'some vaccine',
+                    "report_date": timezone.now().date(),
+                    # Add other context data as needed
+                }
+            )
     
     return f"Processed weekly reports for {Clinic.objects.count()} clinics"

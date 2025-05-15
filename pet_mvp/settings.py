@@ -33,7 +33,6 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(' ')
 
 CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(' ')
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -88,7 +87,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'pet_mvp.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
@@ -98,7 +96,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -118,7 +115,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ] if not DEBUG else []
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
@@ -129,7 +125,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
@@ -144,7 +139,6 @@ STATIC_ROOT = os.environ.get('STATIC_ROOT', BASE_DIR / 'collect_static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
 AUTH_USER_MODEL = 'accounts.AppUser'
 
 # login url, logout redirect and login redirect should be set
@@ -157,34 +151,33 @@ LOGOUT_REDIRECT_URL = reverse_lazy('index')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Email Settings
-# For local development with MailHog
-if os.environ.get('EMAIL_BACKEND') == 'django.core.mail.backends.smtp.EmailBackend' and os.environ.get('EMAIL_HOST') == 'mailhog':
-    # MailHog Configuration
+USE_MAILHOG = os.getenv("USE_MAILHOG", "False") == "True"
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@example.com")
+
+if USE_MAILHOG:
+    # MailHog configuration
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = os.environ.get('EMAIL_HOST', 'mailhog')
-    EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 1025))
-    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
-    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
-    EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'False') == 'True'
-    EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL', 'False') == 'True'
-    DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'noreply@example.com')
-elif os.environ.get('USE_BREVO', 'False') == 'True':
-    # Brevo Configuration
-    INSTALLED_APPS += [
-        'anymail',
-        'django_celery_beat',
-    ]
-    
-    ANYMAIL = {
-        "BREVO_API_KEY": os.environ.get('BREVO_API_KEY', ''),
-    }
-    EMAIL_BACKEND = "anymail.backends.brevo.EmailBackend"
-    DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'noreply@example.com')
+    EMAIL_HOST = os.getenv("EMAIL_HOST", "localhost")
+    EMAIL_PORT = int(os.getenv("EMAIL_PORT", 1025))
+    EMAIL_HOST_USER = ""
+    EMAIL_HOST_PASSWORD = ""
+    EMAIL_USE_TLS = False
+    EMAIL_USE_SSL = False
+
 else:
-    # Default to console backend for development if no configuration is specified
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'noreply@example.com')
+    # Brevo configuration via Anymail
+    INSTALLED_APPS += ['anymail']
+    EMAIL_BACKEND = "anymail.backends.brevo.EmailBackend"
+    ANYMAIL = {
+        "BREVO_API_KEY": os.getenv("BREVO_API_KEY", ""),
+    }
+
+    EMAIL_HOST = ""
+    EMAIL_PORT = None
+    EMAIL_HOST_USER = ""
+    EMAIL_HOST_PASSWORD = ""
+    EMAIL_USE_TLS = False
+    EMAIL_USE_SSL = False
 
 # Celery Configuration
 CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://redis:6379/0')

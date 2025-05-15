@@ -111,6 +111,7 @@ def create_superuser(email='admin@pet-mvp.com', password='1234'):
             city='Varna',
             country='Bulgaria',
             phone_number='0887888888',
+            is_owner=True,
         )
         print('Superuser created')
     except IntegrityError:
