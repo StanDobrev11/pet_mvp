@@ -54,6 +54,8 @@ INSTALLED_APPS = [
 
     # 3rd party apps
     'widget_tweaks',
+    'celery',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -154,3 +156,41 @@ LOGOUT_REDIRECT_URL = reverse_lazy('index')
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Email Settings
+# For local development with MailHog
+if os.environ.get('EMAIL_BACKEND') == 'django.core.mail.backends.smtp.EmailBackend' and os.environ.get('EMAIL_HOST') == 'mailhog':
+    # MailHog Configuration
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = os.environ.get('EMAIL_HOST', 'mailhog')
+    EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 1025))
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+    EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'False') == 'True'
+    EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL', 'False') == 'True'
+    DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'noreply@example.com')
+elif os.environ.get('USE_BREVO', 'False') == 'True':
+    # Brevo Configuration
+    INSTALLED_APPS += [
+        'anymail',
+        'django_celery_beat',
+    ]
+    
+    ANYMAIL = {
+        "BREVO_API_KEY": os.environ.get('BREVO_API_KEY', ''),
+    }
+    EMAIL_BACKEND = "anymail.backends.brevo.EmailBackend"
+    DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'noreply@example.com')
+else:
+    # Default to console backend for development if no configuration is specified
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'noreply@example.com')
+
+# Celery Configuration
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://redis:6379/0')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://redis:6379/0')
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
