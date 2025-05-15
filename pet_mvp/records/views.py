@@ -134,7 +134,6 @@ class ExaminationDetailsView(views.DetailView):
         context = super().get_context_data(**kwargs)
         pet = context['object'].pet
         context['clinic'] = self.object.clinic
-        context['code'] = self.request.GET.get('code')
         context['pet_pk'] = pet.pk
         context['source'] = self.request.GET.get('source')
         context['id'] = pet.id
@@ -145,14 +144,20 @@ class MedicalExaminationReportCreateView(views.FormView):
     template_name = 'records/examination_add.html'
     form_class = MedicalExaminationRecordForm
 
+    def get_pet(self, pet_id=None, ):
+        if pet_id:
+            return get_object_or_404(Pet, pk=pet_id)
+
+        pet_id = self.request.GET.get('id')
+        return get_object_or_404(Pet, pk=pet_id)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        code = self.request.GET.get('code')
 
-        pet = get_object_or_404(Pet, pet_access_code__code=code)
+        pet = self.get_pet()
 
         context['pet'] = pet
-        context['code'] = code
+        context['id'] = pet.pk
         context['source'] = self.request.GET.get('source')
 
         post_data = self.request.POST or None
@@ -175,15 +180,60 @@ class MedicalExaminationReportCreateView(views.FormView):
 
         return context
 
+    def form_invalid(self, form):
+        """
+        If the form is invalid, re-render the context data with the
+        data-filled form and errors.
+        """
+        messages.error(self.request, "Please correct the errors in the form.")
+        return self.render_to_response(self.get_context_data(form=form))
+
     def form_valid(self, form):
-        code = self.request.GET.get('code')
-        pet = get_object_or_404(Pet, pet_access_code__code=code)
+        pet = self.get_pet()
 
         vaccine_formset = VaccineFormSet(self.request.POST, prefix='vaccines')
         treatment_formset = TreatmentFormSet(self.request.POST, prefix='treatments')
-
         request_data = self.request.POST
 
+        # Check if main form and all formsets are valid
+        all_valid = True
+
+        if not form.is_valid():
+            messages.error(self.request, "Medical examination form contains errors.")
+            all_valid = False
+
+        if not vaccine_formset.is_valid():
+            messages.error(self.request, "Vaccine information contains errors.")
+            all_valid = False
+
+        if not treatment_formset.is_valid():
+            messages.error(self.request, "Treatment information contains errors.")
+            all_valid = False
+
+        # Check optional test forms if they're included
+        if request_data.get('has_blood_test'):
+            blood_test_form = BloodTestForm(request_data)
+            if not blood_test_form.is_valid():
+                messages.error(self.request, "Blood test form contains errors.")
+                all_valid = False
+
+        if request_data.get('has_urine_test'):
+            urine_test_form = UrineTestForm(request_data)
+            if not urine_test_form.is_valid():
+                messages.error(self.request, "Urine test form contains errors.")
+                all_valid = False
+
+        if request_data.get('has_fecal_test'):
+            fecal_test_form = FecalTestForm(request_data)
+            if not fecal_test_form.is_valid():
+                messages.error(self.request, "Fecal test form contains errors.")
+                all_valid = False
+
+        # If any form is invalid, return to the same page with form data preserved
+        if not all_valid:
+            return self.form_invalid(form)
+
+        # If all forms are valid, proceed with saving
         with transaction.atomic():
             # Set foreign keys early
             form.instance.pet = pet
@@ -191,41 +241,35 @@ class MedicalExaminationReportCreateView(views.FormView):
             report = form.save()
 
             # Vaccines
-            if vaccine_formset.is_valid():
-                vaccines = vaccine_formset.save(commit=False)
-                for vaccine in vaccines:
-                    vaccine.pet = pet
-                    if vaccine.vaccine.name in ['Rabies',]:
-                        vaccine.valid_from += timedelta(days=7)
-                    vaccine.save()
-                report.vaccinations.set(vaccines)
+            vaccines = vaccine_formset.save(commit=False)
+            for vaccine in vaccines:
+                vaccine.pet = pet
+                if vaccine.vaccine.name in ['Rabies', ]:
+                    vaccine.valid_from += timedelta(days=7)
+                vaccine.save()
+            report.vaccinations.set(vaccines)
 
             # Treatments
-            if treatment_formset.is_valid():
-                treatments = treatment_formset.save(commit=False)
-                for treatment in treatments:
-                    treatment.pet = pet
-                    treatment.save()
-                report.medications.set(treatments)
+            treatments = treatment_formset.save(commit=False)
+            for treatment in treatments:
+                treatment.pet = pet
+                treatment.save()
+            report.medications.set(treatments)
 
             # Optional test forms
             if request_data.get('has_blood_test'):
                 blood_test_form = BloodTestForm(request_data)
-                if blood_test_form.is_valid():
-                    report.blood_test = blood_test_form.save()
+                report.blood_test = blood_test_form.save()
 
             if request_data.get('has_urine_test'):
                 urine_test_form = UrineTestForm(request_data)
-                if urine_test_form.is_valid():
-                    report.urine_test = urine_test_form.save()
+                report.urine_test = urine_test_form.save()
 
             if request_data.get('has_fecal_test'):
                 fecal_test_form = FecalTestForm(request_data)
-                if fecal_test_form.is_valid():
-                    report.fecal_test = fecal_test_form.save()
+                report.fecal_test = fecal_test_form.save()
 
             report.save()
 
         messages.success(self.request, "Examination data saved successfully!")
-        return redirect(reverse_lazy('clinic-dashboard') + f'?code={code}')
-
+        return redirect(reverse_lazy('pet-details', kwargs={'pk': pet.pk}))

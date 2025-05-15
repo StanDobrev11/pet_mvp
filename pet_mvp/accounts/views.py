@@ -15,6 +15,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 
 from pet_mvp.accounts.forms import OwnerCreationForm, AccessCodeEmailForm, ClinicRegistrationForm
+from pet_mvp.pets.models import Pet
 
 UserModel = get_user_model()
 
@@ -156,9 +157,18 @@ class PasswordEntryView(BaseLoginView):
     def form_valid(self, form):
         # Automatically log the user in on successful authentication
         user = form.get_user()
+        # set the code cookie
+        code = self.request.GET.get('code')
+        self.request.session['code'] = code
+        # login the clinic
         login(self.request, user)
-        return redirect(reverse_lazy(
-            'clinic-dashboard') + f'?code={self.request.GET.get('code')}')  # Redirect to dashboard or success page after login
+
+        # get the pet ID
+        pet_id = Pet.objects.get(pet_access_code__code=code).pk
+        # redirect to pet_details view
+        return redirect(reverse_lazy('pet-details', kwargs={'pk': pet_id}))
+        # return redirect(reverse_lazy(
+        #     'clinic-dashboard') + f'?code={self.request.GET.get('code')}')
 
     def get_initial(self):
         # Pre-fill the email field from the query parameter

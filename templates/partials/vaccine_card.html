@@ -20,4 +20,8 @@
             <li class="list-group-item"><strong>Notes:</strong> {{ object.vaccine.notes }}</li>
         </ul>
     </div>
+
+    {% if source == 'pet' %}
+        {% include 'partials/back_buttons.html' %}
+    {% endif %}
 </div>

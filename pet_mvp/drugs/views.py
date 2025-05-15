@@ -20,12 +20,12 @@ class BaseDetailsView(views.DetailView):
 
 class VaccineDetailsView(BaseDetailsView):
     model = VaccinationRecord
-    template_name = "drugs/vaccine-details.html"
+    template_name = "drugs/vaccine_details.html"
 
 
 class DrugDetailsView(BaseDetailsView):
     model = MedicationRecord
-    template_name = "drugs/treatment-details.html"
+    template_name = "drugs/treatment_details.html"
 
 
 class BloodTestDetailsView(BaseDetailsView):

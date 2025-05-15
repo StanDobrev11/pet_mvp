@@ -47,11 +47,12 @@ class ClinicDashboard(auth_mixins.LoginRequiredMixin, views.DetailView):
         return pet
 
     def get_context_data(self, **kwargs):
-        pet = self.get_object()
-
-        context = super().get_context_data(**kwargs)
-        context['valid_vaccinations'] = pet.vaccine_records.filter(valid_until__gte=date.today()).order_by('-valid_until')
-        context['valid_treatments'] = pet.medication_records.filter(valid_until__gte=date.today()).order_by('-created_at')
-        context['last_examinations'] = pet.examination_records.all().order_by('-created_at')[:3]
-        context['code'] = self.request.GET.get('code')
-        return context
+        pass
+        # pet = self.get_object()
+        #
+        # context = super().get_context_data(**kwargs)
+        # context['valid_vaccinations'] = pet.vaccine_records.filter(valid_until__gte=date.today()).order_by('-valid_until')
+        # context['valid_treatments'] = pet.medication_records.filter(valid_until__gte=date.today()).order_by('-created_at')
+        # context['last_examinations'] = pet.examination_records.all().order_by('-created_at')[:3]
+        # context['code'] = self.request.GET.get('code')
+        # return context

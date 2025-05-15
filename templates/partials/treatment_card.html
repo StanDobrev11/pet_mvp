@@ -9,5 +9,7 @@
             <li class="list-group-item"><strong>Notes and how to administer:</strong> {{ object.medication.notes }}</li>
         </ul>
     </div>
-
+    {% if source == 'pet' %}
+        {% include 'partials/back_buttons.html' %}
+    {% endif %}
 </div>

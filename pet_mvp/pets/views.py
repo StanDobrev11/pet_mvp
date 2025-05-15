@@ -23,14 +23,17 @@ class PetDetailView(views.DetailView):
         pet = Pet.objects.get(pk=self.kwargs['pk'])
 
         # generate code
-        access_code = generate_access_code(pet)
+        user = self.request.user
+        if user.is_owner:
+            access_code = generate_access_code(pet)
+            context['access_code'] = access_code.code
 
         context['valid_vaccinations'] = pet.vaccine_records.filter(valid_until__gte=date.today()).order_by(
             '-valid_until')
         context['valid_treatments'] = pet.medication_records.filter(valid_until__gte=date.today()).order_by(
             '-created_at')
         context['last_examinations'] = pet.examination_records.all().order_by('-created_at')[:3]
-        context['access_code'] = access_code.code
+
         return context
 
 
@@ -61,7 +64,7 @@ class PetAddView(views.CreateView):
 class PetDeleteView(views.DeleteView):
     model = Pet
     success_url = reverse_lazy('dashboard')
-    template_name = 'pet/pet-delete.html'
+    template_name = 'pet/pet_delete.html'
 
     def get_object(self, queryset=None):
         return Pet.objects.get(pk=self.kwargs['pk'])
@@ -86,7 +89,7 @@ class MarkingAddView(views.FormView):
 
 
 class MarkingDetailsView(views.DetailView):
-    template_name = 'pet/marking-details.html'
+    template_name = 'pet/marking_details.html'
 
     def get_queryset(self):
         return Pet.objects.filter(pk=self.kwargs['pk'])

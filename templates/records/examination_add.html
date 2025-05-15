@@ -2,7 +2,7 @@
 {% load widget_tweaks %}
 
 {% block content %}
-    <form action="{% url 'exam-add' %}?source=clinic&code={{ code }}" method="post">
+    <form action="{% url 'exam-add' %}?source=pet&id={{ id }}" method="post">
         {% csrf_token %}
         <div class="container py-4">
             <h2 class="mb-4 text-center">Medical Examination Report for {{ pet.name }}</h2>
