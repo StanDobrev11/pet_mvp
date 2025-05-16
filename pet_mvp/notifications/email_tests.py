@@ -8,7 +8,7 @@ Usage:
 """
 from django.core.mail import send_mail
 from django.conf import settings
-from pet_mvp.common.email_service import EmailService
+from pet_mvp.notifications.email_service import EmailService
 
 
 def send_test_email(recipient_email):

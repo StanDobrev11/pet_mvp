@@ -3,7 +3,7 @@ from datetime import timedelta
 
 from django.contrib.auth import get_user_model
 from django.utils import timezone
-from pet_mvp.common.email_service import EmailService
+from pet_mvp.notifications.email_service import EmailService
 
 UserModel = get_user_model()
 
