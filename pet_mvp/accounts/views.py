@@ -155,20 +155,23 @@ class PasswordEntryView(BaseLoginView):
         return self.render_to_response(self.get_context_data(form=form))
 
     def form_valid(self, form):
-        # Automatically log the user in on successful authentication
         user = form.get_user()
-        # set the code cookie
         code = self.request.GET.get('code')
-        self.request.session['code'] = code
-        # login the clinic
+
+        # Log in the user
         login(self.request, user)
 
-        # get the pet ID
+        # Get the pet ID
         pet_id = Pet.objects.get(pet_access_code__code=code).pk
-        # redirect to pet_details view
-        return redirect(reverse_lazy('pet-details', kwargs={'pk': pet_id}))
-        # return redirect(reverse_lazy(
-        #     'clinic-dashboard') + f'?code={self.request.GET.get('code')}')
+
+        # Create the redirect response
+        response = redirect(reverse_lazy('pet-details', kwargs={'pk': pet_id}))
+
+        # Set the cookie on the response
+        # response.set_cookie('code', code)
+        self.request.session['code'] = code
+
+        return response
 
     def get_initial(self):
         # Pre-fill the email field from the query parameter
@@ -200,7 +203,9 @@ class ClinicRegistrationView(BaseUserRegisterView):
         return {'email': email}
 
     def get_success_url(self):
-        return reverse_lazy('clinic-dashboard') + f'?code={self.request.GET.get("code")}'
+        code = self.request.GET.get('code')
+        pet_id = Pet.objects.get(pet_access_code__code=code).pk
+        return reverse_lazy('pet-details', kwargs={'pk': pet_id})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -208,11 +213,14 @@ class ClinicRegistrationView(BaseUserRegisterView):
         return context
 
     def form_valid(self, form):
-        form = super().form_valid(form)
+        response = super().form_valid(form)
+        # response.set_cookie('code', self.request.GET.get('code'))
         login(self.request, self.object)
-        return form
+        self.request.session['code'] = self.request.GET.get('code')
+        return response
 
 
 def logout_view(request):
     logout(request)
+    
     return redirect('index')

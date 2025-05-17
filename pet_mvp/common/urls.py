@@ -1,9 +1,9 @@
+from django.contrib.auth.decorators import login_not_required
 from django.urls import path, include
 
-from pet_mvp.common.views import IndexView, DashboardView, ClinicDashboard
+from pet_mvp.common.views import IndexView, DashboardView
 
 urlpatterns = [
-    path('', IndexView.as_view(), name='index'),
+    path('', login_not_required(IndexView.as_view()), name='index'),
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
-    path('clinic-dashboard/', ClinicDashboard.as_view(), name='clinic-dashboard'),
 ]

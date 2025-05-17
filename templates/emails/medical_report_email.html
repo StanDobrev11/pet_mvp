@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Pet's Medical Examination Record</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            padding: 20px;
+            background-color: #f7f7f7;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section p {
+            margin: 6px 0;
+        }
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Medical Examination Record</h1>
+    <div class="section">
+        <p><strong>Pet Name:</strong> {{ pet_name }}</p>
+        <p><strong>Date of Entry:</strong> {{ date_of_entry }}</p>
+        <p><strong>Doctor:</strong> {{ doctor }}</p>
+        <p><strong>Clinic:</strong> {{ clinic_name }}, {{ clinic_address }}, {{ clinic_city }}, {{ clinic_country }} ({{ clinic_phone }})</p>
+    </div>
+
+    <div class="section">
+        <p><strong>Reason for Visit:</strong> {{ reason_for_visit }}</p>
+        <p><strong>General Health:</strong> {{ general_health }}</p>
+        <p><strong>Body Condition Score:</strong> {{ body_condition_score }}</p>
+        <p><strong>Temperature (°C):</strong> {{ temperature }}</p>
+        <p><strong>Heart Rate (bpm):</strong> {{ heart_rate }}</p>
+        <p><strong>Respiratory Rate:</strong> {{ respiratory_rate }}</p>
+    </div>
+
+    <div class="section">
+        <p><strong>Treatment Performed:</strong> {{ treatment_performed }}</p>
+        <p><strong>Diagnosis:</strong> {{ diagnosis }}</p>
+        <p><strong>Follow-up Required:</strong> {{ follow_up }}</p>
+        <p><strong>Additional Notes:</strong> {{ notes }}</p>
+    </div>
+
+    <div class="section">
+        <h2>Vaccinations</h2>
+        {% if vaccinations %}
+            {% for v in vaccinations %}
+                <p>• {{ v.name }} ({{ v.date }})</p>
+            {% endfor %}
+        {% else %}
+            <p>No vaccination records available.</p>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <h2>Medications</h2>
+        {% if medications %}
+            {% for m in medications %}
+                <p>• {{ m.name }} - {{ m.dosage }}</p>
+            {% endfor %}
+        {% else %}
+            <p>No medication records available.</p>
+        {% endif %}
+    </div>
+
+    <div class="footer">
+        This is an automated message from My Pet's Passport.
+    </div>
+</div>
+</body>
+</html>

@@ -11,3 +11,14 @@ services:
     image: redis:7-alpine
     ports:
       - "6379:6379"
+
+#  celery:
+#    build: .
+#    command: celery -A HairSaloon worker --loglevel=info
+#    depends_on:
+#      - redis
+#    environment:
+#      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+#      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+#    env_file:
+#      - .env

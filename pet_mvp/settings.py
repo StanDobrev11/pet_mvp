@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'pet_mvp.drugs.apps.DrugsConfig',
     'pet_mvp.pets.apps.PetsConfig',
     'pet_mvp.records.apps.RecordsConfig',
+    'pet_mvp.notifications.apps.NotificationsConfig',
 
     # 3rd party apps
     'widget_tweaks',
@@ -63,7 +64,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    # 'django.contrib.auth.middleware.LoginRequiredMiddleware',
+    'django.contrib.auth.middleware.LoginRequiredMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
