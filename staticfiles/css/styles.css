@@ -14,9 +14,9 @@ body {
 main {
     flex: 1;
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: center;
-    padding: 2rem;
+    padding: 0;
     background: linear-gradient(135deg, #fff, #1f8b62);
 }
 

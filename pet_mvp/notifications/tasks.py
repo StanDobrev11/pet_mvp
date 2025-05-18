@@ -101,9 +101,11 @@ def send_medical_record_email(exam):
             {"name": m.medication.name, "dosage": m.dosage}
             for m in exam.medications.all()
         ],
-        "blood_test": exam.blood_test,
-        "urine_test": exam.urine_test,
-        "fecal_test": exam.fecal_test,
+        # these must be included explicitly:
+        'blood_test': getattr(exam, 'blood_test', None),
+        'urine_test': getattr(exam, 'urine_test', None),
+        'fecal_test': getattr(exam, 'fecal_test', None),
+
     }
 
     EmailService.send_template_email_async.delay(

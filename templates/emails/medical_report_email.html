@@ -34,19 +34,16 @@
             color: #FF5722;
             font-weight: bold;
         }
-        .section {
-            margin-bottom: 20px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 15px;
-        }
-        .section:last-child {
-            border-bottom: none;
-        }
-        .section h2 {
+        .content h2 {
             color: #FF9800;
+            margin-top: 25px;
             margin-bottom: 10px;
         }
-        .section p {
+        .content h3 {
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+        .content p {
             margin: 6px 0;
         }
     </style>
@@ -57,84 +54,73 @@
             <h1>Medical Examination Record</h1>
         </div>
         <div class="content">
-            <div class="section">
-                <h2>Pet Information</h2>
-                <p><strong>Pet Name:</strong> {{ pet_name }}</p>
-                <p><strong>Date of Entry:</strong> {{ date_of_entry }}</p>
-                <p><strong>Doctor:</strong> {{ doctor }}</p>
-                <p><strong>Clinic:</strong> {{ clinic_name }}, {{ clinic_address }}, {{ clinic_city }}, {{ clinic_country }} ({{ clinic_phone }})</p>
-            </div>
 
-            <div class="section">
-                <h2>Examination Details</h2>
-                <p><strong>Reason for Visit:</strong> {{ reason_for_visit }}</p>
-                <p><strong>General Health:</strong> {{ general_health }}</p>
-                <p><strong>Body Condition Score:</strong> {{ body_condition_score }}</p>
-                <p><strong>Temperature (°C):</strong> {{ temperature }}</p>
-                <p><strong>Heart Rate (bpm):</strong> {{ heart_rate }}</p>
-                <p><strong>Respiratory Rate:</strong> {{ respiratory_rate }}</p>
-            </div>
+            <h2>Pet Information</h2>
+            <p><strong>Pet Name:</strong> {{ pet_name }}</p>
+            <p><strong>Date of Entry:</strong> {{ date_of_entry }}</p>
+            <p><strong>Doctor:</strong> {{ doctor }}</p>
+            <p><strong>Clinic:</strong> {{ clinic_name }}, {{ clinic_address }}, {{ clinic_city }}, {{ clinic_country }} ({{ clinic_phone }})</p>
 
-            <div class="section">
-                <h2>Test Results</h2>
+            <h2>Examination Details</h2>
+            <p><strong>Reason for Visit:</strong> {{ reason_for_visit }}</p>
+            <p><strong>General Health:</strong> {{ general_health }}</p>
+            <p><strong>Body Condition Score:</strong> {{ body_condition_score }}</p>
+            <p><strong>Temperature (°C):</strong> {{ temperature }}</p>
+            <p><strong>Heart Rate (bpm):</strong> {{ heart_rate }}</p>
+            <p><strong>Respiratory Rate:</strong> {{ respiratory_rate }}</p>
 
-                <h3>Blood Test</h3>
-                {% if blood_test %}
-                    <p><strong>Test Name:</strong> {{ blood_test.name }}</p>
-                    <p><strong>Results:</strong> {{ blood_test.results }}</p>
-                    <p><strong>Notes:</strong> {{ blood_test.notes }}</p>
-                {% else %}
-                    <p>No blood test performed.</p>
-                {% endif %}
+            <h2>Test Results</h2>
 
-                <h3>Urine Test</h3>
-                {% if urine_test %}
-                    <p><strong>Test Name:</strong> {{ urine_test.name }}</p>
-                    <p><strong>Results:</strong> {{ urine_test.results }}</p>
-                    <p><strong>Notes:</strong> {{ urine_test.notes }}</p>
-                {% else %}
-                    <p>No urine test performed.</p>
-                {% endif %}
+            <h3>Blood Test</h3>
+            {% if blood_test %}
+                <p><strong>Test Name:</strong> {{ blood_test.name }}</p>
+                <p><strong>Results:</strong> {{ blood_test.results }}</p>
+                <p><strong>Notes:</strong> {{ blood_test.notes }}</p>
+            {% else %}
+                <p>No blood test performed.</p>
+            {% endif %}
 
-                <h3>Fecal Test</h3>
-                {% if fecal_test %}
-                    <p><strong>Test Name:</strong> {{ fecal_test.name }}</p>
-                    <p><strong>Results:</strong> {{ fecal_test.results }}</p>
-                    <p><strong>Notes:</strong> {{ fecal_test.notes }}</p>
-                {% else %}
-                    <p>No fecal test performed.</p>
-                {% endif %}
-            </div>
+            <h3>Urine Test</h3>
+            {% if urine_test %}
+                <p><strong>Test Name:</strong> {{ urine_test.name }}</p>
+                <p><strong>Results:</strong> {{ urine_test.results }}</p>
+                <p><strong>Notes:</strong> {{ urine_test.notes }}</p>
+            {% else %}
+                <p>No urine test performed.</p>
+            {% endif %}
 
-            <div class="section">
-                <h2>Diagnosis & Treatment</h2>
-                <p><strong>Treatment Performed:</strong> {{ treatment_performed }}</p>
-                <p><strong>Diagnosis:</strong> {{ diagnosis }}</p>
-                <p><strong>Follow-up Required:</strong> {% if follow_up %}<span class="highlight">Yes</span>{% else %}No{% endif %}</p>
-                <p><strong>Additional Notes:</strong> {{ notes }}</p>
-            </div>
+            <h3>Fecal Test</h3>
+            {% if fecal_test %}
+                <p><strong>Test Name:</strong> {{ fecal_test.name }}</p>
+                <p><strong>Results:</strong> {{ fecal_test.results }}</p>
+                <p><strong>Notes:</strong> {{ fecal_test.notes }}</p>
+            {% else %}
+                <p>No fecal test performed.</p>
+            {% endif %}
 
-            <div class="section">
-                <h2>Vaccinations</h2>
-                {% if vaccinations %}
-                    {% for v in vaccinations %}
-                        <p>• {{ v.name }} ({{ v.date }})</p>
-                    {% endfor %}
-                {% else %}
-                    <p>No vaccination records available.</p>
-                {% endif %}
-            </div>
+            <h2>Diagnosis & Treatment</h2>
+            <p><strong>Treatment Performed:</strong> {{ treatment_performed }}</p>
+            <p><strong>Diagnosis:</strong> {{ diagnosis }}</p>
+            <p><strong>Follow-up Required:</strong> {% if follow_up %}<span class="highlight">Yes</span>{% else %}No{% endif %}</p>
+            <p><strong>Additional Notes:</strong> {{ notes }}</p>
 
-            <div class="section">
-                <h2>Medications</h2>
-                {% if medications %}
-                    {% for m in medications %}
-                        <p>• {{ m.name }} - {{ m.dosage }}</p>
-                    {% endfor %}
-                {% else %}
-                    <p>No medication records available.</p>
-                {% endif %}
-            </div>
+            <h2>Vaccinations</h2>
+            {% if vaccinations %}
+                {% for v in vaccinations %}
+                    <p>• {{ v.name }} ({{ v.date }})</p>
+                {% endfor %}
+            {% else %}
+                <p>No vaccination records available.</p>
+            {% endif %}
+
+            <h2>Medications</h2>
+            {% if medications %}
+                {% for m in medications %}
+                    <p>• {{ m.name }} - {{ m.dosage }}</p>
+                {% endfor %}
+            {% else %}
+                <p>No medication records available.</p>
+            {% endif %}
 
             <p>Thank you for taking good care of your pet's health!</p>
             <p>Best regards,<br>The Pet MVP Team</p>
