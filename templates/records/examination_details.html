@@ -1,61 +1,62 @@
 {% extends "base.html" %}
 {% load record_tags %}
+{% load i18n %}
 
 {% block content %}
     <section class="container py-4">
-        <h1 class="mb-4 text-center">Medical Examination Record for {{ object.pet.name }}</h1>
+        <h1 class="mb-4 text-center">{% trans "Medical Examination Record for" %} {{ object.pet.name }}</h1>
 
         <div class="card mb-4">
             <div class="card-body">
-                <p><strong>Date of Entry:</strong> {{ object.date_of_entry }}</p>
-                <p><strong>Doctor:</strong> {{ object.doctor }}</p>
+                <p><strong>{% trans "Date of Entry:" %}</strong> {{ object.date_of_entry }}</p>
+                <p><strong>{% trans "Doctor:" %}</strong> {{ object.doctor }}</p>
                 <p>
-                    <strong>Clinic:</strong> {{ clinic.clinic_name }}, {{ clinic.clinic_address }}, {{ clinic.city }}, {{ clinic.country }}, {{ clinic.phone_number }}
+                    <strong>{% trans "Clinic:" %}</strong> {{ clinic.clinic_name }}, {{ clinic.clinic_address }}, {{ clinic.city }}, {{ clinic.country }}, {{ clinic.phone_number }}
                 </p>
-                <p><strong>Reason for Visit:</strong> {{ object.reason_for_visit }}</p>
-                <p><strong>General Health:</strong> {{ object.general_health }}</p>
-                <p><strong>Body Condition Score:</strong> {{ object.body_condition_score }}</p>
-                <p><strong>Temperature (°C):</strong> {{ object.temperature }}</p>
-                <p><strong>Heart Rate (bpm):</strong> {{ object.heart_rate }}</p>
-                <p><strong>Respiratory Rate:</strong> {{ object.respiratory_rate }}</p>
-                <p><strong>Treatment Performed:</strong> {{ object.treatment_performed }}</p>
-                <p><strong>Diagnosis:</strong> {{ object.diagnosis }}</p>
-                <p><strong>Follow-up Required:</strong> {{ object.follow_up|yesno:"Yes,No" }}</p>
-                <p><strong>Additional Notes:</strong> {{ object.notes }}</p>
+                <p><strong>{% trans "Reason for Visit:" %}</strong> {{ object.reason_for_visit }}</p>
+                <p><strong>{% trans "General Health:" %}</strong> {{ object.general_health }}</p>
+                <p><strong>{% trans "Body Condition Score:" %}</strong> {{ object.body_condition_score }}</p>
+                <p><strong>{% trans "Temperature (°C):" %}</strong> {{ object.temperature }}</p>
+                <p><strong>{% trans "Heart Rate (bpm):" %}</strong> {{ object.heart_rate }}</p>
+                <p><strong>{% trans "Respiratory Rate:" %}</strong> {{ object.respiratory_rate }}</p>
+                <p><strong>{% trans "Treatment Performed:" %}</strong> {{ object.treatment_performed }}</p>
+                <p><strong>{% trans "Diagnosis:" %}</strong> {{ object.diagnosis }}</p>
+                <p><strong>{% trans "Follow-up Required:" %}</strong> {{ object.follow_up|yesno:"{% trans 'Yes' %},{% trans 'No' %}" }}</p>
+                <p><strong>{% trans "Additional Notes:" %}</strong> {{ object.notes }}</p>
             </div>
         </div>
 
-        <h2 class="mt-5">Related Records</h2>
+        <h2 class="mt-5">{% trans "Related Records" %}</h2>
 
         {% for record in object.vaccinations.all %}
             {% include "partials/vaccine_card.html" with object=record source='exam' id=object.id %}
         {% empty %}
-            <div class="alert alert-secondary">No vaccination records available.</div>
+            <div class="alert alert-secondary">{% trans "No vaccination records available." %}</div>
         {% endfor %}
 
 
         {% for record in object.medications.all %}
             {% include "partials/treatment_card.html" with object=record source='exam' id=object.id %}
         {% empty %}
-            <div class="alert alert-secondary">No medication records available.</div>
+            <div class="alert alert-secondary">{% trans "No medication records available." %}</div>
         {% endfor %}
 
         {% for record in object.blood_test|ensure_iterable %}
             {% include "partials/blood_test_card.html" with object=record source='exam' id=object.id %}
         {% empty %}
-            <div class="alert alert-secondary">No blood test records available.</div>
+            <div class="alert alert-secondary">{% trans "No blood test records available." %}</div>
         {% endfor %}
 
         {% for record in object.urine_test|ensure_iterable %}
             {% include "partials/urine_test_card.html" with object=record source='exam' id=object.id %}
         {% empty %}
-            <div class="alert alert-secondary">No urine test records available.</div>
+            <div class="alert alert-secondary">{% trans "No urine test records available." %}</div>
         {% endfor %}
 
         {% for record in object.fecal_test|ensure_iterable %}
             {% include "partials/fecal_test_card.html" with object=record source='exam' id=object.id %}
         {% empty %}
-            <div class="alert alert-secondary">No fecal test records available.</div>
+            <div class="alert alert-secondary">{% trans "No fecal test records available." %}</div>
         {% endfor %}
         {% include 'partials/back_buttons.html' %}
     </section>

@@ -7,9 +7,9 @@
     <form action="{% url 'exam-add' %}?source=pet&id={{ id }}" method="post">
         {% csrf_token %}
         <div class="container py-4">
-            <h2 class="mb-4 text-center">Medical Examination Report for {{ pet.name }}</h2>
+            <h2 class="mb-4 text-center">{% trans "Medical Examination Report for" %} {{ pet.name }}</h2>
 
-            <h4>Basic Information</h4>
+            <h4>{% trans "Basic Information" %}</h4>
             <div class="row g-3">
                 <div class="col-md-6">
                     <label for="id_date_of_entry" class="form-label">{{ form.date_of_entry.label }}</label>
@@ -51,8 +51,8 @@
 
             </div>
 
-            <h4 class="mt-4">Additional Information</h4>
-            <button type="button" id="add-info-form-button" class="btn btn-outline-secondary mb-3">Show</button>
+            <h4 class="mt-4">{% trans "Additional Information" %}</h4>
+            <button type="button" id="add-info-form-button" class="btn btn-outline-secondary mb-3">{% trans "Show" %}</button>
             <div id="add-info-container"></div>
 
             <template id="add-info-form-template">
@@ -69,14 +69,14 @@
                 </div>
             </template>
 
-            <h4 class="mt-4">Vaccines</h4>
+            <h4 class="mt-4">{% trans "Vaccines" %}</h4>
             <div id="vaccination-forms">
                 {{ vaccine_formset.management_form }}
                 {% for form in vaccine_formset %}
                     <div class="border rounded p-3 mb-3 vaccine-form">
 
                         {% include 'partials/vaccine_add_card.html' %}
-                        <button type="button" class="btn btn-danger remove-vaccine-form">Remove</button>
+                        <button type="button" class="btn btn-danger remove-vaccine-form">{% trans "Remove" %}</button>
                     </div>
                 {% endfor %}
             </div>
@@ -84,30 +84,30 @@
                 <div class="border rounded p-3 mb-3 vaccine-form">
 
                     {% include 'partials/vaccine_add_card.html' with form=vaccine_formset.empty_form %}
-                    <button type="button" class="btn btn-danger remove-vaccine-form">Remove</button>
+                    <button type="button" class="btn btn-danger remove-vaccine-form">{% trans "Remove" %}</button>
                 </div>
             </template>
-            <button type="button" id="add-vaccine-form" class="btn btn-outline-primary">Add Vaccine</button>
+            <button type="button" id="add-vaccine-form" class="btn btn-outline-primary">{% trans "Add Vaccine" %}</button>
 
-            <h4 class="mt-4">Treatments</h4>
+            <h4 class="mt-4">{% trans "Treatments" %}</h4>
             <div id="treatment-forms">
                 {{ treatment_formset.management_form }}
                 {% for form in treatment_formset %}
                     <div class="border rounded p-3 mb-3 treatment-form">
                         {% include 'partials/treatment_add_card.html' %}
-                        <button type="button" class="btn btn-danger remove-treatment-form">Remove</button>
+                        <button type="button" class="btn btn-danger remove-treatment-form">{% trans "Remove" %}</button>
                     </div>
                 {% endfor %}
             </div>
             <template id="empty-treatment-form">
                 <div class="border rounded p-3 mb-3 treatment-form">
                     {% include 'partials/treatment_add_card.html' with form=treatment_formset.empty_form %}
-                    <button type="button" class="btn btn-danger remove-treatment-form">Remove</button>
+                    <button type="button" class="btn btn-danger remove-treatment-form">{% trans "Remove" %}</button>
                 </div>
             </template>
-            <button type="button" id="add-treatment-form" class="btn btn-outline-primary">Add Treatment</button>
+            <button type="button" id="add-treatment-form" class="btn btn-outline-primary">{% trans "Add Treatment" %}</button>
 
-            <h4 class="mt-4">Blood Test</h4>
+            <h4 class="mt-4">{% trans "Blood Test" %}</h4>
             <div id="blood-test-form-container"></div>
             <template id="blood-test-template">
                 <div id="blood-test-form" class="border rounded p-3 mb-3">
@@ -115,10 +115,10 @@
                     <input type="hidden" name="has_blood_test" value="1">
                 </div>
             </template>
-            <button type="button" id="add-remove-blood-test-form" class="btn btn-outline-secondary">Add Blood Test
+            <button type="button" id="add-remove-blood-test-form" class="btn btn-outline-secondary">{% trans "Add Blood Test" %}
             </button>
 
-            <h4 class="mt-4">Urine Test</h4>
+            <h4 class="mt-4">{% trans "Urine Test" %}</h4>
             <div id="urine-test-form-container"></div>
             <template id="urine-test-template">
                 <div id="urine-test-form" class="border rounded p-3 mb-3">
@@ -126,10 +126,10 @@
                     <input type="hidden" name="has_urine_test" value="1">
                 </div>
             </template>
-            <button type="button" id="add-remove-urine-test-form" class="btn btn-outline-secondary">Add Urine Test
+            <button type="button" id="add-remove-urine-test-form" class="btn btn-outline-secondary">{% trans "Add Urine Test" %}
             </button>
 
-            <h4 class="mt-4">Fecal Test</h4>
+            <h4 class="mt-4">{% trans "Fecal Test" %}</h4>
             <div id="fecal-test-form-container"></div>
             <template id="fecal-test-template">
                 <div id="fecal-test-form" class="border rounded p-3 mb-3">
@@ -137,10 +137,10 @@
                     <input type="hidden" name="has_fecal_test" value="1">
                 </div>
             </template>
-            <button type="button" id="add-remove-fecal-test-form" class="btn btn-outline-secondary">Add Fecal Test
+            <button type="button" id="add-remove-fecal-test-form" class="btn btn-outline-secondary">{% trans "Add Fecal Test" %}
             </button>
             <div class="mt-4">
-                <button type="submit" class="btn btn-success">Save</button>
+                <button type="submit" class="btn btn-success">{% trans "Save" %}</button>
                 {% include 'partials/back_buttons.html' %}
             </div>
         </div>

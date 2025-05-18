@@ -1,19 +1,20 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block content %}
 <section class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="p-4 border rounded bg-light text-center">
-                <h2 class="mb-4 text-danger">Confirm Deletion</h2>
-                <p class="mb-4">Are you sure you want to delete <strong>{{ object }}</strong>?</p>
+                <h2 class="mb-4 text-danger">{% trans "Confirm Deletion" %}</h2>
+                <p class="mb-4">{% trans "Are you sure you want to delete" %} <strong>{{ object }}</strong>?</p>
 
                 <form action="{% url 'pet-delete' pk=object.pk %}" method="post">
                     {% csrf_token %}
 
                     <div class="d-grid gap-2 d-md-flex justify-content-center">
-                        <button type="submit" class="btn btn-danger">Yes, Delete</button>
-                        <a href="{% url 'pet-details' pk=object.pk %}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-danger">{% trans "Yes, Delete" %}</button>
+                        <a href="{% url 'pet-details' pk=object.pk %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
                     </div>
                 </form>
             </div>

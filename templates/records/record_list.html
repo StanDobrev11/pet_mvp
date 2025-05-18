@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block content %}
 <section class="container mt-5">
@@ -6,7 +7,7 @@
         <div class="col-md-12">
 
             <div class="mb-4">
-                <h3>Vaccinations</h3>
+                <h3>{% trans "Vaccinations" %}</h3>
                 {% if vaccines %}
                     <ul class="list-group">
                         {% for vaccine in vaccines %}
@@ -18,12 +19,12 @@
                         {% endfor %}
                     </ul>
                 {% else %}
-                    <div class="alert alert-info">No vaccinations yet!</div>
+                    <div class="alert alert-info">{% trans "No vaccinations yet!" %}</div>
                 {% endif %}
             </div>
 
             <div class="mb-4">
-                <h3>Medications or Treatments</h3>
+                <h3>{% trans "Medications or Treatments" %}</h3>
                 {% if treatments %}
                     <ul class="list-group">
                         {% for treatment in treatments %}
@@ -35,12 +36,12 @@
                         {% endfor %}
                     </ul>
                 {% else %}
-                    <div class="alert alert-info">No medications or treatments yet!</div>
+                    <div class="alert alert-info">{% trans "No medications or treatments yet!" %}</div>
                 {% endif %}
             </div>
 
             <div class="mb-4">
-                <h3>Pet Examinations</h3>
+                <h3>{% trans "Pet Examinations" %}</h3>
                 {% if examinations %}
                     <ul class="list-group">
                         {% for exam in examinations %}
@@ -52,11 +53,11 @@
                         {% endfor %}
                     </ul>
                 {% else %}
-                    <div class="alert alert-info">No examinations yet!</div>
+                    <div class="alert alert-info">{% trans "No examinations yet!" %}</div>
                 {% endif %}
             </div>
 
-            <a href="{% url 'pet-details' pk=id %}" class="btn btn-secondary">Back to Pet Details</a>
+            <a href="{% url 'pet-details' pk=id %}" class="btn btn-secondary">{% trans "Back to Pet Details" %}</a>
         </div>
     </div>
 </section>

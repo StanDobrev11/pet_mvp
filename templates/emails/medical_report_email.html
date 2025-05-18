@@ -1,8 +1,9 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Your Pet's Medical Examination Record</title>
+    <title>{% trans "Your Pet's Medical Examination Record" %}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -51,82 +52,91 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Medical Examination Record</h1>
+            <h1>{% trans "Medical Examination Record" %}</h1>
         </div>
         <div class="content">
 
-            <h2>Pet Information</h2>
-            <p><strong>Pet Name:</strong> {{ pet_name }}</p>
-            <p><strong>Date of Entry:</strong> {{ date_of_entry }}</p>
-            <p><strong>Doctor:</strong> {{ doctor }}</p>
-            <p><strong>Clinic:</strong> {{ clinic_name }}, {{ clinic_address }}, {{ clinic_city }}, {{ clinic_country }} ({{ clinic_phone }})</p>
+            <h2>{% trans "Pet Information" %}</h2>
+            <p><strong>{% trans "Pet Name:" %}</strong> {{ pet_name }}</p>
+            <p><strong>{% trans "Date of Entry:" %}</strong> {{ date_of_entry }}</p>
+            <p><strong>{% trans "Doctor:" %}</strong> {{ doctor }}</p>
+            <p><strong>{% trans "Clinic:" %}</strong> {{ clinic_name }}, {{ clinic_address }}, {{ clinic_city }}, {{ clinic_country }} ({{ clinic_phone }})</p>
 
-            <h2>Examination Details</h2>
-            <p><strong>Reason for Visit:</strong> {{ reason_for_visit }}</p>
-            <p><strong>General Health:</strong> {{ general_health }}</p>
-            <p><strong>Body Condition Score:</strong> {{ body_condition_score }}</p>
-            <p><strong>Temperature (°C):</strong> {{ temperature }}</p>
-            <p><strong>Heart Rate (bpm):</strong> {{ heart_rate }}</p>
-            <p><strong>Respiratory Rate:</strong> {{ respiratory_rate }}</p>
+            <h2>{% trans "Examination Details" %}</h2>
+            <p><strong>{% trans "Reason for Visit:" %}</strong> {{ reason_for_visit }}</p>
+            <p><strong>{% trans "General Health:" %}</strong> {{ general_health }}</p>
+            <p><strong>{% trans "Body Condition Score:" %}</strong> {{ body_condition_score }}</p>
+            <p><strong>{% trans "Temperature (°C):" %}</strong> {{ temperature }}</p>
+            <p><strong>{% trans "Heart Rate (bpm):" %}</strong> {{ heart_rate }}</p>
+            <p><strong>{% trans "Respiratory Rate:" %}</strong> {{ respiratory_rate }}</p>
 
-            <h2>Test Results</h2>
+            <h2>{% trans "Test Results" %}</h2>
 
-            <h3>Blood Test</h3>
+            <h3>{% trans "Blood Test" %}</h3>
             {% if blood_test %}
-                <p><strong>Test Name:</strong> {{ blood_test.name }}</p>
-                <p><strong>Results:</strong> {{ blood_test.results }}</p>
-                <p><strong>Notes:</strong> {{ blood_test.notes }}</p>
+                <p><strong>{% trans "Test Name:" %}</strong> {{ blood_test.name }}</p>
+                <p><strong>{% trans "Results:" %}</strong> {{ blood_test.results }}</p>
+                <p><strong>{% trans "Notes:" %}</strong> {{ blood_test.notes }}</p>
+                {% if blood_test.date_conducted %}
+                    <p><strong>{% trans "Date Conducted:" %}</strong> {{ blood_test.date_conducted }}</p>
+                {% endif %}
             {% else %}
-                <p>No blood test performed.</p>
+                <p>{% trans "No blood test performed." %}</p>
             {% endif %}
 
-            <h3>Urine Test</h3>
+            <h3>{% trans "Urine Test" %}</h3>
             {% if urine_test %}
-                <p><strong>Test Name:</strong> {{ urine_test.name }}</p>
-                <p><strong>Results:</strong> {{ urine_test.results }}</p>
-                <p><strong>Notes:</strong> {{ urine_test.notes }}</p>
+                <p><strong>{% trans "Test Name:" %}</strong> {{ urine_test.name }}</p>
+                <p><strong>{% trans "Results:" %}</strong> {{ urine_test.results }}</p>
+                <p><strong>{% trans "Notes:" %}</strong> {{ urine_test.notes }}</p>
+                {% if urine_test.date_conducted %}
+                    <p><strong>{% trans "Date Conducted:" %}</strong> {{ urine_test.date_conducted }}</p>
+                {% endif %}
             {% else %}
-                <p>No urine test performed.</p>
+                <p>{% trans "No urine test performed." %}</p>
             {% endif %}
 
-            <h3>Fecal Test</h3>
+            <h3>{% trans "Fecal Test" %}</h3>
             {% if fecal_test %}
-                <p><strong>Test Name:</strong> {{ fecal_test.name }}</p>
-                <p><strong>Results:</strong> {{ fecal_test.results }}</p>
-                <p><strong>Notes:</strong> {{ fecal_test.notes }}</p>
+                <p><strong>{% trans "Test Name:" %}</strong> {{ fecal_test.name }}</p>
+                <p><strong>{% trans "Results:" %}</strong> {{ fecal_test.results }}</p>
+                <p><strong>{% trans "Notes:" %}</strong> {{ fecal_test.notes }}</p>
+                {% if fecal_test.date_conducted %}
+                    <p><strong>{% trans "Date Conducted:" %}</strong> {{ fecal_test.date_conducted }}</p>
+                {% endif %}
             {% else %}
-                <p>No fecal test performed.</p>
+                <p>{% trans "No fecal test performed." %}</p>
             {% endif %}
 
-            <h2>Diagnosis & Treatment</h2>
-            <p><strong>Treatment Performed:</strong> {{ treatment_performed }}</p>
-            <p><strong>Diagnosis:</strong> {{ diagnosis }}</p>
-            <p><strong>Follow-up Required:</strong> {% if follow_up %}<span class="highlight">Yes</span>{% else %}No{% endif %}</p>
-            <p><strong>Additional Notes:</strong> {{ notes }}</p>
+            <h2>{% trans "Diagnosis & Treatment" %}</h2>
+            <p><strong>{% trans "Treatment Performed:" %}</strong> {{ treatment_performed }}</p>
+            <p><strong>{% trans "Diagnosis:" %}</strong> {{ diagnosis }}</p>
+            <p><strong>{% trans "Follow-up Required:" %}</strong> {% if follow_up %}<span class="highlight">{% trans "Yes" %}</span>{% else %}{% trans "No" %}{% endif %}</p>
+            <p><strong>{% trans "Additional Notes:" %}</strong> {{ notes }}</p>
 
-            <h2>Vaccinations</h2>
+            <h2>{% trans "Vaccinations" %}</h2>
             {% if vaccinations %}
                 {% for v in vaccinations %}
                     <p>• {{ v.name }} ({{ v.date }})</p>
                 {% endfor %}
             {% else %}
-                <p>No vaccination records available.</p>
+                <p>{% trans "No vaccination records available." %}</p>
             {% endif %}
 
-            <h2>Medications</h2>
+            <h2>{% trans "Medications" %}</h2>
             {% if medications %}
                 {% for m in medications %}
                     <p>• {{ m.name }} - {{ m.dosage }}</p>
                 {% endfor %}
             {% else %}
-                <p>No medication records available.</p>
+                <p>{% trans "No medication records available." %}</p>
             {% endif %}
 
-            <p>Thank you for taking good care of your pet's health!</p>
-            <p>Best regards,<br>The Pet MVP Team</p>
+            <p>{% trans "Thank you for taking good care of your pet's health!" %}</p>
+            <p>{% trans "Best regards," %}<br>{% trans "The Pet MVP Team" %}</p>
         </div>
         <div class="footer">
-            <p>This is an automated message from My Pet's Passport. Please do not reply to this email.</p>
+            <p>{% trans "This is an automated message from My Pet's Passport. Please do not reply to this email." %}</p>
         </div>
     </div>
 </body>

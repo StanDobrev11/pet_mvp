@@ -1,20 +1,21 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block content %}
 <section class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="p-4 border rounded bg-light">
-                <h3 class="mb-4">Marking Details</h3>
+                <h3 class="mb-4">{% trans "Marking Details" %}</h3>
 
                 <ul class="list-group mb-4">
-                    <li class="list-group-item"><strong>Marking Type:</strong> {{ object.type }}</li>
-                    <li class="list-group-item"><strong>Unique Code Identification:</strong> {{ object.code }}</li>
-                    <li class="list-group-item"><strong>Location of the Marking:</strong> {{ object.location }}</li>
-                    <li class="list-group-item"><strong>Date of Application:</strong> {{ object.date_of_application }}</li>
+                    <li class="list-group-item"><strong>{% trans "Marking Type:" %}</strong> {{ object.type }}</li>
+                    <li class="list-group-item"><strong>{% trans "Unique Code Identification:" %}</strong> {{ object.code }}</li>
+                    <li class="list-group-item"><strong>{% trans "Location of the Marking:" %}</strong> {{ object.location }}</li>
+                    <li class="list-group-item"><strong>{% trans "Date of Application:" %}</strong> {{ object.date_of_application }}</li>
                 </ul>
 
-                <a href="{% url 'pet-details' pk=pet_pk %}" class="btn btn-secondary">Back to Pet's Details</a>
+                <a href="{% url 'pet-details' pk=pet_pk %}" class="btn btn-secondary">{% trans "Back to Pet's Details" %}</a>
             </div>
         </div>
     </div>

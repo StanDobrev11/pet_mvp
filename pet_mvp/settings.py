@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # third-party translation
+    'modeltranslation',
+
     # my apps
     'pet_mvp.access_codes.apps.AccessCodesConfig',
     'pet_mvp.accounts.apps.AccountsConfig',

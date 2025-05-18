@@ -67,6 +67,18 @@ def send_vaccine_expiration_notifications():
     return _("Processed {} vaccine expiration notifications").format(notifications_sent)
 
 
+def test_to_dict(test_obj):
+    """Convert a test object to a dictionary for JSON serialization"""
+    if test_obj is None:
+        return None
+
+    return {
+        "name": test_obj.name,
+        "results": test_obj.result,  # Note: template uses 'results' but model has 'result'
+        "notes": test_obj.additional_notes or _("N/A"),
+        "date_conducted": test_obj.date_conducted.strftime("%Y-%m-%d") if hasattr(test_obj, 'date_conducted') else None
+    }
+
 @shared_task
 def send_medical_record_email(exam):
     """task to send one-time notification on creation of a medical record"""
@@ -102,10 +114,10 @@ def send_medical_record_email(exam):
             {"name": m.medication.name, "dosage": m.dosage}
             for m in exam.medications.all()
         ],
-        # these must be included explicitly:
-        'blood_test': getattr(exam, 'blood_test', None),
-        'urine_test': getattr(exam, 'urine_test', None),
-        'fecal_test': getattr(exam, 'fecal_test', None),
+        # Convert test objects to dictionaries for JSON serialization
+        'blood_test': test_to_dict(getattr(exam, 'blood_test', None)),
+        'urine_test': test_to_dict(getattr(exam, 'urine_test', None)),
+        'fecal_test': test_to_dict(getattr(exam, 'fecal_test', None)),
 
     }
 
