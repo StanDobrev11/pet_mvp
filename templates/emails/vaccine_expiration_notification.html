@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Vaccine Expiration Notice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #FF9800;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .content {
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+        }
+        .highlight {
+            color: #FF5722;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Vaccine Expiration Notice</h1>
+        </div>
+        <div class="content">
+            <p>Dear Pet Owner,</p>
+            <p>This is an important notice regarding your pet <strong>{{ pet_name }}</strong>'s vaccination status.</p>
+            
+            <p>The <strong>{{ vaccine }}</strong> vaccine for {{ pet_name }} will expire <span class="highlight">{{ time_left }}</span> (on <strong>{{ expiration_date }}</strong>).</p>
+            
+            {% if time_left != "today" %}
+            <p>Please plan to schedule a new vaccination appointment before the current one expires to ensure your pet remains protected.</p>
+            {% else %}
+            <p>The vaccine has expired today. Please schedule a new vaccination appointment as soon as possible to ensure your pet remains protected.</p>
+            {% endif %}
+            
+            <p>Keeping vaccinations up to date is essential for your pet's health and wellbeing.</p>
+            
+            <p>Thank you for taking good care of your pet's health!</p>
+            <p>Best regards,<br>The Pet MVP Team</p>
+        </div>
+        <div class="footer">
+            <p>This is an automated message. Please do not reply to this email.</p>
+        </div>
+    </div>
+</body>
+</html>

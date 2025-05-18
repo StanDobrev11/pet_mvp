@@ -10,7 +10,8 @@ from pet_mvp.accounts.models import Clinic
 from pet_mvp.access_codes.models import PetAccessCode
 from pet_mvp.drugs.models import Vaccine, Drug, BloodTest, UrineTest, FecalTest
 from pet_mvp.pets.models import Pet
-from pet_mvp.records.forms import MedicalExaminationRecordForm
+from pet_mvp.records.forms import MedicalExaminationRecordForm, VaccineFormSet, TreatmentFormSet, BloodTestForm, \
+    UrineTestForm, FecalTestForm
 from pet_mvp.records.models import MedicalExaminationRecord, VaccinationRecord, MedicationRecord
 from pet_mvp.records.views import MedicalExaminationReportCreateView
 
@@ -49,12 +50,12 @@ class MedicalExaminationReportCreateViewTest(TestCase):
         # Create test data for optional models
         self.vaccine = Vaccine.objects.create(
             name='Test Vaccine',
-            description='Test vaccine description'
+            notes='Test vaccine description'
         )
 
         self.drug = Drug.objects.create(
             name='Test Drug',
-            description='Test drug description'
+            notes='Test drug description'
         )
 
     def setup_request(self, request, user=None):
@@ -68,7 +69,7 @@ class MedicalExaminationReportCreateViewTest(TestCase):
     def test_get_context_data(self):
         """Test that the view adds the correct context data"""
         url = reverse('exam-add')
-        request = self.factory.get(f"{url}?code={self.access_code.code}&source=test")
+        request = self.factory.get(f"{url}?source=test&id={self.pet.id}")
         request = self.setup_request(request)
 
         view = MedicalExaminationReportCreateView()
@@ -79,7 +80,6 @@ class MedicalExaminationReportCreateViewTest(TestCase):
 
         # Assert context contains expected data
         self.assertEqual(context['pet'], self.pet)
-        self.assertEqual(context['code'], self.access_code.code)
         self.assertEqual(context['source'], 'test')
         self.assertIsInstance(context['report_form'], MedicalExaminationRecordForm)
         self.assertIn('vaccine_formset', context)
@@ -95,6 +95,7 @@ class MedicalExaminationReportCreateViewTest(TestCase):
 
         # Create post data for basic examination record
         post_data = {
+            'id': self.pet.id,
             'exam_type': 'primary',
             'date_of_entry': datetime.date.today().strftime('%Y-%m-%d'),
             'doctor': 'Dr. Test',
@@ -111,7 +112,7 @@ class MedicalExaminationReportCreateViewTest(TestCase):
             'treatments-MAX_NUM_FORMS': '1000',
         }
 
-        request = self.factory.post(f"{url}?code={self.access_code.code}", data=post_data)
+        request = self.factory.post(f"{url}", data=post_data)
         request = self.setup_request(request)
 
         view = MedicalExaminationReportCreateView()
@@ -124,7 +125,7 @@ class MedicalExaminationReportCreateViewTest(TestCase):
 
         # Call form_valid and check redirect
         response = view.form_valid(form)
-        self.assertEqual(response.status_code, 302)  # Redirect
+        self.assertEqual(response.status_code, 302)
 
         # Check that a record was created
         self.assertEqual(MedicalExaminationRecord.objects.count(), 1)
@@ -139,6 +140,7 @@ class MedicalExaminationReportCreateViewTest(TestCase):
 
         # Create post data for examination with vaccines
         post_data = {
+            'id': self.pet.id,
             'exam_type': 'primary',
             'date_of_entry': datetime.date.today().strftime('%Y-%m-%d'),
             'doctor': 'Dr. Test',
@@ -165,7 +167,7 @@ class MedicalExaminationReportCreateViewTest(TestCase):
             'treatments-MAX_NUM_FORMS': '1000',
         }
 
-        request = self.factory.post(f"{url}?code={self.access_code.code}", data=post_data)
+        request = self.factory.post(f"{url}", data=post_data)
         request = self.setup_request(request)
 
         view = MedicalExaminationReportCreateView()
@@ -196,6 +198,7 @@ class MedicalExaminationReportCreateViewTest(TestCase):
 
         # Create post data for examination with treatments
         post_data = {
+            'id': self.pet.id,
             'exam_type': 'primary',
             'date_of_entry': datetime.date.today().strftime('%Y-%m-%d'),
             'doctor': 'Dr. Test',
@@ -220,7 +223,7 @@ class MedicalExaminationReportCreateViewTest(TestCase):
             'treatments-0-valid_until': (datetime.date.today() + datetime.timedelta(days=30)).strftime('%Y-%m-%d'),
         }
 
-        request = self.factory.post(f"{url}?code={self.access_code.code}", data=post_data)
+        request = self.factory.post(f"{url}", data=post_data)
         request = self.setup_request(request)
 
         view = MedicalExaminationReportCreateView()
@@ -251,6 +254,7 @@ class MedicalExaminationReportCreateViewTest(TestCase):
 
         # Create post data for examination with tests
         post_data = {
+            'id': self.pet.id,
             'exam_type': 'primary',
             'date_of_entry': datetime.date.today().strftime('%Y-%m-%d'),
             'doctor': 'Dr. Test',
@@ -267,19 +271,22 @@ class MedicalExaminationReportCreateViewTest(TestCase):
             'treatments-MIN_NUM_FORMS': '0',
             'treatments-MAX_NUM_FORMS': '1000',
 
-            # Blood test data
-            'has_blood_test': 'True',
-            'name': 'Complete Blood Count',
+            # Urine test data
+            'has_urine_test': 'True',
             'date_conducted': datetime.date.today().strftime('%Y-%m-%d'),
             'result': 'Normal',
-            'white_blood_cells': '10000',
-            'red_blood_cells': '5000000',
-            'hemoglobin': '15.0',
-            'platelets': '200000',
-            'additional_notes': 'Everything normal',
+            'color': 'Yellow',
+            'clarity': 'Clear',
+            'ph': '7.0',
+            'specific_gravity': '1.020',
+            'protein': 'Negative',
+            'glucose': 'Negative',
+            'white_blood_cells': '0-2',
+            'red_blood_cells': '0-2',
+            'additional_notes': 'Urine test notes',
         }
 
-        request = self.factory.post(f"{url}?code={self.access_code.code}", data=post_data)
+        request = self.factory.post(f"{url}", data=post_data)
         request = self.setup_request(request)
 
         view = MedicalExaminationReportCreateView()
@@ -290,18 +297,28 @@ class MedicalExaminationReportCreateViewTest(TestCase):
         form = MedicalExaminationRecordForm(post_data)
         self.assertTrue(form.is_valid())
 
+        # Check urine test form
+        urine_test_form = UrineTestForm(post_data)
+        if not urine_test_form.is_valid():
+            print("Urine test form errors:", urine_test_form.errors)
+
+
         # Call form_valid and check redirect
         response = view.form_valid(form)
         self.assertEqual(response.status_code, 302)  # Redirect
 
         # Check that records were created
         self.assertEqual(MedicalExaminationRecord.objects.count(), 1)
-        self.assertEqual(BloodTest.objects.count(), 1)
+        self.assertEqual(UrineTest.objects.count(), 1)
+
 
         # Check relationships
         examination = MedicalExaminationRecord.objects.first()
-        blood_test = BloodTest.objects.first()
-        self.assertEqual(examination.blood_test, blood_test)
+        urine_test = UrineTest.objects.first()
+
+
+        self.assertEqual(examination.urine_test, urine_test)
+
 
     def test_invalid_access_code(self):
         """Test that view returns 404 with invalid access code"""
@@ -322,6 +339,7 @@ class MedicalExaminationReportCreateViewTest(TestCase):
 
         # Create post data with missing required fields
         post_data = {
+            'id': self.pet.id,
             # Missing exam_type, doctor, etc.
             'reason_for_visit': 'Annual checkup',
 

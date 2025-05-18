@@ -148,7 +148,11 @@ class MedicalExaminationReportCreateView(views.FormView):
         if pet_id:
             return get_object_or_404(Pet, pk=pet_id)
 
-        pet_id = self.request.GET.get('id')
+        if self.request.method == 'GET':
+            pet_id = self.request.GET.get('id')
+        elif self.request.method == 'POST':
+            pet_id = self.request.POST.get('id')
+
         return get_object_or_404(Pet, pk=pet_id)
 
     def get_context_data(self, **kwargs):
