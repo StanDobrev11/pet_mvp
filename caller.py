@@ -38,6 +38,43 @@ def create_clinic():
         print('Clinic already exists')
 
 
+def create_pet_markings():
+    max_pet = Pet.objects.get(name='Max')
+    luna_pet = Pet.objects.get(name='Luna')
+
+    # Create a transponder for Max
+    try:
+        from pet_mvp.pets.models import Transponder
+        transponder = Transponder.objects.create(
+            code='123456789012345',
+            pet=max_pet,
+            date_of_application='2020-01-15',
+            date_of_reading='2020-01-15',
+            location='Left side of the neck',
+            location_en='Left side of the neck',
+            location_bg='Лява страна на врата',
+        )
+        print(f"Transponder created for {max_pet.name}")
+    except Exception as e:
+        print(f"Error creating transponder for {max_pet.name}: {e}")
+
+    # Create a tattoo for Luna
+    try:
+        from pet_mvp.pets.models import Tattoo
+        tattoo = Tattoo.objects.create(
+            code='ABC123',
+            pet=luna_pet,
+            date_of_application='2021-04-01',
+            date_of_reading='2021-04-01',
+            location='Inside of right ear',
+            location_en='Inside of right ear',
+            location_bg='Вътрешна страна на дясното ухо',
+        )
+        print(f"Tattoo created for {luna_pet.name}")
+    except Exception as e:
+        print(f"Error creating tattoo for {luna_pet.name}: {e}")
+
+
 def create_complete_examination_record_for_max():
     max_pet = Pet.objects.get(name='Max')
     clinic = Clinic.objects.get(clinic_name='Diana Vet')
@@ -139,23 +176,45 @@ def create_pets():
     try:
         max_pet = Pet.objects.create(
             name='Max',
+            name_en='Max',
+            name_bg='Макс',
             species='Dog',
+            species_en='Dog',
+            species_bg='Куче',
             breed='German Shepherd',
+            breed_en='German Shepherd',
+            breed_bg='Немска овчарка',
             color='Black and Tan',
+            color_en='Black and Tan',
+            color_bg='Черно и кафяво',
             date_of_birth='2020-01-01',
             sex='male',
             current_weight='28',
             passport_number='BG01VP123456',
+            features='Friendly, energetic, loyal',
+            features_en='Friendly, energetic, loyal',
+            features_bg='Приятелски настроен, енергичен, лоялен',
         )
         luna_pet = Pet.objects.create(
             name='Luna',
+            name_en='Luna',
+            name_bg='Луна',
             species='Cat',
+            species_en='Cat',
+            species_bg='Котка',
             breed='Persian',
+            breed_en='Persian',
+            breed_bg='Персийска',
             color='White',
+            color_en='White',
+            color_bg='Бяла',
             date_of_birth='2021-03-15',
             sex='female',
             current_weight='3.5',
             passport_number='BG01ST765214',
+            features='Long hair, calm, independent',
+            features_en='Long hair, calm, independent',
+            features_bg='Дълга козина, спокойна, независима',
         )
         pets = [max_pet, luna_pet]
 
@@ -564,6 +623,7 @@ if __name__ == '__main__':
     create_superuser()
     create_pets()
     create_clinic()
+    create_pet_markings()
     populate_vaccines()
     populate_vaccination_records()
     populate_drugs()
