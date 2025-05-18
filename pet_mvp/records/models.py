@@ -53,7 +53,7 @@ class VaccinationRecord(TimeStampMixin):
     )
 
     def __str__(self):
-        return f'{self.vaccine.name}. Valid to: {self.valid_until}.'
+        return _("{} - Valid to: {}").format(self.vaccine.name, self.valid_until)
 
 
 class MedicationRecord(TimeStampMixin):
@@ -97,7 +97,7 @@ class MedicationRecord(TimeStampMixin):
     )
 
     def __str__(self):
-        return f'{self.medication.name}. Valid to: {self.valid_until}.'
+        return _("{} - Valid to: {}").format(self.medication.name, self.valid_until)
 
 
 class MedicalExaminationRecord(TimeStampMixin):
@@ -272,6 +272,6 @@ class MedicalExaminationRecord(TimeStampMixin):
     )
 
     def __str__(self):
-        pet_name = self.pet.name if self.pet_id else "Unknown Pet"
-        date = self.date_of_entry if self.date_of_entry else "Unknown Date"
-        return f"Medical Record for {pet_name} on {date}"
+        pet_name = self.pet.name if self.pet_id else _("Unknown Pet")
+        date = self.date_of_entry if self.date_of_entry else _("Unknown Date")
+        return _("Medical Record for {} on {}").format(pet_name, date)

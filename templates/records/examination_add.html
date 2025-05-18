@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
+{% load i18n %}
+<script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
 
 {% block content %}
     <form action="{% url 'exam-add' %}?source=pet&id={{ id }}" method="post">
@@ -151,11 +153,11 @@
         const addInfoFormTemplate = document.getElementById('add-info-form-template');
 
         addInfoFormButton.addEventListener('click', (e) => {
-            if (addInfoFormButton.innerText === 'Show') {
-                addInfoFormButton.innerText = 'Hide'
+            if (addInfoFormButton.innerText === gettext('Show')) {
+                addInfoFormButton.innerText = gettext('Hide')
                 addInfoContainer.innerHTML = addInfoFormTemplate.innerHTML
             } else {
-                addInfoFormButton.innerText = 'Show'
+                addInfoFormButton.innerText = gettext('Show')
                 addInfoContainer.innerHTML = ''
             }
         })
@@ -228,9 +230,9 @@
         }
 
         // ========== Initialize Toggles ==========
-        setupSingleToggle('add-remove-blood-test-form', 'blood-test-form-container', 'blood-test-template', 'Add Blood Test', 'Remove Blood Test');
-        setupSingleToggle('add-remove-urine-test-form', 'urine-test-form-container', 'urine-test-template', 'Add Urine Test', 'Remove Urine Test');
-        setupSingleToggle('add-remove-fecal-test-form', 'fecal-test-form-container', 'fecal-test-template', 'Add Fecal Test', 'Remove Fecal Test');
+        setupSingleToggle('add-remove-blood-test-form', 'blood-test-form-container', 'blood-test-template', gettext('Add Blood Test'), gettext('Remove Blood Test'));
+        setupSingleToggle('add-remove-urine-test-form', 'urine-test-form-container', 'urine-test-template', gettext('Add Urine Test'), gettext('Remove Urine Test'));
+        setupSingleToggle('add-remove-fecal-test-form', 'fecal-test-form-container', 'fecal-test-template', gettext('Add Fecal Test'), gettext('Remove Fecal Test'));
 
 
     </script>

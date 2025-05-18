@@ -19,8 +19,8 @@ class Pet(TimeStampMixin):
     PASSPORT_NUMBER_MAX_LENGTH = 12
 
     SEX_CHOICE = [
-        ('male', 'male'),
-        ('female', 'female')
+        ('male', _('male')),
+        ('female', _('female'))
     ]
 
     name = models.CharField(
@@ -77,7 +77,7 @@ class Pet(TimeStampMixin):
         verbose_name=_('Passport Number'),
         unique=True,
         error_messages={
-            "unique": "A pet with this details already exists.",
+            "unique": _("A pet with this details already exists."),
         },
     )
 

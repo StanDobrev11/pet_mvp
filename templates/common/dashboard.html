@@ -1,17 +1,18 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block content %}
 <section class="container mt-5">
     <div class="text-center mb-4">
-        <h2>Pets</h2>
-        <p class="text-muted">Welcome, {{ user.first_name }} {{ user.last_name }}</p>
+        <h2>{% trans "Pets" %}</h2>
+        <p class="text-muted">{% trans "Welcome" %}, {{ user.first_name }} {{ user.last_name }}</p>
     </div>
 
     <div class="alert alert-info mb-4" role="alert">
-        <h5 class="alert-heading">Access Codes</h5>
-        <p>Each pet has a unique access code that can be shared with veterinarians or other caregivers to allow them to view and update your pet's medical records.</p>
+        <h5 class="alert-heading">{% trans "Access Codes" %}</h5>
+        <p>{% trans "Each pet has a unique access code that can be shared with veterinarians or other caregivers to allow them to view and update your pet's medical records." %}</p>
         <hr>
-        <p class="mb-0">Access codes are valid for 4 hours after generation and are automatically refreshed when viewed.</p>
+        <p class="mb-0">{% trans "Access codes are valid for 4 hours after generation and are automatically refreshed when viewed." %}</p>
     </div>
 
     <ul class="list-group mb-4">
@@ -23,7 +24,7 @@
                         {% if access_code %}
                             <div class="ms-3">
                                 <span class="badge bg-success p-2 fs-5" style="letter-spacing: 1px;">
-                                    <strong>Access Code:</strong> {{ access_code.code }}
+                                    <strong>{% trans "Access Code:" %}</strong> {{ access_code.code }}
                                 </span>
                             </div>
                         {% endif %}
@@ -31,13 +32,13 @@
                 </div>
             </li>
         {% empty %}
-            <li class="list-group-item text-muted">No pets added yet.</li>
+            <li class="list-group-item text-muted">{% trans "No pets added yet." %}</li>
         {% endfor %}
     </ul>
 
     <div class="d-flex justify-content-center gap-3">
-        <a href="{% url 'pet-add' %}" class="btn btn-success">Add Pet</a>
-        <a href="{% url 'logout' %}" class="btn btn-outline-danger">Logout</a>
+        <a href="{% url 'pet-add' %}" class="btn btn-success">{% trans "Add Pet" %}</a>
+        <a href="{% url 'logout' %}" class="btn btn-outline-danger">{% trans "Logout" %}</a>
     </div>
 </section>
 {% endblock %}

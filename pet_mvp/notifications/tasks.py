@@ -3,6 +3,7 @@ from datetime import timedelta
 
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from pet_mvp.notifications.email_service import EmailService
 
 UserModel = get_user_model()
@@ -40,17 +41,17 @@ def send_vaccine_expiration_notifications():
 
             # Prepare notification message based on interval
             if interval_name == 'four_weeks':
-                time_left = "4 weeks"
+                time_left = _("4 weeks")
             elif interval_name == 'two_weeks':
-                time_left = "2 weeks"
+                time_left = _("2 weeks")
             elif interval_name == 'one_week':
-                time_left = "1 week"
+                time_left = _("1 week")
             else:  # expiration_day
-                time_left = "today"
+                time_left = _("today")
 
             # Send expiration notification email
             EmailService.send_template_email_async.delay(
-                subject=f"Vaccine Expiration Notice for {record.pet.name}",
+                subject=_("Vaccine Expiration Notice for {}").format(record.pet.name),
                 to_email=owners_emails,
                 template_name="emails/vaccine_expiration_notification.html",
                 context={
@@ -63,7 +64,7 @@ def send_vaccine_expiration_notifications():
 
             notifications_sent += 1
 
-    return f"Processed {notifications_sent} vaccine expiration notifications"
+    return _("Processed {} vaccine expiration notifications").format(notifications_sent)
 
 
 @shared_task
@@ -84,15 +85,15 @@ def send_medical_record_email(exam):
         "clinic_country": clinic.country,
         "clinic_phone": clinic.phone_number,
         "reason_for_visit": exam.reason_for_visit,
-        "general_health": exam.general_health or "N/A",
+        "general_health": exam.general_health or _("N/A"),
         "body_condition_score": exam.body_condition_score,
         "temperature": exam.temperature,
         "heart_rate": exam.heart_rate,
         "respiratory_rate": exam.respiratory_rate,
         "treatment_performed": exam.treatment_performed,
-        "diagnosis": exam.diagnosis or "N/A",
-        "follow_up": "Yes" if exam.follow_up else "No",
-        "notes": exam.notes or "N/A",
+        "diagnosis": exam.diagnosis or _("N/A"),
+        "follow_up": _("Yes") if exam.follow_up else _("No"),
+        "notes": exam.notes or _("N/A"),
         "vaccinations": [
             {"name": v.vaccine.name, "date": v.date_of_vaccination.strftime("%Y-%m-%d")}
             for v in exam.vaccinations.all()
@@ -109,10 +110,10 @@ def send_medical_record_email(exam):
     }
 
     EmailService.send_template_email_async.delay(
-        subject=f"Medical Examination Report for {exam.pet.name} - {exam.date_of_entry.strftime('%Y-%m-%d')}",
+        subject=_("Medical Examination Report for {} - {}").format(exam.pet.name, exam.date_of_entry.strftime('%Y-%m-%d')),
         to_email=owners_emails,
         template_name='emails/medical_report_email.html',
         context=context
     )
 
-    return f"Processed one medical report for {exam.pet.name}"
+    return _("Processed one medical report for {}").format(exam.pet.name)
