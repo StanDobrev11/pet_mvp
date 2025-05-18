@@ -18,7 +18,13 @@ def generate_access_code(pet):
     except ObjectDoesNotExist:
         pass
 
-    code = str(random.randint(100000, 999999))
+    # Generate a unique code that doesn't match any other pet's code
+    while True:
+        code = str(random.randint(100000, 999999))
+        # Check if the code is already in use by another pet
+        if not PetAccessCode.objects.filter(code=code).exclude(pet=pet).exists():
+            break
+
     expiration_time = timezone.now() + datetime.timedelta(minutes=240)
 
     return PetAccessCode.objects.create(
