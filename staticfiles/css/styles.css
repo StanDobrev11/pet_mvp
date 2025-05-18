@@ -27,3 +27,15 @@ li {
 a {
     text-decoration: none;
 }
+
+/* Navbar styling */
+.navbar-nav .nav-item {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-nav .nav-link {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}

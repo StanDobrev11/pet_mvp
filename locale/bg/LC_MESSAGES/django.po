@@ -1,0 +1,61 @@
+# Bulgarian translation for pet_mvp project.
+# Copyright (C) 2025
+# This file is distributed under the same license as the pet_mvp package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: pet_mvp\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-18 13:47+0000\n"
+"PO-Revision-Date: 2025-05-18 13:47+0000\n"
+"Last-Translator: \n"
+"Language-Team: Bulgarian\n"
+"Language: bg\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: templates/base.html:17 templates/base.html:24
+msgid "My Pet's Passport"
+msgstr "Паспортът на моя домашен любимец"
+
+#: templates/base.html:26
+msgid "Toggle navigation"
+msgstr "Превключване на навигацията"
+
+#: templates/base.html:33
+msgid "Dashboard"
+msgstr "Табло"
+
+#: templates/base.html:36
+msgid "Add Pet"
+msgstr "Добави домашен любимец"
+
+#: templates/base.html:39
+msgid "Logout"
+msgstr "Изход"
+
+#: templates/base.html:43
+msgid "Finish and logout"
+msgstr "Завърши и излез"
+
+#: templates/base.html:47
+msgid "Login"
+msgstr "Вход"
+
+#: templates/base.html:50
+msgid "Register"
+msgstr "Регистрация"
+
+#: templates/base.html:66
+msgid "English"
+msgstr "Английски"
+
+#: templates/base.html:72
+msgid "Bulgarian"
+msgstr "Български"
+
+#: templates/base.html:67
+msgid "My Pet's Passport. All rights reserved."
+msgstr "Паспортът на моя домашен любимец. Всички права запазени."
