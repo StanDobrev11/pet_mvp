@@ -3,88 +3,87 @@
 {% load i18n %}
 
 {% block content %}
-<section class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h2 class="mb-4 text-center">{% trans "Add a New Pet" %}</h2>
+    <section class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2 class="mb-4 text-center">{% trans "Add a New Pet" %}</h2>
 
-            <form action="{% url 'pet-add' %}" method="post" enctype="multipart/form-data" class="p-4 border rounded bg-light">
-                {% csrf_token %}
+                <form action="{% url 'pet-add' %}" method="post" enctype="multipart/form-data"
+                      class="p-4 border rounded bg-light">
+                    {% csrf_token %}
 
-                {% for field in form %}
-                    <div class="mb-3">
-                        {{ field.label_tag }}
-                        {{ field|add_class:"form-control" }}
-                        {% if field.help_text %}
-                            <div class="form-text">{{ field.help_text|safe }}</div>
-                        {% endif %}
-                        {% for error in field.errors %}
-                            <div class="text-danger">{{ error }}</div>
-                        {% endfor %}
+                    {% for field in form %}
+                        <div class="mb-3">
+                            {{ field.label_tag }}
+                            {{ field|add_class:"form-control" }}
+                            {% if field.help_text %}
+                                <div class="form-text">{{ field.help_text|safe }}</div>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+
+                    <div class="d-flex flex-wrap gap-2 justify-content-between mt-4">
+                        <button type="submit" class="btn btn-primary">{% trans "Save" %}</button>
+                        <button type="reset" class="btn btn-outline-secondary">{% trans "Reset" %}</button>
+                        <a href="{% url 'dashboard' %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
                     </div>
-                {% endfor %}
-
-                <div class="d-flex flex-wrap gap-2 justify-content-between mt-4">
-                    <button type="submit" class="btn btn-primary">{% trans "Save" %}</button>
-                    <button type="reset" class="btn btn-outline-secondary">{% trans "Reset" %}</button>
-                    <a href="{% url 'dashboard' %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
-</section>
-{% endblock %}
+    </section>
 
-{% block extra_js %}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Get the species and breed select elements
-        const speciesSelect = document.getElementById('id_species');
-        const breedSelect = document.getElementById('id_breed');
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get the species and breed select elements
+            const speciesSelect = document.getElementById('id_species');
+            const breedSelect = document.getElementById('id_breed');
 
-        // Define breed choices for each species
-        const dogBreeds = [
-            {% for value, label in dog_breeds %}
-                ['{{ value }}', '{{ label }}'],
-            {% endfor %}
-        ];
+            // Define breed choices for each species
+            const dogBreeds = [
+                {% for value, label in dog_breeds %}
+                    ['{{ value }}', '{{ label }}'],
+                {% endfor %}
+            ];
 
-        const catBreeds = [
-            {% for value, label in cat_breeds %}
-                ['{{ value }}', '{{ label }}'],
-            {% endfor %}
-        ];
+            const catBreeds = [
+                {% for value, label in cat_breeds %}
+                    ['{{ value }}', '{{ label }}'],
+                {% endfor %}
+            ];
 
-        // Function to update breed choices based on selected species
-        function updateBreedChoices() {
-            // Clear current options
-            breedSelect.innerHTML = '';
+            // Function to update breed choices based on selected species
+            function updateBreedChoices() {
+                // Clear current options
+                breedSelect.innerHTML = '';
 
-            // Get selected species
-            const selectedSpecies = speciesSelect.value;
+                // Get selected species
+                const selectedSpecies = speciesSelect.value;
 
-            // Add appropriate breed options based on selected species
-            let breeds = [];
-            if (selectedSpecies === 'dog') {
-                breeds = dogBreeds;
-            } else if (selectedSpecies === 'cat') {
-                breeds = catBreeds;
+                // Add appropriate breed options based on selected species
+                let breeds = [];
+                if (selectedSpecies === 'dog') {
+                    breeds = dogBreeds;
+                } else if (selectedSpecies === 'cat') {
+                    breeds = catBreeds;
+                }
+
+                // Add options to breed select
+                breeds.forEach(function (breed) {
+                    const option = document.createElement('option');
+                    option.value = breed[0];
+                    option.textContent = breed[1];
+                    breedSelect.appendChild(option);
+                });
             }
 
-            // Add options to breed select
-            breeds.forEach(function(breed) {
-                const option = document.createElement('option');
-                option.value = breed[0];
-                option.textContent = breed[1];
-                breedSelect.appendChild(option);
-            });
-        }
+            // Update breed choices when species changes
+            speciesSelect.addEventListener('change', updateBreedChoices);
 
-        // Update breed choices when species changes
-        speciesSelect.addEventListener('change', updateBreedChoices);
-
-        // Initialize breed choices based on initial species value
-        updateBreedChoices();
-    });
-</script>
+            // Initialize breed choices based on initial species value
+            updateBreedChoices();
+        });
+    </script>
 {% endblock %}
