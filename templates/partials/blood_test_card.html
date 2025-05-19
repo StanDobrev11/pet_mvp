@@ -2,7 +2,7 @@
 {% load i18n %}
 <div class="card mb-4">
     <div class="card-body">
-        <h5 class="card-title"><strong>{% trans "Type:" %} </strong> {{ object.name }}</h5>
+        <h5 class="card-title"><strong>{% trans "Type:" %} </strong> {% trans object.name %}</h5>
         <ul class="list-group list-group-flush">
             <li class="list-group-item"><strong>{% trans "Date conducted:" %}</strong> {{ object.date_conducted }}</li>
             <li class="list-group-item"><strong>{% trans "Result:" %}</strong> {{ object.result }}</li>

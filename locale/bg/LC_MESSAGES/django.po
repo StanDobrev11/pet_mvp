@@ -999,13 +999,13 @@ msgstr "Резултати"
 #: .\templates\partials\urine_test_card.html:50
 #: .\templates\partials\vaccine_card.html:36
 msgid "Notes:"
-msgstr "Бележки"
+msgstr "Бележки:"
 
 #: .\templates\emails\medical_report_email.html:81
 #: .\templates\emails\medical_report_email.html:93
 #: .\templates\emails\medical_report_email.html:105
 msgid "Date Conducted:"
-msgstr "Дата на провеждане"
+msgstr "Дата на провеждане:"
 
 #: .\templates\emails\medical_report_email.html:84
 msgid "No blood test performed."
@@ -1649,3 +1649,7 @@ msgstr ""
 #: .\templates\records\vaccine_record_add.html:33
 msgid "Finish Adding Vaccines"
 msgstr "Завърши добавянето на ваксини"
+
+
+msgid "None"
+msgstr "Няма"
