@@ -33,6 +33,8 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(' ')
 
 CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(' ')
 
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -151,15 +153,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
+
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'staticfiles'
 ]
 STATIC_ROOT = os.environ.get('STATIC_ROOT', BASE_DIR / 'collect_static')
 
-# TODO check to see if this is accessible in production
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.environ.get('MEDIA_ROOT', BASE_DIR / 'media')
 
 AUTH_USER_MODEL = 'accounts.AppUser'
 
