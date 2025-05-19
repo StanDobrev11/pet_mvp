@@ -1,4 +1,50 @@
 services:
+  app:
+    build: .
+    restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  celery:
+    build: .
+    command: celery -A pet_mvp worker --loglevel=info
+    depends_on:
+      - redis
+      - app
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    volumes:
+      - .:/app
+
+  celery-beat:
+    build: .
+    command: celery -A pet_mvp beat --loglevel=info
+    depends_on:
+      - redis
+      - app
+      - celery
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    volumes:
+      - .:/app
 
   mailhog:
     image: mailhog/mailhog
@@ -6,19 +52,7 @@ services:
       - "1025:1025"
       - "8025:8025"
 
-
-  redis:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
-
-#  celery:
-#    build: .
-#    command: celery -A HairSaloon worker --loglevel=info
-#    depends_on:
-#      - redis
-#    environment:
-#      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
-#      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
-#    env_file:
-#      - .env
+volumes:
+  static_volume:
+  media_volume:
+  redis_data:
