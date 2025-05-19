@@ -31,7 +31,6 @@ services:
     command: celery -A pet_mvp worker --loglevel=info
     depends_on:
       - redis
-      - app
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0

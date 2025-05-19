@@ -191,7 +191,7 @@ if USE_MAILHOG:
 else:
     # Brevo configuration via Anymail
     INSTALLED_APPS += ['anymail']
-    EMAIL_BACKEND = "anymail.backends.brevo.EmailBackend"
+    EMAIL_BACKEND = "anymail.backends.sendinblue.EmailBackend"
     ANYMAIL = {
         "BREVO_API_KEY": os.getenv("BREVO_API_KEY", ""),
     }
