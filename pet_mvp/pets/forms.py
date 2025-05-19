@@ -12,7 +12,12 @@ class PetEditForm(forms.ModelForm):
 class PetAddForm(forms.ModelForm):
     class Meta:
         model = Pet
-        exclude = ['owners', 'can_add_vaccines', 'can_add_treatments']
+        exclude = [
+            'owners', 'can_add_vaccines', 'can_add_treatments',
+            'name',
+            'color',
+            'features',
+        ]
         widgets = {
             'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
         }

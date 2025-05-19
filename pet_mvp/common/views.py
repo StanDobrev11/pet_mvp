@@ -1,11 +1,6 @@
-# Create your views here.
-import code
-from datetime import date
-
 from django.contrib.auth import get_user_model
 from django.contrib.auth import mixins as auth_mixins
-from django.contrib.auth.decorators import login_not_required
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 
 from django.views import generic as views
 
@@ -19,7 +14,13 @@ class IndexView(views.TemplateView):
     login_required = False
 
     def get(self, request, *args, **kwargs):
+
         if request.user.is_authenticated:
+            if not request.user.is_owner:
+                code = request.session.get('code')
+                pet_id = get_object_or_404(Pet, pet_access_code__code=code).pk
+                return redirect('pet-details', pk=pet_id)
+
             return redirect('dashboard')
         return super().get(request, *args, **kwargs)
 

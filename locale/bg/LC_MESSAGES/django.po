@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-18 17:45+0000\n"
+"POT-Creation-Date: 2025-05-19 01:51+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -188,7 +188,7 @@ msgstr "Тромбоцити"
 msgid "Platelet count per microliter"
 msgstr "Брой тромбоцити на микролитър"
 
-#: .\pet_mvp\drugs\models.py:109 .\pet_mvp\pets\models.py:53
+#: .\pet_mvp\drugs\models.py:109 .\pet_mvp\pets\models.py:59
 msgid "Color"
 msgstr "Цвят"
 
@@ -336,102 +336,110 @@ msgid "Processed one medical report for {}"
 msgstr "Обработен един медицински доклад за {}"
 
 #: .\pet_mvp\pets\models.py:22
-msgid "male"
-msgstr "мъжки"
+msgid "Male"
+msgstr "Мъжки"
 
 #: .\pet_mvp\pets\models.py:23
-msgid "female"
-msgstr "женски"
+msgid "Female"
+msgstr "Женски"
+
+#: .\pet_mvp\pets\models.py:27
+msgid "Dog"
+msgstr "Куче"
 
 #: .\pet_mvp\pets\models.py:28
+msgid "Cat"
+msgstr "Котка"
+
+#: .\pet_mvp\pets\models.py:33
 msgid "Name"
 msgstr "Име"
 
-#: .\pet_mvp\pets\models.py:33
+#: .\pet_mvp\pets\models.py:39
 msgid "Species"
 msgstr "Вид"
 
-#: .\pet_mvp\pets\models.py:38
+#: .\pet_mvp\pets\models.py:44
 msgid "Breed"
 msgstr "Порода"
 
-#: .\pet_mvp\pets\models.py:44
+#: .\pet_mvp\pets\models.py:50
 msgid "Sex"
 msgstr "Пол"
 
-#: .\pet_mvp\pets\models.py:48
+#: .\pet_mvp\pets\models.py:54
 msgid "Date of birth"
 msgstr "Дата на раждане"
 
-#: .\pet_mvp\pets\models.py:58
+#: .\pet_mvp\pets\models.py:64
 msgid "Any notable or discernible features or characteristics"
 msgstr "Всякакви забележителни или различими черти или характеристики"
 
-#: .\pet_mvp\pets\models.py:65
+#: .\pet_mvp\pets\models.py:71
 msgid "Photo"
 msgstr "Снимка"
 
-#: .\pet_mvp\pets\models.py:71
+#: .\pet_mvp\pets\models.py:77
 msgid "Current weight"
 msgstr "Текущо тегло"
 
-#: .\pet_mvp\pets\models.py:77
+#: .\pet_mvp\pets\models.py:83
 msgid "Passport Number"
 msgstr "Номер на паспорт"
 
-#: .\pet_mvp\pets\models.py:80
+#: .\pet_mvp\pets\models.py:86
 msgid "A pet with this details already exists."
 msgstr "Домашен любимец с тези данни вече съществува."
 
-#: .\pet_mvp\pets\models.py:86
+#: .\pet_mvp\pets\models.py:92
 msgid "Can add vaccines?"
 msgstr "Може ли да добавя ваксини?"
 
-#: .\pet_mvp\pets\models.py:87
+#: .\pet_mvp\pets\models.py:93
 msgid "Controls if the owner can add vaccines."
 msgstr "Контролира дали собственикът може да добавя ваксини."
 
-#: .\pet_mvp\pets\models.py:92
+#: .\pet_mvp\pets\models.py:98
 msgid "Can add treatments?"
 msgstr "Може ли да добавя лечения?"
 
-#: .\pet_mvp\pets\models.py:93
+#: .\pet_mvp\pets\models.py:99
 msgid "Controls if the owner can add treatments."
 msgstr "Контролира дали собственикът може да добавя лечения."
 
-#: .\pet_mvp\pets\models.py:138
+#: .\pet_mvp\pets\models.py:144
 msgid "{} years, {} months and {} days"
 msgstr "{} години, {} месеца и {} дни"
 
-#: .\pet_mvp\pets\models.py:153
+#: .\pet_mvp\pets\models.py:159
 msgid "Type"
 msgstr "Тип"
 
-#: .\pet_mvp\pets\models.py:181
+#: .\pet_mvp\pets\models.py:187
 msgid "Transponder alphanumeric code"
 msgstr "Буквено-цифров код на транспондера"
 
-#: .\pet_mvp\pets\models.py:187 .\pet_mvp\pets\models.py:193
+#: .\pet_mvp\pets\models.py:193 .\pet_mvp\pets\models.py:199
 msgid "Date of application or reading of the transponder"
 msgstr "Дата на поставяне или отчитане на транспондера"
 
-#: .\pet_mvp\pets\models.py:198
+#: .\pet_mvp\pets\models.py:204
 msgid "Location of the transponder"
 msgstr "Местоположение на транспондера"
 
-#: .\pet_mvp\pets\models.py:207
+#: .\pet_mvp\pets\models.py:213
 msgid "Tattoo alphanumeric code"
 msgstr "Буквено-цифров код на татуировката"
 
-#: .\pet_mvp\pets\models.py:211
+#: .\pet_mvp\pets\models.py:217
 msgid "Date of application of the tattoo"
 msgstr "Дата на поставяне на татуировката"
 
-#: .\pet_mvp\pets\models.py:215
+#: .\pet_mvp\pets\models.py:221
 msgid "Date of reading of the tattoo"
 msgstr "Дата на отчитане на татуировката"
 
-#: .\pet_mvp\pets\models.py:220
+#: .\pet_mvp\pets\models.py:226
 msgid "Location of the tattoo"
 msgstr "Местоположение на татуировката"
 
@@ -1553,25 +1561,3 @@ msgstr ""
 #: .\templates\records\vaccine_record_add.html:33
 msgid "Finish Adding Vaccines"
 msgstr "Завърши добавянето на ваксини"
-
-#~| msgid "Valid from"
-#~ msgid "Valid"
-#~ msgstr "Валидно"
-
-#~| msgid "Vaccinations Applied"
-#~ msgid "Vaccination"
-#~ msgstr "Ваксинация"
-
-#~ msgid "Records"
-#~ msgstr "Записи"
-
-#~| msgid "Treatment Carried Out"
-#~ msgid "Treatment"
-#~ msgstr "Лечение"
-
-#~ msgid "Latest"
-#~ msgstr "Последни"
-
-#~| msgid "Examination Type"
-#~ msgid "Examination"
-#~ msgstr "Преглед"

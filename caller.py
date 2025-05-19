@@ -12,7 +12,7 @@ from django.utils.timezone import make_aware
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pet_mvp.settings')
 django.setup()
 
-from pet_mvp.pets.models import Pet
+from pet_mvp.pets.models import Pet, Transponder, Tattoo
 from pet_mvp.drugs.models import Vaccine, Drug, BloodTest, UrineTest, FecalTest
 from pet_mvp.records.models import VaccinationRecord, MedicationRecord, MedicalExaminationRecord
 from pet_mvp.accounts.models import Clinic
@@ -173,17 +173,13 @@ def create_user(email, password):
 
 
 def create_pets():
+
     try:
         max_pet = Pet.objects.create(
-            name='Max',
             name_en='Max',
             name_bg='Макс',
             species='Dog',
-            species_en='Dog',
-            species_bg='Куче',
             breed='German Shepherd',
-            breed_en='German Shepherd',
-            breed_bg='Немска овчарка',
             color='Black and Tan',
             color_en='Black and Tan',
             color_bg='Черно и кафяво',
@@ -196,15 +192,10 @@ def create_pets():
             features_bg='Приятелски настроен, енергичен, лоялен',
         )
         luna_pet = Pet.objects.create(
-            name='Luna',
             name_en='Luna',
             name_bg='Луна',
             species='Cat',
-            species_en='Cat',
-            species_bg='Котка',
             breed='Persian',
-            breed_en='Persian',
-            breed_bg='Персийска',
             color='White',
             color_en='White',
             color_bg='Бяла',
@@ -216,6 +207,7 @@ def create_pets():
             features_en='Long hair, calm, independent',
             features_bg='Дълга козина, спокойна, независима',
         )
+
         pets = [max_pet, luna_pet]
 
         owner = UserModel.objects.first()

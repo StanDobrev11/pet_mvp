@@ -19,8 +19,13 @@ class Pet(TimeStampMixin):
     PASSPORT_NUMBER_MAX_LENGTH = 12
 
     SEX_CHOICE = [
-        ('male', _('male')),
-        ('female', _('female'))
+        ('male', _('Male')),
+        ('female', _('Female'))
+    ]
+
+    SPECIES_CHOICE = [
+        ('dog', _('Dog')),
+        ('cat', _('Cat')),
     ]
 
     name = models.CharField(
@@ -30,6 +35,7 @@ class Pet(TimeStampMixin):
 
     species = models.CharField(
         max_length=MAX_LENGTH,
+        choices=SPECIES_CHOICE,
         verbose_name=_('Species')
     )
 

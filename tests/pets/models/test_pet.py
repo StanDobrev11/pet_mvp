@@ -35,7 +35,7 @@ class PetModelTests(TestCase):
         """Test creating a pet with valid data."""
         pet = Pet(
             name="Buddy",
-            species="Dog",
+            species="dog",
             breed="Labrador",
             sex="male",
             date_of_birth=self.birth_date,
@@ -48,7 +48,7 @@ class PetModelTests(TestCase):
         pet.owners.add(self.owner)
 
         self.assertEqual(pet.name, "Buddy")
-        self.assertEqual(pet.species, "Dog")
+        self.assertEqual(pet.species, "dog")
         self.assertEqual(pet.breed, "Labrador")
         self.assertEqual(pet.sex, "male")
         self.assertEqual(pet.date_of_birth, self.birth_date)
@@ -65,7 +65,7 @@ class PetModelTests(TestCase):
         """Test the __str__ method of the Pet model."""
         pet = Pet.objects.create(
             name="Buddy",
-            species="Dog",
+            species="dog",
             breed="Labrador",
             sex="male",
             date_of_birth=self.birth_date,
@@ -75,13 +75,13 @@ class PetModelTests(TestCase):
             passport_number="AB12345678"
         )
 
-        self.assertEqual(str(pet), "Buddy - Dog - Labrador")
+        self.assertEqual(str(pet), "Buddy - dog - Labrador")
 
     def test_pet_age_property(self):
         """Test the age property of the Pet model."""
         pet = Pet.objects.create(
             name="Buddy",
-            species="Dog",
+            species="dog",
             breed="Labrador",
             sex="male",
             date_of_birth=self.birth_date,
@@ -103,7 +103,7 @@ class PetModelTests(TestCase):
         # First, create a pet with a specific passport number
         Pet.objects.create(
             name="Buddy",
-            species="Dog",
+            species="dog",
             breed="Labrador",
             sex="male",
             date_of_birth=self.birth_date,
@@ -117,7 +117,7 @@ class PetModelTests(TestCase):
         # This should raise an IntegrityError when saved to the database
         duplicate_pet = Pet(
             name="Max",
-            species="Dog",
+            species="dog",
             breed="German Shepherd",
             sex="male",
             date_of_birth=self.birth_date,
@@ -137,7 +137,7 @@ class PetModelTests(TestCase):
         # For simplicity, we'll just test that the save method doesn't raise exceptions
         pet = Pet.objects.create(
             name="Buddy",
-            species="Dog",
+            species="dog",
             breed="Labrador",
             sex="male",
             date_of_birth=self.birth_date,

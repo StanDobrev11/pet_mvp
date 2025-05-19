@@ -130,6 +130,14 @@ LANGUAGES = [
     ('bg', _('Bulgarian')),
 ]
 
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'bg'
+
+MODELTRANSLATION_FALLBACK_LANGUAGES = {
+    'default': ('bg', 'en'),  # fallback order
+    'en': ('bg',),
+    'bg': ('en',),
+}
+
 LOCALE_PATHS = [
     BASE_DIR / 'locale',
 ]
