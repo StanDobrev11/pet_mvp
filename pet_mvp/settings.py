@@ -33,8 +33,6 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(' ')
 
 CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(' ')
 
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -155,10 +153,8 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'staticfiles'
-]
-STATIC_ROOT = os.environ.get('STATIC_ROOT', BASE_DIR / 'collect_static')
+STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
+STATIC_ROOT = BASE_DIR / 'collect_static'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.environ.get('MEDIA_ROOT', BASE_DIR / 'media')
@@ -176,7 +172,7 @@ LOGOUT_REDIRECT_URL = reverse_lazy('index')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 USE_MAILHOG = os.getenv("USE_MAILHOG", "False") == "True"
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@example.com")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@cloudmachine.uk")
 
 if USE_MAILHOG:
     # MailHog configuration
@@ -191,7 +187,7 @@ if USE_MAILHOG:
 else:
     # Brevo configuration via Anymail
     INSTALLED_APPS += ['anymail']
-    EMAIL_BACKEND = "anymail.backends.sendinblue.EmailBackend"
+    EMAIL_BACKEND = "anymail.backends.brevo.EmailBackend"
     ANYMAIL = {
         "BREVO_API_KEY": os.getenv("BREVO_API_KEY", ""),
     }
