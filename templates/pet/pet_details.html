@@ -27,9 +27,9 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <p class="card-text"><strong>{% trans "Species:" %}</strong> {{ pet.species }}</p>
+                        <p class="card-text"><strong>{% trans "Species:" %}</strong> {% trans pet.get_species_display %}</p>
                         <p class="card-text"><strong>{% trans "Breed:" %}</strong> {{ pet.breed }}</p>
-                        <p class="card-text"><strong>{% trans "Gender:" %}</strong> {{ pet.sex }}</p>
+                        <p class="card-text"><strong>{% trans "Gender:" %}</strong> {{ pet.get_sex_display }}</p>
                         <p class="card-text"><strong>{% trans "DoB:" %}</strong> {{ pet.date_of_birth }}</p>
                         <p class="card-text"><strong>{% trans "Weight:" %}</strong> {{ pet.current_weight }} kgs</p>
                         <p class="card-text"><strong>{% trans "Color:" %}</strong> {{ pet.color }}</p>

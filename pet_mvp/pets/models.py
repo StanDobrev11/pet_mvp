@@ -144,7 +144,7 @@ class Pet(TimeStampMixin):
         return _('{} years, {} months and {} days').format(years, months, days)
 
     def __str__(self):
-        return f'{self.name} - {self.species} - {self.breed}'
+        return f'{self.name} - {self.get_species_display()} - {self.breed} - {self.get_sex_display()}'
 
 
 class BaseMarking(models.Model):
