@@ -1,0 +1,37 @@
+{% load widget_tweaks %}
+{% load i18n %}
+
+<div class="border rounded p-3 mb-3 vaccine-form">
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label class="form-label">{% trans form.vaccine.label %}</label>
+            {{ form.vaccine|add_class:"form-select" }}
+            {{ form.vaccine.errors }}
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">{% trans form.date_of_vaccination.label %}</label>
+            {{ form.date_of_vaccination|add_class:"form-control" }}
+            {{ form.date_of_vaccination.errors }}
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">{% trans form.valid_until.label %}</label>
+            {{ form.valid_until|add_class:"form-control" }}
+            {{ form.valid_until.errors }}
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">{% trans form.manufacturer.label %}</label>
+            {{ form.manufacturer|add_class:"form-control" }}
+            {{ form.manufacturer.errors }}
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">{% trans form.manufacture_date.label %}</label>
+            {{ form.manufacture_date|add_class:"form-control" }}
+            {{ form.manufacture_date.errors }}
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">{% trans form.batch_number.label %}</label>
+            {{ form.batch_number|add_class:"form-control" }}
+            {{ form.batch_number.errors }}
+        </div>
+    </div>
+</div>

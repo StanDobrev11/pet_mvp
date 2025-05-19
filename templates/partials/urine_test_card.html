@@ -1,0 +1,53 @@
+{% load widget_tweaks %}
+{% load i18n %}
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title"><strong>{% trans "Type:" %} </strong>{% trans object.name %}</h5>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>{% trans "Date conducted:" %}</strong> {{ object.date_conducted }}</li>
+            <li class="list-group-item"><strong>{% trans "Result:" %}</strong> {{ object.result }}</li>
+            <li class="list-group-item"><strong>{% trans "Color:" %}</strong>
+                {{ object.color|default:_("Not measured") }}
+            </li>
+            <li class="list-group-item"><strong>{% trans "Clarity:" %}</strong>
+                {{ object.clarity|default:_("Not measured") }}
+            </li>
+            <li class="list-group-item"><strong>{% trans "pH:" %}</strong>
+                {{ object.ph|default:_("Not measured") }}
+            </li>
+            <li class="list-group-item"><strong>{% trans "Specific Gravity:" %}</strong>
+                {{ object.specific_gravity|default:_("Not measured") }}
+            </li>
+            <li class="list-group-item"><strong>{% trans "Protein:" %}</strong>
+                {% if object.protein %}
+                    {{ object.protein }} mg/dL
+                {% else %}
+                    {% trans "Not measured" %}
+                {% endif %}
+            </li>
+            <li class="list-group-item"><strong>{% trans "Glucose:" %}</strong>
+                {% if object.glucose %}
+                    {{ object.glucose }} mg/dL
+                {% else %}
+                    {% trans "Not measured" %}
+                {% endif %}
+            </li>
+            <li class="list-group-item"><strong>{% trans "White blood cells:" %}</strong>
+                {% if object.white_blood_cells %}
+                    {{ object.white_blood_cells }} /HPF
+                {% else %}
+                    {% trans "Not measured" %}
+                {% endif %}
+            </li>
+            <li class="list-group-item"><strong>{% trans "Red blood cells:" %}</strong>
+                {% if object.red_blood_cells %}
+                    {{ object.red_blood_cells }} /HPF
+                {% else %}
+                    {% trans "Not measured" %}
+                {% endif %}
+            </li>
+            <li class="list-group-item"><strong>{% trans "Notes:" %}</strong> {{ object.additional_notes }}</li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+{% load i18n %}
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title"><strong>{% trans "Name of the medication/treatment:" %}</strong> {{ object.medication.name }}</h5>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>{% trans "Date and time prescribed:" %}</strong> {{ object.date }} / {{ object.time }}
+            </li>
+            <li class="list-group-item"><strong>{% trans "Dosage:" %}</strong> {{ object.dosage }}</li>
+            <li class="list-group-item"><strong>{% trans "Valid until:" %}</strong> {{ object.valid_until }}</li>
+            <li class="list-group-item"><strong>{% trans "Notes and how to administer:" %}</strong> {{ object.medication.notes }}</li>
+        </ul>
+    </div>
+    {% if source == 'pet' or source == 'hist' %}
+        {% include 'partials/back_buttons.html' %}
+    {% endif %}
+</div>

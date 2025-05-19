@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<section class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="mb-4">
+                <h3>{% trans "Vaccinations" %}</h3>
+                {% if vaccines %}
+                    <ul class="list-group">
+                        {% for vaccine in vaccines %}
+                            <li class="list-group-item">
+                                <a href="{% url 'vaccine-details' pk=vaccine.pk %}?source=hist&id={{ id }}">
+                                    {{ vaccine }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="alert alert-info">{% trans "No vaccinations yet!" %}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-4">
+                <h3>{% trans "Medications or Treatments" %}</h3>
+                {% if treatments %}
+                    <ul class="list-group">
+                        {% for treatment in treatments %}
+                            <li class="list-group-item">
+                                <a href="{% url 'treatment-details' pk=treatment.pk %}?source=hist&id={{ id }}">
+                                    {{ treatment }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="alert alert-info">{% trans "No medications or treatments yet!" %}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-4">
+                <h3>{% trans "Pet Examinations" %}</h3>
+                {% if examinations %}
+                    <ul class="list-group">
+                        {% for exam in examinations %}
+                            <li class="list-group-item">
+                                <a href="{% url 'exam-details' pk=exam.pk %}?source=hist&id={{ id }}">
+                                    {{ exam }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="alert alert-info">{% trans "No examinations yet!" %}</div>
+                {% endif %}
+            </div>
+
+            <a href="{% url 'pet-details' pk=id %}" class="btn btn-secondary">{% trans "Back to Pet Details" %}</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

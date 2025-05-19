@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block content %}
+<section class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="text-center mb-4">
+                <h2>{% trans "Please fill out the form to register" %}</h2>
+            </div>
+
+            <form action="{% url 'register' %}?next={{ next }}" method="post" class="p-4 border rounded bg-light">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div class="mb-3">
+                        {{ field.label_tag }}
+                        {{ field|add_class:"form-control" }}
+                        {% if field.help_text %}
+                            <div class="form-text">{{ field.help_text|safe }}</div>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">{% trans "Register" %}</button>
+                    <a href="{% url 'login' %}" class="btn btn-secondary">{% trans "Login instead?" %}</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
