@@ -34,3 +34,57 @@
     </div>
 </section>
 {% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the species and breed select elements
+        const speciesSelect = document.getElementById('id_species');
+        const breedSelect = document.getElementById('id_breed');
+
+        // Define breed choices for each species
+        const dogBreeds = [
+            {% for value, label in dog_breeds %}
+                ['{{ value }}', '{{ label }}'],
+            {% endfor %}
+        ];
+
+        const catBreeds = [
+            {% for value, label in cat_breeds %}
+                ['{{ value }}', '{{ label }}'],
+            {% endfor %}
+        ];
+
+        // Function to update breed choices based on selected species
+        function updateBreedChoices() {
+            // Clear current options
+            breedSelect.innerHTML = '';
+
+            // Get selected species
+            const selectedSpecies = speciesSelect.value;
+
+            // Add appropriate breed options based on selected species
+            let breeds = [];
+            if (selectedSpecies === 'dog') {
+                breeds = dogBreeds;
+            } else if (selectedSpecies === 'cat') {
+                breeds = catBreeds;
+            }
+
+            // Add options to breed select
+            breeds.forEach(function(breed) {
+                const option = document.createElement('option');
+                option.value = breed[0];
+                option.textContent = breed[1];
+                breedSelect.appendChild(option);
+            });
+        }
+
+        // Update breed choices when species changes
+        speciesSelect.addEventListener('change', updateBreedChoices);
+
+        // Initialize breed choices based on initial species value
+        updateBreedChoices();
+    });
+</script>
+{% endblock %}

@@ -28,6 +28,35 @@ class Pet(TimeStampMixin):
         ('cat', _('Cat')),
     ]
 
+    DOG_BREED_CHOICES = [
+        ('german_shepherd', _('German Shepherd')),
+        ('labrador', _('Labrador')),
+        ('golden_retriever', _('Golden Retriever')),
+        ('bulldog', _('Bulldog')),
+        ('beagle', _('Beagle')),
+        ('poodle', _('Poodle')),
+        ('rottweiler', _('Rottweiler')),
+        ('boxer', _('Boxer')),
+        ('dachshund', _('Dachshund')),
+        ('husky', _('Husky')),
+        ('chihuahua', _('Chihuahua')),
+        ('other', _('Other')),
+    ]
+
+    CAT_BREED_CHOICES = [
+        ('persian', _('Persian')),
+        ('siamese', _('Siamese')),
+        ('maine_coon', _('Maine Coon')),
+        ('ragdoll', _('Ragdoll')),
+        ('bengal', _('Bengal')),
+        ('sphynx', _('Sphynx')),
+        ('british_shorthair', _('British Shorthair')),
+        ('abyssinian', _('Abyssinian')),
+        ('scottish_fold', _('Scottish Fold')),
+        ('burmese', _('Burmese')),
+        ('other', _('Other')),
+    ]
+
     name = models.CharField(
         max_length=MAX_LENGTH,
         verbose_name=_('Name')
@@ -43,6 +72,26 @@ class Pet(TimeStampMixin):
         max_length=MAX_LENGTH,
         verbose_name=_('Breed')
     )
+
+    def get_breed_choices(self):
+        if self.species == 'dog':
+            return self.DOG_BREED_CHOICES
+        elif self.species == 'cat':
+            return self.CAT_BREED_CHOICES
+        return []
+
+    def get_breed_display(self):
+        """
+        Returns the display value for the breed field.
+        """
+        if not self.breed:
+            return ""
+
+        breed_choices = self.get_breed_choices()
+        for value, display in breed_choices:
+            if value == self.breed:
+                return display
+        return self.breed  # Return the raw value if no match is found
 
     sex = models.CharField(
         max_length=6,
@@ -144,7 +193,7 @@ class Pet(TimeStampMixin):
         return _('{} years, {} months and {} days').format(years, months, days)
 
     def __str__(self):
-        return f'{self.name} - {self.get_species_display()} - {self.breed} - {self.get_sex_display()}'
+        return f'{self.name} - {self.get_species_display()} - {self.get_breed_display()}'
 
 
 class BaseMarking(models.Model):

@@ -22,6 +22,24 @@ class PetAddForm(forms.ModelForm):
             'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Set initial breed choices based on current species value
+        if self.instance.pk and self.instance.species:
+            # For existing pets, use the species from the instance
+            self.fields['breed'].widget = forms.Select(choices=self.instance.get_breed_choices())
+        elif self.data.get('species'):
+            # For form submissions, use the species from the submitted data
+            species = self.data.get('species')
+            if species == 'dog':
+                self.fields['breed'].widget = forms.Select(choices=Pet.DOG_BREED_CHOICES)
+            elif species == 'cat':
+                self.fields['breed'].widget = forms.Select(choices=Pet.CAT_BREED_CHOICES)
+        else:
+            # Default to empty choices if no species is selected
+            self.fields['breed'].widget = forms.Select(choices=[])
+
 
 class MarkingAddForm(forms.Form):
     MARKING_CHOICES = [

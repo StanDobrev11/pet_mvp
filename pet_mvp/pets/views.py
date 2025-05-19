@@ -51,6 +51,12 @@ class PetAddView(views.CreateView):
     template_name = "pet/pet_add.html"
     form_class = PetAddForm
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['dog_breeds'] = Pet.DOG_BREED_CHOICES
+        context['cat_breeds'] = Pet.CAT_BREED_CHOICES
+        return context
+
     def get_success_url(self):
         return reverse_lazy('dashboard')
 

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-19 01:51+0000\n"
+"POT-Creation-Date: 2025-05-19 11:37+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -188,7 +188,7 @@ msgstr "Тромбоцити"
 msgid "Platelet count per microliter"
 msgstr "Брой тромбоцити на микролитър"
 
-#: .\pet_mvp\drugs\models.py:109 .\pet_mvp\pets\models.py:59
+#: .\pet_mvp\drugs\models.py:109 .\pet_mvp\pets\models.py:108
 msgid "Color"
 msgstr "Цвят"
 
@@ -351,95 +351,183 @@ msgstr "Куче"
 msgid "Cat"
 msgstr "Котка"
 
+#: .\pet_mvp\pets\models.py:32
+msgid "German Shepherd"
+msgstr "Немска овчарка"
+
 #: .\pet_mvp\pets\models.py:33
+msgid "Labrador"
+msgstr "Лабрадор"
+
+#: .\pet_mvp\pets\models.py:34
+msgid "Golden Retriever"
+msgstr "Голдън ретривър"
+
+#: .\pet_mvp\pets\models.py:35
+msgid "Bulldog"
+msgstr "Булдог"
+
+#: .\pet_mvp\pets\models.py:36
+msgid "Beagle"
+msgstr "Бигъл"
+
+#: .\pet_mvp\pets\models.py:37
+msgid "Poodle"
+msgstr "Пудел"
+
+#: .\pet_mvp\pets\models.py:38
+msgid "Rottweiler"
+msgstr "Ротвайлер"
+
+#: .\pet_mvp\pets\models.py:39
+msgid "Boxer"
+msgstr "Боксер"
+
+#: .\pet_mvp\pets\models.py:40
+msgid "Dachshund"
+msgstr "Дакел"
+
+#: .\pet_mvp\pets\models.py:41
+msgid "Husky"
+msgstr "Хъски"
+
+#: .\pet_mvp\pets\models.py:42
+msgid "Chihuahua"
+msgstr "Чихуахуа"
+
+#: .\pet_mvp\pets\models.py:43 .\pet_mvp\pets\models.py:57
+msgid "Other"
+msgstr "Друга"
+
+#: .\pet_mvp\pets\models.py:47
+msgid "Persian"
+msgstr "Персийска"
+
+#: .\pet_mvp\pets\models.py:48
+msgid "Siamese"
+msgstr "Сиамска"
+
+#: .\pet_mvp\pets\models.py:49
+msgid "Maine Coon"
+msgstr "Мейн Кун"
+
+#: .\pet_mvp\pets\models.py:50
+msgid "Ragdoll"
+msgstr "Рагдол"
+
+#: .\pet_mvp\pets\models.py:51
+msgid "Bengal"
+msgstr "Бенгалска"
+
+#: .\pet_mvp\pets\models.py:52
+msgid "Sphynx"
+msgstr "Сфинкс"
+
+#: .\pet_mvp\pets\models.py:53
+msgid "British Shorthair"
+msgstr "Британска късокосместа"
+
+#: .\pet_mvp\pets\models.py:54
+msgid "Abyssinian"
+msgstr "Абисинска"
+
+#: .\pet_mvp\pets\models.py:55
+msgid "Scottish Fold"
+msgstr "Шотландска клепоуха"
+
+#: .\pet_mvp\pets\models.py:56
+msgid "Burmese"
+msgstr "Бурманска"
+
+#: .\pet_mvp\pets\models.py:62
 msgid "Name"
 msgstr "Име"
 
-#: .\pet_mvp\pets\models.py:39
+#: .\pet_mvp\pets\models.py:68
 msgid "Species"
 msgstr "Вид"
 
-#: .\pet_mvp\pets\models.py:44
+#: .\pet_mvp\pets\models.py:73
 msgid "Breed"
 msgstr "Порода"
 
-#: .\pet_mvp\pets\models.py:50
+#: .\pet_mvp\pets\models.py:99
 msgid "Sex"
 msgstr "Пол"
 
-#: .\pet_mvp\pets\models.py:54
+#: .\pet_mvp\pets\models.py:103
 msgid "Date of birth"
 msgstr "Дата на раждане"
 
-#: .\pet_mvp\pets\models.py:64
+#: .\pet_mvp\pets\models.py:113
 msgid "Any notable or discernible features or characteristics"
 msgstr "Всякакви забележителни или различими черти или характеристики"
 
-#: .\pet_mvp\pets\models.py:71
+#: .\pet_mvp\pets\models.py:120
 msgid "Photo"
 msgstr "Снимка"
 
-#: .\pet_mvp\pets\models.py:77
+#: .\pet_mvp\pets\models.py:126
 msgid "Current weight"
 msgstr "Текущо тегло"
 
-#: .\pet_mvp\pets\models.py:83
+#: .\pet_mvp\pets\models.py:132
 msgid "Passport Number"
 msgstr "Номер на паспорт"
 
-#: .\pet_mvp\pets\models.py:86
+#: .\pet_mvp\pets\models.py:135
 msgid "A pet with this details already exists."
 msgstr "Домашен любимец с тези данни вече съществува."
 
-#: .\pet_mvp\pets\models.py:92
+#: .\pet_mvp\pets\models.py:141
 msgid "Can add vaccines?"
 msgstr "Може ли да добавя ваксини?"
 
-#: .\pet_mvp\pets\models.py:93
+#: .\pet_mvp\pets\models.py:142
 msgid "Controls if the owner can add vaccines."
 msgstr "Контролира дали собственикът може да добавя ваксини."
 
-#: .\pet_mvp\pets\models.py:98
+#: .\pet_mvp\pets\models.py:147
 msgid "Can add treatments?"
 msgstr "Може ли да добавя лечения?"
 
-#: .\pet_mvp\pets\models.py:99
+#: .\pet_mvp\pets\models.py:148
 msgid "Controls if the owner can add treatments."
 msgstr "Контролира дали собственикът може да добавя лечения."
 
-#: .\pet_mvp\pets\models.py:144
+#: .\pet_mvp\pets\models.py:193
 msgid "{} years, {} months and {} days"
 msgstr "{} години, {} месеца и {} дни"
 
-#: .\pet_mvp\pets\models.py:159
+#: .\pet_mvp\pets\models.py:208
 msgid "Type"
 msgstr "Тип"
 
-#: .\pet_mvp\pets\models.py:187
+#: .\pet_mvp\pets\models.py:236
 msgid "Transponder alphanumeric code"
 msgstr "Буквено-цифров код на транспондера"
 
-#: .\pet_mvp\pets\models.py:193 .\pet_mvp\pets\models.py:199
+#: .\pet_mvp\pets\models.py:242 .\pet_mvp\pets\models.py:248
 msgid "Date of application or reading of the transponder"
 msgstr "Дата на поставяне или отчитане на транспондера"
 
-#: .\pet_mvp\pets\models.py:204
+#: .\pet_mvp\pets\models.py:253
 msgid "Location of the transponder"
 msgstr "Местоположение на транспондера"
 
-#: .\pet_mvp\pets\models.py:213
+#: .\pet_mvp\pets\models.py:262
 msgid "Tattoo alphanumeric code"
 msgstr "Буквено-цифров код на татуировката"
 
-#: .\pet_mvp\pets\models.py:217
+#: .\pet_mvp\pets\models.py:266
 msgid "Date of application of the tattoo"
 msgstr "Дата на поставяне на татуировката"
 
-#: .\pet_mvp\pets\models.py:221
+#: .\pet_mvp\pets\models.py:270
 msgid "Date of reading of the tattoo"
 msgstr "Дата на отчитане на татуировката"
 
-#: .\pet_mvp\pets\models.py:226
+#: .\pet_mvp\pets\models.py:275
 msgid "Location of the tattoo"
 msgstr "Местоположение на татуировката"
 
