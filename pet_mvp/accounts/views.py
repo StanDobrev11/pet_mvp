@@ -15,6 +15,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 
 from pet_mvp.accounts.forms import OwnerCreationForm, AccessCodeEmailForm, ClinicRegistrationForm
+from pet_mvp.notifications.tasks import send_user_registration_email
 from pet_mvp.pets.models import Pet
 
 UserModel = get_user_model()
@@ -50,9 +51,13 @@ class BaseUserRegisterView(views.CreateView):
     def form_valid(self, form):
         """
         All new user with never-existing-in-DB email is handled through form_valid(),
-        after validation, the user is logged in automatically"""
+        after validation, the user is logged in automatically
+        Added mail sending on creation"""
         valid = super().form_valid(form)
         login(self.request, self.object)
+        language = self.request.COOKIES.get("django_language", "en")
+        send_user_registration_email(self.request.user, language)
+        
         return valid
 
     def form_invalid(self, form):

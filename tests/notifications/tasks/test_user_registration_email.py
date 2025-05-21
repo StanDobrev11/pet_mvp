@@ -26,14 +26,14 @@ class UserRegistrationEmailTestCase(TestCase):
             phone_number='1234567890',
             city='Test City',
             country='Test Country',
-            is_owner=True,
+            is_owner=True, 
         )
 
     @patch('pet_mvp.notifications.email_service.EmailService.send_template_email_async')
     def test_send_user_registration_email(self, mock_send_email):
         """Test that user registration email is sent correctly."""
         # Run the task
-        result = send_user_registration_email(self.test_user)
+        result = send_user_registration_email(self.test_user, 'bg')
 
         # Check that the task processed the registration
         self.assertIn(f"Sent registration email to {self.test_user.email}", result)
@@ -63,7 +63,7 @@ class UserRegistrationEmailTestCase(TestCase):
         """Test running the task manually (for demonstration purposes)."""
         # This test actually runs the task without mocking
         # It's useful for manual testing but might be skipped in automated tests
-        result = send_user_registration_email(self.test_user)
+        result = send_user_registration_email(self.test_user, 'bg')
         self.assertIn("Sent registration email", result)
 
         # Print the result for manual verification

@@ -81,7 +81,7 @@ class MedicalRecordEmailTestCase(TestCase):
     def test_send_medical_record_email(self, mock_send_email):
         """Test that medical record email is sent correctly."""
         # Run the task
-        result = send_medical_record_email(self.test_exam)
+        result = send_medical_record_email(self.test_exam, 'bg')
 
         # Check that the task processed the medical report
         self.assertIn(f"Processed one medical report for {self.test_pet.name}", result)

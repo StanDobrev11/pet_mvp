@@ -1,6 +1,7 @@
-from django.core.mail import EmailMultiAlternatives, send_mail
+from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django.utils import translation
 from django.conf import settings
 from celery import shared_task
 
@@ -32,7 +33,7 @@ class EmailService:
             subject=subject,
             body=plain_text,
             from_email=from_email,
-            cc=cc,
+            cc=[] if cc is None else [cc] if isinstance(cc, str) else cc,
             to=[to_email] if isinstance(to_email, str) else to_email
         )
         
@@ -55,7 +56,11 @@ class EmailService:
         Returns:
             bool: True if email was sent successfully
         """
-        html_content = render_to_string(template_name, context)
+    
+        lang = context.get('lang', 'en')
+        with translation.override(lang):
+            html_content = render_to_string(template_name, context)
+        
         return EmailService.send_email(subject, to_email, html_content, from_email, cc)
     
     @staticmethod
@@ -92,4 +97,4 @@ class EmailService:
         Returns:
             bool: True if email was sent successfully
         """
-        return EmailService.send_template_email(subject, to_email, cc, template_name, context, from_email)
+        return EmailService.send_template_email(subject, to_email, template_name, context, from_email, cc)
