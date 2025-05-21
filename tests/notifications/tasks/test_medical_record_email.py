@@ -116,7 +116,7 @@ class MedicalRecordEmailTestCase(TestCase):
         """Test running the task manually (for demonstration purposes)."""
         # This test actually runs the task without mocking
         # It's useful for manual testing but might be skipped in automated tests
-        result = send_medical_record_email(self.test_exam)
+        result = send_medical_record_email(self.test_exam, 'bg')
         self.assertIn("Processed", result)
 
         # Print the result for manual verification

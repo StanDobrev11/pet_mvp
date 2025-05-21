@@ -56,7 +56,7 @@ class BaseUserRegisterView(views.CreateView):
         valid = super().form_valid(form)
         login(self.request, self.object)
         language = self.request.COOKIES.get("django_language", "en")
-        send_user_registration_email(self.request.user, language)
+        send_user_registration_email(self.object, language)
         
         return valid
 
