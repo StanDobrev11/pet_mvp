@@ -1,0 +1,81 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% trans "Your Pet's Medical Examination Record" %}</title>
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #FF9800;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .content {
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+        }
+        .highlight {
+            color: #FF5722;
+            font-weight: bold;
+        }
+        .content h2 {
+            color: #FF9800;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+        .content h3 {
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+        .content p {
+            margin: 6px 0;
+        }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>{% trans "Welcome to Pet Medical Records" %}</h1>
+            </div>
+            <div class="content">
+                <p>
+                    {% blocktrans with first_name=first_name last_name=last_name %}
+                Dear {{ first_name }} {{ last_name }},
+                {% endblocktrans %}
+                </p>
+                <p>
+                    {% trans "Welcome to Pet Medical Records! You can now add your pets, their existing vaccines, and medications to your account." %}
+                </p>
+                <p>
+                    {% trans "Please note: Once you finish adding your pet's medical history, you will not be able to edit it anymore." %}
+                </p>
+                <p>
+                    {% trans "You will receive reminders about vaccine expirations: one month, 14 days, and one week before the expiration date." %}
+                </p>
+                <p>
+                    {% trans "You will also be notified whenever a new medical record is created for your pet after an examination by a doctor." %}
+                </p>
+            </div>
+            <div class="footer">
+                <p>{% trans "This is an automated message from My Pet's Passport. Please do not reply to this email." %}</p>
+            </div>
+        </div>
+    </body>
+</html>

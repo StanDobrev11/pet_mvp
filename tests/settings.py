@@ -10,3 +10,4 @@ DATABASES = {
         'NAME': ':memory:',
     }
 }
+print('Settings imported from test')

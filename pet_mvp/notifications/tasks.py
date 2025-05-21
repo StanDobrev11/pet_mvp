@@ -8,6 +8,7 @@ from pet_mvp.notifications.email_service import EmailService
 
 UserModel = get_user_model()
 
+
 @shared_task
 def send_vaccine_expiration_notifications():
     """
@@ -51,7 +52,8 @@ def send_vaccine_expiration_notifications():
 
             # Send expiration notification email
             EmailService.send_template_email_async.delay(
-                subject=_("Vaccine Expiration Notice for {}").format(record.pet.name),
+                subject=_("Vaccine Expiration Notice for {}").format(
+                    record.pet.name),
                 to_email=owners_emails,
                 template_name="emails/vaccine_expiration_notification.html",
                 context={
@@ -79,9 +81,10 @@ def test_to_dict(test_obj):
         "date_conducted": test_obj.date_conducted.strftime("%Y-%m-%d") if hasattr(test_obj, 'date_conducted') else None
     }
 
+
 @shared_task
 def send_medical_record_email(exam):
-    """task to send one-time notification on creation of a medical record"""
+    """task to send one-time notification on creation of a medical record to owners"""
 
     # get the owners emails of the pet
     owners_emails = [owner.email for owner in exam.pet.owners.all()]
@@ -107,7 +110,8 @@ def send_medical_record_email(exam):
         "follow_up": _("Yes") if exam.follow_up else _("No"),
         "notes": exam.notes or _("N/A"),
         "vaccinations": [
-            {"name": v.vaccine.name, "date": v.date_of_vaccination.strftime("%Y-%m-%d")}
+            {"name": v.vaccine.name,
+                "date": v.date_of_vaccination.strftime("%Y-%m-%d")}
             for v in exam.vaccinations.all()
         ],
         "medications": [
@@ -122,10 +126,31 @@ def send_medical_record_email(exam):
     }
 
     EmailService.send_template_email_async.delay(
-        subject=_("Medical Examination Report for {} - {}").format(exam.pet.name, exam.date_of_entry.strftime('%Y-%m-%d')),
+        subject=_("Medical Examination Report for {} - {}").format(exam.pet.name,
+                                                                   exam.date_of_entry.strftime('%Y-%m-%d')),
         to_email=owners_emails,
         template_name='emails/medical_report_email.html',
         context=context
     )
 
     return _("Processed one medical report for {}").format(exam.pet.name)
+
+
+@shared_task
+def send_user_registration_email(user):
+    """task to send one-time notification on creation of a medical record"""
+
+    user_email = user.email
+
+    if user.is_owner:
+        context = {
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+        }
+        EmailService.send_template_email_async.delay(
+            subject=_("Welcome {} {}").format(user.first_name, user.last_name),
+            to_email=user_email,
+            template_name='emails/user_registration_email.html',
+            context=context
+        )
+    return _("Sent registration email to {}").format(user_email)
