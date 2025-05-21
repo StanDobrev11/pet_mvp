@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-19 11:37+0000\n"
+"POT-Creation-Date: 2025-05-21 10:27+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -284,56 +284,64 @@ msgstr "Наличие на кръв в изпражненията"
 msgid "Indicates if blood was found in the sample"
 msgstr "Показва дали е открита кръв в пробата"
 
-#: .\pet_mvp\notifications\tasks.py:44
+#: .\pet_mvp\notifications\tasks.py:45
 msgid "4 weeks"
 msgstr "4 седмици"
 
-#: .\pet_mvp\notifications\tasks.py:46
+#: .\pet_mvp\notifications\tasks.py:47
 msgid "2 weeks"
 msgstr "2 седмици"
 
-#: .\pet_mvp\notifications\tasks.py:48
+#: .\pet_mvp\notifications\tasks.py:49
 msgid "1 week"
 msgstr "1 седмица"
 
-#: .\pet_mvp\notifications\tasks.py:50
+#: .\pet_mvp\notifications\tasks.py:51
 msgid "today"
 msgstr "днес"
 
-#: .\pet_mvp\notifications\tasks.py:54
+#: .\pet_mvp\notifications\tasks.py:55
 msgid "Vaccine Expiration Notice for {}"
 msgstr "Известие за изтичане на ваксина за {}"
 
-#: .\pet_mvp\notifications\tasks.py:67
+#: .\pet_mvp\notifications\tasks.py:69
 msgid "Processed {} vaccine expiration notifications"
 msgstr "Обработени {} известия за изтичане на ваксини"
 
-#: .\pet_mvp\notifications\tasks.py:78 .\pet_mvp\notifications\tasks.py:100
-#: .\pet_mvp\notifications\tasks.py:106 .\pet_mvp\notifications\tasks.py:108
+#: .\pet_mvp\notifications\tasks.py:80 .\pet_mvp\notifications\tasks.py:116
+#: .\pet_mvp\notifications\tasks.py:122 .\pet_mvp\notifications\tasks.py:124
 msgid "N/A"
 msgstr "Не е приложимо"
 
-#: .\pet_mvp\notifications\tasks.py:107
-#: .\templates\emails\medical_report_email.html:114
+#: .\pet_mvp\notifications\tasks.py:123
+#: .\templates\emails\medical_report_email.html:177
 #: .\templates\partials\fecal_test_card.html:13
 #: .\templates\partials\fecal_test_card.html:19
 msgid "Yes"
 msgstr "Да"
 
-#: .\pet_mvp\notifications\tasks.py:107
-#: .\templates\emails\medical_report_email.html:114
+#: .\pet_mvp\notifications\tasks.py:123
+#: .\templates\emails\medical_report_email.html:179
 #: .\templates\partials\fecal_test_card.html:13
 #: .\templates\partials\fecal_test_card.html:19
 msgid "No"
 msgstr "Не"
 
-#: .\pet_mvp\notifications\tasks.py:125
+#: .\pet_mvp\notifications\tasks.py:142
 msgid "Medical Examination Report for {} - {}"
 msgstr "Медицински преглед за {} - {}"
 
-#: .\pet_mvp\notifications\tasks.py:131
+#: .\pet_mvp\notifications\tasks.py:150
 msgid "Processed one medical report for {}"
 msgstr "Обработен един медицински доклад за {}"
+
+#: .\pet_mvp\notifications\tasks.py:165
+msgid "Welcome {} {}"
+msgstr "Добре дошли {} {}"
+
+#: .\pet_mvp\notifications\tasks.py:170
+msgid "Sent registration email to {}"
+msgstr "Изпратен медицински доклад за {}"
 
 #: .\pet_mvp\pets\models.py:22
 msgid "Male"
@@ -688,7 +696,7 @@ msgid "Vaccinations Applied"
 msgstr "Поставени ваксини"
 
 #: .\pet_mvp\records\models.py:229
-#: .\templates\emails\medical_report_email.html:75
+#: .\templates\emails\medical_report_email.html:110
 #: .\templates\records\examination_add.html:110
 msgid "Blood Test"
 msgstr "Кръвно изследване"
@@ -737,11 +745,11 @@ msgstr "Неизвестна дата"
 msgid "Medical Record for {} on {}"
 msgstr "Медицински запис за {} на {}"
 
-#: .\pet_mvp\settings.py:129 .\templates\partials\nav_bar.html:16
+#: .\pet_mvp\settings.py:130 .\templates\partials\nav_bar.html:16
 msgid "English"
 msgstr "Английски"
 
-#: .\pet_mvp\settings.py:130 .\templates\partials\nav_bar.html:19
+#: .\pet_mvp\settings.py:131 .\templates\partials\nav_bar.html:19
 msgid "Bulgarian"
 msgstr "Български"
 
@@ -911,6 +919,7 @@ msgid "Access to the records from everywhere!"
 msgstr "Достъп до досиетата отвсякъде!"
 
 #: .\templates\emails\medical_report_email.html:6
+#: .\templates\emails\user_registration_email.html:6
 msgid "Your Pet's Medical Examination Record"
 msgstr "Медицински преглед на вашия домашен любимец"
 
@@ -918,82 +927,110 @@ msgstr "Медицински преглед на вашия домашен лю�
 msgid "Medical Examination Record"
 msgstr "Медицински преглед"
 
-#: .\templates\emails\medical_report_email.html:59
+#: .\templates\emails\medical_report_email.html:58
+msgid "Owner Information"
+msgstr "Информация за собственика"
+
+#: .\templates\emails\medical_report_email.html:62
+msgid "Name:"
+msgstr "Име:"
+
+#: .\templates\emails\medical_report_email.html:64
+msgid "Email:"
+msgstr "Имейл:"
+
+#: .\templates\emails\medical_report_email.html:66
+msgid "Phone:"
+msgstr "Телефон:"
+
+#: .\templates\emails\medical_report_email.html:68
+msgid "City:"
+msgstr "Град:"
+
+#: .\templates\emails\medical_report_email.html:70
+msgid "Country:"
+msgstr "Държава:"
+
+#: .\templates\emails\medical_report_email.html:75
+msgid "No owner information available."
+msgstr "Няма налични записи за медикаменти."
+
+#: .\templates\emails\medical_report_email.html:77
 msgid "Pet Information"
 msgstr "Информация за домашния любимец"
 
-#: .\templates\emails\medical_report_email.html:60
+#: .\templates\emails\medical_report_email.html:79
 msgid "Pet Name:"
 msgstr "Име на домашния любимец:"
 
-#: .\templates\emails\medical_report_email.html:61
+#: .\templates\emails\medical_report_email.html:82
 #: .\templates\records\examination_details.html:11
 msgid "Date of Entry:"
 msgstr "Дата на записа:"
 
-#: .\templates\emails\medical_report_email.html:62
+#: .\templates\emails\medical_report_email.html:85
 #: .\templates\records\examination_details.html:12
 msgid "Doctor:"
 msgstr "Лекар:"
 
-#: .\templates\emails\medical_report_email.html:63
+#: .\templates\emails\medical_report_email.html:88
 #: .\templates\records\examination_details.html:14
 msgid "Clinic:"
 msgstr "Клиника:"
 
-#: .\templates\emails\medical_report_email.html:65
+#: .\templates\emails\medical_report_email.html:90
 msgid "Examination Details"
 msgstr "Детайли за прегледа"
 
-#: .\templates\emails\medical_report_email.html:66
+#: .\templates\emails\medical_report_email.html:92
 #: .\templates\records\examination_details.html:16
 msgid "Reason for Visit:"
 msgstr "Причина за посещението:"
 
-#: .\templates\emails\medical_report_email.html:67
+#: .\templates\emails\medical_report_email.html:95
 #: .\templates\records\examination_details.html:17
 msgid "General Health:"
 msgstr "Общо здравословно състояние:"
 
-#: .\templates\emails\medical_report_email.html:68
+#: .\templates\emails\medical_report_email.html:98
 #: .\templates\records\examination_details.html:18
 msgid "Body Condition Score:"
 msgstr "Оценка на телесното състояние (1-9):"
 
-#: .\templates\emails\medical_report_email.html:69
+#: .\templates\emails\medical_report_email.html:101
 #: .\templates\records\examination_details.html:19
 msgid "Temperature (°C):"
 msgstr "Температура (°C):"
 
-#: .\templates\emails\medical_report_email.html:70
+#: .\templates\emails\medical_report_email.html:104
 #: .\templates\records\examination_details.html:20
 msgid "Heart Rate (bpm):"
 msgstr "Пулс (уд/мин):"
 
-#: .\templates\emails\medical_report_email.html:71
+#: .\templates\emails\medical_report_email.html:107
 #: .\templates\records\examination_details.html:21
 msgid "Respiratory Rate:"
 msgstr "Дихателна честота:"
 
-#: .\templates\emails\medical_report_email.html:73
+#: .\templates\emails\medical_report_email.html:109
 msgid "Test Results"
 msgstr "Резултати от тестове"
 
-#: .\templates\emails\medical_report_email.html:77
-#: .\templates\emails\medical_report_email.html:89
-#: .\templates\emails\medical_report_email.html:101
+#: .\templates\emails\medical_report_email.html:113
+#: .\templates\emails\medical_report_email.html:132
+#: .\templates\emails\medical_report_email.html:151
 msgid "Test Name:"
 msgstr "Име на теста:"
 
-#: .\templates\emails\medical_report_email.html:78
-#: .\templates\emails\medical_report_email.html:90
-#: .\templates\emails\medical_report_email.html:102
+#: .\templates\emails\medical_report_email.html:116
+#: .\templates\emails\medical_report_email.html:135
+#: .\templates\emails\medical_report_email.html:154
 msgid "Results:"
 msgstr "Резултати"
 
-#: .\templates\emails\medical_report_email.html:79
-#: .\templates\emails\medical_report_email.html:91
-#: .\templates\emails\medical_report_email.html:103
+#: .\templates\emails\medical_report_email.html:119
+#: .\templates\emails\medical_report_email.html:138
+#: .\templates\emails\medical_report_email.html:157
 #: .\templates\partials\blood_test_card.html:37
 #: .\templates\partials\fecal_test_card.html:21
 #: .\templates\partials\urine_test_card.html:50
@@ -1001,100 +1038,148 @@ msgstr "Резултати"
 msgid "Notes:"
 msgstr "Бележки:"
 
-#: .\templates\emails\medical_report_email.html:81
-#: .\templates\emails\medical_report_email.html:93
-#: .\templates\emails\medical_report_email.html:105
+#: .\templates\emails\medical_report_email.html:123
+#: .\templates\emails\medical_report_email.html:142
+#: .\templates\emails\medical_report_email.html:161
 msgid "Date Conducted:"
 msgstr "Дата на провеждане:"
 
-#: .\templates\emails\medical_report_email.html:84
+#: .\templates\emails\medical_report_email.html:127
 msgid "No blood test performed."
 msgstr "Не е извършено кръвно изследване."
 
-#: .\templates\emails\medical_report_email.html:87
+#: .\templates\emails\medical_report_email.html:129
 #: .\templates\records\examination_add.html:121
 msgid "Urine Test"
 msgstr "Изследване на урина"
 
-#: .\templates\emails\medical_report_email.html:96
+#: .\templates\emails\medical_report_email.html:146
 msgid "No urine test performed."
 msgstr "Не е извършено изследване на урина."
 
-#: .\templates\emails\medical_report_email.html:99
+#: .\templates\emails\medical_report_email.html:148
 #: .\templates\records\examination_add.html:132
 msgid "Fecal Test"
 msgstr "Изследване на изпражнения"
 
-#: .\templates\emails\medical_report_email.html:108
+#: .\templates\emails\medical_report_email.html:165
 msgid "No fecal test performed."
 msgstr "Не е извършено изследване на изпражнения."
 
-#: .\templates\emails\medical_report_email.html:111
+#: .\templates\emails\medical_report_email.html:167
 msgid "Diagnosis & Treatment"
 msgstr "Диагноза и лечение"
 
-#: .\templates\emails\medical_report_email.html:112
+#: .\templates\emails\medical_report_email.html:169
 #: .\templates\records\examination_details.html:22
 msgid "Treatment Performed:"
 msgstr "Извършено лечение:"
 
-#: .\templates\emails\medical_report_email.html:113
+#: .\templates\emails\medical_report_email.html:172
 #: .\templates\records\examination_details.html:23
 msgid "Diagnosis:"
 msgstr "Диагноза:"
 
-#: .\templates\emails\medical_report_email.html:114
+#: .\templates\emails\medical_report_email.html:175
 #: .\templates\records\examination_details.html:24
 msgid "Follow-up Required:"
 msgstr "Необходимо ли е проследяване?:"
 
-#: .\templates\emails\medical_report_email.html:115
+#: .\templates\emails\medical_report_email.html:183
 #: .\templates\records\examination_details.html:25
 msgid "Additional Notes:"
 msgstr "Допълнителни бележки:"
 
-#: .\templates\emails\medical_report_email.html:117
+#: .\templates\emails\medical_report_email.html:185
 #: .\templates\records\record_list.html:10
 msgid "Vaccinations"
 msgstr "Ваксинации"
 
-#: .\templates\emails\medical_report_email.html:123
+#: .\templates\emails\medical_report_email.html:189
 #: .\templates\records\examination_details.html:34
 msgid "No vaccination records available."
 msgstr "Няма налични записи за ваксинации."
 
-#: .\templates\emails\medical_report_email.html:126
+#: .\templates\emails\medical_report_email.html:191
 msgid "Medications"
 msgstr "Медикаменти"
 
-#: .\templates\emails\medical_report_email.html:132
+#: .\templates\emails\medical_report_email.html:195
 #: .\templates\records\examination_details.html:41
 msgid "No medication records available."
 msgstr "Няма налични записи за медикаменти."
 
-#: .\templates\emails\medical_report_email.html:135
+#: .\templates\emails\medical_report_email.html:197
 #: .\templates\emails\vaccine_expiration_notification.html:67
 msgid "Thank you for taking good care of your pet's health!"
 msgstr ""
 "Благодарим ви, че се грижите добре за здравето на вашия домашен любимец!"
 
-#: .\templates\emails\medical_report_email.html:136
+#: .\templates\emails\medical_report_email.html:199
 #: .\templates\emails\vaccine_expiration_notification.html:68
 msgid "Best regards,"
 msgstr "С най-добри пожелания,"
 
-#: .\templates\emails\medical_report_email.html:136
+#: .\templates\emails\medical_report_email.html:201
 #: .\templates\emails\vaccine_expiration_notification.html:68
 msgid "The Pet MVP Team"
 msgstr "Екипът на Pet MVP"
 
-#: .\templates\emails\medical_report_email.html:139
+#: .\templates\emails\medical_report_email.html:205
+#: .\templates\emails\user_registration_email.html:77
 msgid ""
 "This is an automated message from My Pet's Passport. Please do not reply to "
 "this email."
 msgstr ""
 "Това е автоматично съобщение от паспорта на моя домашен любимец. Моля, не "
 "отговаряйте на този имейл."
+
+#: .\templates\emails\user_registration_email.html:55
+msgid "Welcome to Pet Medical Records"
+msgstr "Добре дошли в медицинските досиета на вашия любимец!"
+
+#: .\templates\emails\user_registration_email.html:59
+#, python-format
+msgid ""
+"\n"
+"                Dear %(first_name)s %(last_name)s,\n"
+"                "
+msgstr ""
+"\n"
+"                Уважаеми/а %(first_name)s %(last_name)s,\n"
+"                "
+
+#: .\templates\emails\user_registration_email.html:64
+msgid ""
+"Welcome to Pet Medical Records! You can now add your pets, their existing "
+"vaccines, and medications to your account."
+msgstr ""
+"Добре дошли в Pet Medical Records! Вече можете да добавите вашите домашни любимци, "
+"техните съществуващи ваксини и медикаменти към вашия профил."
+
+#: .\templates\emails\user_registration_email.html:67
+msgid ""
+"Please note: Once you finish adding your pet's medical history, you will not "
+"be able to edit it anymore."
+msgstr ""
+"Моля, имайте предвид: След като приключите с добавянето на медицинската история "
+"на вашия домашен любимец, няма да можете да я редактирате."
+
+#: .\templates\emails\user_registration_email.html:70
+msgid ""
+"You will receive reminders about vaccine expirations: one month, 14 days, "
+"and one week before the expiration date."
+msgstr ""
+"Ще получавате напомняния за изтичане на ваксини: един месец, 14 дни и една седмица "
+"преди датата на изтичане."
+
+#: .\templates\emails\user_registration_email.html:73
+msgid ""
+"You will also be notified whenever a new medical record is created for your "
+"pet after an examination by a doctor."
+msgstr ""
+"Ще бъдете уведомени всеки път, когато бъде създаден нов медицински запис за "
+"вашия домашен любимец след преглед от ветеринарен лекар."
 
 #: .\templates\emails\vaccine_expiration_notification.html:6
 #: .\templates\emails\vaccine_expiration_notification.html:43
@@ -1348,13 +1433,13 @@ msgstr "не е задължителна"
 msgid "Add Marking"
 msgstr "Добави маркировка"
 
-#: .\templates\pet\marking_add.html:28 .\templates\pet\pet_add.html:28
+#: .\templates\pet\marking_add.html:28 .\templates\pet\pet_add.html:29
 #: .\templates\pet\pet_edit.html:28
 #: .\templates\records\examination_add.html:143
 msgid "Save"
 msgstr "Запази"
 
-#: .\templates\pet\marking_add.html:29 .\templates\pet\pet_add.html:29
+#: .\templates\pet\marking_add.html:29 .\templates\pet\pet_add.html:30
 #: .\templates\pet\pet_edit.html:29
 msgid "Reset"
 msgstr "Нулиране"
@@ -1387,7 +1472,7 @@ msgstr "Обратно към детайлите на домашния люби�
 msgid "Add a New Pet"
 msgstr "Добави нов домашен любимец"
 
-#: .\templates\pet\pet_add.html:30 .\templates\pet\pet_delete.html:17
+#: .\templates\pet\pet_add.html:31 .\templates\pet\pet_delete.html:17
 msgid "Cancel"
 msgstr "Отказ"
 
@@ -1649,7 +1734,3 @@ msgstr ""
 #: .\templates\records\vaccine_record_add.html:33
 msgid "Finish Adding Vaccines"
 msgstr "Завърши добавянето на ваксини"
-
-
-msgid "None"
-msgstr "Няма"
