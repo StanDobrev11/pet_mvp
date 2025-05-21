@@ -8,7 +8,10 @@ UserModel = get_user_model()
 
 
 @receiver(signal=post_save, sender=UserModel)
-def user_registration_signal(sender, instance, **kwargs):
+def user_registration_signal(sender, instance, created, **kwargs):
     """Signal handler to send email notification on user registration"""
 
-    send_user_registration_email(instance)
+    if created:
+        send_user_registration_email(instance)
+
+    return None

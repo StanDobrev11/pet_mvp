@@ -6,6 +6,8 @@ from pet_mvp.accounts.forms import OwnerCreationForm, ClinicRegistrationForm, Ac
 from pet_mvp.pets.models import Pet
 from pet_mvp.access_codes.models import PetAccessCode
 
+import uuid
+
 UserModel = get_user_model()
 
 class OwnerCreationFormTests(TestCase):
@@ -141,7 +143,8 @@ class AccessCodeEmailFormTests(TestCase):
 
     def setUp(self):
         """Set up test data."""
-        # Create a pet with access code
+        # Create a pet with a unique passport number for each test
+        unique_passport = f'BG01VP{uuid.uuid4().hex[:6].upper()}'
         self.pet = Pet.objects.create(
             name='Test Pet',
             species='Dog',
@@ -150,7 +153,7 @@ class AccessCodeEmailFormTests(TestCase):
             date_of_birth='2020-01-01',
             sex='male',
             current_weight='28',
-            passport_number='BG01VP123456',
+            passport_number=unique_passport,
         )
         self.access_code = PetAccessCode.objects.create(
             pet=self.pet,

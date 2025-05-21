@@ -11,7 +11,6 @@ from unittest.mock import patch
 from pet_mvp.notifications.tasks import send_medical_record_email
 from pet_mvp.records.models import MedicalExaminationRecord
 from pet_mvp.pets.models import Pet
-from pet_mvp.accounts.models import Clinic
 from django.contrib.auth import get_user_model
 
 User = get_user_model()

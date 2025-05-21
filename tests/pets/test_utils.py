@@ -1,7 +1,6 @@
 from django.test import TestCase
 from unittest.mock import patch, MagicMock
 import os
-import uuid
 
 from pet_mvp.pets.utils import pet_directory_path, delete_pet_photo
 from pet_mvp.pets.models import Pet

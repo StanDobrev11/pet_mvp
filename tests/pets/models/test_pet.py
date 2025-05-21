@@ -1,14 +1,12 @@
 from django.test import TestCase
 from django.utils import timezone
-from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from datetime import timedelta
-import os
 
 from pet_mvp.pets.models import Pet
-from pet_mvp.settings import MEDIA_ROOT
 
 UserModel = get_user_model()
+
 
 class PetModelTests(TestCase):
     """
@@ -29,7 +27,8 @@ class PetModelTests(TestCase):
         )
 
         self.today = timezone.now().date()
-        self.birth_date = self.today - timedelta(days=365*2 + 30*6 + 15)  # 2 years, 6 months, 15 days
+        # 2 years, 6 months, 15 days
+        self.birth_date = self.today - timedelta(days=365*2 + 30*6 + 15)
 
     def test_pet_creation(self):
         """Test creating a pet with valid data."""
@@ -75,7 +74,7 @@ class PetModelTests(TestCase):
             passport_number="AB12345678"
         )
 
-        self.assertEqual(str(pet), "Buddy - dog - Labrador")
+        self.assertEqual(str(pet), "Buddy - Dog - Labrador")
 
     def test_pet_age_property(self):
         """Test the age property of the Pet model."""

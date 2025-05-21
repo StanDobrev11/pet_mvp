@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.messages.storage.fallback import FallbackStorage
 from django.contrib.sessions.middleware import SessionMiddleware
 
-from pet_mvp.accounts.views import BaseUserRegisterView, RegisterOwnerView, ClinicRegistrationView
+from pet_mvp.accounts.views import RegisterOwnerView
 from pet_mvp.accounts.forms import OwnerCreationForm, ClinicRegistrationForm
 from pet_mvp.pets.models import Pet
 from pet_mvp.access_codes.models import PetAccessCode

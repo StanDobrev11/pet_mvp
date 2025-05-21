@@ -146,9 +146,6 @@ def send_user_registration_email(user):
         context = {
             "first_name": user.first_name,
             "last_name": user.last_name,
-            "email": user_email,
-            "password": user.password,
-            "username": user.username
         }
         EmailService.send_template_email_async.delay(
             subject=_("Welcome {} {}").format(user.first_name, user.last_name),
@@ -156,3 +153,4 @@ def send_user_registration_email(user):
             template_name='emails/user_registration_email.html',
             context=context
         )
+    return _("Sent registration email to {}").format(user_email)
