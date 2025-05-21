@@ -93,8 +93,9 @@ class MedicalRecordEmailTestCase(TestCase):
         call = mock_send_email.delay.call_args
         args, kwargs = call
 
-        # Check that the email was sent to the pet owner
-        self.assertEqual(kwargs['to_email'], [self.test_owner.email])
+        # Check that the email was sent to the pet owner and clinic
+        self.assertIn(self.test_owner.email, kwargs['to_email'])
+        self.assertIn(self.test_clinic.email, kwargs['cc'])
 
         # Check that the subject contains the pet name
         self.assertIn(self.test_pet.name, kwargs['subject'])

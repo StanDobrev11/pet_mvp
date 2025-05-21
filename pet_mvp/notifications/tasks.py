@@ -86,11 +86,24 @@ def test_to_dict(test_obj):
 def send_medical_record_email(exam):
     """task to send one-time notification on creation of a medical record to owners"""
 
+    # get owners' details
+    owners_details = [owner for owner in exam.pet.owners.all()]
+
+    owner_details = [{
+        "first_name": owner.first_name,
+        "last_name": owner.last_name,
+        "email": owner.email,
+        "phone_number": owner.phone_number,
+        "city": owner.city,
+        "country": owner.country
+    } for owner in owners_details]
+
     # get the owners emails of the pet
-    owners_emails = [owner.email for owner in exam.pet.owners.all()]
+    owners_emails = [owner.email for owner in owners_details]
 
     clinic = exam.clinic
     context = {
+        "owners": owner_details,
         "pet_name": exam.pet.name,
         "date_of_entry": exam.date_of_entry.strftime("%Y-%m-%d"),
         "doctor": exam.doctor,
@@ -129,6 +142,7 @@ def send_medical_record_email(exam):
         subject=_("Medical Examination Report for {} - {}").format(exam.pet.name,
                                                                    exam.date_of_entry.strftime('%Y-%m-%d')),
         to_email=owners_emails,
+        cc=clinic.email,
         template_name='emails/medical_report_email.html',
         context=context
     )
