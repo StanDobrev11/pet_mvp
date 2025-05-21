@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.messages.storage.fallback import FallbackStorage
 from django.contrib.sessions.middleware import SessionMiddleware
 
-from pet_mvp.accounts.views import BaseLoginView, LoginOwnerView, PasswordEntryView, AccessCodeEmailView
+from pet_mvp.accounts.views import PasswordEntryView
 from pet_mvp.accounts.forms import AccessCodeEmailForm
 from pet_mvp.pets.models import Pet
 from pet_mvp.access_codes.models import PetAccessCode
@@ -12,6 +12,7 @@ from pet_mvp.access_codes.models import PetAccessCode
 import uuid
 
 UserModel = get_user_model()
+
 
 class BaseLoginViewTests(TestCase):
     """
@@ -38,14 +39,6 @@ class BaseLoginViewTests(TestCase):
             'username': self.user.email,  # AuthenticationForm expects 'username' field
             'password': 'testpass123'
         }, follow=True)  # Follow redirects
-
-        # print("Response status code:", response.status_code)
-        # print("Response redirect chain:", response.redirect_chain)
-        # print("Response context user:", response.context['user'])
-        # print("Response context user is authenticated:", response.context['user'].is_authenticated)
-        # print("Response context user pk:", response.context['user'].pk if hasattr(response.context['user'], 'pk') else None)
-        # print("Test user pk:", self.user.pk)
-        # print("Session keys:", self.client.session.keys())
 
         # Final response should be 200 OK (dashboard or redirect target)
         self.assertEqual(response.status_code, 200)
@@ -122,18 +115,21 @@ class PasswordEntryViewTests(TestCase):
 
     def test_get_request(self):
         """Test GET request to the view."""
-        url = reverse('password-entry') + '?email=clinic@example.com&code=TEST123'
+        url = reverse('password-entry') + \
+            '?email=clinic@example.com&code=TEST123'
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'accounts/password_entry.html')
 
         # Email should be pre-filled
-        self.assertEqual(response.context['form'].initial['username'], 'clinic@example.com')
+        self.assertEqual(
+            response.context['form'].initial['username'], 'clinic@example.com')
 
     def test_form_valid(self):
         """Test form_valid method."""
-        url = reverse('password-entry') + '?email=clinic@example.com&code=TEST123'
+        url = reverse('password-entry') + \
+            '?email=clinic@example.com&code=TEST123'
         form_data = {
             'username': 'clinic@example.com',
             'password': 'testpass123'
@@ -154,14 +150,16 @@ class PasswordEntryViewTests(TestCase):
 
         # Should redirect to pet details page
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, reverse('pet-details', kwargs={'pk': self.pet.pk}))
+        self.assertEqual(response.url, reverse(
+            'pet-details', kwargs={'pk': self.pet.pk}))
 
         # Access code should be in session
         self.assertEqual(request.session['code'], 'TEST123')
 
     def test_get_initial(self):
         """Test get_initial method."""
-        url = reverse('password-entry') + '?email=clinic@example.com&code=TEST123'
+        url = reverse('password-entry') + \
+            '?email=clinic@example.com&code=TEST123'
         request = self.factory.get(url)
 
         view = PasswordEntryView()
@@ -172,7 +170,8 @@ class PasswordEntryViewTests(TestCase):
 
     def test_get_form_kwargs(self):
         """Test get_form_kwargs method."""
-        url = reverse('password-entry') + '?email=clinic@example.com&code=TEST123'
+        url = reverse('password-entry') + \
+            '?email=clinic@example.com&code=TEST123'
         form_data = {
             'password': 'testpass123'
             # Intentionally omitting username to test it gets added from GET params
@@ -251,8 +250,10 @@ class AccessCodeEmailViewTests(TestCase):
         response = self.client.post(url, data=form_data)
 
         # Should redirect to password entry page
-        expected_url = reverse('password-entry') + '?email=clinic@example.com&code=TEST123'
-        self.assertRedirects(response, expected_url, fetch_redirect_response=False)
+        expected_url = reverse('password-entry') + \
+            '?email=clinic@example.com&code=TEST123'
+        self.assertRedirects(response, expected_url,
+                             fetch_redirect_response=False)
 
     def test_form_valid_existing_owner(self):
         """Test form_valid with existing owner user."""
@@ -264,7 +265,8 @@ class AccessCodeEmailViewTests(TestCase):
         response = self.client.post(url, data=form_data)
 
         # Should redirect to index with error message
-        self.assertRedirects(response, reverse('index'), fetch_redirect_response=False)
+        self.assertRedirects(response, reverse('index'),
+                             fetch_redirect_response=False)
 
     def test_form_valid_new_email(self):
         """Test form_valid with new email."""
@@ -276,8 +278,10 @@ class AccessCodeEmailViewTests(TestCase):
         response = self.client.post(url, data=form_data)
 
         # Should redirect to clinic registration page
-        expected_url = reverse('clinic-register') + '?email=new@example.com&code=TEST123'
-        self.assertRedirects(response, expected_url, fetch_redirect_response=False)
+        expected_url = reverse('clinic-register') + \
+            '?email=new@example.com&code=TEST123'
+        self.assertRedirects(response, expected_url,
+                             fetch_redirect_response=False)
 
     def test_form_invalid(self):
         """Test form_invalid method."""
