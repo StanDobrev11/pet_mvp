@@ -10,7 +10,7 @@ from django.views import generic as views
 
 from pet_mvp.notifications.tasks import send_medical_record_email
 from pet_mvp.pets.models import Pet
-from pet_mvp.records.forms import VaccinationRecordForm, MedicationRecordForm, FecalTestForm, UrineTestForm, \
+from pet_mvp.records.forms import FecalTestForm, UrineTestForm, \
     BloodTestForm, VaccinationRecordForm, MedicationRecordForm, VaccineFormSet, TreatmentFormSet, \
     MedicalExaminationRecordForm
 from pet_mvp.records.models import VaccinationRecord, MedicalExaminationRecord, MedicationRecord
@@ -152,8 +152,7 @@ class MedicalExaminationReportCreateView(views.FormView):
         pet_id = self.request.GET.get('id')
 
         if pet_id is None:
-            pet_id = self.request.POST.get('id')
-            
+            pet_id = self.request.POST.get('id')          
         return get_object_or_404(Pet, pk=pet_id)
 
     def get_context_data(self, **kwargs):

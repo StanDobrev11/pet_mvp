@@ -2,9 +2,6 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth import views as auth_views, login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import PasswordChangeView
-from django.core.exceptions import ValidationError
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -31,9 +28,12 @@ class BaseUserRegisterView(views.CreateView):
     # important here is to use form which is created by the user in forms.py
     redirect_authenticated_user = True
 
-    @method_decorator(sensitive_post_parameters())  # not logging sensitive parameters
-    @method_decorator(csrf_protect)  # enforces checking of CSRF token before the request is processed
-    @method_decorator(never_cache)  # tells browsers not to store sensitive information
+    # not logging sensitive parameters
+    @method_decorator(sensitive_post_parameters())
+    # enforces checking of CSRF token before the request is processed
+    @method_decorator(csrf_protect)
+    # tells browsers not to store sensitive information
+    @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):
         if self.redirect_authenticated_user and self.request.user.is_authenticated:
             redirect_to = self.get_success_url()
@@ -57,7 +57,6 @@ class BaseUserRegisterView(views.CreateView):
         login(self.request, self.object)
         language = self.request.COOKIES.get("django_language", "en")
         send_user_registration_email(self.object, language)
-        
         return valid
 
     def form_invalid(self, form):
@@ -76,7 +75,8 @@ class BaseUserRegisterView(views.CreateView):
 
     def activate_soft_deleted_user(self, form):
         try:
-            user = UserModel.objects.get(email=form.data.get('email'), is_active=False)
+            user = UserModel.objects.get(
+                email=form.data.get('email'), is_active=False)
         except UserModel.DoesNotExist:
             return False  # User does not exist or is not inactive
 
@@ -122,7 +122,8 @@ class LoginOwnerView(BaseLoginView):
 
 
 class AccessCodeEmailView(views.FormView):
-    template_name = 'accounts/access_code_email.html'  # Page with Access Code + Email fields
+    # Page with Access Code + Email fields
+    template_name = 'accounts/access_code_email.html'
     form_class = AccessCodeEmailForm
 
     def form_valid(self, form):
@@ -135,16 +136,19 @@ class AccessCodeEmailView(views.FormView):
             user = UserModel.objects.get(email=email)
             if not user.is_owner:
                 # Redirect to password page if email exists and access code is valid
-                url = reverse_lazy('password-entry') + f'?email={email}&code={access_code}'
+                url = reverse_lazy('password-entry') + \
+                    f'?email={email}&code={access_code}'
                 return redirect(url)
             else:
                 # Add a message explaining why they were redirected
-                messages.error(self.request, 'You cannot log in as a veterinarian.')
+                messages.error(
+                    self.request, 'You cannot log in as a veterinarian.')
                 # Redirect to index page
                 return redirect(reverse_lazy('index'))
         else:
             # If email doesn’t exist but is valid, redirect to registration
-            url = reverse_lazy('clinic-register') + f'?email={email}&code={access_code}'
+            url = reverse_lazy('clinic-register') + \
+                f'?email={email}&code={access_code}'
             return redirect(url)
 
     def form_invalid(self, form):
@@ -192,7 +196,8 @@ class PasswordEntryView(BaseLoginView):
             data = kwargs.get('data', {}).copy()  # Get current POST data
             # Add or update 'username' with the 'email' GET parameter
             if 'username' not in data or not data['username']:
-                data['username'] = self.request.GET.get('email', '')  # Inject 'email' as username
+                data['username'] = self.request.GET.get(
+                    'email', '')  # Inject 'email' as username
             kwargs['data'] = data  # Pass modified data back
 
         return kwargs
@@ -227,5 +232,5 @@ class ClinicRegistrationView(BaseUserRegisterView):
 
 def logout_view(request):
     logout(request)
-    
+
     return redirect('index')

@@ -5,7 +5,6 @@ from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from pet_mvp.common.middlewares import get_current_request
 from pet_mvp.notifications.email_service import EmailService
 
 UserModel = get_user_model()
@@ -157,7 +156,6 @@ def send_user_registration_email(user, lang):
     """task to send one-time notification on creation of a medical record"""
 
     user_email = user.email
-        
     if user.is_owner:
         context = {
             "first_name": user.first_name,
