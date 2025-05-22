@@ -12,6 +12,8 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 
 from pet_mvp.accounts.forms import OwnerCreationForm, AccessCodeEmailForm, ClinicRegistrationForm
+# Add import for the edit form if you have one
+# from pet_mvp.accounts.forms import OwnerEditForm
 from pet_mvp.notifications.tasks import send_user_registration_email
 from pet_mvp.pets.models import Pet
 
@@ -134,8 +136,8 @@ class ClinicRegistrationView(BaseUserRegisterView):
 
         # set and get the language param
         lang = self.set_default_language()
-        # TODO create send_clinic_registration_email 
-        
+        # TODO create send_clinic_registration_email
+
         return response
 
 
@@ -254,3 +256,27 @@ def logout_view(request):
     logout(request)
 
     return redirect('index')
+
+
+class OwnerDetailsView(views.DetailView):
+    """
+    View for displaying the details of a pet owner.
+    """
+    model = UserModel
+    template_name = 'accounts/owner_details.html'
+    context_object_name = 'owner'
+
+
+class OwnerEditView(views.UpdateView):
+    """
+    View for editing the details of a pet owner.
+    """
+    model = UserModel
+    # form_class = OwnerEditForm  # Uncomment and use your actual edit form
+    fields = ['first_name', 'last_name', 'email',
+              'phone_number', 'city', 'country']  # fallback if no form
+    template_name = 'accounts/owner_edit.html'
+    context_object_name = 'owner'
+
+    def get_success_url(self):
+        return reverse_lazy('owner-details', kwargs={'pk': self.object.pk})

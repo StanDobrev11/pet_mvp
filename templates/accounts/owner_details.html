@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">{% trans "Owner Profile" %}</h3>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">{% trans "First Name" %}</dt>
+                        <dd class="col-sm-8">{{ owner.first_name }}</dd>
+
+                        <dt class="col-sm-4">{% trans "Last Name" %}</dt>
+                        <dd class="col-sm-8">{{ owner.last_name }}</dd>
+
+                        <dt class="col-sm-4">{% trans "Email" %}</dt>
+                        <dd class="col-sm-8">{{ owner.email }}</dd>
+
+                        <dt class="col-sm-4">{% trans "Phone Number" %}</dt>
+                        <dd class="col-sm-8">{{ owner.phone_number }}</dd>
+
+                        <dt class="col-sm-4">{% trans "City" %}</dt>
+                        <dd class="col-sm-8">{{ owner.city }}</dd>
+
+                        <dt class="col-sm-4">{% trans "Country" %}</dt>
+                        <dd class="col-sm-8">{{ owner.country }}</dd>
+                    </dl>
+                </div>
+                <div class="card-footer bg-white text-end">
+                    <a href="{% url 'owner-edit' owner.pk %}" class="btn btn-warning">
+                        {% trans "Edit Profile" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
