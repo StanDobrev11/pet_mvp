@@ -13,6 +13,11 @@ from pet_mvp.common.mixins import TimeStampMixin
 class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
     USERNAME_FIELD = 'email'
     PHONE_NUMBER_LENGTH = 10
+    
+    LANGUAGE_CHOICES = [
+        ('bg', 'BG'),
+        ('en', 'EN')
+    ]
 
     email = models.EmailField(
         unique=True,
@@ -22,19 +27,21 @@ class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
         verbose_name=_('Email')
     )
 
-    date_joined = models.DateTimeField(default=timezone.now, verbose_name=_("Date joined"))
+    date_joined = models.DateTimeField(
+        default=timezone.now, verbose_name=_("Date joined"))
 
     is_staff = models.BooleanField(
         default=False,
-        help_text=_("Designates whether the user can log into this admin site."),
+        help_text=_(
+            "Designates whether the user can log into this admin site."),
         verbose_name=_("Staff status"),
     )
 
     is_active = models.BooleanField(
         default=True,
         help_text=_(
-        "Designates whether this user should be treated as active. "
-        "Unselect this instead of deleting accounts."
+            "Designates whether this user should be treated as active. "
+            "Unselect this instead of deleting accounts."
         ),
         verbose_name=_("Active"),
     )
@@ -63,14 +70,23 @@ class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
         max_length=255,
         verbose_name=_("Country"),
     )
-
+    
+    default_language = models.CharField(
+        default='bg',
+        choices=LANGUAGE_CHOICES
+    )
+    
     # Owner-specific fields
-    first_name = models.CharField(max_length=255, null=True, blank=True, verbose_name=_("First name"))
-    last_name = models.CharField(max_length=255, null=True, blank=True, verbose_name=_("Last name"))
+    first_name = models.CharField(
+        max_length=255, null=True, blank=True, verbose_name=_("First name"))
+    last_name = models.CharField(
+        max_length=255, null=True, blank=True, verbose_name=_("Last name"))
 
     # Clinic-specific fields
-    clinic_name = models.CharField(max_length=255, null=True, blank=True, verbose_name=_("Clinic name"))
-    clinic_address = models.CharField(max_length=255, null=True, blank=True, verbose_name=_("Clinic address"))
+    clinic_name = models.CharField(
+        max_length=255, null=True, blank=True, verbose_name=_("Clinic name"))
+    clinic_address = models.CharField(
+        max_length=255, null=True, blank=True, verbose_name=_("Clinic address"))
 
     def clean(self):
         """
@@ -79,17 +95,21 @@ class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
         if self.is_owner:
             # Validate that first_name and last_name are provided for owners
             if not self.first_name or not self.last_name:
-                raise ValidationError(_("Owners must have a first name and last name."))
+                raise ValidationError(
+                    _("Owners must have a first name and last name."))
             # Ensure clinic-specific fields remain empty for owners
             if self.clinic_name or self.clinic_address:
-                raise ValidationError(_("Owners cannot have clinic-related information."))
+                raise ValidationError(
+                    _("Owners cannot have clinic-related information."))
         else:
             # Validate that clinic_name and clinic_address are provided for clinics
             if not self.clinic_name or not self.clinic_address:
-                raise ValidationError(_("Clinics must have a name and address."))
+                raise ValidationError(
+                    _("Clinics must have a name and address."))
             # Ensure owner-specific fields remain empty for clinics
             if self.first_name or self.last_name:
-                raise ValidationError(_("Clinics cannot have owner-related information."))
+                raise ValidationError(
+                    _("Clinics cannot have owner-related information."))
 
         super().clean()
 

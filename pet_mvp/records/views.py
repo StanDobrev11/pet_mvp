@@ -3,15 +3,14 @@ from datetime import timedelta
 
 from django.contrib import messages
 from django.db import transaction
-from django.forms import formset_factory
 from django.http import HttpResponseForbidden
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic as views
 
-from pet_mvp.drugs.models import BloodTest, UrineTest, FecalTest
+from pet_mvp.notifications.tasks import send_medical_record_email
 from pet_mvp.pets.models import Pet
-from pet_mvp.records.forms import VaccinationRecordForm, MedicationRecordForm, FecalTestForm, UrineTestForm, \
+from pet_mvp.records.forms import FecalTestForm, UrineTestForm, \
     BloodTestForm, VaccinationRecordForm, MedicationRecordForm, VaccineFormSet, TreatmentFormSet, \
     MedicalExaminationRecordForm
 from pet_mvp.records.models import VaccinationRecord, MedicalExaminationRecord, MedicationRecord
@@ -30,8 +29,10 @@ class RecordListView(views.ListView):
         context = super().get_context_data(**kwargs)
         pet = context['pet_list'][0]
         context['vaccines'] = pet.vaccine_records.all().order_by('-valid_until')
-        context['treatments'] = pet.medication_records.all().order_by('-valid_until')
-        context['examinations'] = pet.examination_records.all().order_by('-date_of_entry')
+        context['treatments'] = pet.medication_records.all().order_by(
+            '-valid_until')
+        context['examinations'] = pet.examination_records.all().order_by(
+            '-date_of_entry')
         context['id'] = pet.pk
         context['source'] = self.request.GET.get('source', '')
         return context
@@ -148,11 +149,10 @@ class MedicalExaminationReportCreateView(views.FormView):
         if pet_id:
             return get_object_or_404(Pet, pk=pet_id)
 
-        if self.request.method == 'GET':
-            pet_id = self.request.GET.get('id')
-        elif self.request.method == 'POST':
-            pet_id = self.request.POST.get('id')
+        pet_id = self.request.GET.get('id')
 
+        if pet_id is None:
+            pet_id = self.request.POST.get('id')          
         return get_object_or_404(Pet, pk=pet_id)
 
     def get_context_data(self, **kwargs):
@@ -196,41 +196,48 @@ class MedicalExaminationReportCreateView(views.FormView):
         pet = self.get_pet()
 
         vaccine_formset = VaccineFormSet(self.request.POST, prefix='vaccines')
-        treatment_formset = TreatmentFormSet(self.request.POST, prefix='treatments')
+        treatment_formset = TreatmentFormSet(
+            self.request.POST, prefix='treatments')
         request_data = self.request.POST
 
         # Check if main form and all formsets are valid
         all_valid = True
 
         if not form.is_valid():
-            messages.error(self.request, "Medical examination form contains errors.")
+            messages.error(
+                self.request, "Medical examination form contains errors.")
             all_valid = False
 
         if not vaccine_formset.is_valid():
-            messages.error(self.request, "Vaccine information contains errors.")
+            messages.error(
+                self.request, "Vaccine information contains errors.")
             all_valid = False
 
         if not treatment_formset.is_valid():
-            messages.error(self.request, "Treatment information contains errors.")
+            messages.error(
+                self.request, "Treatment information contains errors.")
             all_valid = False
 
         # Check optional test forms if they're included
         if request_data.get('has_blood_test'):
             blood_test_form = BloodTestForm(request_data)
             if not blood_test_form.is_valid():
-                messages.error(self.request, "Blood test form contains errors.")
+                messages.error(
+                    self.request, "Blood test form contains errors.")
                 all_valid = False
 
         if request_data.get('has_urine_test'):
             urine_test_form = UrineTestForm(request_data)
             if not urine_test_form.is_valid():
-                messages.error(self.request, "Urine test form contains errors.")
+                messages.error(
+                    self.request, "Urine test form contains errors.")
                 all_valid = False
 
         if request_data.get('has_fecal_test'):
             fecal_test_form = FecalTestForm(request_data)
             if not fecal_test_form.is_valid():
-                messages.error(self.request, "Fecal test form contains errors.")
+                messages.error(
+                    self.request, "Fecal test form contains errors.")
                 all_valid = False
 
         # If any form is invalid, return to the same page with form data preserved
@@ -275,5 +282,7 @@ class MedicalExaminationReportCreateView(views.FormView):
 
             report.save()
 
+        lang = self.request.COOKIES.get('django_language', 'en')
+        send_medical_record_email(report, lang)
         messages.success(self.request, "Examination data saved successfully!")
         return redirect(reverse_lazy('pet-details', kwargs={'pk': pet.pk}))

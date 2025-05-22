@@ -4,6 +4,7 @@ from datetime import timedelta
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+
 from pet_mvp.notifications.email_service import EmailService
 
 UserModel = get_user_model()
@@ -17,7 +18,7 @@ def send_vaccine_expiration_notifications():
     This can be scheduled via Celery Beat
     """
     from pet_mvp.records.models import VaccinationRecord
-
+    
     today = timezone.now().date()
 
     # Define notification intervals
@@ -37,9 +38,10 @@ def send_vaccine_expiration_notifications():
         )
 
         for record in expiring_vaccinations:
-            # Get pet owners' emails
-            owners_emails = [owner.email for owner in record.pet.owners.all()]
-
+            
+            # for each expiring vaccine, send email on the language set as default
+            owners = [owner for owner in record.pet.owners.all()]
+            
             # Prepare notification message based on interval
             if interval_name == 'four_weeks':
                 time_left = _("4 weeks")
@@ -50,21 +52,23 @@ def send_vaccine_expiration_notifications():
             else:  # expiration_day
                 time_left = _("today")
 
-            # Send expiration notification email
-            EmailService.send_template_email_async.delay(
-                subject=_("Vaccine Expiration Notice for {}").format(
-                    record.pet.name),
-                to_email=owners_emails,
-                template_name="emails/vaccine_expiration_notification.html",
-                context={
-                    "pet_name": record.pet.name,
-                    "vaccine": record.vaccine.name,
-                    "expiration_date": record.valid_until,
-                    "time_left": time_left
-                }
-            )
+            # Send expiration notification email for each owner
+            for owner in owners:
+                EmailService.send_template_email_async.delay(
+                    subject=_("Vaccine Expiration Notice for {}").format(
+                        record.pet.name),
+                    to_email=owner.email,
+                    template_name="emails/vaccine_expiration_notification.html",
+                    context={
+                        "pet_name": record.pet.name,
+                        "vaccine": record.vaccine.name,
+                        "expiration_date": record.valid_until,
+                        "time_left": time_left,
+                        "lang": owner.default_language,
+                    }
+                )
 
-            notifications_sent += 1
+                notifications_sent += 1
 
     return _("Processed {} vaccine expiration notifications").format(notifications_sent)
 
@@ -83,7 +87,7 @@ def test_to_dict(test_obj):
 
 
 @shared_task
-def send_medical_record_email(exam):
+def send_medical_record_email(exam, lang):
     """task to send one-time notification on creation of a medical record to owners"""
 
     # get owners' details
@@ -135,7 +139,7 @@ def send_medical_record_email(exam):
         'blood_test': test_to_dict(getattr(exam, 'blood_test', None)),
         'urine_test': test_to_dict(getattr(exam, 'urine_test', None)),
         'fecal_test': test_to_dict(getattr(exam, 'fecal_test', None)),
-
+        "lang": lang,
     }
 
     EmailService.send_template_email_async.delay(
@@ -151,15 +155,15 @@ def send_medical_record_email(exam):
 
 
 @shared_task
-def send_user_registration_email(user):
+def send_user_registration_email(user, lang):
     """task to send one-time notification on creation of a medical record"""
 
     user_email = user.email
-
     if user.is_owner:
         context = {
             "first_name": user.first_name,
             "last_name": user.last_name,
+            "lang": lang,
         }
         EmailService.send_template_email_async.delay(
             subject=_("Welcome {} {}").format(user.first_name, user.last_name),

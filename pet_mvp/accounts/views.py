@@ -2,9 +2,6 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth import views as auth_views, login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import PasswordChangeView
-from django.core.exceptions import ValidationError
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -15,6 +12,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 
 from pet_mvp.accounts.forms import OwnerCreationForm, AccessCodeEmailForm, ClinicRegistrationForm
+from pet_mvp.notifications.tasks import send_user_registration_email
 from pet_mvp.pets.models import Pet
 
 UserModel = get_user_model()
@@ -30,9 +28,22 @@ class BaseUserRegisterView(views.CreateView):
     # important here is to use form which is created by the user in forms.py
     redirect_authenticated_user = True
 
-    @method_decorator(sensitive_post_parameters())  # not logging sensitive parameters
-    @method_decorator(csrf_protect)  # enforces checking of CSRF token before the request is processed
-    @method_decorator(never_cache)  # tells browsers not to store sensitive information
+    def set_default_language(self):
+        """ sets the default language to the model bss browser settings, returns lang param for further email dispatch """
+
+        # get the language from the django_language cookie
+        lang = self.request.COOKIES.get("django_language", "en")
+        # set the language to the model
+        self.object.default_language = lang
+        # send successful registration message
+        return lang
+
+    # not logging sensitive parameters
+    @method_decorator(sensitive_post_parameters())
+    # enforces checking of CSRF token before the request is processed
+    @method_decorator(csrf_protect)
+    # tells browsers not to store sensitive information
+    @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):
         if self.redirect_authenticated_user and self.request.user.is_authenticated:
             redirect_to = self.get_success_url()
@@ -50,9 +61,17 @@ class BaseUserRegisterView(views.CreateView):
     def form_valid(self, form):
         """
         All new user with never-existing-in-DB email is handled through form_valid(),
-        after validation, the user is logged in automatically"""
+        after validation, the user is logged in automatically
+        Added mail sending on creation"""
         valid = super().form_valid(form)
         login(self.request, self.object)
+
+        # get the user
+        user = self.object
+        # set and get the language param
+        lang = self.set_default_language()
+        # send user welcome email
+        send_user_registration_email(user, lang)
         return valid
 
     def form_invalid(self, form):
@@ -71,7 +90,8 @@ class BaseUserRegisterView(views.CreateView):
 
     def activate_soft_deleted_user(self, form):
         try:
-            user = UserModel.objects.get(email=form.data.get('email'), is_active=False)
+            user = UserModel.objects.get(
+                email=form.data.get('email'), is_active=False)
         except UserModel.DoesNotExist:
             return False  # User does not exist or is not inactive
 
@@ -85,6 +105,38 @@ class BaseUserRegisterView(views.CreateView):
         login(self.request, user)
 
         return True
+
+
+class ClinicRegistrationView(BaseUserRegisterView):
+    form_class = ClinicRegistrationForm
+    template_name = 'accounts/clinc-register.html'
+
+    def get_initial(self):
+        # Pre-fill the email field from the query parameter
+        email = self.request.GET.get('email', '')
+        return {'email': email}
+
+    def get_success_url(self):
+        code = self.request.GET.get('code')
+        pet_id = Pet.objects.get(pet_access_code__code=code).pk
+        return reverse_lazy('pet-details', kwargs={'pk': pet_id})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['code'] = self.request.GET.get('code')
+        return context
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        # response.set_cookie('code', self.request.GET.get('code'))
+        login(self.request, self.object)
+        self.request.session['code'] = self.request.GET.get('code')
+
+        # set and get the language param
+        lang = self.set_default_language()
+        # TODO create send_clinic_registration_email
+        
+        return response
 
 
 class RegisterOwnerView(BaseUserRegisterView):
@@ -117,7 +169,8 @@ class LoginOwnerView(BaseLoginView):
 
 
 class AccessCodeEmailView(views.FormView):
-    template_name = 'accounts/access_code_email.html'  # Page with Access Code + Email fields
+    # Page with Access Code + Email fields
+    template_name = 'accounts/access_code_email.html'
     form_class = AccessCodeEmailForm
 
     def form_valid(self, form):
@@ -130,16 +183,19 @@ class AccessCodeEmailView(views.FormView):
             user = UserModel.objects.get(email=email)
             if not user.is_owner:
                 # Redirect to password page if email exists and access code is valid
-                url = reverse_lazy('password-entry') + f'?email={email}&code={access_code}'
+                url = reverse_lazy('password-entry') + \
+                    f'?email={email}&code={access_code}'
                 return redirect(url)
             else:
                 # Add a message explaining why they were redirected
-                messages.error(self.request, 'You cannot log in as a veterinarian.')
+                messages.error(
+                    self.request, 'You cannot log in as a veterinarian.')
                 # Redirect to index page
                 return redirect(reverse_lazy('index'))
         else:
             # If email doesn’t exist but is valid, redirect to registration
-            url = reverse_lazy('clinic-register') + f'?email={email}&code={access_code}'
+            url = reverse_lazy('clinic-register') + \
+                f'?email={email}&code={access_code}'
             return redirect(url)
 
     def form_invalid(self, form):
@@ -187,40 +243,14 @@ class PasswordEntryView(BaseLoginView):
             data = kwargs.get('data', {}).copy()  # Get current POST data
             # Add or update 'username' with the 'email' GET parameter
             if 'username' not in data or not data['username']:
-                data['username'] = self.request.GET.get('email', '')  # Inject 'email' as username
+                data['username'] = self.request.GET.get(
+                    'email', '')  # Inject 'email' as username
             kwargs['data'] = data  # Pass modified data back
 
         return kwargs
 
 
-class ClinicRegistrationView(BaseUserRegisterView):
-    form_class = ClinicRegistrationForm
-    template_name = 'accounts/clinc-register.html'
-
-    def get_initial(self):
-        # Pre-fill the email field from the query parameter
-        email = self.request.GET.get('email', '')
-        return {'email': email}
-
-    def get_success_url(self):
-        code = self.request.GET.get('code')
-        pet_id = Pet.objects.get(pet_access_code__code=code).pk
-        return reverse_lazy('pet-details', kwargs={'pk': pet_id})
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['code'] = self.request.GET.get('code')
-        return context
-
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        # response.set_cookie('code', self.request.GET.get('code'))
-        login(self.request, self.object)
-        self.request.session['code'] = self.request.GET.get('code')
-        return response
-
-
 def logout_view(request):
     logout(request)
-    
+
     return redirect('index')
