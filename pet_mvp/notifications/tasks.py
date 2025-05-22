@@ -18,7 +18,7 @@ def send_vaccine_expiration_notifications():
     This can be scheduled via Celery Beat
     """
     from pet_mvp.records.models import VaccinationRecord
-
+    
     today = timezone.now().date()
 
     # Define notification intervals
@@ -38,9 +38,10 @@ def send_vaccine_expiration_notifications():
         )
 
         for record in expiring_vaccinations:
-            # Get pet owners' emails
-            owners_emails = [owner.email for owner in record.pet.owners.all()]
-
+            
+            # for each expiring vaccine, send email on the language set as default
+            owners = [owner for owner in record.pet.owners.all()]
+            
             # Prepare notification message based on interval
             if interval_name == 'four_weeks':
                 time_left = _("4 weeks")
@@ -51,21 +52,23 @@ def send_vaccine_expiration_notifications():
             else:  # expiration_day
                 time_left = _("today")
 
-            # Send expiration notification email
-            EmailService.send_template_email_async.delay(
-                subject=_("Vaccine Expiration Notice for {}").format(
-                    record.pet.name),
-                to_email=owners_emails,
-                template_name="emails/vaccine_expiration_notification.html",
-                context={
-                    "pet_name": record.pet.name,
-                    "vaccine": record.vaccine.name,
-                    "expiration_date": record.valid_until,
-                    "time_left": time_left
-                }
-            )
+            # Send expiration notification email for each owner
+            for owner in owners:
+                EmailService.send_template_email_async.delay(
+                    subject=_("Vaccine Expiration Notice for {}").format(
+                        record.pet.name),
+                    to_email=owner.email,
+                    template_name="emails/vaccine_expiration_notification.html",
+                    context={
+                        "pet_name": record.pet.name,
+                        "vaccine": record.vaccine.name,
+                        "expiration_date": record.valid_until,
+                        "time_left": time_left,
+                        "lang": owner.default_language,
+                    }
+                )
 
-            notifications_sent += 1
+                notifications_sent += 1
 
     return _("Processed {} vaccine expiration notifications").format(notifications_sent)
 
