@@ -12,6 +12,9 @@ def pet_directory_path(instance, filename):
         return f'pets/temp/{name}'
 
     name = f'{instance.id}_{instance.name}{extension}'
+    # check if photo exist and delete existing before saving new one
+    delete_pet_photo(instance)
+    
     return f'pets/{name}'
 
 

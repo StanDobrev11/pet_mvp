@@ -1,9 +1,7 @@
 {% extends "base.html" %}
-
 {% block content %}
     {% load static %}
     {% load i18n %}
-
     <div class="container py-4">
         <div class="row">
             <div class="col-lg-6 mb-4">
@@ -11,41 +9,69 @@
                     <div class="card-header d-flex align-items-center">
                         <div style="flex-shrink: 0;">
                             {% if pet.photo %}
-                                <img src="{{ pet.photo.url }}" alt="{% trans 'Pet Photo' %}" class="img-thumbnail"
-                                     style="width: 150px; height: 150px; object-fit: cover;">
+                                <img src="{{ pet.photo.url }}"
+                                     alt="{% trans 'Pet Photo' %}"
+                                     class="img-thumbnail"
+                                     style="width: 150px;
+                                            height: 150px;
+                                            object-fit: cover">
                             {% else %}
-                                <img src="#" alt="{% trans 'Pet Photo' %}" class="img-thumbnail"
-                                     style="width: 150px; height: 150px; object-fit: cover;">
+                                <img src="{% static "imgs/pet_profile.jfif" %}"
+                                     alt="{% trans 'Pet Photo' %}"
+                                     class="img-thumbnail"
+                                     style="width: 150px;
+                                            height: 150px;
+                                            object-fit: cover">
                             {% endif %}
                         </div>
                         <div class="ms-3">
-                            <h5 class="mb-0"><strong>{{ pet }}</strong></h5>
-                            <p class="mb-0"><strong>{% trans "Passport:" %}</strong> {{ pet.passport_number }}</p>
+                            <h5 class="mb-0">
+                                <strong>{{ pet }}</strong>
+                            </h5>
+                            <p class="mb-0">
+                                <strong>{% trans "Passport:" %}</strong> {{ pet.passport_number }}
+                            </p>
                             {% if user.is_owner %}
-                                <p class="text-muted"><strong>{% trans "Pet Access Code:" %}</strong> {{ access_code }}</p>
+                                <p class="text-muted">
+                                    <strong>{% trans "Pet Access Code:" %}</strong> {{ access_code }}
+                                </p>
                             {% endif %}
                         </div>
                     </div>
                     <div class="card-body">
-                        <p class="card-text"><strong>{% trans "Species:" %}</strong> {% trans pet.get_species_display %}</p>
-                        <p class="card-text"><strong>{% trans "Breed:" %}</strong> {% trans pet.get_breed_display %}</p>
-                        <p class="card-text"><strong>{% trans "Gender:" %}</strong> {{ pet.get_sex_display }}</p>
-                        <p class="card-text"><strong>{% trans "DoB:" %}</strong> {{ pet.date_of_birth }}</p>
-                        <p class="card-text"><strong>{% trans "Weight:" %}</strong> {{ pet.current_weight }} kgs</p>
-                        <p class="card-text"><strong>{% trans "Color:" %}</strong> {{ pet.color }}</p>
-                        <p class="card-text"><strong>{% trans "Features:" %}</strong> {{ pet.features }}</p>
-
+                        <p class="card-text">
+                            <strong>{% trans "Species:" %}</strong> {% trans pet.get_species_display %}
+                        </p>
+                        <p class="card-text">
+                            <strong>{% trans "Breed:" %}</strong> {% trans pet.get_breed_display %}
+                        </p>
+                        <p class="card-text">
+                            <strong>{% trans "Gender:" %}</strong> {{ pet.get_sex_display }}
+                        </p>
+                        <p class="card-text">
+                            <strong>{% trans "DoB:" %}</strong> {{ pet.date_of_birth }}
+                        </p>
+                        <p class="card-text">
+                            <strong>{% trans "Weight:" %}</strong> {{ pet.current_weight }} kgs
+                        </p>
+                        <p class="card-text">
+                            <strong>{% trans "Color:" %}</strong> {{ pet.color }}
+                        </p>
+                        <p class="card-text">
+                            <strong>{% trans "Features:" %}</strong> {{ pet.features }}
+                        </p>
                         {% if pet.transponder %}
-                            <p><strong>{% trans "Marking:" %}</strong> <a href="{% url 'marking-details' pk=pet.pk %}"
-                                                            class="btn btn-link">{{ pet.transponder }}</a></p>
+                            <p>
+                                <strong>{% trans "Marking:" %}</strong> <a href="{% url 'marking-details' pk=pet.pk %}" class="btn btn-link">{{ pet.transponder }}</a>
+                            </p>
                         {% elif pet.tattoo %}
-                            <p><strong>{% trans "Marking:" %}</strong> <a href="{% url 'marking-details' pk=pet.pk %}"
-                                                            class="btn btn-link">{{ pet.tattoo }}</a></p>
+                            <p>
+                                <strong>{% trans "Marking:" %}</strong> <a href="{% url 'marking-details' pk=pet.pk %}" class="btn btn-link">{{ pet.tattoo }}</a>
+                            </p>
                         {% else %}
-                            <p><strong>{% trans "No marking of the animal" %}</strong> -
-                               <a href="{% url 'marking-add' pk=pet.pk %}" class="btn btn-secondary">
-                                   {% trans "Add marking?" %}
-                               </a>
+                            <p>
+                                <strong>{% trans "No marking of the animal" %}</strong> -
+                                <a href="{% url 'marking-add' pk=pet.pk %}" class="btn btn-secondary">{% trans "Add marking?" %}</a>
                             </p>
                         {% endif %}
                     </div>
@@ -53,23 +79,29 @@
                         <div class="card-footer d-flex justify-content-between">
                             <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">{% trans "Go back" %}</a>
                             <a href="{% url 'pet-edit' pk=pet.pk %}" class="btn btn-outline-primary">{% trans "Edit Pet" %}</a>
-                            <a href="{% url 'pet-delete' pk=pet.pk %}" class="btn btn-outline-danger">{% trans "Delete Pet" %}</a>
+                            <a href="{% url 'pet-delete' pk=pet.pk %}"
+                               class="btn btn-outline-danger">{% trans "Delete Pet" %}</a>
                         </div>
                     {% endif %}
                 </div>
             </div>
-
             <div class="col-lg-6">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title"><strong>{% trans "Valid Vaccination Records" %}</strong></h5>
+                        <h5 class="card-title">
+                            <strong>{% trans "Valid Vaccination Records" %}</strong>
+                        </h5>
                         {% if valid_vaccinations %}
                             {% for vaccine in valid_vaccinations %}
-                                <p><a href="{% url 'vaccine-details' pk=vaccine.pk %}?source=pet&id={{ pet.id }}"
-                                      class="btn btn-sm btn-outline-primary">{{ vaccine }}</a></p>
+                                <p>
+                                    <a href="{% url 'vaccine-details' pk=vaccine.pk %}?source=pet&id={{ pet.id }}"
+                                       class="btn btn-sm btn-outline-primary">{{ vaccine }}</a>
+                                </p>
                             {% endfor %}
                         {% else %}
-                            <p><strong>{% trans "No vaccination records" %}</strong></p>
+                            <p>
+                                <strong>{% trans "No vaccination records" %}</strong>
+                            </p>
                             {% if user.is_owner %}
                                 <a href="{% url 'vaccine-record-add' %}?pet_id={{ pet.id }}"
                                    class="btn btn-sm btn-secondary">{% trans "Add Vaccination Record" %}</a>
@@ -77,17 +109,22 @@
                         {% endif %}
                     </div>
                 </div>
-
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title"><strong>{% trans "Valid Treatment Records" %}</strong></h5>
+                        <h5 class="card-title">
+                            <strong>{% trans "Valid Treatment Records" %}</strong>
+                        </h5>
                         {% if valid_treatments %}
                             {% for treatment in valid_treatments %}
-                                <p><a href="{% url 'treatment-details' pk=treatment.pk %}?source=pet&id={{ pet.id }}"
-                                      class="btn btn-sm btn-outline-success">{{ treatment }}</a></p>
+                                <p>
+                                    <a href="{% url 'treatment-details' pk=treatment.pk %}?source=pet&id={{ pet.id }}"
+                                       class="btn btn-sm btn-outline-success">{{ treatment }}</a>
+                                </p>
                             {% endfor %}
                         {% else %}
-                            <p><strong>{% trans "No treatment records" %}</strong></p>
+                            <p>
+                                <strong>{% trans "No treatment records" %}</strong>
+                            </p>
                             {% if user.is_owner %}
                                 <a href="{% url 'treatment-record-add' %}?pet_id={{ pet.id }}"
                                    class="btn btn-sm btn-secondary">{% trans "Add Treatment Record" %}</a>
@@ -95,17 +132,22 @@
                         {% endif %}
                     </div>
                 </div>
-
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title"><strong>{% trans "Last Examination Records" %}</strong></h5>
+                        <h5 class="card-title">
+                            <strong>{% trans "Last Examination Records" %}</strong>
+                        </h5>
                         {% if last_examinations %}
                             {% for exam in last_examinations %}
-                                <p><a href="{% url 'exam-details' pk=exam.pk %}?source=pet&id={{ pet.id }}"
-                                      class="btn btn-sm btn-outline-info">{{ exam }}</a></p>
+                                <p>
+                                    <a href="{% url 'exam-details' pk=exam.pk %}?source=pet&id={{ pet.id }}"
+                                       class="btn btn-sm btn-outline-info">{{ exam }}</a>
+                                </p>
                             {% endfor %}
                         {% else %}
-                            <p><strong>{% trans "No examination records" %}</strong></p>
+                            <p>
+                                <strong>{% trans "No examination records" %}</strong>
+                            </p>
                         {% endif %}
                         {% if not user.is_owner %}
                             <a href="{% url 'exam-add' %}?source=pet&id={{ pet.id }}"
@@ -113,9 +155,9 @@
                         {% endif %}
                     </div>
                 </div>
-
                 <div class="d-flex justify-content-between">
-                    <a href="{% url 'record-list' %}?pk={{ pet.pk }}" class="btn btn-secondary">{% trans "View all history records" %}</a>
+                    <a href="{% url 'record-list' %}?pk={{ pet.pk }}"
+                       class="btn btn-secondary">{% trans "View all history records" %}</a>
                     {% if not user.is_owner %}
                         <a href="{% url 'logout' %}" class="btn btn-danger">{% trans "Finish and Logout" %}</a>
                     {% endif %}

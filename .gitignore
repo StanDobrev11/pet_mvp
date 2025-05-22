@@ -174,3 +174,4 @@ cython_debug/
 .pypirc
 .idea/
 /collect_static/
+/media/pets/
