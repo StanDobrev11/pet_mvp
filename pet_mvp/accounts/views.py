@@ -134,7 +134,7 @@ class ClinicRegistrationView(BaseUserRegisterView):
 
         # set and get the language param
         lang = self.set_default_language()
-        # TODO create send_clinic_registration_email
+        # TODO create send_clinic_registration_email 
         
         return response
 
