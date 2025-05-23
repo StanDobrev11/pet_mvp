@@ -824,59 +824,46 @@ msgstr "Вход"
 #: .\templates\accounts\login.html:44
 msgid "Register instead?"
 msgstr "Или регистрация?"
-
 #: .\templates\accounts\owner_details.html:12
 #: .\templates\accounts\owner_profile.html:12
-#, fuzzy
-#| msgid "Profile"
 msgid "Owner Profile"
-msgstr "Профил"
+msgstr "Профил на собственика"
 
 #: .\templates\accounts\owner_details.html:13
 msgid "Details of your registered profile"
-msgstr ""
+msgstr "Детайли за вашия регистриран профил"
 
 #: .\templates\accounts\owner_details.html:17
 #: .\templates\accounts\owner_profile.html:16
-#, fuzzy
-#| msgid "First name"
 msgid "First Name"
 msgstr "Име"
 
 #: .\templates\accounts\owner_details.html:20
 #: .\templates\accounts\owner_profile.html:19
-#, fuzzy
-#| msgid "Last name"
 msgid "Last Name"
 msgstr "Фамилия"
 
 #: .\templates\accounts\owner_details.html:26
 #: .\templates\accounts\owner_profile.html:25
-#, fuzzy
-#| msgid "Phone number"
 msgid "Phone Number"
 msgstr "Телефонен номер"
 
 #: .\templates\accounts\owner_details.html:38
 #: .\templates\accounts\owner_profile.html:37
-#, fuzzy
-#| msgid "Profile"
 msgid "Edit Profile"
-msgstr "Профил"
+msgstr "Редактирай профила"
 
 #: .\templates\accounts\owner_details.html:41
-#, fuzzy
-#| msgid "Dashboard"
 msgid "Back to Dashboard"
-msgstr "Табло"
+msgstr "Обратно към таблото"
 
 #: .\templates\accounts\owner_edit.html:12
 msgid "Edit Owner Profile"
-msgstr ""
+msgstr "Редакция на профила на собственика"
 
 #: .\templates\accounts\owner_edit.html:13
 msgid "Update your personal details below."
-msgstr ""
+msgstr "Актуализирайте вашите лични данни по-долу."
 
 #: .\templates\accounts\owner_edit.html:34 .\templates\pet\pet_add.html:31
 #: .\templates\pet\pet_delete.html:17
@@ -885,74 +872,62 @@ msgstr "Отказ"
 
 #: .\templates\accounts\owner_edit.html:37
 msgid "Save Changes"
-msgstr ""
+msgstr "Запази промените"
 
 #: .\templates\accounts\password\password_reset_complete.html:9
 msgid "Password Reset Complete"
-msgstr ""
+msgstr "Паролата беше успешно нулирана"
 
 #: .\templates\accounts\password\password_reset_complete.html:10
-msgid ""
-"Your password has been set. You can now log in with your new credentials."
-msgstr ""
+msgid "Your password has been set. You can now log in with your new credentials."
+msgstr "Вашата парола беше зададена. Вече можете да влезете с новите си данни за достъп."
 
 #: .\templates\accounts\password\password_reset_confirm.html:11
-#, fuzzy
-#| msgid "Password"
 msgid "Set a New Password"
-msgstr "Парола"
+msgstr "Задайте нова парола"
 
 #: .\templates\accounts\password\password_reset_confirm.html:19
-#, fuzzy
-#| msgid "Password"
 msgid "New Password"
-msgstr "Парола"
+msgstr "Нова парола"
 
 #: .\templates\accounts\password\password_reset_confirm.html:25
-#, fuzzy
-#| msgid "Password"
 msgid "Confirm Password"
-msgstr "Парола"
+msgstr "Потвърдете паролата"
 
 #: .\templates\accounts\password\password_reset_confirm.html:31
-#, fuzzy
-#| msgid "Password"
 msgid "Reset Password"
-msgstr "Парола"
+msgstr "Нулирай паролата"
 
 #: .\templates\accounts\password\password_reset_done.html:9
-#, fuzzy
-#| msgid "Email"
 msgid "Email Sent"
-msgstr "Имейл"
+msgstr "Имейлът е изпратен"
 
 #: .\templates\accounts\password\password_reset_done.html:11
-msgid ""
-"If the email you entered is associated with an account, you will receive a "
-"message with instructions to reset your password."
-msgstr ""
+msgid "If the email you entered is associated with an account, you will receive a message with instructions to reset your password."
+msgstr "Ако въведеният имейл е свързан с акаунт, ще получите съобщение с инструкции за нулиране на паролата."
 
 #: .\templates\accounts\password\password_reset_done.html:13
 msgid "Return to Login"
-msgstr ""
+msgstr "Обратно към вход"
 
 #: .\templates\accounts\password\password_reset_form.html:11
 #: .\templates\emails\password_reset_email.html:6
 #: .\templates\emails\password_reset_email.html:69
 msgid "Reset Your Password"
-msgstr ""
+msgstr "Нулирай паролата си"
 
 #: .\templates\accounts\password\password_reset_form.html:12
 msgid "Enter your email address to receive a password reset link."
-msgstr ""
+msgstr "Въведете имейл адреса си, за да получите линк за нулиране на паролата."
 
 #: .\templates\accounts\password\password_reset_form.html:26
 msgid "Send Reset Link"
-msgstr ""
+msgstr "Изпрати линк за нулиране"
 
 #: .\templates\accounts\password\password_reset_form.html:27
 msgid "Back to Login"
-msgstr ""
+msgstr "Обратно към вход"
+
 
 #: .\templates\accounts\password_entry.html:10
 msgid "Clinic Access"
