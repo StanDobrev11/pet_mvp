@@ -773,7 +773,7 @@ msgstr "Имейл адрес"
 #: .\templates\accounts\access_code_email.html:22
 #: .\templates\accounts\login.html:39
 msgid "Forgot password?"
-msgstr ""
+msgstr "Забравена парола?"
 
 #: .\templates\accounts\access_code_email.html:25
 msgid "Continue"
