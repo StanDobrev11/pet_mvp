@@ -9,7 +9,7 @@ def create_superuser(apps, schema_editor):
 
     User.objects.create_superuser(
         email='admin@pet-mvp.com',
-        password='pbkdf2_sha256$1000000$NgvxJtOKxmc3HrQisyXki2$x/aK2ibxYm6rD0A/8AtjGwDCEGYGyxELxhEFMTjhJlQ=',
+        password='1234',
         first_name='Admin',
         last_name='Superuser',
         city='Варна',

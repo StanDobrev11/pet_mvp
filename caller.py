@@ -1,3 +1,5 @@
+import os
+from datetime import datetime, timedelta
 
 import django
 from django.contrib.auth import get_user_model
@@ -5,19 +7,36 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.utils.timezone import make_aware
 
-import os
-from datetime import datetime, timedelta
+
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pet_mvp.settings')
 django.setup()
 
-from pet_mvp.accounts.models import Clinic
-from pet_mvp.records.models import VaccinationRecord, MedicationRecord, MedicalExaminationRecord
-from pet_mvp.drugs.models import Vaccine, Drug, BloodTest, UrineTest, FecalTest
 from pet_mvp.pets.models import Pet, Transponder, Tattoo
-
+from pet_mvp.drugs.models import Vaccine, Drug, BloodTest, UrineTest, FecalTest
+from pet_mvp.records.models import VaccinationRecord, MedicationRecord, MedicalExaminationRecord
+from pet_mvp.accounts.models import Clinic
 
 UserModel = get_user_model()
+
+def create_clinic():
+
+    clinic = Clinic.objects.get_or_create(
+        email='dyana.vet@abv.bg',
+        password='1234',
+        clinic_name='Diana Vet',
+        is_owner=False,
+        phone_number='0887142536',
+        clinic_address='123 Some Address',
+        city='Varna',
+        country='Bulgaria',
+    )
+
+    if clinic[1]:
+        print('Clinic created')
+    else:
+        print('Clinic already exists')
+
 
 def create_pet_markings():
     max_pet = Pet.objects.get(name='Max')
@@ -25,7 +44,8 @@ def create_pet_markings():
 
     # Create a transponder for Max
     try:
-        Transponder.objects.create(
+        from pet_mvp.pets.models import Transponder
+        transponder = Transponder.objects.create(
             code='123456789012345',
             pet=max_pet,
             date_of_application='2020-01-15',
@@ -40,7 +60,8 @@ def create_pet_markings():
 
     # Create a tattoo for Luna
     try:
-        Tattoo.objects.create(
+        from pet_mvp.pets.models import Tattoo
+        tattoo = Tattoo.objects.create(
             code='ABC123',
             pet=luna_pet,
             date_of_application='2021-04-01',
@@ -56,7 +77,7 @@ def create_pet_markings():
 
 def create_complete_examination_record_for_max():
     max_pet = Pet.objects.get(name='Max')
-    clinic = Clinic.objects.get(clinic_name='Дианавет')
+    clinic = Clinic.objects.get(clinic_name='Diana Vet')
     try:
         blood_test = BloodTest.objects.create(
             result="WBC and RBC levels normal, low platelets detected",
@@ -80,11 +101,9 @@ def create_complete_examination_record_for_max():
             blood_presence=True
         )
     except IntegrityError:
-        blood_test = BloodTest.objects.get(
-            result="WBC and RBC levels normal, low platelets detected")
+        blood_test = BloodTest.objects.get(result="WBC and RBC levels normal, low platelets detected")
         urine_test = UrineTest.objects.get(result="Clear urine, neutral pH")
-        fecal_test = FecalTest.objects.get(
-            result="Parasites detected, blood in sample found")
+        fecal_test = FecalTest.objects.get(result="Parasites detected, blood in sample found")
 
     medication_record = MedicationRecord.objects.filter(pet=max_pet).first()
     vaccination_record = VaccinationRecord.objects.filter(pet=max_pet).first()
@@ -117,6 +136,27 @@ def create_complete_examination_record_for_max():
     medical_record[0].medications.add(medication_record)
 
     print(f"Medical Examination Record created for {max_pet.name}.")
+
+
+def create_superuser(email='admin@pet-mvp.com', password='1234'):
+    try:
+        UserModel.objects.create_superuser(
+            email=email,
+            password=password,
+            first_name='Admin',
+            last_name='Superuser',
+            city='Varna',
+            country='Bulgaria',
+            phone_number='0887888888',
+            is_owner=True,
+        )
+        print('Superuser created')
+    except IntegrityError:
+        print('Superuser already exists')
+    except ValidationError:
+        print('Superuser already exists')
+
+    print(f'email: {email}\npassword: {password}')
 
 
 def create_user(email, password):
@@ -285,8 +325,7 @@ def populate_drugs():
 
 def populate_vaccines():
     # First, let's get all existing vaccines
-    existing_vaccines = {
-        v.name.lower().strip(): v for v in Vaccine.objects.all()}
+    existing_vaccines = {v.name.lower().strip(): v for v in Vaccine.objects.all()}
 
     vaccines = [
         # Core Vaccines
@@ -424,8 +463,7 @@ def populate_medication_records():
             date=make_aware(datetime.strptime('15.03.2025', '%d.%m.%Y')),
             time='08:00',
             dosage='1 tablet',
-            valid_until=make_aware(
-                datetime.strptime('14.04.2025', '%d.%m.%Y')),
+            valid_until=make_aware(datetime.strptime('14.04.2025', '%d.%m.%Y')),
         ),
         dict(
             pet=pet,
@@ -442,8 +480,7 @@ def populate_medication_records():
             date=make_aware(datetime.strptime('01.04.2025', '%d.%m.%Y')),
             time='10:00',
             dosage='1 tablet',
-            valid_until=make_aware(
-                datetime.strptime('12.04.2025', '%d.%m.%Y')),
+            valid_until=make_aware(datetime.strptime('12.04.2025', '%d.%m.%Y')),
         ),
         dict(
             pet=pet,
@@ -451,8 +488,7 @@ def populate_medication_records():
             date=make_aware(datetime.strptime('20.03.2025', '%d.%m.%Y')),
             time='07:30',
             dosage='1 tablet (16 mg)',
-            valid_until=make_aware(
-                datetime.strptime('27.03.2025', '%d.%m.%Y')),
+            valid_until=make_aware(datetime.strptime('27.03.2025', '%d.%m.%Y')),
         )
     ]
 
@@ -471,12 +507,9 @@ def populate_vaccination_records():
             vaccine=Vaccine.objects.get(name='Canine Distemper'),
             batch_number='A130D01',
             manufacturer='Nobivac',
-            manufacture_date=make_aware(
-                datetime.strptime('18.05.2024', '%d.%m.%Y')),
-            date_of_vaccination=make_aware(
-                datetime.strptime('22.03.2025', '%d.%m.%Y')),
-            valid_until=make_aware(
-                datetime.strptime('22.03.2026', '%d.%m.%Y')),
+            manufacture_date=make_aware(datetime.strptime('18.05.2024', '%d.%m.%Y')),
+            date_of_vaccination=make_aware(datetime.strptime('22.03.2025', '%d.%m.%Y')),
+            valid_until=make_aware(datetime.strptime('22.03.2026', '%d.%m.%Y')),
         ),
         # Rabies
         dict(
@@ -484,15 +517,11 @@ def populate_vaccination_records():
             vaccine=Vaccine.objects.get(name='Rabies'),
             batch_number='R222B12',
             manufacturer='Pfizer',
-            manufacture_date=make_aware(
-                datetime.strptime('01.04.2024', '%d.%m.%Y')),
-            date_of_vaccination=make_aware(
-                datetime.strptime('15.03.2025', '%d.%m.%Y')),
-            valid_from=make_aware(datetime.strptime(
-                '15.03.2025', '%d.%m.%Y') + timedelta(days=7)),
+            manufacture_date=make_aware(datetime.strptime('01.04.2024', '%d.%m.%Y')),
+            date_of_vaccination=make_aware(datetime.strptime('15.03.2025', '%d.%m.%Y')),
+            valid_from=make_aware(datetime.strptime('15.03.2025', '%d.%m.%Y') + timedelta(days=7)),
             # 7 days after vaccination
-            valid_until=make_aware(
-                datetime.strptime('15.03.2026', '%d.%m.%Y')),
+            valid_until=make_aware(datetime.strptime('15.03.2026', '%d.%m.%Y')),
         ),
         # Parvoviridae
         dict(
@@ -500,12 +529,9 @@ def populate_vaccination_records():
             vaccine=Vaccine.objects.get(name='Parvoviridae'),
             batch_number='P874C09',
             manufacturer='Zoetis',
-            manufacture_date=make_aware(
-                datetime.strptime('10.06.2023', '%d.%m.%Y')),
-            date_of_vaccination=make_aware(
-                datetime.strptime('20.01.2025', '%d.%m.%Y')),
-            valid_until=make_aware(
-                datetime.strptime('20.01.2026', '%d.%m.%Y')),
+            manufacture_date=make_aware(datetime.strptime('10.06.2023', '%d.%m.%Y')),
+            date_of_vaccination=make_aware(datetime.strptime('20.01.2025', '%d.%m.%Y')),
+            valid_until=make_aware(datetime.strptime('20.01.2026', '%d.%m.%Y')),
         ),
         # Leptospirosis
         dict(
@@ -513,48 +539,36 @@ def populate_vaccination_records():
             vaccine=Vaccine.objects.get(name='Leptospirosis'),
             batch_number='L390D08',
             manufacturer='Merial',
-            manufacture_date=make_aware(
-                datetime.strptime('12.05.2023', '%d.%m.%Y')),
-            date_of_vaccination=make_aware(
-                datetime.strptime('25.08.2025', '%d.%m.%Y')),
-            valid_until=make_aware(
-                datetime.strptime('25.08.2026', '%d.%m.%Y')),
+            manufacture_date=make_aware(datetime.strptime('12.05.2023', '%d.%m.%Y')),
+            date_of_vaccination=make_aware(datetime.strptime('25.08.2025', '%d.%m.%Y')),
+            valid_until=make_aware(datetime.strptime('25.08.2026', '%d.%m.%Y')),
         ),
         dict(
             pet=pet,
             vaccine=Vaccine.objects.get(name='Canine Distemper'),
             batch_number='D123P01',
             manufacturer='Zoetis',
-            manufacture_date=make_aware(
-                datetime.strptime('01.12.2019', '%d.%m.%Y')),
-            date_of_vaccination=make_aware(datetime.strptime(
-                '01.02.2020', '%d.%m.%Y')),  # 6 weeks old
-            valid_until=make_aware(
-                datetime.strptime('01.02.2021', '%d.%m.%Y')),
+            manufacture_date=make_aware(datetime.strptime('01.12.2019', '%d.%m.%Y')),
+            date_of_vaccination=make_aware(datetime.strptime('01.02.2020', '%d.%m.%Y')),  # 6 weeks old
+            valid_until=make_aware(datetime.strptime('01.02.2021', '%d.%m.%Y')),
         ),
         dict(
             pet=pet,
             vaccine=Vaccine.objects.get(name='Parvoviridae'),
             batch_number='P456B01',
             manufacturer='Merial',
-            manufacture_date=make_aware(
-                datetime.strptime('15.12.2019', '%d.%m.%Y')),
-            date_of_vaccination=make_aware(datetime.strptime(
-                '01.03.2020', '%d.%m.%Y')),  # 8 weeks old
-            valid_until=make_aware(
-                datetime.strptime('01.03.2021', '%d.%m.%Y')),
+            manufacture_date=make_aware(datetime.strptime('15.12.2019', '%d.%m.%Y')),
+            date_of_vaccination=make_aware(datetime.strptime('01.03.2020', '%d.%m.%Y')),  # 8 weeks old
+            valid_until=make_aware(datetime.strptime('01.03.2021', '%d.%m.%Y')),
         ),
         dict(
             pet=pet,
             vaccine=Vaccine.objects.get(name='Leptospirosis'),
             batch_number='L789C02',
             manufacturer='Nobivac',
-            manufacture_date=make_aware(
-                datetime.strptime('20.12.2019', '%d.%m.%Y')),
-            date_of_vaccination=make_aware(datetime.strptime(
-                '01.05.2020', '%d.%m.%Y')),  # 16 weeks old
-            valid_until=make_aware(
-                datetime.strptime('01.05.2021', '%d.%m.%Y')),
+            manufacture_date=make_aware(datetime.strptime('20.12.2019', '%d.%m.%Y')),
+            date_of_vaccination=make_aware(datetime.strptime('01.05.2020', '%d.%m.%Y')),  # 16 weeks old
+            valid_until=make_aware(datetime.strptime('01.05.2021', '%d.%m.%Y')),
         ),
         # Rabies Vaccine (required yearly in many regions)
         dict(
@@ -562,14 +576,10 @@ def populate_vaccination_records():
             vaccine=Vaccine.objects.get(name='Rabies'),
             batch_number='R222B01',
             manufacturer='Pfizer',
-            manufacture_date=make_aware(
-                datetime.strptime('01.01.2020', '%d.%m.%Y')),
-            date_of_vaccination=make_aware(datetime.strptime(
-                '01.06.2020', '%d.%m.%Y')),  # First rabies shot
-            valid_from=make_aware(datetime.strptime(
-                '01.06.2020', '%d.%m.%Y') + timedelta(days=7)),  # After 7 days
-            valid_until=make_aware(
-                datetime.strptime('01.06.2021', '%d.%m.%Y')),
+            manufacture_date=make_aware(datetime.strptime('01.01.2020', '%d.%m.%Y')),
+            date_of_vaccination=make_aware(datetime.strptime('01.06.2020', '%d.%m.%Y')),  # First rabies shot
+            valid_from=make_aware(datetime.strptime('01.06.2020', '%d.%m.%Y') + timedelta(days=7)),  # After 7 days
+            valid_until=make_aware(datetime.strptime('01.06.2021', '%d.%m.%Y')),
         ),
         # Adult Booster Shots (Subsequent Years)
         dict(
@@ -577,26 +587,19 @@ def populate_vaccination_records():
             vaccine=Vaccine.objects.get(name='Canine Distemper'),
             batch_number='D123B02',
             manufacturer='Zoetis',
-            manufacture_date=make_aware(
-                datetime.strptime('10.12.2020', '%d.%m.%Y')),
-            date_of_vaccination=make_aware(datetime.strptime(
-                '01.06.2021', '%d.%m.%Y')),  # Booster shot
-            valid_until=make_aware(
-                datetime.strptime('01.06.2022', '%d.%m.%Y')),
+            manufacture_date=make_aware(datetime.strptime('10.12.2020', '%d.%m.%Y')),
+            date_of_vaccination=make_aware(datetime.strptime('01.06.2021', '%d.%m.%Y')),  # Booster shot
+            valid_until=make_aware(datetime.strptime('01.06.2022', '%d.%m.%Y')),
         ),
         dict(
             pet=pet,
             vaccine=Vaccine.objects.get(name='Rabies'),
             batch_number='R456B02',
             manufacturer='Pfizer',
-            manufacture_date=make_aware(
-                datetime.strptime('15.03.2021', '%d.%m.%Y')),
-            date_of_vaccination=make_aware(datetime.strptime(
-                '01.06.2021', '%d.%m.%Y')),  # Yearly Rabies booster
-            valid_from=make_aware(datetime.strptime(
-                '01.06.2021', '%d.%m.%Y') + timedelta(days=7)),
-            valid_until=make_aware(
-                datetime.strptime('01.06.2022', '%d.%m.%Y')),
+            manufacture_date=make_aware(datetime.strptime('15.03.2021', '%d.%m.%Y')),
+            date_of_vaccination=make_aware(datetime.strptime('01.06.2021', '%d.%m.%Y')),  # Yearly Rabies booster
+            valid_from=make_aware(datetime.strptime('01.06.2021', '%d.%m.%Y') + timedelta(days=7)),
+            valid_until=make_aware(datetime.strptime('01.06.2022', '%d.%m.%Y')),
         ),
 
     ]
@@ -609,7 +612,9 @@ def populate_vaccination_records():
 
 
 if __name__ == '__main__':
+    create_superuser()
     create_pets()
+    create_clinic()
     create_pet_markings()
     populate_vaccines()
     populate_vaccination_records()
