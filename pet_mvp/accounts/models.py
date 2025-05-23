@@ -118,6 +118,8 @@ class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
         self.full_clean()  # This calls the `clean` method
         super().save(*args, **kwargs)
 
+    def get_full_name(self):
+        return f'{self.first_name} {self.last_name}'
 
 class Owner(AppUser):
     class Meta:

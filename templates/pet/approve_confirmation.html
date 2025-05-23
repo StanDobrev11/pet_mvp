@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<section class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h2 class="mb-4 text-success">{% trans "Request Approved" %}</h2>
+            <p>
+                {% blocktrans with new_owner=new_owner pet_name=pet_name %}
+                You have successfully approved {{ new_owner }} to access and manage the medical records for <strong>{{ pet_name }}</strong>.
+                {% endblocktrans %}
+            </p>
+        </div>
+    </div>
+</section>
+{% endblock %}
