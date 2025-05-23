@@ -1,3 +1,4 @@
+from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_not_required
 from django.urls import path, include
 
@@ -18,4 +19,15 @@ urlpatterns = [
         path('details/', OwnerDetailsView.as_view(), name='owner-details'),
         path('edit/', OwnerEditView.as_view(), name='owner-edit')
         ])),
+    # Password reset request
+    path('password-reset/', auth_views.PasswordResetView.as_view(), name='forgot-password'),
+
+    # Reset email sent
+    path('password-reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+
+    # Password reset link clicked (from email)
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+
+    # Final confirmation after reset
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 ]

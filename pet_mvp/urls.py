@@ -21,7 +21,8 @@ from django.urls import path, include
 from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = [
-    path('i18n/', include('django.conf.urls.i18n')),  # For the set_language view
+    # For the set_language view
+    path('i18n/', include('django.conf.urls.i18n')),
     path('', include('pet_mvp.common.urls')),
     path('access_codes/', include('pet_mvp.access_codes.urls')),
     path('accounts/', include('pet_mvp.accounts.urls')),
