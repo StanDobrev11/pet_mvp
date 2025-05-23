@@ -609,9 +609,7 @@ def populate_vaccination_records():
 
 
 if __name__ == '__main__':
-    create_superuser()
     create_pets()
-    # create_clinic()
     create_pet_markings()
     populate_vaccines()
     populate_vaccination_records()

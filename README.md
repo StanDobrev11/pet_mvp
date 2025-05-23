@@ -131,7 +131,7 @@ You can use Django's fixture system to load and export data in JSON format.
 To load data from a fixture (e.g., `clinics.json`), run:
 
 ```sh
-python manage.py loaddata clinics.json
+python manage.py loaddata accounts/fixtures/clinics.json
 ```
 
 This will import the data into your database.
