@@ -19,10 +19,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.i18n import i18n_patterns
+from django.views.i18n import JavaScriptCatalog
 
 urlpatterns = [
     # For the set_language view
     path('i18n/', include('django.conf.urls.i18n')),
+    path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
     path('', include('pet_mvp.common.urls')),
     path('access_codes/', include('pet_mvp.access_codes.urls')),
     path('accounts/', include('pet_mvp.accounts.urls')),

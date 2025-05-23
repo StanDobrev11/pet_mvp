@@ -1,37 +1,29 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
 {% load i18n %}
-<script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
 
+<script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
 {% block content %}
     <form action="{% url 'exam-add' %}?source=pet&id={{ id }}" method="post">
         {% csrf_token %}
         <div class="container py-4">
             <h2 class="mb-4 text-center">{% trans "Medical Examination Report for" %} {{ pet.name }}</h2>
-
             <h4>{% trans "Basic Information" %}</h4>
             <div class="row g-3">
                 <div class="col-md-6">
                     <label for="id_date_of_entry" class="form-label">{{ form.date_of_entry.label }}</label>
                     {{ form.date_of_entry|add_class:"form-control" }}
                     {{ form.date_of_entry.errors }}
-
-
                     <label class="form-label">{{ form.doctor.label }}</label>
                     {{ form.doctor|add_class:"form-control" }}
                     {{ form.doctor.errors }}
-
                     <label for="id_exam_type" class="form-label">{{ form.exam_type.label }}</label>
                     {{ form.exam_type|add_class:"form-check rounded" }}
                     {{ form.exam_type.errors }}
-
-
                     <label class="form-label">{{ form.follow_up.label }}</label>
                     {{ form.follow_up|add_class:"form-check-input" }}
                     {{ form.follow_up.errors }}
-
                 </div>
-
                 <div class="col-md-6">
                     <label class="form-label">{{ form.reason_for_visit.label }}</label>
                     {{ form.reason_for_visit|add_class:"form-control" }}
@@ -47,14 +39,12 @@
                     {{ form.notes|add_class:"form-control" }}
                     {{ form.notes.errors }}
                 </div>
-
-
             </div>
-
             <h4 class="mt-4">{% trans "Additional Information" %}</h4>
-            <button type="button" id="add-info-form-button" class="btn btn-outline-secondary mb-3">{% trans "Show" %}</button>
+            <button type="button"
+                    id="add-info-form-button"
+                    class="btn btn-outline-secondary mb-3">{% trans "Show" %}</button>
             <div id="add-info-container"></div>
-
             <template id="add-info-form-template">
                 <div class="row g-3">
                     {% for field in form %}
@@ -68,45 +58,40 @@
                     {% endfor %}
                 </div>
             </template>
-
             <h4 class="mt-4">{% trans "Vaccines" %}</h4>
             <div id="vaccination-forms">
                 {{ vaccine_formset.management_form }}
                 {% for form in vaccine_formset %}
                     <div class="border rounded p-3 mb-3 vaccine-form">
-
-                        {% include 'partials/vaccine_add_card.html' %}
+                        {% include "partials/vaccine_add_card.html" %}
                         <button type="button" class="btn btn-danger remove-vaccine-form">{% trans "Remove" %}</button>
                     </div>
                 {% endfor %}
             </div>
             <template id="empty-vaccine-form">
                 <div class="border rounded p-3 mb-3 vaccine-form">
-
-                    {% include 'partials/vaccine_add_card.html' with form=vaccine_formset.empty_form %}
+                    {% include "partials/vaccine_add_card.html" with form=vaccine_formset.empty_form %}
                     <button type="button" class="btn btn-danger remove-vaccine-form">{% trans "Remove" %}</button>
                 </div>
             </template>
             <button type="button" id="add-vaccine-form" class="btn btn-outline-primary">{% trans "Add Vaccine" %}</button>
-
             <h4 class="mt-4">{% trans "Treatments" %}</h4>
             <div id="treatment-forms">
                 {{ treatment_formset.management_form }}
                 {% for form in treatment_formset %}
                     <div class="border rounded p-3 mb-3 treatment-form">
-                        {% include 'partials/treatment_add_card.html' %}
+                        {% include "partials/treatment_add_card.html" %}
                         <button type="button" class="btn btn-danger remove-treatment-form">{% trans "Remove" %}</button>
                     </div>
                 {% endfor %}
             </div>
             <template id="empty-treatment-form">
                 <div class="border rounded p-3 mb-3 treatment-form">
-                    {% include 'partials/treatment_add_card.html' with form=treatment_formset.empty_form %}
+                    {% include "partials/treatment_add_card.html" with form=treatment_formset.empty_form %}
                     <button type="button" class="btn btn-danger remove-treatment-form">{% trans "Remove" %}</button>
                 </div>
             </template>
             <button type="button" id="add-treatment-form" class="btn btn-outline-primary">{% trans "Add Treatment" %}</button>
-
             <h4 class="mt-4">{% trans "Blood Test" %}</h4>
             <div id="blood-test-form-container"></div>
             <template id="blood-test-template">
@@ -115,9 +100,9 @@
                     <input type="hidden" name="has_blood_test" value="1">
                 </div>
             </template>
-            <button type="button" id="add-remove-blood-test-form" class="btn btn-outline-secondary">{% trans "Add Blood Test" %}
-            </button>
-
+            <button type="button"
+                    id="add-remove-blood-test-form"
+                    class="btn btn-outline-secondary">{% trans "Add Blood Test" %}</button>
             <h4 class="mt-4">{% trans "Urine Test" %}</h4>
             <div id="urine-test-form-container"></div>
             <template id="urine-test-template">
@@ -126,9 +111,9 @@
                     <input type="hidden" name="has_urine_test" value="1">
                 </div>
             </template>
-            <button type="button" id="add-remove-urine-test-form" class="btn btn-outline-secondary">{% trans "Add Urine Test" %}
-            </button>
-
+            <button type="button"
+                    id="add-remove-urine-test-form"
+                    class="btn btn-outline-secondary">{% trans "Add Urine Test" %}</button>
             <h4 class="mt-4">{% trans "Fecal Test" %}</h4>
             <div id="fecal-test-form-container"></div>
             <template id="fecal-test-template">
@@ -137,104 +122,105 @@
                     <input type="hidden" name="has_fecal_test" value="1">
                 </div>
             </template>
-            <button type="button" id="add-remove-fecal-test-form" class="btn btn-outline-secondary">{% trans "Add Fecal Test" %}
-            </button>
+            <button type="button"
+                    id="add-remove-fecal-test-form"
+                    class="btn btn-outline-secondary">{% trans "Add Fecal Test" %}</button>
             <div class="mt-4">
                 <button type="submit" class="btn btn-success">{% trans "Save" %}</button>
                 {% include 'partials/back_buttons.html' %}
             </div>
         </div>
     </form>
-
+    <script src="{% url 'javascript-catalog' %}"></script>
+    {% comment %} <script src="{% static "scripts/examination_func.js" %}"></script> {% endcomment %}
     <script>
         // ======= Add info form ======
-        const addInfoFormButton = document.getElementById('add-info-form-button');
-        const addInfoContainer = document.getElementById('add-info-container');
-        const addInfoFormTemplate = document.getElementById('add-info-form-template');
+const addInfoFormButton = document.getElementById('add-info-form-button');
+const addInfoContainer = document.getElementById('add-info-container');
+const addInfoFormTemplate = document.getElementById('add-info-form-template');
 
-        addInfoFormButton.addEventListener('click', (e) => {
-            if (addInfoFormButton.innerText === gettext('Show')) {
-                addInfoFormButton.innerText = gettext('Hide')
-                addInfoContainer.innerHTML = addInfoFormTemplate.innerHTML
-            } else {
-                addInfoFormButton.innerText = gettext('Show')
-                addInfoContainer.innerHTML = ''
-            }
-        })
+addInfoFormButton.addEventListener('click', (e) => {
+    if (addInfoFormButton.innerText === gettext('Show')) {
+        addInfoFormButton.innerText = gettext('Hide')
+        addInfoContainer.innerHTML = addInfoFormTemplate.innerHTML
+    } else {
+        addInfoFormButton.innerText = gettext('Show')
+        addInfoContainer.innerHTML = ''
+    }
+})
 
-        // ========== Vaccines ==========
-        const vaccinationFormsContainer = document.getElementById('vaccination-forms');
-        const addVaccineButton = document.getElementById('add-vaccine-form');
-        let vaccineFormIndex = {{ vaccine_formset.total_form_count }};
-        const vaccineTotalFormsInput = document.querySelector('input[name="vaccines-TOTAL_FORMS"]');
-        const vaccineTemplate = document.getElementById("empty-vaccine-form").innerHTML;
+// ========== Vaccines ==========
+const vaccinationFormsContainer = document.getElementById('vaccination-forms');
+const addVaccineButton = document.getElementById('add-vaccine-form');
+let vaccineFormIndex = {{ vaccine_formset.total_form_count }};
+const vaccineTotalFormsInput = document.querySelector('input[name="vaccines-TOTAL_FORMS"]');
+const vaccineTemplate = document.getElementById("empty-vaccine-form").innerHTML;
 
-        addVaccineButton.addEventListener('click', () => {
-            const newFormHTML = vaccineTemplate.replace(/__prefix__/g, vaccineFormIndex);
-            vaccinationFormsContainer.insertAdjacentHTML('beforeend', newFormHTML);
-            vaccineFormIndex++;
-            vaccineTotalFormsInput.value = vaccineFormIndex;
-        });
+addVaccineButton.addEventListener('click', () => {
+    const newFormHTML = vaccineTemplate.replace(/__prefix__/g, vaccineFormIndex);
+    vaccinationFormsContainer.insertAdjacentHTML('beforeend', newFormHTML);
+    vaccineFormIndex++;
+    vaccineTotalFormsInput.value = vaccineFormIndex;
+});
 
-        vaccinationFormsContainer.addEventListener('click', (e) => {
-            if (e.target.classList.contains('remove-vaccine-form')) {
-                e.target.closest('.vaccine-form').remove();
-                vaccineFormIndex--;
-                vaccineTotalFormsInput.value = vaccineFormIndex;
-            }
-        });
+vaccinationFormsContainer.addEventListener('click', (e) => {
+    if (e.target.classList.contains('remove-vaccine-form')) {
+        e.target.closest('.vaccine-form').remove();
+        vaccineFormIndex--;
+        vaccineTotalFormsInput.value = vaccineFormIndex;
+    }
+});
 
-        // ========== Treatments ==========
-        const treatmentFormsContainer = document.getElementById('treatment-forms');
-        const addTreatmentButton = document.getElementById('add-treatment-form');
-        let treatmentFormIndex = {{ treatment_formset.total_form_count }};
-        const treatmentTotalFormsInput = document.querySelector('input[name="treatments-TOTAL_FORMS"]');
-        const treatmentTemplate = document.getElementById("empty-treatment-form").innerHTML;
+// ========== Treatments ==========
+const treatmentFormsContainer = document.getElementById('treatment-forms');
+const addTreatmentButton = document.getElementById('add-treatment-form');
+let treatmentFormIndex = {{ treatment_formset.total_form_count }};
+const treatmentTotalFormsInput = document.querySelector('input[name="treatments-TOTAL_FORMS"]');
+const treatmentTemplate = document.getElementById("empty-treatment-form").innerHTML;
 
 
-        addTreatmentButton.addEventListener('click', () => {
-            const newFormHTML = treatmentTemplate.replace(/__prefix__/g, treatmentFormIndex);
-            treatmentFormsContainer.insertAdjacentHTML('beforeend', newFormHTML);
-            treatmentFormIndex++;
-            treatmentTotalFormsInput.value = treatmentFormIndex;
-        });
+addTreatmentButton.addEventListener('click', () => {
+    const newFormHTML = treatmentTemplate.replace(/__prefix__/g, treatmentFormIndex);
+    treatmentFormsContainer.insertAdjacentHTML('beforeend', newFormHTML);
+    treatmentFormIndex++;
+    treatmentTotalFormsInput.value = treatmentFormIndex;
+});
 
-        treatmentFormsContainer.addEventListener('click', (e) => {
-            if (e.target.classList.contains('remove-treatment-form')) {
-                e.target.closest('.treatment-form').remove();
-                treatmentFormIndex--;
-                treatmentTotalFormsInput.value = treatmentFormIndex;
-            }
-        });
+treatmentFormsContainer.addEventListener('click', (e) => {
+    if (e.target.classList.contains('remove-treatment-form')) {
+        e.target.closest('.treatment-form').remove();
+        treatmentFormIndex--;
+        treatmentTotalFormsInput.value = treatmentFormIndex;
+    }
+});
 
-        // ========== Toggle Helper ==========
-        function setupSingleToggle(buttonId, containerId, templateId, addText, removeText) {
-            const button = document.getElementById(buttonId);
-            const container = document.getElementById(containerId);
-            const template = document.getElementById(templateId).innerHTML;
+// ========== Toggle Helper ==========
+function setupSingleToggle(buttonId, containerId, templateId, addText, removeText) {
+    const button = document.getElementById(buttonId);
+    const container = document.getElementById(containerId);
+    const template = document.getElementById(templateId).innerHTML;
 
-            button.addEventListener('click', () => {
-                const formEl = container.querySelector('div');
-                if (!formEl) {
-                    container.innerHTML = template;
-                    button.classList.remove('btn-outline-secondary');
-                    button.classList.add('btn-danger');
-                    button.innerText = removeText;
-                } else {
-                    container.innerHTML = '';
-                    button.classList.remove('btn-danger');
-                    button.classList.add('btn-outline-secondary');
-                    button.innerText = addText;
-                }
-            });
+    button.addEventListener('click', () => {
+        const formEl = container.querySelector('div');
+        if (!formEl) {
+            container.innerHTML = template;
+            button.classList.remove('btn-outline-secondary');
+            button.classList.add('btn-danger');
+            button.innerText = removeText;
+        } else {
+            container.innerHTML = '';
+            button.classList.remove('btn-danger');
+            button.classList.add('btn-outline-secondary');
+            button.innerText = addText;
         }
+    });
+}
 
         // ========== Initialize Toggles ==========
-        setupSingleToggle('add-remove-blood-test-form', 'blood-test-form-container', 'blood-test-template', gettext('Add Blood Test'), gettext('Remove Blood Test'));
-        setupSingleToggle('add-remove-urine-test-form', 'urine-test-form-container', 'urine-test-template', gettext('Add Urine Test'), gettext('Remove Urine Test'));
-        setupSingleToggle('add-remove-fecal-test-form', 'fecal-test-form-container', 'fecal-test-template', gettext('Add Fecal Test'), gettext('Remove Fecal Test'));
+        setupSingleToggle('add-remove-blood-test-form', 'blood-test-form-container', 'blood-test-template', "{% trans "Add Blood Test" %}", "{% trans "Remove Blood Test" %}");
+        setupSingleToggle('add-remove-urine-test-form', 'urine-test-form-container', 'urine-test-template', "{% trans "Add Urine Test" %}", "{% trans "Remove Urine Test" %}");
+        setupSingleToggle('add-remove-fecal-test-form', 'fecal-test-form-container', 'fecal-test-template', "{% trans "Add Fecal Test" %}", "{% trans "Remove Fecal Test" %}");
 
 
     </script>
-
-{% endblock %}
+{% endblock content %}

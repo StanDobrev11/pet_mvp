@@ -18,16 +18,26 @@ urlpatterns = [
     path('<int:pk>/', include([
         path('details/', OwnerDetailsView.as_view(), name='owner-details'),
         path('edit/', OwnerEditView.as_view(), name='owner-edit')
-        ])),
+    ])),
     # Password reset request
-    path('password-reset/', auth_views.PasswordResetView.as_view(), name='forgot-password'),
+    path('password-reset/', auth_views.PasswordResetView.as_view(
+        template_name='accounts/password/password_reset_form.html',
+        html_email_template_name='emails/password_reset_email.html',
+        success_url='done/',
+    ), name='forgot-password'),
 
     # Reset email sent
-    path('password-reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('password-reset/done/', auth_views.PasswordResetDoneView.as_view(
+        template_name='accounts/password/password_reset_done.html',
+    ), name='password_reset_done'),
 
     # Password reset link clicked (from email)
-    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(
+        template_name='accounts/password/password_reset_confirm.html',
+    ), name='password_reset_confirm'),
 
     # Final confirmation after reset
-    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(
+        template_name='accounts/password/password_reset_complete.html',
+    ), name='password_reset_complete'),
 ]
