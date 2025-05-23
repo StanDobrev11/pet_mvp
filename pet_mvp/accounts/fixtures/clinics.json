@@ -1,0 +1,28 @@
+[
+    {
+        "model": "accounts.clinic",
+        "fields": {
+            "email": "dianavet@pet-mvp.com",
+            "password": "pbkdf2_sha256$1000000$gw79YcygkIT8iyZneLKV6k$OQ91xsQ/9CL5y3hV4ezjTX53fIYHlQU3x6WtcDsfxN4=",
+            "clinic_name": "Дианавет",
+            "phone_number": "887877746",
+            "clinic_address": "кв.Галата, ул.Панорамна 24",
+            "city": "Варна",
+            "country": "Българиа",
+            "is_owner": false
+        }
+    }, 
+    {
+        "model": "accounts.clinic",
+        "fields": {
+            "email": "zoovet@pet-mvp.com",
+            "password": "pbkdf2_sha256$1000000$gw79YcygkIT8iyZneLKV6k$OQ91xsQ/9CL5y3hV4ezjTX53fIYHlQU3x6WtcDsfxN4=",
+            "clinic_name": "Зоо-Вет",
+            "phone_number": "0884672308",
+            "clinic_address": "кв.Аспарухово, ул.Моряшка 19",
+            "city": "Варна",
+            "country": "Българиа",
+            "is_owner": false
+        }
+    }
+]
