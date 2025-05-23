@@ -31,7 +31,8 @@ class BaseUserRegisterView(views.CreateView):
     redirect_authenticated_user = True
 
     def set_default_language(self):
-        """ sets the default language to the model bss browser settings, returns lang param for further email dispatch """
+        """ sets the default language to the model bss browser settings,
+        returns lang param for further email dispatch """
 
         # get the language from the django_language cookie
         lang = self.request.COOKIES.get("django_language", "en")
@@ -135,7 +136,7 @@ class ClinicRegistrationView(BaseUserRegisterView):
         self.request.session['code'] = self.request.GET.get('code')
 
         # set and get the language param
-        lang = self.set_default_language()
+        # lang = self.set_default_language()
         # TODO create send_clinic_registration_email
 
         return response
