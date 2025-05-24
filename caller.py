@@ -138,7 +138,7 @@ def create_complete_examination_record_for_max():
     print(f"Medical Examination Record created for {max_pet.name}.")
 
 
-def create_superuser(email='admin@pet-mvp.com', password='1234'):
+def create_superuser(email='admin@petpal.cloudmachine.uk', password='1234'):
     try:
         UserModel.objects.create_superuser(
             email=email,
