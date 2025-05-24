@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-24 13:27+0000\n"
+"POT-Creation-Date: 2025-05-24 17:46+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -769,30 +769,34 @@ msgstr "Английски"
 msgid "Bulgarian"
 msgstr "Български"
 
-#: .\templates\accounts\access_code_email.html:8
+#: .\templates\accounts\access_code_email.html:10
 #: .\templates\common\index.html:25
 msgid "Enter Access Code"
 msgstr "Въведете код за достъп"
 
-#: .\templates\accounts\access_code_email.html:12
+#: .\templates\accounts\access_code_email.html:11
+msgid "To manage a pet's medical records"
+msgstr "За да управлявате медицинските записи на домашен любимец"
+
+#: .\templates\accounts\access_code_email.html:30
 msgid "Access Code"
 msgstr "Код за достъп"
 
-#: .\templates\accounts\access_code_email.html:17
+#: .\templates\accounts\access_code_email.html:35
 #: .\templates\accounts\password\password_reset_form.html:18
 msgid "Email Address"
 msgstr "Имейл адрес"
 
-#: .\templates\accounts\access_code_email.html:22
+#: .\templates\accounts\access_code_email.html:39
 #: .\templates\accounts\login.html:39
 msgid "Forgot password?"
 msgstr "Забравена парола?"
 
-#: .\templates\accounts\access_code_email.html:25
+#: .\templates\accounts\access_code_email.html:43
 msgid "Continue"
 msgstr "Продължи"
 
-#: .\templates\accounts\access_code_email.html:26
+#: .\templates\accounts\access_code_email.html:44
 #: .\templates\accounts\clinc-register.html:30
 #: .\templates\accounts\login.html:45 .\templates\partials\back_buttons.html:4
 #: .\templates\partials\back_buttons.html:6
@@ -1035,7 +1039,9 @@ msgstr "Паспортът на моя домашен любимец. Всичк
 
 #: .\templates\base.html:110
 msgid "We use cookies to ensure you get the best experience on our website."
-msgstr "Използваме бисквитки, за да ви осигурим най-доброто изживяване на нашия уебсайт."
+msgstr ""
+"Използваме бисквитки, за да ви осигурим най-доброто изживяване на нашия "
+"уебсайт."
 
 #: .\templates\base.html:111
 msgid "Learn more"
@@ -1088,13 +1094,17 @@ msgstr ""
 "Свържете се с нас, за да включим вашата клиника в системата, така че "
 "собствениците на домашни любимци да ви намират лесно и да записват прегледи "
 "онлайн."
+
 #: .\templates\common\about.html:33
 msgid "Privacy & Cookies Policy"
 msgstr "Политика за поверителност и бисквитки"
 
 #: .\templates\common\about.html:34
-msgid "We respect your privacy and are committed to protecting your personal data."
-msgstr "Уважаваме вашата поверителност и се ангажираме да защитаваме личните ви данни."
+msgid ""
+"We respect your privacy and are committed to protecting your personal data."
+msgstr ""
+"Уважаваме вашата поверителност и се ангажираме да защитаваме личните ви "
+"данни."
 
 #: .\templates\common\about.html:35
 msgid "Cookies We Use"
@@ -1102,22 +1112,24 @@ msgstr "Бисквитки, които използваме"
 
 #: .\templates\common\about.html:39
 msgid "Stores your consent to use cookies. It expires after 1 year."
-msgstr "Съхранява вашето съгласие за използване на бисквитки. Изтича след 1 година."
+msgstr ""
+"Съхранява вашето съгласие за използване на бисквитки. Изтича след 1 година."
 
 #: .\templates\common\about.html:43
 msgid ""
 "A security cookie used to protect against cross-site request forgery (CSRF) "
 "attacks. It is essential and does not contain personal data."
 msgstr ""
-"Защитна бисквитка, използвана за защита от атаки чрез фалшифициране на заявки (CSRF). "
-"Тя е съществена и не съдържа лични данни."
+"Защитна бисквитка, използвана за защита от атаки чрез фалшифициране на "
+"заявки (CSRF). Тя е съществена и не съдържа лични данни."
 
 #: .\templates\common\about.html:47
 msgid ""
 "Stores your language preference so the website displays content in your "
 "chosen language."
 msgstr ""
-"Съхранява вашите езикови предпочитания, така че уебсайтът да показва съдържание на избрания от вас език."
+"Съхранява вашите езикови предпочитания, така че уебсайтът да показва "
+"съдържание на избрания от вас език."
 
 #: .\templates\common\about.html:50
 msgid "How We Use Your Data"
@@ -1129,8 +1141,9 @@ msgid ""
 "solely for the operation of the platform, such as managing login sessions, "
 "language preferences, and security."
 msgstr ""
-"Ние не споделяме вашите данни с трети страни. Цялата събрана информация се използва "
-"само за функционирането на платформата, като управление на сесии, езикови предпочитания и сигурност."
+"Ние не споделяме вашите данни с трети страни. Цялата събрана информация се "
+"използва само за функционирането на платформата, като управление на сесии, "
+"езикови предпочитания и сигурност."
 
 #: .\templates\common\about.html:54
 msgid "Managing Cookies"
@@ -1141,8 +1154,9 @@ msgid ""
 "You can manage or delete cookies through your browser settings. Please note "
 "that disabling essential cookies may affect website functionality."
 msgstr ""
-"Можете да управлявате или изтривате бисквитки чрез настройките на вашия браузър. "
-"Имайте предвид, че деактивирането на основни бисквитки може да повлияе на функционалността на сайта."
+"Можете да управлявате или изтривате бисквитки чрез настройките на вашия "
+"браузър. Имайте предвид, че деактивирането на основни бисквитки може да "
+"повлияе на функционалността на сайта."
 
 #: .\templates\common\about.html:58
 msgid "Contact"
@@ -1150,7 +1164,9 @@ msgstr "Контакт"
 
 #: .\templates\common\about.html:60
 msgid "For questions about privacy or data protection, contact us at"
-msgstr "При въпроси относно поверителността или защитата на данните, свържете се с нас на"
+msgstr ""
+"При въпроси относно поверителността или защитата на данните, свържете се с "
+"нас на"
 
 #: .\templates\common\dashboard.html:6
 msgid "Pets"

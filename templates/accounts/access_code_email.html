@@ -1,25 +1,43 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load widget_tweaks %}
 {% load i18n %}
 {% block content %}
     <section class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <h2 class="mb-4 text-center">{% trans "Enter Access Code" %}</h2>
-                <form method="post" class="p-4 border rounded bg-light">
+                <div class="text-center mb-4">
+                    <h2>{% trans "Enter Access Code" %}</h2>
+                    <h4 class="text-muted">{% trans "To manage a pet's medical records" %}</h4>
+                </div>
+                {% if messages %}
+                    <div class="mb-3">
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show"
+                                 role="alert">
+                                {{ message }}
+                                <button type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <form method="post" action="">
                     {% csrf_token %}
                     <div class="mb-3">
-                        <label for="id_access_code" class="form-label">{% trans "Access Code" %}</label>
+                        <label for="{{ form.access_code.id_for_label }}" class="form-label">{% trans "Access Code" %}</label>
                         {{ form.access_code|add_class:"form-control" }}
-                        {% if form.errors.access_code %}<div class="text-danger">{{ form.errors.access_code }}</div>{% endif %}
+                        {{ form.access_code.errors }}
                     </div>
                     <div class="mb-3">
-                        <label for="id_email" class="form-label">{% trans "Email Address" %}</label>
+                        <label for="{{ form.email.id_for_label }}" class="form-label">{% trans "Email Address" %}</label>
                         {{ form.email|add_class:"form-control" }}
-                        {% if form.errors.email %}<div class="text-danger">{{ form.errors.email }}</div>{% endif %}
-                    </div>
-                    <div class="mt-1 text-end">
-                        <a href="{% url 'forgot-password' %}" class="link-secondary small">{% trans "Forgot password?" %}</a>
+                        {{ form.email.errors }}
+                        <div class="mt-1 text-end">
+                            <a href="{% url 'forgot-password' %}" class="link-secondary small">{% trans "Forgot password?" %}</a>
+                        </div>
                     </div>
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-primary">{% trans "Continue" %}</button>
