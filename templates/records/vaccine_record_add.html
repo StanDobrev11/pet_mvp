@@ -8,23 +8,55 @@
         <div class="col-md-8">
             <div class="p-4 border rounded bg-light">
                 <h3 class="mb-3">{% trans "Add Vaccination Record" %}</h3>
-                <p class="text-danger">{% trans "This can be done only once. No editing or deleting of the vaccination record is possible." %}</p>
-                <p class="text-muted">{% trans "Ensure proper and correct data is entered." %}</p>
+                <p class="text-danger">
+                    {% trans "This can be done only once. No editing or deleting of the vaccination record is possible." %}
+                </p>
+                <p class="text-muted">
+                    {% trans "Ensure proper and correct data is entered." %}
+                </p>
+
+                {% if messages %}
+                    <div class="mb-3">
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
 
                 <form action="{% url 'vaccine-record-add' %}?pet_id={{ pet_id }}" method="post">
                     {% csrf_token %}
 
-                    {% for field in form %}
+                    {# Put the vaccine type (first field) at the top #}
+                    {% if form.vaccine %}
                         <div class="mb-3">
-                            {{ field.label_tag }}
-                            {{ field|add_class:"form-control" }}
-                            {% if field.help_text %}
-                                <div class="form-text">{{ field.help_text|safe }}</div>
+                            {{ form.vaccine.label_tag }}
+                            {{ form.vaccine|add_class:"form-select" }}
+                            {% if form.vaccine.help_text %}
+                                <div class="form-text">{{ form.vaccine.help_text|safe }}</div>
                             {% endif %}
-                            {% for error in field.errors %}
+                            {% for error in form.vaccine.errors %}
                                 <div class="text-danger">{{ error }}</div>
                             {% endfor %}
                         </div>
+                    {% endif %}
+
+                    {# Render the rest of the fields, excluding vaccine #}
+                    {% for field in form %}
+                        {% if field.name != 'vaccine' %}
+                            <div class="mb-3">
+                                {{ field.label_tag }}
+                                {{ field|add_class:"form-control" }}
+                                {% if field.help_text %}
+                                    <div class="form-text">{{ field.help_text|safe }}</div>
+                                {% endif %}
+                                {% for error in field.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                     {% endfor %}
 
                     <div class="d-flex flex-wrap gap-2 justify-content-between mt-4">

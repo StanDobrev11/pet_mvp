@@ -1,36 +1,52 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
 {% load i18n %}
+{% load static %}
 
 {% block content %}
 <section class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="text-center mb-4">
-                <h2>{% trans "Please fill out the form to register" %}</h2>
-            </div>
+            <div class="p-4 border rounded bg-light">
+                <div class="text-center mb-4">
+                    <h2>{% trans "Create an Account" %}</h2>
+                    <h4 class="text-muted">{% trans "Please fill out the form to register" %}</h4>
+                </div>
 
-            <form action="{% url 'register' %}?next={{ next }}" method="post" class="p-4 border rounded bg-light">
-                {% csrf_token %}
-
-                {% for field in form %}
+                {% if messages %}
                     <div class="mb-3">
-                        {{ field.label_tag }}
-                        {{ field|add_class:"form-control" }}
-                        {% if field.help_text %}
-                            <div class="form-text">{{ field.help_text|safe }}</div>
-                        {% endif %}
-                        {% for error in field.errors %}
-                            <div class="text-danger">{{ error }}</div>
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
                         {% endfor %}
                     </div>
-                {% endfor %}
+                {% endif %}
 
-                <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-primary">{% trans "Register" %}</button>
-                    <a href="{% url 'login' %}" class="btn btn-secondary">{% trans "Login instead?" %}</a>
-                </div>
-            </form>
+                <form action="{% url 'register' %}?next={{ next }}" method="post">
+                    {% csrf_token %}
+
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                            {{ field|add_class:"form-control" }}
+                            {% if field.help_text %}
+                                <div class="form-text">{{ field.help_text|safe }}</div>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">{% trans "Register" %}</button>
+                        <a href="{% url 'login' %}" class="btn btn-secondary">{% trans "Login instead?" %}</a>
+                        <a href="/" class="btn btn-outline-secondary">{% trans "Back" %}</a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </section>

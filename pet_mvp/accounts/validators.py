@@ -10,3 +10,6 @@ def phone_number_validator(value):
         raise ValidationError(_('Phone number must be only of digits'))
 
 
+def validate_bulgarian_phone(value):
+    if not re.fullmatch(r'^[0-9]{9}$', value):
+        raise ValidationError("Enter a valid Bulgarian mobile number (9 digits).")

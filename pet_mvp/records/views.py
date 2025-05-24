@@ -7,6 +7,7 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic as views
+from django.utils.translation import gettext_lazy as _
 
 from pet_mvp.notifications.tasks import send_medical_record_email
 from pet_mvp.pets.models import Pet
@@ -44,14 +45,9 @@ class BaseRecordAddView(views.CreateView, ABC):
         return get_object_or_404(Pet, pk=self.request.GET.get('pet_id'))
 
     def dispatch(self, request, *args, **kwargs):
-        # Get the pet from the URL and assign it
         pet = self.get_pet()
-
-        # Check if the owner is allowed to add vaccines
         if request.user in pet.owners.all() and not self.get_pet_attribute(pet):
-            return HttpResponseForbidden("You can no longer add records for this pet.")
-
-        # kwargs['pet_id'] = pet.pk
+            return HttpResponseForbidden(_("You can no longer add records for this pet."))
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -61,15 +57,12 @@ class BaseRecordAddView(views.CreateView, ABC):
         return context
 
     def form_valid(self, form):
-        form.instance.pet = self.get_pet()  # Assign the selected pet to the form
+        form.instance.pet = self.get_pet()
+        messages.success(self.request, _("Vaccine record saved. You can now add another."))
         return super().form_valid(form)
 
     @abstractmethod
     def get_pet_attribute(self, pet, value=None):
-        pass
-
-    @abstractmethod
-    def get_success_url(self):
         pass
 
 

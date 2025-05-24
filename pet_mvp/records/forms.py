@@ -15,6 +15,7 @@ class VaccinationRecordForm(forms.ModelForm):
             'manufacture_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'date_of_vaccination': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'valid_until': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'valid_from': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
         }
 
     vaccine = forms.ModelChoiceField(

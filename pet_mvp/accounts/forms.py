@@ -2,19 +2,34 @@ from django.contrib.auth import forms as auth_forms, get_user_model
 from django import forms
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.validators import validate_email
-
+from django.utils.translation import gettext as _
 from pet_mvp.access_codes.models import PetAccessCode
+from pet_mvp.accounts.validators import validate_bulgarian_phone
 from pet_mvp.pets.models import Pet
 
 UserModel = get_user_model()
 
 
 class OwnerCreationForm(auth_forms.UserCreationForm):
+    
+    phone_number = forms.CharField(
+        max_length=9,
+        validators=[validate_bulgarian_phone],
+        widget=forms.TextInput(attrs={
+            'placeholder': _('Please enter a valid phone number (9 digits after the leading 0)'),
+            'pattern': '[0-9]{9}',
+            'class': 'form-control',
+        }),
+        help_text="Format: +359 (0) 887123456"
+    )
+    
     class Meta:
         model = UserModel
         fields = ('email', 'first_name', 'last_name', 'phone_number', 'city', 'country')
 
 
+    
+    
 class ClinicRegistrationForm(auth_forms.UserCreationForm):
     class Meta:
         model = UserModel
