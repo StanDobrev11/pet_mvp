@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-24 11:16+0000\n"
+"POT-Creation-Date: 2025-05-24 12:16+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -807,7 +807,8 @@ msgstr "Регистрация на клиника"
 
 #: .\templates\accounts\clinc-register.html:29
 #: .\templates\accounts\register.html:30 .\templates\base.html:59
-#: .\templates\common\index.html:24 .\templates\partials\nav_bar.html:33
+#: .\templates\common\about.html:28 .\templates\common\index.html:24
+#: .\templates\partials\nav_bar.html:33
 msgid "Register"
 msgstr "Регистрация"
 
@@ -830,7 +831,7 @@ msgstr "Парола"
 
 #: .\templates\accounts\login.html:43
 #: .\templates\accounts\password\password_reset_complete.html:11
-#: .\templates\accounts\password_entry.html:24
+#: .\templates\accounts\password_entry.html:24 .\templates\common\about.html:27
 msgid "Log In"
 msgstr "Вход"
 
@@ -915,7 +916,6 @@ msgstr "Моля, въведете старата си парола и избе�
 #: .\templates\accounts\password\password_change_form.html:39
 msgid "Change Password"
 msgstr "Промени паролата"
-
 
 #: .\templates\accounts\password\password_reset_complete.html:9
 msgid "Password Reset Complete"
@@ -1024,10 +1024,50 @@ msgstr "Завърши и излез"
 #: .\templates\partials\nav_bar.html:32
 msgid "Login"
 msgstr "Вход"
+#: .\templates\base.html:63 .\templates\common\about.html:9
+msgid "About Us"
+msgstr "За нас"
 
-#: .\templates\base.html:93
+#: .\templates\base.html:96
 msgid "My Pet's Passport. All rights reserved."
 msgstr "Паспортът на моя домашен любимец. Всички права запазени."
+
+#: .\templates\common\about.html:11
+msgid ""
+"At PetPal, we are passionate pet lovers dedicated to making pet healthcare "
+"simpler, safer, and more connected."
+msgstr ""
+"В PetPal сме страстни любители на домашни любимци, посветени на това да направим грижата за тях по-проста, по-сигурна и по-свързана."
+
+#: .\templates\common\about.html:13
+msgid ""
+"Our mission is to bridge the gap between pet owners and veterinary "
+"professionals, ensuring that your beloved companions receive the care they "
+"deserve, wherever you are."
+msgstr ""
+"Нашата мисия е да изградим мост между собствениците на домашни любимци и ветеринарните специалисти, като гарантираме, че вашите любимци получават необходимата грижа — където и да се намирате."
+
+#: .\templates\common\about.html:15
+msgid ""
+"We believe in secure, easy access to medical records, so your pet’s vital "
+"information is always available — whether you’re at home or traveling abroad."
+msgstr ""
+"Вярваме в сигурния и лесен достъп до медицинските записи, така че важната информация за вашия домашен любимец да е винаги достъпна — независимо дали сте у дома или пътувате."
+
+#: .\templates\common\about.html:17
+msgid "Need to reach us? We’re here to help. Contact us at"
+msgstr "Имате нужда да се свържете с нас? Насреща сме. Пишете ни на"
+
+#: .\templates\common\about.html:22
+msgid "Are you a vet?"
+msgstr "Ветеринар ли сте?"
+
+#: .\templates\common\about.html:23
+msgid ""
+"Reach out to us to get your clinic listed in the system so pet owners can "
+"easily find you and book visits online."
+msgstr ""
+"Свържете се с нас, за да включим вашата клиника в системата, така че собствениците на домашни любимци да ви намират лесно и да записват прегледи онлайн."
 
 #: .\templates\common\dashboard.html:6
 msgid "Pets"
