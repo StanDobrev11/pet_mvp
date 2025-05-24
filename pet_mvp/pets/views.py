@@ -1,17 +1,26 @@
 from datetime import date
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponseRedirect
-from django.shortcuts import redirect, get_object_or_404
+from django.http import HttpResponseBadRequest, HttpResponseRedirect
+from django.shortcuts import redirect, get_object_or_404, render
 from django.urls import reverse_lazy, reverse
 from django.views import generic as views
+from django.core.signing import Signer, BadSignature
+from django.contrib.auth import get_user_model
+from django.utils.translation import gettext as _
+from django.contrib import messages
 
 from pet_mvp.access_codes.utils import generate_access_code
-from pet_mvp.pets.forms import PetAddForm, MarkingAddForm, PetEditForm
+from pet_mvp.notifications.tasks import send_owner_pet_addition_request
+from pet_mvp.pets.forms import AddExistingPetForm, PetAddForm, MarkingAddForm, PetEditForm
 from pet_mvp.pets.models import Pet
 
+UserModel = get_user_model()
+signer = Signer()
 
 # Create your views here.
+
+
 class PetDetailView(views.DetailView):
     model = Pet
     template_name = "pet/pet_details.html"
@@ -32,7 +41,8 @@ class PetDetailView(views.DetailView):
             '-valid_until')
         context['valid_treatments'] = pet.medication_records.filter(valid_until__gte=date.today()).order_by(
             '-created_at')
-        context['last_examinations'] = pet.examination_records.all().order_by('-created_at')[:3]
+        context['last_examinations'] = pet.examination_records.all().order_by(
+            '-created_at')[:3]
 
         return context
 
@@ -65,6 +75,61 @@ class PetAddView(views.CreateView):
         new_pet.owners.add(self.request.user)
 
         return redirect('dashboard')
+
+
+class AddExistingPetView(views.FormView):
+    form_class = AddExistingPetForm
+    template_name = 'pet/pet_add_existing.html'
+    success_url = reverse_lazy('dashboard')
+
+    def form_invalid(self, form):
+        passport_number = form.data['passport_number']
+        pet = Pet.objects.get(passport_number=passport_number)
+        existing_owner = pet.owners.first()
+
+        token = signer.sign(f'{pet.id}:{self.request.user.id}')
+        approval_url = self.request.build_absolute_uri(
+            reverse('approve-pet-addition', args=[token])
+        )
+
+        send_owner_pet_addition_request(
+            existing_owner=existing_owner,
+            new_owner=self.request.user,
+            pet=pet,
+            approval_url=approval_url
+        )
+
+        messages.success(self.request, _(
+            "Your request to access the pet has been sent to the owner."))
+
+        return redirect('dashboard')
+
+    def form_valid(self, form):
+        # No existing pet, raise error
+        form.add_error(
+            'passport_number', 'Invalid passport number: no pet found with these details.')
+        return self.form_invalid(form)
+
+
+class ApprovePetAdditionView(views.View):
+    def get(self, request, token):
+        try:
+            data = signer.unsign(token)
+            pet_id, user_id = map(int, data.split(':'))
+            pet = Pet.objects.get(id=pet_id)
+            user = UserModel.objects.get(id=user_id)
+
+            pet.owners.add(user)
+            # pet.pending_owners.remove(user)
+
+            context = {
+                "pet_name": pet.name,
+                "new_owner": user.get_full_name(),
+            }
+            return render(request, "pet/approve_confirmation.html", context)
+
+        except (BadSignature, Pet.DoesNotExist, UserModel.DoesNotExist):
+            return HttpResponseBadRequest(_('Invalid or expired link.'))
 
 
 class PetDeleteView(views.DeleteView):

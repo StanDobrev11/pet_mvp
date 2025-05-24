@@ -18,7 +18,7 @@ def send_vaccine_expiration_notifications():
     This can be scheduled via Celery Beat
     """
     from pet_mvp.records.models import VaccinationRecord
-    
+
     today = timezone.now().date()
 
     # Define notification intervals
@@ -38,10 +38,10 @@ def send_vaccine_expiration_notifications():
         )
 
         for record in expiring_vaccinations:
-            
+
             # for each expiring vaccine, send email on the language set as default
             owners = [owner for owner in record.pet.owners.all()]
-            
+
             # Prepare notification message based on interval
             if interval_name == 'four_weeks':
                 time_left = _("4 weeks")
@@ -172,3 +172,23 @@ def send_user_registration_email(user, lang):
             context=context
         )
     return _("Sent registration email to {}").format(user_email)
+
+
+@shared_task
+def send_owner_pet_addition_request(existing_owner, new_owner, pet, approval_url):
+
+    context = {
+        "first_name": new_owner.first_name,
+        "last_name": new_owner.last_name,
+        "lang": existing_owner.default_language,
+        "pet_name": pet.name,
+        "pet_passport": pet.passport_number,
+        "approval_url": approval_url,
+    }
+
+    EmailService.send_template_email_async.delay(
+        subject=_('Pet Addition Request'),
+        to_email=existing_owner.email,
+        template_name='emails/pet_add_request_email.html',
+        context=context
+    )

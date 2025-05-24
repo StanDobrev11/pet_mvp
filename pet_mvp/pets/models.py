@@ -152,6 +152,12 @@ class Pet(TimeStampMixin):
         to=UserModel,
         related_name='pets'
     )
+    
+    pending_owners = models.ManyToManyField(
+        to=UserModel, 
+        related_name='pending_pets', 
+        blank=True
+        )
 
     def save(self, *args, **kwargs):
         is_new = self.pk is None

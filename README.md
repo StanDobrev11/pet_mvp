@@ -122,6 +122,74 @@ celery -A pet_mvp worker --loglevel=info
 celery -A pet_mvp beat --loglevel=info
 ```
 
+## Using JSON Fixtures
+
+You can use Django's fixture system to load and export data in JSON format.
+
+### Loading Data
+
+To load data from a fixture (e.g., `clinics.json`), run:
+
+```sh
+python manage.py loaddata accounts/fixtures/clinics.json
+```
+
+This will import the data into your database.
+
+### Exporting Data
+
+To export data from a model (e.g., `Clinic`), run:
+
+```sh
+python manage.py dumpdata accounts.Clinic --indent 2 > clinics.json
+```
+
+This will create a nicely formatted `clinics.json` file with all Clinic objects.
+
+---
+
+## Creating a Superuser with a Hashed Password in a Migration
+
+If you want to create a superuser in an empty migration and need to set a hashed password, you can generate the hash using Django's shell:
+
+```sh
+python manage.py shell
+```
+
+Then, in the shell:
+
+```python
+from django.contrib.auth.hashers import make_password
+print(make_password('1234'))  
+```
+
+Copy the resulting hash and use it in your migration when creating the superuser.
+
+Example migration code:
+
+```python
+from django.db import migrations
+
+def create_superuser(apps, schema_editor):
+    User = apps.get_model('accounts', 'User')
+    User.objects.create_superuser(
+        email='admin@example.com',
+        password='HASHED_PASSWORD_HERE', 
+    )
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        # ...your dependencies...
+    ]
+
+    operations = [
+        migrations.RunPython(create_superuser),
+    ]
+```
+
+Replace `'HASHED_PASSWORD_HERE'` with the hash you generated.
+
 ## Project Structure
 
 - `pet_mvp/` - Main Django project directory
