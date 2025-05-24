@@ -621,3 +621,4 @@ if __name__ == '__main__':
     populate_drugs()
     populate_medication_records()
     create_complete_examination_record_for_max()
+    

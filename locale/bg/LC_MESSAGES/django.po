@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-24 09:21+0000\n"
+"POT-Creation-Date: 2025-05-24 11:16+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -888,6 +888,35 @@ msgstr "Отказ"
 msgid "Save Changes"
 msgstr "Запази промените"
 
+#: .\templates\accounts\owner_edit.html:44
+msgid "Want to change your password?"
+msgstr "Искате ли да промените паролата си?"
+
+#: .\templates\accounts\password\password_change_done.html:5
+msgid "Password Changed"
+msgstr "Паролата е променена"
+
+#: .\templates\accounts\password\password_change_done.html:6
+msgid "Your password has been changed successfully."
+msgstr "Паролата ви беше променена успешно."
+
+#: .\templates\accounts\password\password_change_done.html:7
+msgid "Log in again"
+msgstr "Влезте отново"
+
+#: .\templates\accounts\password\password_change_form.html:11
+msgid "Change Your Password"
+msgstr "Променете паролата си"
+
+#: .\templates\accounts\password\password_change_form.html:12
+msgid "Please enter your old password and choose a new one."
+msgstr "Моля, въведете старата си парола и изберете нова."
+
+#: .\templates\accounts\password\password_change_form.html:39
+msgid "Change Password"
+msgstr "Промени паролата"
+
+
 #: .\templates\accounts\password\password_reset_complete.html:9
 msgid "Password Reset Complete"
 msgstr "Паролата беше успешно нулирана"
@@ -1276,7 +1305,6 @@ msgstr ""
 "отговаряйте на този имейл."
 
 #: .\templates\emails\password_reset_email.html:52
-#| msgid "My Pet's Medical Records"
 msgid "Pet Medical Records"
 msgstr "Медицински досиета на моя любимец"
 
@@ -1294,12 +1322,12 @@ msgstr "За да нулирате паролата си, натиснете б�
 
 #: .\templates\emails\password_reset_email.html:74
 msgid "If you didn’t request this, you can safely ignore this email."
-msgstr "Ако не сте правили тази заявка, може спокойно да игнорирате този имейл."
+msgstr ""
+"Ако не сте правили тази заявка, може спокойно да игнорирате този имейл."
 
 #: .\templates\emails\pet_add_request_email.html:6
 msgid "Pet Addition Request Notification"
 msgstr "Известие за заявка за добавяне на домашен любимец"
-
 
 #: .\templates\emails\pet_add_request_email.html:56
 #: .\templates\emails\vaccine_expiration_notification.html:46
@@ -1316,9 +1344,9 @@ msgid ""
 "            "
 msgstr ""
 "\n"
-"            %(first_name)s %(last_name)s е направил заявка за достъп до домашния любимец "
-"<span class=\"highlight\">%(pet_name)s</span> (Паспорт №: <span "
-"class=\"highlight\">%(pet_passport)s</span>).\n"
+"            %(first_name)s %(last_name)s е направил заявка за достъп до "
+"домашния любимец <span class=\"highlight\">%(pet_name)s</span> (Паспорт №: "
+"<span class=\"highlight\">%(pet_passport)s</span>).\n"
 "            "
 
 #: .\templates\emails\pet_add_request_email.html:65
@@ -1326,16 +1354,17 @@ msgid ""
 "If you approve this request, they will be able to view and manage the pet’s "
 "medical records together with you."
 msgstr ""
-"Ако одобрите тази заявка, те ще могат да виждат и управляват медицинските записи на домашния любимец заедно с вас."
+"Ако одобрите тази заявка, те ще могат да виждат и управляват медицинските "
+"записи на домашния любимец заедно с вас."
 
 #: .\templates\emails\pet_add_request_email.html:68
 msgid "If you did not expect this request, you can safely ignore this email."
-msgstr "Ако не сте очаквали тази заявка, можете спокойно да игнорирате този имейл."
+msgstr ""
+"Ако не сте очаквали тази заявка, можете спокойно да игнорирате този имейл."
 
 #: .\templates\emails\pet_add_request_email.html:71
 msgid "Approve Request"
 msgstr "Одобри заявката"
-
 
 #: .\templates\emails\user_registration_email.html:55
 msgid "Welcome to Pet Medical Records"
