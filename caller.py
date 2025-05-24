@@ -44,8 +44,7 @@ def create_pet_markings():
 
     # Create a transponder for Max
     try:
-        from pet_mvp.pets.models import Transponder
-        transponder = Transponder.objects.create(
+        Transponder.objects.create(
             code='123456789012345',
             pet=max_pet,
             date_of_application='2020-01-15',
@@ -60,8 +59,7 @@ def create_pet_markings():
 
     # Create a tattoo for Luna
     try:
-        from pet_mvp.pets.models import Tattoo
-        tattoo = Tattoo.objects.create(
+        Tattoo.objects.create(
             code='ABC123',
             pet=luna_pet,
             date_of_application='2021-04-01',
@@ -210,7 +208,7 @@ def create_pets():
 
         pets = [max_pet, luna_pet]
 
-        owner = UserModel.objects.first()
+        owner = UserModel.objects.get(email__icontains='admin')
 
         for pet in pets:
             pet.owners.add(owner)
