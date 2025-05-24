@@ -349,7 +349,7 @@ msgstr "Изпратен медицински доклад за {}"
 #: .\pet_mvp\notifications\tasks.py:190
 #: .\templates\emails\pet_add_request_email.html:53
 msgid "Pet Addition Request"
-msgstr "Допълнителни бележки"
+msgstr "Искане за добавяне на домашен любимец"
 
 #: .\pet_mvp\pets\models.py:22
 msgid "Male"
@@ -549,11 +549,11 @@ msgstr "Местоположение на татуировката"
 
 #: .\pet_mvp\pets\views.py:103
 msgid "Your request to access the pet has been sent to the owner."
-msgstr ""
+msgstr "Вашето запитване за добавяне на съществуващ любимец е изпратено."
 
 #: .\pet_mvp\pets\views.py:132
 msgid "Invalid or expired link."
-msgstr ""
+msgstr "Невалиден линк."
 
 #: .\pet_mvp\records\forms.py:22
 msgid "Select Vaccine"
@@ -1686,15 +1686,15 @@ msgstr "Добави нов домашен любимец"
 
 #: .\templates\pet\pet_add.html:10
 msgid "Already have a pet registered with a passport number?"
-msgstr ""
+msgstr "Вече имате домашен любимец, регистриран с номер на паспорт?"
 
 #: .\templates\pet\pet_add.html:11 .\templates\pet\pet_add_existing.html:9
 msgid "Request Access to Existing Pet"
-msgstr ""
+msgstr "Заяви достъп до съществуващ домашен любимец"
 
 #: .\templates\pet\pet_add_existing.html:25
 msgid "Send Request"
-msgstr "Изпрати линк за нулиране"
+msgstr "Изпрати заявка"
 
 #: .\templates\pet\pet_delete.html:9
 msgid "Confirm Deletion"
