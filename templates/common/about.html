@@ -1,34 +1,67 @@
 {% extends 'base.html' %}
 {% load i18n %}
-
 {% block content %}
-<section class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="p-4 border rounded bg-light">
-                <h2 class="mb-4 text-center">{% trans "About Us" %}</h2>
-                
-                <p>{% trans "At PetPal, we are passionate pet lovers dedicated to making pet healthcare simpler, safer, and more connected." %}</p>
-                
-                <p>{% trans "Our mission is to bridge the gap between pet owners and veterinary professionals, ensuring that your beloved companions receive the care they deserve, wherever you are." %}</p>
-                
-                <p>{% trans "We believe in secure, easy access to medical records, so your pet’s vital information is always available — whether you’re at home or traveling abroad." %}</p>
-                
-                <p>{% trans "Need to reach us? We’re here to help. Contact us at" %}
-                    <a href="mailto:admin@petpal.cloudmachine.uk">admin@petpal.cloudmachine.uk</a>.
-                </p>
-
-                <p class="mt-4">
-                    {% trans "Are you a vet?" %}
-                    {% trans "Reach out to us to get your clinic listed in the system so pet owners can easily find you and book visits online." %}
-                </p>
-
-                <div class="text-center mt-4">
-                    <a href="{% url 'login' %}" class="btn btn-primary me-2">{% trans "Log In" %}</a>
-                    <a href="{% url 'register' %}" class="btn btn-outline-primary">{% trans "Register" %}</a>
+    <section class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="p-4 border rounded bg-light">
+                    <h2 class="mb-4 text-center">{% trans "About Us" %}</h2>
+                    <p>
+                        {% trans "At PetPal, we are passionate pet lovers dedicated to making pet healthcare simpler, safer, and more connected." %}
+                    </p>
+                    <p>
+                        {% trans "Our mission is to bridge the gap between pet owners and veterinary professionals, ensuring that your beloved companions receive the care they deserve, wherever you are." %}
+                    </p>
+                    <p>
+                        {% trans "We believe in secure, easy access to medical records, so your pet’s vital information is always available — whether you’re at home or traveling abroad." %}
+                    </p>
+                    <p>
+                        {% trans "Need to reach us? We’re here to help. Contact us at" %}
+                        <a href="mailto:admin@petpal.cloudmachine.uk">admin@petpal.cloudmachine.uk</a>.
+                    </p>
+                    <p class="mt-4">
+                        {% trans "Are you a vet?" %}
+                        {% trans "Reach out to us to get your clinic listed in the system so pet owners can easily find you and book visits online." %}
+                    </p>
+                    <div class="text-center mt-4">
+                        <a href="{% url 'login' %}" class="btn btn-primary me-2">{% trans "Log In" %}</a>
+                        <a href="{% url 'register' %}" class="btn btn-outline-primary">{% trans "Register" %}</a>
+                    </div>
+                </div>
+                <!-- Privacy and Cookie Policy Section -->
+                <div class="p-4 mt-5 border rounded bg-white">
+                    <h4 class="mb-3 text-center">{% trans "Privacy & Cookies Policy" %}</h4>
+                    <p>{% trans "We respect your privacy and are committed to protecting your personal data." %}</p>
+                    <h5 class="mt-4">{% trans "Cookies We Use" %}</h5>
+                    <ul>
+                        <li>
+                            <strong>accepted_cookies</strong> –
+                            {% trans "Stores your consent to use cookies. It expires after 1 year." %}
+                        </li>
+                        <li>
+                            <strong>csrftoken</strong> –
+                            {% trans "A security cookie used to protect against cross-site request forgery (CSRF) attacks. It is essential and does not contain personal data." %}
+                        </li>
+                        <li>
+                            <strong>django_language</strong> –
+                            {% trans "Stores your language preference so the website displays content in your chosen language." %}
+                        </li>
+                    </ul>
+                    <h5 class="mt-4">{% trans "How We Use Your Data" %}</h5>
+                    <p>
+                        {% trans "We do not share your data with third parties. Any information collected is solely for the operation of the platform, such as managing login sessions, language preferences, and security." %}
+                    </p>
+                    <h5 class="mt-4">{% trans "Managing Cookies" %}</h5>
+                    <p>
+                        {% trans "You can manage or delete cookies through your browser settings. Please note that disabling essential cookies may affect website functionality." %}
+                    </p>
+                    <h5 class="mt-4">{% trans "Contact" %}</h5>
+                    <p>
+                        {% trans "For questions about privacy or data protection, contact us at" %}
+                        <a href="mailto:admin@petpal.cloudmachine.uk">admin@petpal.cloudmachine.uk</a>.
+                    </p>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 {% endblock %}
