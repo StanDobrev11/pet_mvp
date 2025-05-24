@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-24 12:16+0000\n"
+"POT-Creation-Date: 2025-05-24 13:27+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -1024,7 +1024,8 @@ msgstr "Завърши и излез"
 #: .\templates\partials\nav_bar.html:32
 msgid "Login"
 msgstr "Вход"
-#: .\templates\base.html:63 .\templates\common\about.html:9
+
+#: .\templates\base.html:63 .\templates\common\about.html:8
 msgid "About Us"
 msgstr "За нас"
 
@@ -1032,12 +1033,25 @@ msgstr "За нас"
 msgid "My Pet's Passport. All rights reserved."
 msgstr "Паспортът на моя домашен любимец. Всички права запазени."
 
-#: .\templates\common\about.html:11
+#: .\templates\base.html:110
+msgid "We use cookies to ensure you get the best experience on our website."
+msgstr "Използваме бисквитки, за да ви осигурим най-доброто изживяване на нашия уебсайт."
+
+#: .\templates\base.html:111
+msgid "Learn more"
+msgstr "Научете повече"
+
+#: .\templates\base.html:113
+msgid "Accept"
+msgstr "Приеми"
+
+#: .\templates\common\about.html:10
 msgid ""
 "At PetPal, we are passionate pet lovers dedicated to making pet healthcare "
 "simpler, safer, and more connected."
 msgstr ""
-"В PetPal сме страстни любители на домашни любимци, посветени на това да направим грижата за тях по-проста, по-сигурна и по-свързана."
+"В PetPal сме страстни любители на домашни любимци, посветени на това да "
+"направим грижата за тях по-проста, по-сигурна и по-свързана."
 
 #: .\templates\common\about.html:13
 msgid ""
@@ -1045,29 +1059,98 @@ msgid ""
 "professionals, ensuring that your beloved companions receive the care they "
 "deserve, wherever you are."
 msgstr ""
-"Нашата мисия е да изградим мост между собствениците на домашни любимци и ветеринарните специалисти, като гарантираме, че вашите любимци получават необходимата грижа — където и да се намирате."
+"Нашата мисия е да изградим мост между собствениците на домашни любимци и "
+"ветеринарните специалисти, като гарантираме, че вашите любимци получават "
+"необходимата грижа — където и да се намирате."
 
-#: .\templates\common\about.html:15
+#: .\templates\common\about.html:16
 msgid ""
 "We believe in secure, easy access to medical records, so your pet’s vital "
 "information is always available — whether you’re at home or traveling abroad."
 msgstr ""
-"Вярваме в сигурния и лесен достъп до медицинските записи, така че важната информация за вашия домашен любимец да е винаги достъпна — независимо дали сте у дома или пътувате."
+"Вярваме в сигурния и лесен достъп до медицинските записи, така че важната "
+"информация за вашия домашен любимец да е винаги достъпна — независимо дали "
+"сте у дома или пътувате."
 
-#: .\templates\common\about.html:17
+#: .\templates\common\about.html:19
 msgid "Need to reach us? We’re here to help. Contact us at"
 msgstr "Имате нужда да се свържете с нас? Насреща сме. Пишете ни на"
 
-#: .\templates\common\about.html:22
+#: .\templates\common\about.html:23
 msgid "Are you a vet?"
 msgstr "Ветеринар ли сте?"
 
-#: .\templates\common\about.html:23
+#: .\templates\common\about.html:24
 msgid ""
 "Reach out to us to get your clinic listed in the system so pet owners can "
 "easily find you and book visits online."
 msgstr ""
-"Свържете се с нас, за да включим вашата клиника в системата, така че собствениците на домашни любимци да ви намират лесно и да записват прегледи онлайн."
+"Свържете се с нас, за да включим вашата клиника в системата, така че "
+"собствениците на домашни любимци да ви намират лесно и да записват прегледи "
+"онлайн."
+#: .\templates\common\about.html:33
+msgid "Privacy & Cookies Policy"
+msgstr "Политика за поверителност и бисквитки"
+
+#: .\templates\common\about.html:34
+msgid "We respect your privacy and are committed to protecting your personal data."
+msgstr "Уважаваме вашата поверителност и се ангажираме да защитаваме личните ви данни."
+
+#: .\templates\common\about.html:35
+msgid "Cookies We Use"
+msgstr "Бисквитки, които използваме"
+
+#: .\templates\common\about.html:39
+msgid "Stores your consent to use cookies. It expires after 1 year."
+msgstr "Съхранява вашето съгласие за използване на бисквитки. Изтича след 1 година."
+
+#: .\templates\common\about.html:43
+msgid ""
+"A security cookie used to protect against cross-site request forgery (CSRF) "
+"attacks. It is essential and does not contain personal data."
+msgstr ""
+"Защитна бисквитка, използвана за защита от атаки чрез фалшифициране на заявки (CSRF). "
+"Тя е съществена и не съдържа лични данни."
+
+#: .\templates\common\about.html:47
+msgid ""
+"Stores your language preference so the website displays content in your "
+"chosen language."
+msgstr ""
+"Съхранява вашите езикови предпочитания, така че уебсайтът да показва съдържание на избрания от вас език."
+
+#: .\templates\common\about.html:50
+msgid "How We Use Your Data"
+msgstr "Как използваме вашите данни"
+
+#: .\templates\common\about.html:52
+msgid ""
+"We do not share your data with third parties. Any information collected is "
+"solely for the operation of the platform, such as managing login sessions, "
+"language preferences, and security."
+msgstr ""
+"Ние не споделяме вашите данни с трети страни. Цялата събрана информация се използва "
+"само за функционирането на платформата, като управление на сесии, езикови предпочитания и сигурност."
+
+#: .\templates\common\about.html:54
+msgid "Managing Cookies"
+msgstr "Управление на бисквитки"
+
+#: .\templates\common\about.html:56
+msgid ""
+"You can manage or delete cookies through your browser settings. Please note "
+"that disabling essential cookies may affect website functionality."
+msgstr ""
+"Можете да управлявате или изтривате бисквитки чрез настройките на вашия браузър. "
+"Имайте предвид, че деактивирането на основни бисквитки може да повлияе на функционалността на сайта."
+
+#: .\templates\common\about.html:58
+msgid "Contact"
+msgstr "Контакт"
+
+#: .\templates\common\about.html:60
+msgid "For questions about privacy or data protection, contact us at"
+msgstr "При въпроси относно поверителността или защитата на данните, свържете се с нас на"
 
 #: .\templates\common\dashboard.html:6
 msgid "Pets"
