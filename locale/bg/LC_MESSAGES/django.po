@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-23 15:05+0000\n"
+"POT-Creation-Date: 2025-05-24 09:21+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -99,19 +99,19 @@ msgstr "Клиниките трябва да имат име и адрес."
 msgid "Clinics cannot have owner-related information."
 msgstr "Клиниките не могат да имат информация, свързана със собственик."
 
-#: .\pet_mvp\accounts\models.py:125
+#: .\pet_mvp\accounts\models.py:127
 msgid "Owner"
 msgstr "Собственик"
 
-#: .\pet_mvp\accounts\models.py:126
+#: .\pet_mvp\accounts\models.py:128
 msgid "Owners"
 msgstr "Собственици"
 
-#: .\pet_mvp\accounts\models.py:135 .\pet_mvp\records\models.py:130
+#: .\pet_mvp\accounts\models.py:137 .\pet_mvp\records\models.py:130
 msgid "Clinic"
 msgstr "Клиника"
 
-#: .\pet_mvp\accounts\models.py:136
+#: .\pet_mvp\accounts\models.py:138
 msgid "Clinics"
 msgstr "Клиники"
 
@@ -346,6 +346,11 @@ msgstr "Добре дошли {} {}"
 msgid "Sent registration email to {}"
 msgstr "Изпратен медицински доклад за {}"
 
+#: .\pet_mvp\notifications\tasks.py:190
+#: .\templates\emails\pet_add_request_email.html:53
+msgid "Pet Addition Request"
+msgstr "Допълнителни бележки"
+
 #: .\pet_mvp\pets\models.py:22
 msgid "Male"
 msgstr "Мъжки"
@@ -506,41 +511,49 @@ msgstr "Може ли да добавя лечения?"
 msgid "Controls if the owner can add treatments."
 msgstr "Контролира дали собственикът може да добавя лечения."
 
-#: .\pet_mvp\pets\models.py:193
+#: .\pet_mvp\pets\models.py:199
 msgid "{} years, {} months and {} days"
 msgstr "{} години, {} месеца и {} дни"
 
-#: .\pet_mvp\pets\models.py:208
+#: .\pet_mvp\pets\models.py:214
 msgid "Type"
 msgstr "Тип"
 
-#: .\pet_mvp\pets\models.py:236
+#: .\pet_mvp\pets\models.py:242
 msgid "Transponder alphanumeric code"
 msgstr "Буквено-цифров код на транспондера"
 
-#: .\pet_mvp\pets\models.py:242 .\pet_mvp\pets\models.py:248
+#: .\pet_mvp\pets\models.py:248 .\pet_mvp\pets\models.py:254
 msgid "Date of application or reading of the transponder"
 msgstr "Дата на поставяне или отчитане на транспондера"
 
-#: .\pet_mvp\pets\models.py:253
+#: .\pet_mvp\pets\models.py:259
 msgid "Location of the transponder"
 msgstr "Местоположение на транспондера"
 
-#: .\pet_mvp\pets\models.py:262
+#: .\pet_mvp\pets\models.py:268
 msgid "Tattoo alphanumeric code"
 msgstr "Буквено-цифров код на татуировката"
 
-#: .\pet_mvp\pets\models.py:266
+#: .\pet_mvp\pets\models.py:272
 msgid "Date of application of the tattoo"
 msgstr "Дата на поставяне на татуировката"
 
-#: .\pet_mvp\pets\models.py:270
+#: .\pet_mvp\pets\models.py:276
 msgid "Date of reading of the tattoo"
 msgstr "Дата на отчитане на татуировката"
 
-#: .\pet_mvp\pets\models.py:275
+#: .\pet_mvp\pets\models.py:281
 msgid "Location of the tattoo"
 msgstr "Местоположение на татуировката"
+
+#: .\pet_mvp\pets\views.py:103
+msgid "Your request to access the pet has been sent to the owner."
+msgstr ""
+
+#: .\pet_mvp\pets\views.py:132
+msgid "Invalid or expired link."
+msgstr ""
 
 #: .\pet_mvp\records\forms.py:22
 msgid "Select Vaccine"
@@ -824,6 +837,7 @@ msgstr "Вход"
 #: .\templates\accounts\login.html:44
 msgid "Register instead?"
 msgstr "Или регистрация?"
+
 #: .\templates\accounts\owner_details.html:12
 #: .\templates\accounts\owner_profile.html:12
 msgid "Owner Profile"
@@ -865,8 +879,8 @@ msgstr "Редакция на профила на собственика"
 msgid "Update your personal details below."
 msgstr "Актуализирайте вашите лични данни по-долу."
 
-#: .\templates\accounts\owner_edit.html:34 .\templates\pet\pet_add.html:31
-#: .\templates\pet\pet_delete.html:17
+#: .\templates\accounts\owner_edit.html:34 .\templates\pet\pet_add.html:29
+#: .\templates\pet\pet_add_existing.html:26 .\templates\pet\pet_delete.html:17
 msgid "Cancel"
 msgstr "Отказ"
 
@@ -879,8 +893,11 @@ msgid "Password Reset Complete"
 msgstr "Паролата беше успешно нулирана"
 
 #: .\templates\accounts\password\password_reset_complete.html:10
-msgid "Your password has been set. You can now log in with your new credentials."
-msgstr "Вашата парола беше зададена. Вече можете да влезете с новите си данни за достъп."
+msgid ""
+"Your password has been set. You can now log in with your new credentials."
+msgstr ""
+"Вашата парола беше зададена. Вече можете да влезете с новите си данни за "
+"достъп."
 
 #: .\templates\accounts\password\password_reset_confirm.html:11
 msgid "Set a New Password"
@@ -903,8 +920,12 @@ msgid "Email Sent"
 msgstr "Имейлът е изпратен"
 
 #: .\templates\accounts\password\password_reset_done.html:11
-msgid "If the email you entered is associated with an account, you will receive a message with instructions to reset your password."
-msgstr "Ако въведеният имейл е свързан с акаунт, ще получите съобщение с инструкции за нулиране на паролата."
+msgid ""
+"If the email you entered is associated with an account, you will receive a "
+"message with instructions to reset your password."
+msgstr ""
+"Ако въведеният имейл е свързан с акаунт, ще получите съобщение с инструкции "
+"за нулиране на паролата."
 
 #: .\templates\accounts\password\password_reset_done.html:13
 msgid "Return to Login"
@@ -927,7 +948,6 @@ msgstr "Изпрати линк за нулиране"
 #: .\templates\accounts\password\password_reset_form.html:27
 msgid "Back to Login"
 msgstr "Обратно към вход"
-
 
 #: .\templates\accounts\password_entry.html:10
 msgid "Clinic Access"
@@ -980,19 +1000,19 @@ msgstr "Вход"
 msgid "My Pet's Passport. All rights reserved."
 msgstr "Паспортът на моя домашен любимец. Всички права запазени."
 
-#: .\templates\common\dashboard.html:7
+#: .\templates\common\dashboard.html:6
 msgid "Pets"
 msgstr "Домашни любимци"
 
-#: .\templates\common\dashboard.html:8
+#: .\templates\common\dashboard.html:7
 msgid "Welcome"
 msgstr "Добре дошли"
 
-#: .\templates\common\dashboard.html:12
+#: .\templates\common\dashboard.html:10
 msgid "Access Codes"
 msgstr "Кодове за достъп"
 
-#: .\templates\common\dashboard.html:13
+#: .\templates\common\dashboard.html:12
 msgid ""
 "Each pet has a unique access code that can be shared with veterinarians or "
 "other caregivers to allow them to view and update your pet's medical records."
@@ -1001,7 +1021,7 @@ msgstr ""
 "споделен с ветеринари или други грижещи се лица, за да могат да преглеждат и "
 "актуализират медицинските му досиета."
 
-#: .\templates\common\dashboard.html:15
+#: .\templates\common\dashboard.html:16
 msgid ""
 "Access codes are valid for 4 hours after generation and are automatically "
 "refreshed when viewed."
@@ -1009,11 +1029,11 @@ msgstr ""
 "Кодовете за достъп са валидни 4 часа след генериране и се обновяват "
 "автоматично при преглед."
 
-#: .\templates\common\dashboard.html:27
+#: .\templates\common\dashboard.html:28
 msgid "Access Code:"
 msgstr "Код за достъп:"
 
-#: .\templates\common\dashboard.html:35
+#: .\templates\common\dashboard.html:36
 msgid "No pets added yet."
 msgstr "Все още няма добавени домашни любимци."
 
@@ -1246,6 +1266,7 @@ msgstr "Екипът на Pet MVP"
 
 #: .\templates\emails\medical_report_email.html:205
 #: .\templates\emails\password_reset_email.html:78
+#: .\templates\emails\pet_add_request_email.html:75
 #: .\templates\emails\user_registration_email.html:77
 msgid ""
 "This is an automated message from My Pet's Passport. Please do not reply to "
@@ -1255,28 +1276,66 @@ msgstr ""
 "отговаряйте на този имейл."
 
 #: .\templates\emails\password_reset_email.html:52
-#, fuzzy
 #| msgid "My Pet's Medical Records"
 msgid "Pet Medical Records"
 msgstr "Медицински досиета на моя любимец"
 
 #: .\templates\emails\password_reset_email.html:56
-#, fuzzy
-#| msgid "Dear Pet Owner,"
 msgid "Dear user,"
 msgstr "Уважаеми собственик на домашен любимец,"
 
 #: .\templates\emails\password_reset_email.html:60
 msgid "We received a request to reset the password for your account at"
-msgstr ""
+msgstr "Получихме заявка за нулиране на паролата за вашия акаунт в"
 
 #: .\templates\emails\password_reset_email.html:64
 msgid "To reset your password, click the button below:"
-msgstr ""
+msgstr "За да нулирате паролата си, натиснете бутона по-долу:"
 
 #: .\templates\emails\password_reset_email.html:74
 msgid "If you didn’t request this, you can safely ignore this email."
+msgstr "Ако не сте правили тази заявка, може спокойно да игнорирате този имейл."
+
+#: .\templates\emails\pet_add_request_email.html:6
+msgid "Pet Addition Request Notification"
+msgstr "Известие за заявка за добавяне на домашен любимец"
+
+
+#: .\templates\emails\pet_add_request_email.html:56
+#: .\templates\emails\vaccine_expiration_notification.html:46
+msgid "Dear Pet Owner,"
+msgstr "Уважаеми собственик на домашен любимец,"
+
+#: .\templates\emails\pet_add_request_email.html:59
+#, python-format
+msgid ""
+"\n"
+"            %(first_name)s %(last_name)s has requested access to the pet "
+"<span class=\"highlight\">%(pet_name)s</span> (Passport No: <span "
+"class=\"highlight\">%(pet_passport)s</span>).\n"
+"            "
 msgstr ""
+"\n"
+"            %(first_name)s %(last_name)s е направил заявка за достъп до домашния любимец "
+"<span class=\"highlight\">%(pet_name)s</span> (Паспорт №: <span "
+"class=\"highlight\">%(pet_passport)s</span>).\n"
+"            "
+
+#: .\templates\emails\pet_add_request_email.html:65
+msgid ""
+"If you approve this request, they will be able to view and manage the pet’s "
+"medical records together with you."
+msgstr ""
+"Ако одобрите тази заявка, те ще могат да виждат и управляват медицинските записи на домашния любимец заедно с вас."
+
+#: .\templates\emails\pet_add_request_email.html:68
+msgid "If you did not expect this request, you can safely ignore this email."
+msgstr "Ако не сте очаквали тази заявка, можете спокойно да игнорирате този имейл."
+
+#: .\templates\emails\pet_add_request_email.html:71
+msgid "Approve Request"
+msgstr "Одобри заявката"
+
 
 #: .\templates\emails\user_registration_email.html:55
 msgid "Welcome to Pet Medical Records"
@@ -1329,10 +1388,6 @@ msgstr ""
 #: .\templates\emails\vaccine_expiration_notification.html:43
 msgid "Vaccine Expiration Notice"
 msgstr "Известие за изтичане на ваксина"
-
-#: .\templates\emails\vaccine_expiration_notification.html:46
-msgid "Dear Pet Owner,"
-msgstr "Уважаеми собственик на домашен любимец,"
 
 #: .\templates\emails\vaccine_expiration_notification.html:48
 #, python-format
@@ -1569,17 +1624,34 @@ msgstr "според ваксинационния календар."
 msgid "not compulsory"
 msgstr "не е задължителна"
 
+#: .\templates\pet\approve_confirmation.html:8
+msgid "Request Approved"
+msgstr "Заявката е одобрена"
+
+#: .\templates\pet\approve_confirmation.html:10
+#, python-format
+msgid ""
+"\n"
+"                You have successfully approved %(new_owner)s to access and "
+"manage the medical records for <strong>%(pet_name)s</strong>.\n"
+"                "
+msgstr ""
+"\n"
+"                Успешно одобрихте %(new_owner)s да има достъп и да управлява "
+"медицинските записи на <strong>%(pet_name)s</strong>.\n"
+"                "
+
 #: .\templates\pet\marking_add.html:9
 msgid "Add Marking"
 msgstr "Добави маркировка"
 
-#: .\templates\pet\marking_add.html:28 .\templates\pet\pet_add.html:29
+#: .\templates\pet\marking_add.html:28 .\templates\pet\pet_add.html:27
 #: .\templates\pet\pet_edit.html:28
 #: .\templates\records\examination_add.html:129
 msgid "Save"
 msgstr "Запази"
 
-#: .\templates\pet\marking_add.html:29 .\templates\pet\pet_add.html:30
+#: .\templates\pet\marking_add.html:29 .\templates\pet\pet_add.html:28
 #: .\templates\pet\pet_edit.html:29
 msgid "Reset"
 msgstr "Нулиране"
@@ -1608,9 +1680,21 @@ msgstr "Дата на прилагане:"
 msgid "Back to Pet's Details"
 msgstr "Обратно към детайлите на домашния любимец"
 
-#: .\templates\pet\pet_add.html:9
+#: .\templates\pet\pet_add.html:8
 msgid "Add a New Pet"
 msgstr "Добави нов домашен любимец"
+
+#: .\templates\pet\pet_add.html:10
+msgid "Already have a pet registered with a passport number?"
+msgstr ""
+
+#: .\templates\pet\pet_add.html:11 .\templates\pet\pet_add_existing.html:9
+msgid "Request Access to Existing Pet"
+msgstr ""
+
+#: .\templates\pet\pet_add_existing.html:25
+msgid "Send Request"
+msgstr "Изпрати линк за нулиране"
 
 #: .\templates\pet\pet_delete.html:9
 msgid "Confirm Deletion"
@@ -1788,17 +1872,14 @@ msgid "Add Fecal Test"
 msgstr "Добави изследване на изпражнения"
 
 #: .\templates\records\examination_add.html:221
-#| msgid "Blood Test"
 msgid "Remove Blood Test"
 msgstr "Премахни кръвно изследване"
 
 #: .\templates\records\examination_add.html:222
-#| msgid "Urine Test"
 msgid "Remove Urine Test"
 msgstr "Премахни изследване на урина"
 
 #: .\templates\records\examination_add.html:223
-#| msgid "Fecal Test"
 msgid "Remove Fecal Test"
 msgstr "Премахни изследване на изпражнения"
 
