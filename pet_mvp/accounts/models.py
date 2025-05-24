@@ -5,14 +5,14 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from pet_mvp.accounts.managers import UserManager
-from pet_mvp.accounts.validators import phone_number_validator
+from pet_mvp.accounts.validators import normalize_bulgarian_phone, phone_number_validator
 from pet_mvp.common.mixins import TimeStampMixin
 
 
 # Create your models here.
 class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
     USERNAME_FIELD = 'email'
-    PHONE_NUMBER_LENGTH = 10
+    PHONE_NUMBER_LENGTH = 14
     
     LANGUAGE_CHOICES = [
         ('bg', 'BG'),
@@ -55,9 +55,6 @@ class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
 
     phone_number = models.CharField(
         max_length=PHONE_NUMBER_LENGTH,
-        validators=[
-            phone_number_validator,
-        ],
         verbose_name=_("Phone number"),
     )
 
@@ -92,6 +89,9 @@ class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
         """
         Custom validation for field requirements based on is_owner.
         """
+        if self.phone:
+            self.phone = normalize_bulgarian_phone(self.phone)
+        
         if self.is_owner:
             # Validate that first_name and last_name are provided for owners
             if not self.first_name or not self.last_name:

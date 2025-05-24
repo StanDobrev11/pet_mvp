@@ -16,11 +16,10 @@ class OwnerCreationForm(auth_forms.UserCreationForm):
         max_length=9,
         validators=[validate_bulgarian_phone],
         widget=forms.TextInput(attrs={
-            'placeholder': _('Please enter a valid phone number (9 digits after the leading 0)'),
-            'pattern': '[0-9]{9}',
+            'placeholder': _('Format: 0887123456'),
+            'pattern': '[0-9]{10}',
             'class': 'form-control',
         }),
-        help_text="Format: +359 (0) 887123456"
     )
     
     class Meta:
