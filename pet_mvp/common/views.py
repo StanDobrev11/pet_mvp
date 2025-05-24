@@ -9,9 +9,12 @@ from pet_mvp.pets.models import Pet
 UserModel = get_user_model()
 
 
+class AboutView(views.TemplateView):
+    template_name = 'common/about.html'
+    
+
 class IndexView(views.TemplateView):
     template_name = 'common/index.html'
-    login_required = False
 
     def get(self, request, *args, **kwargs):
 
