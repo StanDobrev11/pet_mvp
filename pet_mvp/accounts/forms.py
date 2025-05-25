@@ -11,28 +11,34 @@ UserModel = get_user_model()
 
 
 class OwnerCreationForm(auth_forms.UserCreationForm):
-    
-    phone_number = forms.CharField(
-        max_length=9,
-        validators=[validate_bulgarian_phone],
-        widget=forms.TextInput(attrs={
-            'placeholder': _('Format: 0887123456'),
-            'pattern': '[0-9]{10}',
-            'class': 'form-control',
-        }),
-    )
-    
+
     class Meta:
         model = UserModel
-        fields = ('email', 'first_name', 'last_name', 'phone_number', 'city', 'country')
+        fields = ('email', 'first_name', 'last_name',
+                  'phone_number', 'city', 'country')
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field_name in self.fields:
+            field = self.fields[field_name]
+
+            if field_name == 'password1':
+                field.widget.attrs['placeholder'] = _('Enter a password')
+            elif field_name == 'password2':
+                field.widget.attrs['placeholder'] = _('Repeat the password')
+            elif field_name == 'phone_number':
+                field.widget.attrs['placeholder'] = _('Enter your phone number (e.g. 0887123456, +359887123456)')
+            else:
+                placeholder = self._meta.model._meta.get_field(field_name).verbose_name
+                field.widget.attrs['placeholder'] = str(placeholder).capitalize()
 
 
-    
-    
 class ClinicRegistrationForm(auth_forms.UserCreationForm):
     class Meta:
         model = UserModel
-        fields = ['email', 'clinic_name', 'clinic_address', 'phone_number', 'city', 'country']
+        fields = ['email', 'clinic_name', 'clinic_address',
+                  'phone_number', 'city', 'country']
 
         widgets = {
             'email': forms.EmailInput(attrs={'readonly': 'readonly'}),
@@ -43,15 +49,37 @@ class ClinicRegistrationForm(auth_forms.UserCreationForm):
         # Ensure is_owner defaults to False on the instance
         if self.instance:  # If we have a model instance, set is_owner to False here
             self.instance.is_owner = False
+        
+        for field_name in self.fields:
+            field = self.fields[field_name]
+
+            if field_name == 'password1':
+                field.widget.attrs['placeholder'] = _('Enter a password')
+            elif field_name == 'password2':
+                field.widget.attrs['placeholder'] = _('Repeat the password')
+            elif field_name == 'phone_number':
+                field.widget.attrs['placeholder'] = _('Enter your phone number (e.g. 0887123456, +359887123456)')
+            else:
+                placeholder = self._meta.model._meta.get_field(field_name).verbose_name
+                field.widget.attrs['placeholder'] = str(placeholder).capitalize()
 
 
 class AccessCodeEmailForm(forms.Form):
-    access_code = forms.CharField(label="Access Code", required=True)
-    email = forms.EmailField(label="Email Address", required=True)
+    access_code = forms.CharField(label=_("Access Code"), required=True)
+    email = forms.EmailField(label=_("Email Address"), required=True)
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field_name, field in self.fields.items():
+            translated_label = _(field.label)
+            field.widget.attrs['placeholder'] = translated_label
+    
+    
     def clean_access_code(self):
         access_code = self.cleaned_data.get('access_code')
-        pet_exists = Pet.objects.filter(pet_access_code__code=access_code).exists()
+        pet_exists = Pet.objects.filter(
+            pet_access_code__code=access_code).exists()
         if not pet_exists:
             raise forms.ValidationError('Invalid Access Code')
         return access_code

@@ -95,6 +95,7 @@ class MedicalExaminationRecordForm(forms.ModelForm):
         model = MedicalExaminationRecord
         exclude = ['pet', 'clinic', 'vaccinations', 'medications', 'blood_test', 'urine_test', 'fecal_test']
 
+
 VaccineFormSet = forms.modelformset_factory(
     VaccinationRecord,
     form=VaccinationRecordForm,

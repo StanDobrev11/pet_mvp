@@ -24,16 +24,19 @@
                         {% endfor %}
                     </div>
                 {% endif %}
+                {% load i18n widget_tweaks %}
+                {% trans "Enter your username" as username_placeholder %}
+                {% trans "Enter your password" as password_placeholder %}
                 <form method="post" action="{% url 'login' %}?next={{ next }}">
                     {% csrf_token %}
                     <div class="mb-3">
                         <label for="{{ form.username.id_for_label }}" class="form-label">{% trans "Username" %}</label>
-                        {{ form.username|add_class:"form-control" }}
+                        {% render_field form.username class+="form-control" placeholder=username_placeholder %}
                         {{ form.username.errors }}
                     </div>
                     <div class="mb-3">
                         <label for="{{ form.password.id_for_label }}" class="form-label">{% trans "Password" %}</label>
-                        {{ form.password|add_class:"form-control" }}
+                        {% render_field form.password class+="form-control" placeholder=password_placeholder %}
                         {{ form.password.errors }}
                         <div class="mt-1 text-end">
                             <a href="{% url 'forgot-password' %}" class="link-secondary small">{% trans "Forgot password?" %}</a>

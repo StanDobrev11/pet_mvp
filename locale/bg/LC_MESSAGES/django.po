@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-24 17:46+0000\n"
+"POT-Creation-Date: 2025-05-24 20:12+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -15,6 +15,30 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\pet_mvp\accounts\forms.py:27 .\pet_mvp\accounts\forms.py:57
+msgid "Enter a password"
+msgstr "Въведете парола"
+
+#: .\pet_mvp\accounts\forms.py:29 .\pet_mvp\accounts\forms.py:59
+msgid "Repeat the password"
+msgstr "Повторете паролата"
+
+#: .\pet_mvp\accounts\forms.py:31 .\pet_mvp\accounts\forms.py:61
+msgid "Enter your phone number (e.g. 0887123456, +359887123456)"
+msgstr ""
+"Въведете мобилен номер (напр. 0887123456, +359887123456)."
+
+#: .\pet_mvp\accounts\forms.py:68
+#: .\templates\accounts\access_code_email.html:30
+msgid "Access Code"
+msgstr "Код за достъп"
+
+#: .\pet_mvp\accounts\forms.py:69
+#: .\templates\accounts\access_code_email.html:35
+#: .\templates\accounts\password\password_reset_form.html:18
+msgid "Email Address"
+msgstr "Имейл адрес"
 
 #: .\pet_mvp\accounts\models.py:25
 msgid "A user with that email already exists."
@@ -53,33 +77,33 @@ msgstr "Активен"
 msgid "Owner status"
 msgstr "Статус на собственика"
 
-#: .\pet_mvp\accounts\models.py:61
+#: .\pet_mvp\accounts\models.py:58
 msgid "Phone number"
 msgstr "Телефонен номер"
 
-#: .\pet_mvp\accounts\models.py:66 .\templates\accounts\owner_details.html:29
+#: .\pet_mvp\accounts\models.py:63 .\templates\accounts\owner_details.html:29
 #: .\templates\accounts\owner_profile.html:28
 msgid "City"
 msgstr "Град"
 
-#: .\pet_mvp\accounts\models.py:71 .\templates\accounts\owner_details.html:32
+#: .\pet_mvp\accounts\models.py:68 .\templates\accounts\owner_details.html:32
 #: .\templates\accounts\owner_profile.html:31
 msgid "Country"
 msgstr "Държава"
 
-#: .\pet_mvp\accounts\models.py:81
+#: .\pet_mvp\accounts\models.py:78
 msgid "First name"
 msgstr "Име"
 
-#: .\pet_mvp\accounts\models.py:83
+#: .\pet_mvp\accounts\models.py:80
 msgid "Last name"
 msgstr "Фамилия"
 
-#: .\pet_mvp\accounts\models.py:87
+#: .\pet_mvp\accounts\models.py:84
 msgid "Clinic name"
 msgstr "Име на клиниката"
 
-#: .\pet_mvp\accounts\models.py:89
+#: .\pet_mvp\accounts\models.py:86
 msgid "Clinic address"
 msgstr "Адрес на клиниката"
 
@@ -115,13 +139,22 @@ msgstr "Клиника"
 msgid "Clinics"
 msgstr "Клиники"
 
-#: .\pet_mvp\accounts\validators.py:7
+#: .\pet_mvp\accounts\validators.py:8
 msgid "Phone number must be of 10 digits"
 msgstr "Телефонният номер трябва да е от 10 цифри"
 
-#: .\pet_mvp\accounts\validators.py:10
+#: .\pet_mvp\accounts\validators.py:11
 msgid "Phone number must be only of digits"
 msgstr "Телефонният номер трябва да съдържа само цифри"
+
+#: .\pet_mvp\accounts\validators.py:34
+msgid "Invalid Bulgarian mobile number format."
+msgstr "Невалиден формат на български мобилен номер."
+
+#: .\pet_mvp\accounts\validators.py:42
+msgid "Enter a valid Bulgarian mobile number (e.g. 0887123456, +359887123456)."
+msgstr ""
+"Въведете валиден български мобилен номер (напр. 0887123456, +359887123456)."
 
 #: .\pet_mvp\drugs\models.py:19
 msgid "Name of vaccine"
@@ -555,11 +588,11 @@ msgstr "Вашето запитване за добавяне на същест�
 msgid "Invalid or expired link."
 msgstr "Невалиден линк."
 
-#: .\pet_mvp\records\forms.py:22
+#: .\pet_mvp\records\forms.py:23
 msgid "Select Vaccine"
 msgstr "Избери ваксина"
 
-#: .\pet_mvp\records\forms.py:46
+#: .\pet_mvp\records\forms.py:47
 msgid "Select Medication/Treatment"
 msgstr "Избери лекарство/лечение"
 
@@ -761,6 +794,14 @@ msgstr "Неизвестна дата"
 msgid "Medical Record for {} on {}"
 msgstr "Медицински запис за {} на {}"
 
+#: .\pet_mvp\records\views.py:50
+msgid "You can no longer add records for this pet."
+msgstr "Вече не можете да добавяте записи за това животно."
+
+#: .\pet_mvp\records\views.py:61
+msgid "Vaccine record saved. You can now add another."
+msgstr "Записът за ваксина е запазен. Можете да добавите нов."
+
 #: .\pet_mvp\settings.py:135 .\templates\partials\nav_bar.html:16
 msgid "English"
 msgstr "Английски"
@@ -778,15 +819,6 @@ msgstr "Въведете код за достъп"
 msgid "To manage a pet's medical records"
 msgstr "За да управлявате медицинските записи на домашен любимец"
 
-#: .\templates\accounts\access_code_email.html:30
-msgid "Access Code"
-msgstr "Код за достъп"
-
-#: .\templates\accounts\access_code_email.html:35
-#: .\templates\accounts\password\password_reset_form.html:18
-msgid "Email Address"
-msgstr "Имейл адрес"
-
 #: .\templates\accounts\access_code_email.html:39
 #: .\templates\accounts\login.html:39
 msgid "Forgot password?"
@@ -798,7 +830,8 @@ msgstr "Продължи"
 
 #: .\templates\accounts\access_code_email.html:44
 #: .\templates\accounts\clinc-register.html:30
-#: .\templates\accounts\login.html:45 .\templates\partials\back_buttons.html:4
+#: .\templates\accounts\login.html:45 .\templates\accounts\register.html:47
+#: .\templates\partials\back_buttons.html:4
 #: .\templates\partials\back_buttons.html:6
 #: .\templates\partials\back_buttons.html:8
 #: .\templates\partials\back_buttons.html:10 .\templates\pet\pet_edit.html:30
@@ -810,7 +843,7 @@ msgid "Clinic Registration"
 msgstr "Регистрация на клиника"
 
 #: .\templates\accounts\clinc-register.html:29
-#: .\templates\accounts\register.html:30 .\templates\base.html:59
+#: .\templates\accounts\register.html:45 .\templates\base.html:59
 #: .\templates\common\about.html:28 .\templates\common\index.html:24
 #: .\templates\partials\nav_bar.html:33
 msgid "Register"
@@ -884,7 +917,7 @@ msgstr "Редакция на профила на собственика"
 msgid "Update your personal details below."
 msgstr "Актуализирайте вашите лични данни по-долу."
 
-#: .\templates\accounts\owner_edit.html:34 .\templates\pet\pet_add.html:29
+#: .\templates\accounts\owner_edit.html:34 .\templates\pet\pet_add.html:47
 #: .\templates\pet\pet_add_existing.html:26 .\templates\pet\pet_delete.html:17
 msgid "Cancel"
 msgstr "Отказ"
@@ -986,11 +1019,19 @@ msgstr "Обратно към вход"
 msgid "Clinic Access"
 msgstr "Достъп до клиниката"
 
-#: .\templates\accounts\register.html:10
+#: .\templates\accounts\register.html:12
+msgid "Create an Account"
+msgstr "Създаване на профил"
+
+#: .\templates\accounts\register.html:13
 msgid "Please fill out the form to register"
 msgstr "Моля, попълнете формуляра за регистрация"
 
-#: .\templates\accounts\register.html:31
+#: .\templates\accounts\register.html:14
+msgid "All fields are required"
+msgstr "Всички полета са задължителни"
+
+#: .\templates\accounts\register.html:46
 msgid "Login instead?"
 msgstr "Вход вместо това?"
 
@@ -1813,13 +1854,13 @@ msgstr ""
 msgid "Add Marking"
 msgstr "Добави маркировка"
 
-#: .\templates\pet\marking_add.html:28 .\templates\pet\pet_add.html:27
+#: .\templates\pet\marking_add.html:28 .\templates\pet\pet_add.html:45
 #: .\templates\pet\pet_edit.html:28
 #: .\templates\records\examination_add.html:129
 msgid "Save"
 msgstr "Запази"
 
-#: .\templates\pet\marking_add.html:29 .\templates\pet\pet_add.html:28
+#: .\templates\pet\marking_add.html:29 .\templates\pet\pet_add.html:46
 #: .\templates\pet\pet_edit.html:29
 msgid "Reset"
 msgstr "Нулиране"
@@ -1848,15 +1889,15 @@ msgstr "Дата на прилагане:"
 msgid "Back to Pet's Details"
 msgstr "Обратно към детайлите на домашния любимец"
 
-#: .\templates\pet\pet_add.html:8
+#: .\templates\pet\pet_add.html:9
 msgid "Add a New Pet"
 msgstr "Добави нов домашен любимец"
 
-#: .\templates\pet\pet_add.html:10
+#: .\templates\pet\pet_add.html:11
 msgid "Already have a pet registered with a passport number?"
 msgstr "Вече имате домашен любимец, регистриран с номер на паспорт?"
 
-#: .\templates\pet\pet_add.html:11 .\templates\pet\pet_add_existing.html:9
+#: .\templates\pet\pet_add.html:12 .\templates\pet\pet_add_existing.html:9
 msgid "Request Access to Existing Pet"
 msgstr "Заяви достъп до съществуващ домашен любимец"
 
@@ -2099,7 +2140,7 @@ msgstr "Обратно към детайлите на домашния люби�
 msgid "Add Medication / Treatment Record"
 msgstr "Добави запис за медикамент / лечение"
 
-#: .\templates\records\treatment_record_add.html:11
+#: .\templates\records\treatment_record_add.html:12
 msgid ""
 "This can be done only once. No editing or deleting of the treatment record "
 "is possible."
@@ -2107,26 +2148,26 @@ msgstr ""
 "Това може да се направи само веднъж. Не е възможно редактиране или изтриване "
 "на записа за лечение."
 
-#: .\templates\records\treatment_record_add.html:12
-#: .\templates\records\vaccine_record_add.html:12
+#: .\templates\records\treatment_record_add.html:15
+#: .\templates\records\vaccine_record_add.html:15
 msgid "Ensure proper and correct data is entered."
 msgstr "Уверете се, че са въведени правилни и точни данни."
 
-#: .\templates\records\treatment_record_add.html:31
-#: .\templates\records\vaccine_record_add.html:31
+#: .\templates\records\treatment_record_add.html:63
+#: .\templates\records\vaccine_record_add.html:63
 msgid "Save Record"
 msgstr "Запази запис"
 
-#: .\templates\records\treatment_record_add.html:32
-#: .\templates\records\vaccine_record_add.html:32
+#: .\templates\records\treatment_record_add.html:64
+#: .\templates\records\vaccine_record_add.html:64
 msgid "Clear Fields"
 msgstr "Изчисти полетата"
 
-#: .\templates\records\treatment_record_add.html:33
+#: .\templates\records\treatment_record_add.html:65
 msgid "Finish Adding Treatments"
 msgstr "Завърши добавянето на лечения"
 
-#: .\templates\records\vaccine_record_add.html:11
+#: .\templates\records\vaccine_record_add.html:12
 msgid ""
 "This can be done only once. No editing or deleting of the vaccination record "
 "is possible."
@@ -2134,6 +2175,12 @@ msgstr ""
 "Това може да се направи само веднъж. Не е възможно редактиране или изтриване "
 "на записа за ваксинация."
 
-#: .\templates\records\vaccine_record_add.html:33
+#: .\templates\records\vaccine_record_add.html:65
 msgid "Finish Adding Vaccines"
 msgstr "Завърши добавянето на ваксини"
+
+#~ msgid "Email address: example@domain.com"
+#~ msgstr "Имейл адрес: example@domain.com"
+
+#~ msgid "Format: 0887123456"
+#~ msgstr "Формат: 0887123456"
