@@ -1,0 +1,100 @@
+[
+    {
+        "model": "drugs.drug",
+        "pk": 300,
+        "fields": {
+            "name": "Milbemax",
+            "name_en": "Milbemax",
+            "name_bg": "Милбемакс",
+            "notes": "Broad-spectrum internal parasite treatment for cats. Effective against roundworms and tapeworms.",
+            "notes_en": "Broad-spectrum internal parasite treatment for cats. Effective against roundworms and tapeworms.",
+            "notes_bg": "Широкоспектърно лечение срещу вътрешни паразити при котки. Ефективен срещу кръгли и тении.",
+            "recommended_interval_days": 30,
+            "suitable_for": "cat"
+        }
+    },
+    {
+        "model": "drugs.drug",
+        "pk": 301,
+        "fields": {
+            "name": "Profender",
+            "name_en": "Profender",
+            "name_bg": "Профендер",
+            "notes": "Topical dewormer for cats. Treats roundworms, hookworms, and tapeworms with a single application.",
+            "notes_en": "Topical dewormer for cats. Treats roundworms, hookworms, and tapeworms with a single application.",
+            "notes_bg": "Локален обезпаразитител за котки. Лекува кръгли, анкилостоми и тении с едно нанасяне.",
+            "recommended_interval_days": 30,
+            "suitable_for": "cat"
+        }
+    },
+    {
+        "model": "drugs.drug",
+        "pk": 302,
+        "fields": {
+            "name": "Stronghold",
+            "name_en": "Stronghold",
+            "name_bg": "Стронгхолд",
+            "notes": "Protects cats against fleas, ear mites, hookworms, and roundworms. Monthly spot-on application.",
+            "notes_en": "Protects cats against fleas, ear mites, hookworms, and roundworms. Monthly spot-on application.",
+            "notes_bg": "Предпазва котките от бълхи, ушни акари, анкилостоми и кръгли червеи. Месечно локално приложение.",
+            "recommended_interval_days": 30,
+            "suitable_for": "cat"
+        }
+    },
+    {
+        "model": "drugs.drug",
+        "pk": 303,
+        "fields": {
+            "name": "Bravecto Plus",
+            "name_en": "Bravecto Plus",
+            "name_bg": "Бравекто Плюс",
+            "notes": "Spot-on solution for cats. Kills fleas and ticks, prevents heartworm and treats intestinal worms.",
+            "notes_en": "Spot-on solution for cats. Kills fleas and ticks, prevents heartworm and treats intestinal worms.",
+            "notes_bg": "Локален разтвор за котки. Убива бълхи и кърлежи, предотвратява дирофилариоза и лекува чревни паразити.",
+            "recommended_interval_days": 30,
+            "suitable_for": "cat"
+        }
+    },
+    {
+        "model": "drugs.drug",
+        "pk": 304,
+        "fields": {
+            "name": "Felimazole",
+            "name_en": "Felimazole",
+            "name_bg": "Фелимазол",
+            "notes": "Used for treating hyperthyroidism in cats. Contains methimazole to manage thyroid hormone levels.",
+            "notes_en": "Used for treating hyperthyroidism in cats. Contains methimazole to manage thyroid hormone levels.",
+            "notes_bg": "Използва се за лечение на хипертиреоидизъм при котки. Съдържа метимазол за регулиране на хормоните на щитовидната жлеза.",
+            "recommended_interval_days": 30,
+            "suitable_for": "cat"
+        }
+    },
+    {
+        "model": "drugs.drug",
+        "pk": 305,
+        "fields": {
+            "name": "Onsior",
+            "name_en": "Onsior",
+            "name_bg": "Онсиор",
+            "notes": "NSAID for cats to treat pain and inflammation, particularly after surgery or due to osteoarthritis.",
+            "notes_en": "NSAID for cats to treat pain and inflammation, particularly after surgery or due to osteoarthritis.",
+            "notes_bg": "НСПВС за котки за лечение на болка и възпаление, особено след операция или при остеоартрит.",
+            "recommended_interval_days": 30,
+            "suitable_for": "cat"
+        }
+    },
+    {
+        "model": "drugs.drug",
+        "pk": 306,
+        "fields": {
+            "name": "Atopica",
+            "name_en": "Atopica",
+            "name_bg": "Атопика",
+            "notes": "Immunosuppressive drug for treating allergic dermatitis in cats. Reduces itching and inflammation.",
+            "notes_en": "Immunosuppressive drug for treating allergic dermatitis in cats. Reduces itching and inflammation.",
+            "notes_bg": "Имуносупресор за лечение на алергичен дерматит при котки. Намалява сърбежа и възпалението.",
+            "recommended_interval_days": 30,
+            "suitable_for": "cat"
+        }
+    }
+]

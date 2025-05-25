@@ -5,8 +5,8 @@ from pet_mvp.drugs.models import Vaccine, Drug, BloodTest, UrineTest, FecalTest
 
 @admin.register(Vaccine)
 class VaccineAdmin(admin.ModelAdmin):
-    list_display = ('name', 'core', 'notes')
-    list_filter = ('core',)
+    list_display = ('name', 'core', 'suitable_for', 'notes')
+    list_filter = ('core', 'suitable_for')
     search_fields = ('name', 'notes')
     fieldsets = (
         ('Basic Information', {
@@ -20,7 +20,7 @@ class VaccineAdmin(admin.ModelAdmin):
 
 @admin.register(Drug)
 class DrugAdmin(admin.ModelAdmin):
-    list_display = ('name', 'notes')
+    list_display = ('name', 'suitable_for', 'notes')
     search_fields = ('name', 'notes')
     fieldsets = (
         ('Basic Information', {

@@ -1,0 +1,107 @@
+[
+    {
+        "model": "drugs.vaccine",
+        "pk": 100,
+        "fields": {
+            "name": "Feline Panleukopenia (FPV)",
+            "name_en": "Feline Panleukopenia (FPV)",
+            "name_bg": "Котешка панлевкопения",
+            "notes": "Protects against feline distemper, a highly contagious viral disease causing severe gastrointestinal symptoms and immune suppression.",
+            "notes_en": "Protects against feline distemper, a highly contagious viral disease causing severe gastrointestinal symptoms and immune suppression.",
+            "notes_bg": "Предпазва от котешка панлевкопения, силно заразно вирусно заболяване с тежки стомашно-чревни симптоми и потискане на имунитета.",
+            "recommended_interval_days": 365,
+            "suitable_for": "cat",
+            "core": true
+        }
+    },
+    {
+        "model": "drugs.vaccine",
+        "pk": 101,
+        "fields": {
+            "name": "Feline Herpesvirus (FHV-1)",
+            "name_en": "Feline Herpesvirus (FHV-1)",
+            "name_bg": "Котешки херпес вирус (FHV-1)",
+            "notes": "Prevents FHV-1, which causes feline viral rhinotracheitis, a major cause of upper respiratory infections.",
+            "notes_en": "Prevents FHV-1, which causes feline viral rhinotracheitis, a major cause of upper respiratory infections.",
+            "notes_bg": "Предпазва от FHV-1, причинител на котешки вирусен ринотрахеит – основна причина за инфекции на горните дихателни пътища.",
+            "recommended_interval_days": 365,
+            "suitable_for": "cat",
+            "core": true
+        }
+    },
+    {
+        "model": "drugs.vaccine",
+        "pk": 102,
+        "fields": {
+            "name": "Feline Calicivirus (FCV)",
+            "name_en": "Feline Calicivirus (FCV)",
+            "name_bg": "Калцивирус при котки",
+            "notes": "Guards against FCV, a contagious virus that causes respiratory infections and oral ulcers.",
+            "notes_en": "Guards against FCV, a contagious virus that causes respiratory infections and oral ulcers.",
+            "notes_bg": "Предпазва от калцивирус, заразен вирус, причиняващ респираторни инфекции и язви в устната кухина.",
+            "recommended_interval_days": 365,
+            "suitable_for": "cat",
+            "core": true
+        }
+    },
+    {
+        "model": "drugs.vaccine",
+        "pk": 103,
+        "fields": {
+            "name": "Rabies (Feline)",
+            "name_en": "Rabies (Feline)",
+            "name_bg": "Бяс (котки)",
+            "notes": "Vaccinates against rabies, a fatal disease transmissible to humans. Often legally required.",
+            "notes_en": "Vaccinates against rabies, a fatal disease transmissible to humans. Often legally required.",
+            "notes_bg": "Ваксина срещу бяс, смъртоносно заболяване, което се предава на хора. Често е задължителна по закон.",
+            "recommended_interval_days": 1095,
+            "suitable_for": "cat",
+            "core": true
+        }
+    },
+    {
+        "model": "drugs.vaccine",
+        "pk": 104,
+        "fields": {
+            "name": "Feline Leukemia Virus (FeLV)",
+            "name_en": "Feline Leukemia Virus (FeLV)",
+            "name_bg": "Вирус на котешка левкемия (FeLV)",
+            "notes": "Recommended for outdoor cats; protects against FeLV, which causes immunosuppression and cancers.",
+            "notes_en": "Recommended for outdoor cats; protects against FeLV, which causes immunosuppression and cancers.",
+            "notes_bg": "Препоръчва се за котки на открито; предпазва от вируса на котешката левкемия, който причинява имунен дефицит и рак.",
+            "recommended_interval_days": 365,
+            "suitable_for": "cat",
+            "core": false
+        }
+    },
+    {
+        "model": "drugs.vaccine",
+        "pk": 105,
+        "fields": {
+            "name": "Chlamydia Felis",
+            "name_en": "Chlamydia Felis",
+            "name_bg": "Хламидия Фелис",
+            "notes": "Protects against Chlamydia felis, causing eye infections and conjunctivitis, especially in kittens.",
+            "notes_en": "Protects against Chlamydia felis, causing eye infections and conjunctivitis, especially in kittens.",
+            "notes_bg": "Предпазва от Chlamydia felis, причиняваща очни инфекции и конюнктивит, особено при котенца.",
+            "recommended_interval_days": 365,
+            "suitable_for": "cat",
+            "core": false
+        }
+    },
+    {
+        "model": "drugs.vaccine",
+        "pk": 106,
+        "fields": {
+            "name": "Bordetella Bronchiseptica (Feline)",
+            "name_en": "Bordetella Bronchiseptica (Feline)",
+            "name_bg": "Бордетела Бронхисептика (котки)",
+            "notes": "Optional for cats in shelters or boarding; protects against upper respiratory illness.",
+            "notes_en": "Optional for cats in shelters or boarding; protects against upper respiratory illness.",
+            "notes_bg": "Незадължителна за котки в приюти или пансиони; предпазва от заболявания на горните дихателни пътища.",
+            "recommended_interval_days": 180,
+            "suitable_for": "cat",
+            "core": false
+        }
+    }
+]

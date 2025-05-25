@@ -1,0 +1,167 @@
+[
+    {
+        "model": "drugs.vaccine",
+        "pk": 1,
+        "fields": {
+            "name": "Canine Distemper",
+            "name_en": "Canine Distemper",
+            "name_bg": "Кучешка чума",
+            "notes": "Protects against the deadly and contagious distemper virus causing respiratory, gastrointestinal, and neurological symptoms.",
+            "notes_en": "Protects against the deadly and contagious distemper virus causing respiratory, gastrointestinal, and neurological symptoms.",
+            "notes_bg": "Предпазва от смъртоносния и заразен вирус на чумата, причиняващ респираторни, стомашно-чревни и неврологични симптоми.",
+            "recommended_interval_days": 365,
+            "suitable_for": "dog",
+            "core": true
+        }
+    },
+    {
+        "model": "drugs.vaccine",
+        "pk": 2,
+        "fields": {
+            "name": "Rabies",
+            "name_en": "Rabies",
+            "name_bg": "Бяс",
+            "notes": "Protects against rabies, a fatal viral disease that can spread to humans. Mandatory in many countries.",
+            "notes_en": "Protects against rabies, a fatal viral disease that can spread to humans. Mandatory in many countries.",
+            "notes_bg": "Предпазва от бяс, фатално вирусно заболяване, което може да се предаде на хора. Задължителна в много държави.",
+            "recommended_interval_days": 1095,
+            "suitable_for": "dog",
+            "core": true
+        }
+    },
+    {
+        "model": "drugs.vaccine",
+        "pk": 3,
+        "fields": {
+            "name": "Parvoviridae",
+            "name_en": "Parvoviridae",
+            "name_bg": "Парвовироза",
+            "notes": "Guards against parvovirus, causing severe vomiting and diarrhea, mostly in puppies.",
+            "notes_en": "Guards against parvovirus, causing severe vomiting and diarrhea, mostly in puppies.",
+            "notes_bg": "Предпазва от парвовирус, причиняващ тежко повръщане и диария, основно при малки кучета.",
+            "recommended_interval_days": 365,
+            "suitable_for": "dog",
+            "core": true
+        }
+    },
+    {
+        "model": "drugs.vaccine",
+        "pk": 4,
+        "fields": {
+            "name": "Leptospirosis",
+            "name_en": "Leptospirosis",
+            "name_bg": "Лептоспироза",
+            "notes": "Protects against a bacterial infection that affects kidneys and liver; can be transmitted to humans.",
+            "notes_en": "Protects against a bacterial infection that affects kidneys and liver; can be transmitted to humans.",
+            "notes_bg": "Предпазва от бактериална инфекция, засягаща бъбреците и черния дроб; може да се предаде на хора.",
+            "recommended_interval_days": 365,
+            "suitable_for": "dog",
+            "core": true
+        }
+    },
+    {
+        "model": "drugs.vaccine",
+        "pk": 5,
+        "fields": {
+            "name": "Adenovirus (Infectious Hepatitis)",
+            "name_en": "Adenovirus (Infectious Hepatitis)",
+            "name_bg": "Аденовирус (Инфекциозен хепатит)",
+            "notes": "Protects against adenovirus types 1 and 2, causing hepatitis and respiratory disease.",
+            "notes_en": "Protects against adenovirus types 1 and 2, causing hepatitis and respiratory disease.",
+            "notes_bg": "Предпазва от аденовирус тип 1 и 2, причиняващи хепатит и респираторни заболявания.",
+            "recommended_interval_days": 365,
+            "suitable_for": "dog",
+            "core": true
+        }
+    },
+    {
+        "model": "drugs.vaccine",
+        "pk": 6,
+        "fields": {
+            "name": "Parainfluenza",
+            "name_en": "Parainfluenza",
+            "name_bg": "Парагрип",
+            "notes": "Helps prevent respiratory illness caused by parainfluenza virus, especially in social settings.",
+            "notes_en": "Helps prevent respiratory illness caused by parainfluenza virus, especially in social settings.",
+            "notes_bg": "Помага за предотвратяване на респираторни заболявания, причинени от парагрипен вирус, особено при социални контакти.",
+            "recommended_interval_days": 365,
+            "suitable_for": "dog",
+            "core": true
+        }
+    },
+    {
+        "model": "drugs.vaccine",
+        "pk": 7,
+        "fields": {
+            "name": "Bordetella (Kennel Cough)",
+            "name_en": "Bordetella (Kennel Cough)",
+            "name_bg": "Бордетела (Кучешка кашлица)",
+            "notes": "Optional vaccine for dogs in contact with many others; protects against kennel cough.",
+            "notes_en": "Optional vaccine for dogs in contact with many others; protects against kennel cough.",
+            "notes_bg": "Незадължителна ваксина за кучета в контакт с много други; предпазва от кучешка кашлица.",
+            "recommended_interval_days": 180,
+            "suitable_for": "dog",
+            "core": false
+        }
+    },
+    {
+        "model": "drugs.vaccine",
+        "pk": 8,
+        "fields": {
+            "name": "Lyme Disease (Borrelia Burgdorferi)",
+            "name_en": "Lyme Disease (Borrelia Burgdorferi)",
+            "name_bg": "Лаймска болест (Борелия Бургдорфери)",
+            "notes": "Recommended for dogs in tick-infested areas to prevent Lyme disease.",
+            "notes_en": "Recommended for dogs in tick-infested areas to prevent Lyme disease.",
+            "notes_bg": "Препоръчва се за кучета в райони с кърлежи за предпазване от лаймска болест.",
+            "recommended_interval_days": 365,
+            "suitable_for": "dog",
+            "core": false
+        }
+    },
+    {
+        "model": "drugs.vaccine",
+        "pk": 9,
+        "fields": {
+            "name": "Canine Influenza",
+            "name_en": "Canine Influenza",
+            "name_bg": "Кучешки грип",
+            "notes": "Protects against canine flu viruses H3N8 and H3N2, recommended for social dogs.",
+            "notes_en": "Protects against canine flu viruses H3N8 and H3N2, recommended for social dogs.",
+            "notes_bg": "Предпазва от кучешки грипни вируси H3N8 и H3N2, препоръчва се за социални кучета.",
+            "recommended_interval_days": 365,
+            "suitable_for": "dog",
+            "core": false
+        }
+    },
+    {
+        "model": "drugs.vaccine",
+        "pk": 10,
+        "fields": {
+            "name": "Corona Virus (Canine)",
+            "name_en": "Corona Virus (Canine)",
+            "name_bg": "Коронавирус (Кучешки)",
+            "notes": "Protects against canine coronavirus, typically mild gastrointestinal issues. Rarely needed.",
+            "notes_en": "Protects against canine coronavirus, typically mild gastrointestinal issues. Rarely needed.",
+            "notes_bg": "Предпазва от кучешки коронавирус, който обикновено причинява леки стомашни проблеми. Рядко се използва.",
+            "recommended_interval_days": null,
+            "suitable_for": "dog",
+            "core": false
+        }
+    },
+    {
+        "model": "drugs.vaccine",
+        "pk": 11,
+        "fields": {
+            "name": "Rattlesnake Vaccine",
+            "name_en": "Rattlesnake Vaccine",
+            "name_bg": "Ваксина срещу ухапване от гърмяща змия",
+            "notes": "Optional vaccine for dogs in rattlesnake-prone areas. Reduces severity of bites.",
+            "notes_en": "Optional vaccine for dogs in rattlesnake-prone areas. Reduces severity of bites.",
+            "notes_bg": "Незадължителна ваксина за кучета в райони с гърмящи змии. Намалява тежестта на ухапванията.",
+            "recommended_interval_days": 180,
+            "suitable_for": "dog",
+            "core": false
+        }
+    }
+]

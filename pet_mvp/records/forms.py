@@ -35,14 +35,7 @@ class MedicationRecordForm(forms.ModelForm):
         model = MedicationRecord
         # Exclude the `pet` field, it will be assigned automatically
         exclude = ['pet']
-        widgets = {
-            'manufacturer': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Manufacturer name'}),
-            'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control', }),
-            'time': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control', }),
-            'dosage': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g. 5mg twice a day'}),
-            'valid_until': forms.DateInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': 'Valid until date'}),
-            'medication': forms.Select(attrs={'class': 'form-select', }),
-        }
+        
 
     medication = forms.ModelChoiceField(
         queryset=Drug.objects.all(),
@@ -53,8 +46,37 @@ class MedicationRecordForm(forms.ModelForm):
             }
         ),
     )
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        for field_name in self.fields:
+            field = self.fields[field_name]
+            
+            if field_name == 'date':
+                field.widget = forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+                field.help_text = _('Date of treatment')
+            elif field_name == 'time':
+                field.widget = forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'})
+                field.help_text = _('Time of treatment')
+            else:
+                placeholder = self._meta.model._meta.get_field(
+                    field_name).verbose_name
+                field.widget.attrs['placeholder'] = str(
+                    placeholder).capitalize()
 
 
+    # widgets = {
+        #     'manufacturer': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Manufacturer name'}),
+        #     'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control', }),
+        #     'time': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control', }),
+        #     'dosage': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g. 5mg twice a day'}),
+        #     'valid_until': forms.DateInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': 'Valid until date'}),
+        #     'medication': forms.Select(attrs={'class': 'form-select', }),
+        # }
+
+        
+        
 class BloodTestForm(forms.ModelForm):
     class Meta:
         model = BloodTest

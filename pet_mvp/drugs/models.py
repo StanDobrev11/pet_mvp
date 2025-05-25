@@ -5,6 +5,12 @@ from django.utils.translation import gettext_lazy as _
 
 
 class BaseMedication(models.Model):
+
+    SUITABLE_FOR_CHOICES = [
+        ('cat', _('Cat')),
+        ('dog', _('Dog'))
+    ]
+
     class Meta:
         abstract = True
 
@@ -18,8 +24,29 @@ class BaseMedication(models.Model):
         verbose_name=_('Notes')
     )
 
+    recommended_interval_days = models.PositiveIntegerField(
+        verbose_name=_('Recommended interval (days)'),
+        help_text=_(
+            'Number of days after which the treatment/vaccine should be repeated. Leave blank if not applicable.'),
+        null=True,
+        blank=True
+    )
+
+    suitable_for = models.CharField(
+        max_length=10,
+        choices=SUITABLE_FOR_CHOICES,
+        verbose_name=_('Suitable for'),
+        help_text=_('Select whether is for cats or dogs.')
+    )
+
     def __str__(self):
         return f'{self.name}'
+
+    def get_recommended_interval(self):
+        """Returns the recommended interval as a timedelta object (or None)."""
+        if self.recommended_interval_days:
+            return datetime.timedelta(days=self.recommended_interval_days)
+        return None
 
 
 # Create your models here.
