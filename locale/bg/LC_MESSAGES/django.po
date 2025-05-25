@@ -18,11 +18,11 @@ msgstr ""
 
 #: .\pet_mvp\accounts\forms.py:25 .\pet_mvp\accounts\forms.py:55
 msgid "Enter a password"
-msgstr "Въведете парола"
+msgstr "Въведи парола"
 
 #: .\pet_mvp\accounts\forms.py:27 .\pet_mvp\accounts\forms.py:57
 msgid "Repeat the password"
-msgstr "Повторете паролата"
+msgstr "Повтори паролата"
 
 #: .\pet_mvp\accounts\forms.py:29 .\pet_mvp\accounts\forms.py:59
 msgid "Phone number (e.g. 0887123456)"
@@ -903,7 +903,7 @@ msgstr "Въведи имейл адрес"
 
 #: .\templates\accounts\login.html:29
 msgid "Enter your password"
-msgstr "Въведете вашата парола"
+msgstr "Въведи парола"
 
 #: .\templates\accounts\login.html:33
 #: .\templates\accounts\password\password_reset_form.html:14
@@ -2262,6 +2262,3 @@ msgstr ""
 #: .\templates\records\vaccine_record_add.html:65
 msgid "Finish Adding Vaccines"
 msgstr "Завърши добавянето на ваксини"
-
-#~ msgid "Format: BG01VP123456"
-#~ msgstr "Формат: BG01VP123456"
