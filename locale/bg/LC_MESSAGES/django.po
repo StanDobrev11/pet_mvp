@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-25 14:54+0000\n"
+"POT-Creation-Date: 2025-05-25 16:25+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -155,167 +155,167 @@ msgid "Enter a valid Bulgarian mobile number (e.g. 0887123456, +359887123456)."
 msgstr ""
 "Въведете валиден български мобилен номер (напр. 0887123456, +359887123456)."
 
-#: .\pet_mvp\drugs\models.py:19
+#: .\pet_mvp\drugs\models.py:13
 msgid "Name of vaccine"
 msgstr "Име на ваксината"
 
-#: .\pet_mvp\drugs\models.py:24
+#: .\pet_mvp\drugs\models.py:18
 msgid "Notes"
 msgstr "Бележки"
 
-#: .\pet_mvp\drugs\models.py:35
+#: .\pet_mvp\drugs\models.py:29
 msgid "Core vaccine"
 msgstr "Основна ваксина"
 
-#: .\pet_mvp\drugs\models.py:48
+#: .\pet_mvp\drugs\models.py:42
 msgid "Test Result"
 msgstr "Резултат от теста"
 
-#: .\pet_mvp\drugs\models.py:49
+#: .\pet_mvp\drugs\models.py:43
 msgid "Description of the test result"
 msgstr "Описание на резултата от теста"
 
-#: .\pet_mvp\drugs\models.py:52
+#: .\pet_mvp\drugs\models.py:46
 msgid "Date Conducted"
 msgstr "Дата на провеждане"
 
-#: .\pet_mvp\drugs\models.py:53
+#: .\pet_mvp\drugs\models.py:47
 msgid "Date when the test was conducted"
 msgstr "Дата, когато е проведен тестът"
 
-#: .\pet_mvp\drugs\models.py:57
+#: .\pet_mvp\drugs\models.py:51
 msgid "Additional Notes"
 msgstr "Допълнителни бележки"
 
-#: .\pet_mvp\drugs\models.py:60
+#: .\pet_mvp\drugs\models.py:54
 msgid "Optional notes or observations about the test"
 msgstr "Незадължителни бележки или наблюдения за теста"
 
-#: .\pet_mvp\drugs\models.py:75
+#: .\pet_mvp\drugs\models.py:69
 msgid "White Blood Cells (WBC)"
 msgstr "Бели кръвни клетки (БКК)"
 
-#: .\pet_mvp\drugs\models.py:76
+#: .\pet_mvp\drugs\models.py:70
 msgid "Count of white blood cells per microliter"
 msgstr "Брой бели кръвни клетки на микролитър"
 
-#: .\pet_mvp\drugs\models.py:83
+#: .\pet_mvp\drugs\models.py:77
 msgid "Red Blood Cells (RBC)"
 msgstr "Червени кръвни клетки (ЧКК)"
 
-#: .\pet_mvp\drugs\models.py:84
+#: .\pet_mvp\drugs\models.py:78
 msgid "Count of red blood cells per microliter"
 msgstr "Брой червени кръвни клетки на микролитър"
 
-#: .\pet_mvp\drugs\models.py:91
+#: .\pet_mvp\drugs\models.py:85
 msgid "Hemoglobin Level (g/dL)"
 msgstr "Ниво на хемоглобин (g/dL)"
 
-#: .\pet_mvp\drugs\models.py:92
+#: .\pet_mvp\drugs\models.py:86
 msgid "Measurement of hemoglobin concentration"
 msgstr "Измерване на концентрацията на хемоглобин"
 
-#: .\pet_mvp\drugs\models.py:99
+#: .\pet_mvp\drugs\models.py:93
 msgid "Platelets"
 msgstr "Тромбоцити"
 
-#: .\pet_mvp\drugs\models.py:100
+#: .\pet_mvp\drugs\models.py:94
 msgid "Platelet count per microliter"
 msgstr "Брой тромбоцити на микролитър"
 
-#: .\pet_mvp\drugs\models.py:109 .\pet_mvp\pets\models.py:108
+#: .\pet_mvp\drugs\models.py:103 .\pet_mvp\pets\models.py:108
 msgid "Color"
 msgstr "Цвят"
 
-#: .\pet_mvp\drugs\models.py:110
+#: .\pet_mvp\drugs\models.py:104
 msgid "Color of the urine"
 msgstr "Цвят на урината"
 
-#: .\pet_mvp\drugs\models.py:116
+#: .\pet_mvp\drugs\models.py:110
 msgid "Clarity"
 msgstr "Яснота"
 
-#: .\pet_mvp\drugs\models.py:117
+#: .\pet_mvp\drugs\models.py:111
 msgid "Clarity of the urine, e.g., clear, cloudy"
 msgstr "Яснота на урината, напр. бистра, мътна"
 
-#: .\pet_mvp\drugs\models.py:124
+#: .\pet_mvp\drugs\models.py:118
 msgid "pH"
 msgstr "pH"
 
-#: .\pet_mvp\drugs\models.py:125
+#: .\pet_mvp\drugs\models.py:119
 msgid "Urine pH level"
 msgstr "pH ниво на урината"
 
-#: .\pet_mvp\drugs\models.py:132
+#: .\pet_mvp\drugs\models.py:126
 msgid "Specific Gravity"
 msgstr "Специфично тегло"
 
-#: .\pet_mvp\drugs\models.py:133
+#: .\pet_mvp\drugs\models.py:127
 msgid "Measurement of urine concentration"
 msgstr "Измерване на концентрацията на урината"
 
-#: .\pet_mvp\drugs\models.py:139
+#: .\pet_mvp\drugs\models.py:133
 msgid "Protein"
 msgstr "Протеин"
 
-#: .\pet_mvp\drugs\models.py:140
+#: .\pet_mvp\drugs\models.py:134
 msgid "Presence of protein in urine"
 msgstr "Наличие на протеин в урината"
 
-#: .\pet_mvp\drugs\models.py:146
+#: .\pet_mvp\drugs\models.py:140
 msgid "Glucose"
 msgstr "Глюкоза"
 
-#: .\pet_mvp\drugs\models.py:147
+#: .\pet_mvp\drugs\models.py:141
 msgid "Presence of glucose in urine"
 msgstr "Наличие на глюкоза в урината"
 
-#: .\pet_mvp\drugs\models.py:153
+#: .\pet_mvp\drugs\models.py:147
 msgid "Red Blood Cells"
 msgstr "Червени кръвни клетки"
 
-#: .\pet_mvp\drugs\models.py:154
+#: .\pet_mvp\drugs\models.py:148
 msgid "Presence of red blood cells in urine"
 msgstr "Наличие на червени кръвни клетки в урината"
 
-#: .\pet_mvp\drugs\models.py:160
+#: .\pet_mvp\drugs\models.py:154
 msgid "White Blood Cells"
 msgstr "Бели кръвни клетки"
 
-#: .\pet_mvp\drugs\models.py:161
+#: .\pet_mvp\drugs\models.py:155
 msgid "Presence of white blood cells in urine"
 msgstr "Наличие на бели кръвни клетки в урината"
 
-#: .\pet_mvp\drugs\models.py:170
+#: .\pet_mvp\drugs\models.py:164
 msgid "Consistency"
 msgstr "Консистенция"
 
-#: .\pet_mvp\drugs\models.py:171
+#: .\pet_mvp\drugs\models.py:165
 msgid "Consistency of the feces, e.g., firm, watery"
 msgstr "Консистенция на изпражненията, напр. твърди, воднисти"
 
-#: .\pet_mvp\drugs\models.py:176
+#: .\pet_mvp\drugs\models.py:170
 msgid "Parasites Detected"
 msgstr "Открити паразити"
 
-#: .\pet_mvp\drugs\models.py:178
+#: .\pet_mvp\drugs\models.py:172
 msgid "Were any parasites detected in the sample?"
 msgstr "Бяха ли открити паразити в пробата?"
 
-#: .\pet_mvp\drugs\models.py:182
+#: .\pet_mvp\drugs\models.py:176
 msgid "Type of Parasites"
 msgstr "Вид на паразитите"
 
-#: .\pet_mvp\drugs\models.py:185
+#: .\pet_mvp\drugs\models.py:179
 msgid "Type of detected parasites, if any"
 msgstr "Вид на откритите паразити, ако има такива"
 
-#: .\pet_mvp\drugs\models.py:188
+#: .\pet_mvp\drugs\models.py:182
 msgid "Blood Presence in Stool"
 msgstr "Наличие на кръв в изпражненията"
 
-#: .\pet_mvp\drugs\models.py:190
+#: .\pet_mvp\drugs\models.py:184
 msgid "Indicates if blood was found in the sample"
 msgstr "Показва дали е открита кръв в пробата"
 
@@ -841,11 +841,11 @@ msgstr "Вече не можете да добавяте записи за то�
 msgid "Vaccine record saved. You can now add another."
 msgstr "Записът за ваксина е запазен. Можете да добавите нов."
 
-#: .\pet_mvp\settings.py:135 .\templates\partials\nav_bar.html:16
+#: .\pet_mvp\settings.py:134 .\templates\partials\nav_bar.html:16
 msgid "English"
 msgstr "Английски"
 
-#: .\pet_mvp\settings.py:136 .\templates\partials\nav_bar.html:19
+#: .\pet_mvp\settings.py:135 .\templates\partials\nav_bar.html:19
 msgid "Bulgarian"
 msgstr "Български"
 
@@ -966,7 +966,7 @@ msgstr "Редакция на профила на собственика"
 msgid "Update your personal details below."
 msgstr "Актуализирайте вашите лични данни по-долу."
 
-#: .\templates\accounts\owner_edit.html:34 .\templates\pet\pet_add.html:70
+#: .\templates\accounts\owner_edit.html:34 .\templates\pet\pet_add.html:75
 #: .\templates\pet\pet_add_existing.html:26 .\templates\pet\pet_delete.html:17
 msgid "Cancel"
 msgstr "Отказ"
@@ -1909,13 +1909,13 @@ msgstr ""
 msgid "Add Marking"
 msgstr "Добави маркировка"
 
-#: .\templates\pet\marking_add.html:28 .\templates\pet\pet_add.html:68
+#: .\templates\pet\marking_add.html:28 .\templates\pet\pet_add.html:73
 #: .\templates\pet\pet_edit.html:28
 #: .\templates\records\examination_add.html:129
 msgid "Save"
 msgstr "Запази"
 
-#: .\templates\pet\marking_add.html:29 .\templates\pet\pet_add.html:69
+#: .\templates\pet\marking_add.html:29 .\templates\pet\pet_add.html:74
 #: .\templates\pet\pet_edit.html:29
 msgid "Reset"
 msgstr "Нулиране"
@@ -1948,31 +1948,43 @@ msgstr "Обратно към детайлите на домашния люби�
 msgid "Add a New Pet"
 msgstr "Добави нов домашен любимец"
 
-#: .\templates\pet\pet_add.html:10
-msgid "Already have a pet registered with a passport number?"
-msgstr "Вече имате домашен любимец, регистриран с номер на паспорт?"
+#: .\templates\pet\pet_add.html:11
+msgid ""
+"If your pet has already been registered by a veterinarian or another "
+"caregiver, you can request access to its medical records using its passport "
+"number."
+msgstr ""
+"Ако вашият домашен любимец вече е регистриран от ветеринарен лекар или друг настойник, можете да заявите достъп до неговите медицински записи, като използвате номера на паспорта му."
 
-#: .\templates\pet\pet_add.html:11 .\templates\pet\pet_add_existing.html:9
-msgid "Request Access to Existing Pet"
+#: .\templates\pet\pet_add.html:14
+msgid ""
+"Use this option only if you are sure the pet already exists in the system. "
+"Otherwise, please continue with the form below to register a new pet."
+msgstr ""
+"Използвайте тази опция само ако сте сигурни, че любимецът вече съществува в системата. В противен случай, моля, продължете с формуляра по-долу, за да регистрирате нов домашен любимец."
+
+
+#: .\templates\pet\pet_add.html:16
+msgid "Request access to an existing pet"
 msgstr "Заяви достъп до съществуващ домашен любимец"
 
-#: .\templates\pet\pet_add.html:27
+#: .\templates\pet\pet_add.html:32
 msgid "Select species"
 msgstr "Избери вид"
 
-#: .\templates\pet\pet_add.html:28
+#: .\templates\pet\pet_add.html:33
 msgid "Select gender"
 msgstr "Избери пол"
 
-#: .\templates\pet\pet_add.html:29
+#: .\templates\pet\pet_add.html:34
 msgid "Select breed"
 msgstr "Избери порода"
 
-#: .\templates\pet\pet_add.html:31
+#: .\templates\pet\pet_add.html:36
 msgid "Multilingual Field Notice"
 msgstr "Съобщение за многоезични полета"
 
-#: .\templates\pet\pet_add.html:33
+#: .\templates\pet\pet_add.html:38
 msgid ""
 "Please enter all fields that end with 'in English' and 'in Bulgarian'. This "
 "helps us ensure proper language support for both local and international use."
@@ -1981,13 +1993,17 @@ msgstr ""
 "български'. Това ни помага да осигурим правилна езикова поддръжка както за "
 "местни, така и за международни потребители."
 
-#: .\templates\pet\pet_add.html:37
+#: .\templates\pet\pet_add.html:42
 msgid ""
 "These fields will appear in different parts of the application depending on "
 "the user's language preference."
 msgstr ""
 "Тези полета ще се показват в различни части на приложението в зависимост от "
 "езиковите предпочитания на потребителя."
+
+#: .\templates\pet\pet_add_existing.html:9
+msgid "Request Access to Existing Pet"
+msgstr "Заяви достъп до съществуващ домашен любимец"
 
 #: .\templates\pet\pet_add_existing.html:25
 msgid "Send Request"
@@ -2220,34 +2236,39 @@ msgstr "Все още няма прегледи!"
 msgid "Back to Pet Details"
 msgstr "Обратно към детайлите на домашния любимец"
 
-#: .\templates\records\treatment_record_add.html:10
+#: .\templates\records\treatment_record_add.html:9
 msgid "Add Medication / Treatment Record"
 msgstr "Добави запис за медикамент / лечение"
 
 #: .\templates\records\treatment_record_add.html:12
 msgid ""
-"This can be done only once. No editing or deleting of the treatment record "
-"is possible."
+"This form is used to record a treatment or medication that has already been "
+"administered to your pet."
 msgstr ""
-"Това може да се направи само веднъж. Не е възможно редактиране или изтриване "
-"на записа за лечение."
+"Този формуляр се използва за записване на лечение или медикамент, който вече е бил приложен на вашия домашен любимец."
 
 #: .\templates\records\treatment_record_add.html:15
-#: .\templates\records\vaccine_record_add.html:15
-msgid "Ensure proper and correct data is entered."
-msgstr "Уверете се, че са въведени правилни и точни данни."
+msgid ""
+"You can add multiple treatment records over time, but each individual entry "
+"is final and cannot be edited or deleted after submission."
+msgstr ""
+"Можете да добавяте множество записи за лечение с течение на времето, но всеки отделен запис е окончателен и не може да бъде редактиран или изтрит след изпращане."
 
-#: .\templates\records\treatment_record_add.html:63
+#: .\templates\records\treatment_record_add.html:17
+msgid "Make sure the information is accurate before saving."
+msgstr "Уверете се, че въведената информация е точна преди да я запишете."
+
+#: .\templates\records\treatment_record_add.html:57
 #: .\templates\records\vaccine_record_add.html:63
 msgid "Save Record"
 msgstr "Запази запис"
 
-#: .\templates\records\treatment_record_add.html:64
+#: .\templates\records\treatment_record_add.html:58
 #: .\templates\records\vaccine_record_add.html:64
 msgid "Clear Fields"
 msgstr "Изчисти полетата"
 
-#: .\templates\records\treatment_record_add.html:65
+#: .\templates\records\treatment_record_add.html:60
 msgid "Finish Adding Treatments"
 msgstr "Завърши добавянето на лечения"
 
@@ -2258,6 +2279,10 @@ msgid ""
 msgstr ""
 "Това може да се направи само веднъж. Не е възможно редактиране или изтриване "
 "на записа за ваксинация."
+
+#: .\templates\records\vaccine_record_add.html:15
+msgid "Ensure proper and correct data is entered."
+msgstr "Уверете се, че са въведени правилни и точни данни."
 
 #: .\templates\records\vaccine_record_add.html:65
 msgid "Finish Adding Vaccines"
