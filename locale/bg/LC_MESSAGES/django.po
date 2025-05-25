@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-25 14:42+0000\n"
+"POT-Creation-Date: 2025-05-25 14:54+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -388,8 +388,8 @@ msgid "Date of birth"
 msgstr "Дата на раждане"
 
 #: .\pet_mvp\pets\forms.py:54 .\pet_mvp\pets\forms.py:152
-msgid "Format BGXXAAXXXX"
-msgstr "Формат BGXXAAXXXX"
+msgid "Format BG01VPXXXXXX"
+msgstr "Формат BG01VPXXXXXX"
 
 #: .\pet_mvp\pets\forms.py:59
 msgid "in english"
@@ -607,11 +607,11 @@ msgstr ""
 "%(value)s не е валиден номер на паспорт. Форматът трябва да бъде "
 "BG01VP123456."
 
-#: .\pet_mvp\pets\validators.py:73
+#: .\pet_mvp\pets\validators.py:72
 msgid "{} is not a valid transponder number."
 msgstr "{} не е валиден номер на транспондер."
 
-#: .\pet_mvp\pets\validators.py:78
+#: .\pet_mvp\pets\validators.py:77
 msgid "Invalid country code"
 msgstr "Невалиден код на държава"
 

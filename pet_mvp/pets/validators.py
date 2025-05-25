@@ -29,7 +29,6 @@ def validate_passport_number(value):
     return normalized
 
 
-
 def validate_transponder_code(value):
     """
     Validate the transponder code

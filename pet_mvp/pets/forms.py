@@ -51,7 +51,7 @@ class PetAddForm(forms.ModelForm):
                 field.widget = forms.DateInput(attrs={'type': 'date'})
                 field.help_text = _('Date of birth')
             elif field_name == 'passport_number':
-                placeholder = _('Format BGXXAAXXXX')
+                placeholder = _('Format BG01VPXXXXXX')
                 field.widget.attrs['placeholder'] = str(placeholder)
             elif '_en' in field_name:
                 base_field_name = field_name.replace('_en', '')
@@ -149,6 +149,6 @@ class MarkingAddForm(forms.Form):
 class AddExistingPetForm(forms.Form):
     passport_number = forms.CharField(
         label=_("Passport number"),
-        widget=forms.TextInput(attrs={'placeholder': _('Format BGXXAAXXXX')}),
+        widget=forms.TextInput(attrs={'placeholder': _('Format BG01VPXXXXXX')}),
         validators=[validate_passport_number]
     )
