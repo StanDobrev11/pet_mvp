@@ -1,22 +1,33 @@
 import re
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
-
+    
 def validate_passport_number(value):
     """
-    Validate the passport number
-    Proper format: 'BG01VP123456'
-    - First two characters: country code (uppercase letters)
-    - Next two characters: digits
-    - Next two characters: uppercase letters
-    - Last six characters: digits
+    Normalize and validate the passport number.
+    Format: 'BG01VP123456'
+    - First 2 characters: uppercase letters (country code)
+    - Next 2 characters: digits
+    - Next 2 characters: uppercase letters
+    - Last 6 characters: digits
+    Spaces are removed before validation.
     """
+    # Normalize: remove all spaces and convert to uppercase
+    normalized = re.sub(r'\s+', '', value).upper()
+
+    # Define the pattern
     pattern = r'^[A-Z]{2}\d{2}[A-Z]{2}\d{6}$'
 
-    if not re.match(pattern, value):
+    # Validate against the pattern
+    if not re.fullmatch(pattern, normalized):
         raise ValidationError(
-            f'{value} is not a valid passport number.'
+            _('%(value)s is not a valid passport number. The format must be BG01VP123456.'),
+            params={'value': value},
         )
+
+    return normalized
+
 
 
 def validate_transponder_code(value):
@@ -59,12 +70,12 @@ def validate_transponder_code(value):
     pattern = re.compile(r'^\d{3}\d{3}\d{9}$')
 
     if not pattern.match(value):
-        raise ValidationError(f'{value} is not a valid transponder number.')
+        raise ValidationError(_('{} is not a valid transponder number.').format(value))
 
     country_code = value[:3]
 
     if country_code not in country_codes.values():
-        raise ValidationError('Invalid country code')
+        raise ValidationError(_('Invalid country code'))
 
     # Additional manufacturer code validation can be added here if needed
 

@@ -82,11 +82,16 @@ class AddExistingPetView(views.FormView):
     template_name = 'pet/pet_add_existing.html'
     success_url = reverse_lazy('dashboard')
 
-    def form_invalid(self, form):
-        passport_number = form.data['passport_number']
-        pet = Pet.objects.get(passport_number=passport_number)
-        existing_owner = pet.owners.first()
+    def form_valid(self, form):
+        passport_number = form.cleaned_data['passport_number']
 
+        try:
+            pet = Pet.objects.get(passport_number=passport_number)
+        except Pet.DoesNotExist:
+            form.add_error('passport_number', _('Invalid passport number: no pet found with these details.'))
+            return self.form_invalid(form)
+
+        existing_owner = pet.owners.first()
         token = signer.sign(f'{pet.id}:{self.request.user.id}')
         approval_url = self.request.build_absolute_uri(
             reverse('approve-pet-addition', args=[token])
@@ -102,13 +107,7 @@ class AddExistingPetView(views.FormView):
         messages.success(self.request, _(
             "Your request to access the pet has been sent to the owner."))
 
-        return redirect('dashboard')
-
-    def form_valid(self, form):
-        # No existing pet, raise error
-        form.add_error(
-            'passport_number', 'Invalid passport number: no pet found with these details.')
-        return self.form_invalid(form)
+        return redirect(self.get_success_url())
 
 
 class ApprovePetAdditionView(views.View):

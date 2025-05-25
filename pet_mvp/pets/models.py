@@ -110,7 +110,7 @@ class Pet(TimeStampMixin):
 
     features = models.CharField(
         max_length=255,
-        verbose_name=_('Any notable or discernible features or characteristics')
+        verbose_name=_('Features'),
     )
 
     photo = models.ImageField(

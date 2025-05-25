@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-25 11:48+0000\n"
+"POT-Creation-Date: 2025-05-25 14:42+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -383,17 +383,29 @@ msgstr "Изпратен медицински доклад за {}"
 msgid "Pet Addition Request"
 msgstr "Искане за добавяне на домашен любимец"
 
-#: .\pet_mvp\pets\forms.py:50
-msgid "dd/mm/yyyy"
-msgstr "дд/мм/гггг"
+#: .\pet_mvp\pets\forms.py:52 .\pet_mvp\pets\models.py:103
+msgid "Date of birth"
+msgstr "Дата на раждане"
 
-#: .\pet_mvp\pets\forms.py:53
-msgid " in english"
-msgstr " на английски"
+#: .\pet_mvp\pets\forms.py:54 .\pet_mvp\pets\forms.py:152
+msgid "Format BGXXAAXXXX"
+msgstr "Формат BGXXAAXXXX"
 
-#: .\pet_mvp\pets\forms.py:58
-msgid " in bulgarian"
-msgstr " на български"
+#: .\pet_mvp\pets\forms.py:59
+msgid "in english"
+msgstr "на английски"
+
+#: .\pet_mvp\pets\forms.py:65
+msgid "in bulgarian"
+msgstr "на български"
+
+#: .\pet_mvp\pets\forms.py:69
+msgid "Current weight in kgs"
+msgstr "Текущо тегло в кг"
+
+#: .\pet_mvp\pets\forms.py:151
+msgid "Passport number"
+msgstr "Номер на паспорт"
 
 #: .\pet_mvp\pets\models.py:22
 msgid "Male"
@@ -515,13 +527,9 @@ msgstr "Порода"
 msgid "Sex"
 msgstr "Пол"
 
-#: .\pet_mvp\pets\models.py:103
-msgid "Date of birth"
-msgstr "Дата на раждане"
-
 #: .\pet_mvp\pets\models.py:113
-msgid "Any notable or discernible features or characteristics"
-msgstr "Всякакви забележителни или различими черти или характеристики"
+msgid "Features"
+msgstr "Характеристики"
 
 #: .\pet_mvp\pets\models.py:120
 msgid "Photo"
@@ -591,11 +599,31 @@ msgstr "Дата на отчитане на татуировката"
 msgid "Location of the tattoo"
 msgstr "Местоположение на татуировката"
 
-#: .\pet_mvp\pets\views.py:103
+#: .\pet_mvp\pets\validators.py:25
+#, python-format
+msgid ""
+"%(value)s is not a valid passport number. The format must be BG01VP123456."
+msgstr ""
+"%(value)s не е валиден номер на паспорт. Форматът трябва да бъде "
+"BG01VP123456."
+
+#: .\pet_mvp\pets\validators.py:73
+msgid "{} is not a valid transponder number."
+msgstr "{} не е валиден номер на транспондер."
+
+#: .\pet_mvp\pets\validators.py:78
+msgid "Invalid country code"
+msgstr "Невалиден код на държава"
+
+#: .\pet_mvp\pets\views.py:91
+msgid "Invalid passport number: no pet found with these details."
+msgstr "Невалиден номер на паспорт: несъществуващ домашен любимец."
+
+#: .\pet_mvp\pets\views.py:108
 msgid "Your request to access the pet has been sent to the owner."
 msgstr "Вашето запитване за добавяне на съществуващ любимец е изпратено."
 
-#: .\pet_mvp\pets\views.py:132
+#: .\pet_mvp\pets\views.py:131
 msgid "Invalid or expired link."
 msgstr "Невалиден линк."
 
@@ -2234,3 +2262,6 @@ msgstr ""
 #: .\templates\records\vaccine_record_add.html:65
 msgid "Finish Adding Vaccines"
 msgstr "Завърши добавянето на ваксини"
+
+#~ msgid "Format: BG01VP123456"
+#~ msgstr "Формат: BG01VP123456"

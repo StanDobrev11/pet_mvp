@@ -3,6 +3,8 @@ from django import forms
 from pet_mvp.pets.models import Pet, BaseMarking, Transponder, Tattoo
 from django.utils.translation import gettext as _
 
+from pet_mvp.pets.validators import validate_passport_number
+
 
 class PetEditForm(forms.ModelForm):
     class Meta:
@@ -47,22 +49,34 @@ class PetAddForm(forms.ModelForm):
 
             if field_name == 'date_of_birth':
                 field.widget = forms.DateInput(attrs={'type': 'date'})
-                field.placeholder = _('dd/mm/yyyy')
+                field.help_text = _('Date of birth')
+            elif field_name == 'passport_number':
+                placeholder = _('Format BGXXAAXXXX')
+                field.widget.attrs['placeholder'] = str(placeholder)
             elif '_en' in field_name:
-                field_name = field_name.replace('_en', '')
-                extension = _(' in english')
-                placeholder = field_name + extension
-                field.widget.attrs['placeholder'] = str(placeholder).capitalize()
+                base_field_name = field_name.replace('_en', '')
+                base_verbose = self._meta.model._meta.get_field(base_field_name).verbose_name
+                extension = _('in english')
+                placeholder = f"{base_verbose} ({extension})"
+                field.widget.attrs['placeholder'] = str(placeholder)
             elif '_bg' in field_name:
-                field_name = field_name.replace('_bg', '')
-                extension = _(' in bulgarian')
-                placeholder = field_name + extension
-                field.widget.attrs['placeholder'] = str(placeholder).capitalize()
+                base_field_name = field_name.replace('_bg', '')
+                base_verbose = self._meta.model._meta.get_field(base_field_name).verbose_name
+                extension = _('in bulgarian')
+                placeholder = f"{base_verbose} ({extension})"
+                field.widget.attrs['placeholder'] = str(placeholder)
+            elif field_name == 'current_weight':
+                placeholder = _('Current weight in kgs')
+                field.widget.attrs['placeholder'] = placeholder
             else:
                 placeholder = self._meta.model._meta.get_field(
                     field_name).verbose_name
                 field.widget.attrs['placeholder'] = str(
                     placeholder).capitalize()
+
+    def clean_password_number(self):
+        value = self.cleaned_data.get('passport_number')
+        return validate_passport_number(value)
 
 
 class MarkingAddForm(forms.Form):
@@ -132,10 +146,9 @@ class MarkingAddForm(forms.Form):
         return marking
 
 
-class AddExistingPetForm(forms.ModelForm):
-    class Meta:
-        model = Pet
-        fields = ['passport_number']
-        widgets = {
-            'passport_number': forms.TextInput(attrs={'maxlength': 20}),
-        }
+class AddExistingPetForm(forms.Form):
+    passport_number = forms.CharField(
+        label=_("Passport number"),
+        widget=forms.TextInput(attrs={'placeholder': _('Format BGXXAAXXXX')}),
+        validators=[validate_passport_number]
+    )
