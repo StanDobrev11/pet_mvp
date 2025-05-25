@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-25 11:33+0000\n"
+"POT-Creation-Date: 2025-05-25 11:48+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -25,8 +25,8 @@ msgid "Repeat the password"
 msgstr "Повторете паролата"
 
 #: .\pet_mvp\accounts\forms.py:29 .\pet_mvp\accounts\forms.py:59
-msgid "Enter your phone number (e.g. 0887123456, +359887123456)"
-msgstr "Въведете мобилен номер (напр. 0887123456, +359887123456)."
+msgid "Phone number (e.g. 0887123456)"
+msgstr "Мобилен номер (напр. 0887123456)."
 
 #: .\pet_mvp\accounts\forms.py:70
 #: .\templates\accounts\access_code_email.html:30
@@ -1101,21 +1101,21 @@ msgstr "Вход"
 msgid "About Us"
 msgstr "За нас"
 
-#: .\templates\base.html:93
+#: .\templates\base.html:92
 msgid "My Pet's Passport. All rights reserved."
 msgstr "Паспортът на моя домашен любимец. Всички права запазени."
 
-#: .\templates\base.html:107
+#: .\templates\base.html:106
 msgid "We use cookies to ensure you get the best experience on our website."
 msgstr ""
 "Използваме бисквитки, за да ви осигурим най-доброто изживяване на нашия "
 "уебсайт."
 
-#: .\templates\base.html:108
+#: .\templates\base.html:107
 msgid "Learn more"
 msgstr "Научете повече"
 
-#: .\templates\base.html:110
+#: .\templates\base.html:109
 msgid "Accept"
 msgstr "Приеми"
 
@@ -2234,6 +2234,3 @@ msgstr ""
 #: .\templates\records\vaccine_record_add.html:65
 msgid "Finish Adding Vaccines"
 msgstr "Завърши добавянето на ваксини"
-
-#~ msgid "Username"
-#~ msgstr "Потребителско име"

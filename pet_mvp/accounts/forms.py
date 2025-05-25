@@ -26,7 +26,7 @@ class OwnerCreationForm(auth_forms.UserCreationForm):
             elif field_name == 'password2':
                 field.widget.attrs['placeholder'] = _('Repeat the password')
             elif field_name == 'phone_number':
-                field.widget.attrs['placeholder'] = _('Enter your phone number (e.g. 0887123456, +359887123456)')
+                field.widget.attrs['placeholder'] = _('Phone number (e.g. 0887123456)')
             else:
                 placeholder = self._meta.model._meta.get_field(field_name).verbose_name
                 field.widget.attrs['placeholder'] = str(placeholder).capitalize()
@@ -56,7 +56,7 @@ class ClinicRegistrationForm(auth_forms.UserCreationForm):
             elif field_name == 'password2':
                 field.widget.attrs['placeholder'] = _('Repeat the password')
             elif field_name == 'phone_number':
-                field.widget.attrs['placeholder'] = _('Enter your phone number (e.g. 0887123456, +359887123456)')
+                field.widget.attrs['placeholder'] = _('Phone number (e.g. 0887123456)')
             else:
                 placeholder = self._meta.model._meta.get_field(field_name).verbose_name
                 field.widget.attrs['placeholder'] = str(placeholder).capitalize()
