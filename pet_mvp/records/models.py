@@ -5,7 +5,6 @@ from django.utils.translation import gettext_lazy as _
 
 from pet_mvp.accounts.models import Clinic
 from pet_mvp.common.mixins import TimeStampMixin
-from pet_mvp.drugs.apps import DrugsConfig
 from pet_mvp.drugs.models import Vaccine, BloodTest, UrineTest, FecalTest, Drug
 from pet_mvp.pets.models import Pet
 

@@ -24,7 +24,7 @@ def normalize_bulgarian_phone(value):
     # Normalize to national number (starting with 0)
     if digits.startswith('359') and len(digits) == 12:
         digits = '0' + digits[3:]
-    elif digits.startswith('00359') and len(digits) == 13:
+    elif digits.startswith('00359') and len(digits) == 14:
         digits = '0' + digits[5:]
     elif digits.startswith('0') and len(digits) == 10:
         pass  # Already national format

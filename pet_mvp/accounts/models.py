@@ -88,10 +88,7 @@ class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
     def clean(self):
         """
         Custom validation for field requirements based on is_owner.
-        """
-        if self.phone_number:
-            self.phone_number = normalize_bulgarian_phone(self.phone_number)
-        
+        """        
         if self.is_owner:
             # Validate that first_name and last_name are provided for owners
             if not self.first_name or not self.last_name:

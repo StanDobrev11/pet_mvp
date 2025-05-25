@@ -77,10 +77,10 @@
                     </div>
                     {% if user.is_owner %}
                         <div class="card-footer d-flex justify-content-between">
-                            <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">{% trans "Go back" %}</a>
-                            <a href="{% url 'pet-edit' pk=pet.pk %}" class="btn btn-outline-primary">{% trans "Edit Pet" %}</a>
+                            <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">{% trans "Back" %}</a>
+                            <a href="{% url 'pet-edit' pk=pet.pk %}" class="btn btn-outline-primary">{% trans "Edit" %}</a>
                             <a href="{% url 'pet-delete' pk=pet.pk %}"
-                               class="btn btn-outline-danger">{% trans "Delete Pet" %}</a>
+                               class="btn btn-outline-danger">{% trans "Delete" %}</a>
                         </div>
                     {% endif %}
                 </div>

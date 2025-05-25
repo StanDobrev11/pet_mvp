@@ -10,7 +10,8 @@ from django.utils.translation import gettext_lazy as _
 class VaccinationRecordForm(forms.ModelForm):
     class Meta:
         model = VaccinationRecord
-        exclude = ['pet']  # Exclude the `pet` field, it will be assigned automatically
+        # Exclude the `pet` field, it will be assigned automatically
+        exclude = ['pet']
         widgets = {
             'manufacture_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'date_of_vaccination': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
@@ -32,14 +33,15 @@ class VaccinationRecordForm(forms.ModelForm):
 class MedicationRecordForm(forms.ModelForm):
     class Meta:
         model = MedicationRecord
-        exclude = ['pet']  # Exclude the `pet` field, it will be assigned automatically
+        # Exclude the `pet` field, it will be assigned automatically
+        exclude = ['pet']
         widgets = {
-            'manufacturer': forms.TextInput(attrs={'class': 'form-control','placeholder': 'Manufacturer name'}),
-            'date': forms.DateInput(attrs={'type': 'date','class': 'form-control',}),
-            'time': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control',}),
-            'dosage': forms.TextInput(attrs={'class': 'form-control','placeholder': 'e.g. 5mg twice a day'}),
-            'valid_until': forms.DateInput(attrs={'type': 'date', 'class': 'form-control','placeholder': 'Valid until date'}),
-            'medication': forms.Select(attrs={'class': 'form-select',}),
+            'manufacturer': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Manufacturer name'}),
+            'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control', }),
+            'time': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control', }),
+            'dosage': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g. 5mg twice a day'}),
+            'valid_until': forms.DateInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': 'Valid until date'}),
+            'medication': forms.Select(attrs={'class': 'form-select', }),
         }
 
     medication = forms.ModelChoiceField(
@@ -93,7 +95,8 @@ class FecalTestForm(forms.ModelForm):
 class MedicalExaminationRecordForm(forms.ModelForm):
     class Meta:
         model = MedicalExaminationRecord
-        exclude = ['pet', 'clinic', 'vaccinations', 'medications', 'blood_test', 'urine_test', 'fecal_test']
+        exclude = ['pet', 'clinic', 'vaccinations', 'medications',
+                   'blood_test', 'urine_test', 'fecal_test']
 
 
 VaccineFormSet = forms.modelformset_factory(

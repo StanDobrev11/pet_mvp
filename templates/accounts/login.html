@@ -25,13 +25,13 @@
                     </div>
                 {% endif %}
                 {% load i18n widget_tweaks %}
-                {% trans "Enter your username" as username_placeholder %}
+                {% trans "Enter your email address" as emailaddress_placeholder %}
                 {% trans "Enter your password" as password_placeholder %}
                 <form method="post" action="{% url 'login' %}?next={{ next }}">
                     {% csrf_token %}
                     <div class="mb-3">
-                        <label for="{{ form.username.id_for_label }}" class="form-label">{% trans "Username" %}</label>
-                        {% render_field form.username class+="form-control" placeholder=username_placeholder %}
+                        <label for="{{ form.username.id_for_label }}" class="form-label">{% trans "Email address" %}</label>
+                        {% render_field form.username class+="form-control" placeholder=emailaddress_placeholder %}
                         {{ form.username.errors }}
                     </div>
                     <div class="mb-3">

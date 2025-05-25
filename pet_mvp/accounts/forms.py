@@ -1,10 +1,8 @@
 from django.contrib.auth import forms as auth_forms, get_user_model
 from django import forms
-from django.core.exceptions import ObjectDoesNotExist
 from django.core.validators import validate_email
 from django.utils.translation import gettext as _
-from pet_mvp.access_codes.models import PetAccessCode
-from pet_mvp.accounts.validators import validate_bulgarian_phone
+from pet_mvp.accounts.validators import normalize_bulgarian_phone
 from pet_mvp.pets.models import Pet
 
 UserModel = get_user_model()
@@ -62,7 +60,11 @@ class ClinicRegistrationForm(auth_forms.UserCreationForm):
             else:
                 placeholder = self._meta.model._meta.get_field(field_name).verbose_name
                 field.widget.attrs['placeholder'] = str(placeholder).capitalize()
-
+                
+    def clean_phone_number(self):
+        value = self.cleaned_data.get('phone_number')
+        return normalize_bulgarian_phone(value)
+    
 
 class AccessCodeEmailForm(forms.Form):
     access_code = forms.CharField(label=_("Access Code"), required=True)

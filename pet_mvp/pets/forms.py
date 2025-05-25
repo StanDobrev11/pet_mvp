@@ -1,6 +1,7 @@
 from django import forms
 
 from pet_mvp.pets.models import Pet, BaseMarking, Transponder, Tattoo
+from django.utils.translation import gettext as _
 
 
 class PetEditForm(forms.ModelForm):
@@ -19,9 +20,6 @@ class PetAddForm(forms.ModelForm):
             'features',
             'pending_owners',
         ]
-        widgets = {
-            'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
-        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -43,6 +41,28 @@ class PetAddForm(forms.ModelForm):
         else:
             # Default to empty choices if no species is selected
             self.fields['breed'].widget = forms.Select(choices=[])
+
+        for field_name in self.fields:
+            field = self.fields[field_name]
+
+            if field_name == 'date_of_birth':
+                field.widget = forms.DateInput(attrs={'type': 'date'})
+                field.placeholder = _('dd/mm/yyyy')
+            elif '_en' in field_name:
+                field_name = field_name.replace('_en', '')
+                extension = _(' in english')
+                placeholder = field_name + extension
+                field.widget.attrs['placeholder'] = str(placeholder).capitalize()
+            elif '_bg' in field_name:
+                field_name = field_name.replace('_bg', '')
+                extension = _(' in bulgarian')
+                placeholder = field_name + extension
+                field.widget.attrs['placeholder'] = str(placeholder).capitalize()
+            else:
+                placeholder = self._meta.model._meta.get_field(
+                    field_name).verbose_name
+                field.widget.attrs['placeholder'] = str(
+                    placeholder).capitalize()
 
 
 class MarkingAddForm(forms.Form):

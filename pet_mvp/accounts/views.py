@@ -140,7 +140,10 @@ class ClinicRegistrationView(BaseUserRegisterView):
         # TODO create send_clinic_registration_email
 
         return response
-
+    
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
+        
 
 class RegisterOwnerView(BaseUserRegisterView):
     form_class = OwnerCreationForm
@@ -194,7 +197,7 @@ class AccessCodeEmailView(views.FormView):
                 messages.error(
                     self.request, 'You cannot log in as a veterinarian.')
                 # Redirect to index page
-                return redirect(reverse_lazy('index'))
+                return self.form_invalid(form)
         else:
             # If email doesn’t exist but is valid, redirect to registration
             url = reverse_lazy('clinic-register') + \
@@ -203,6 +206,7 @@ class AccessCodeEmailView(views.FormView):
 
     def form_invalid(self, form):
         # If the form has errors, re-render it with the errors displayed
+        messages.error(self.request, 'Please correct the errors below.')
         return self.render_to_response(self.get_context_data(form=form))
 
 

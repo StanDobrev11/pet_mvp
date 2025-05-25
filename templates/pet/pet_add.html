@@ -1,75 +1,110 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
 {% load i18n %}
-
 {% block content %}
-<section class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h2 class="mb-4 text-center">{% trans "Add a New Pet" %}</h2>
-            <div class="text-center mb-4">
-                <p class="mb-2">{% trans "Already have a pet registered with a passport number?" %}</p>
-                <a href="{% url 'pet-add-existing' %}" class="btn btn-primary">{% trans "Request Access to Existing Pet" %}</a>
-            </div>
-
-            {% if messages %}
-                <div class="mb-3">
-                    {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                            {{ message }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    {% endfor %}
+    <section class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2 class="mb-4 text-center">{% trans "Add a New Pet" %}</h2>
+                <div class="text-center mb-4">
+                    <p class="mb-2">{% trans "Already have a pet registered with a passport number?" %}</p>
+                    <a href="{% url 'pet-add-existing' %}" class="btn btn-primary">{% trans "Request Access to Existing Pet" %}</a>
                 </div>
-            {% endif %}
-
-            <form action="{% url 'pet-add' %}"
-                  method="post"
-                  enctype="multipart/form-data"
-                  class="p-4 border rounded bg-light">
-                {% csrf_token %}
-                {% for field in form %}
+                {% if messages %}
                     <div class="mb-3">
-                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                        {{ field|add_class:"form-control" }}
-                        {% if field.help_text %}
-                            <div class="form-text">{{ field.help_text|safe }}</div>
-                        {% endif %}
-                        {% for error in field.errors %}
-                            <div class="text-danger">{{ error }}</div>
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show"
+                                 role="alert">
+                                {{ message }}
+                                <button type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                            </div>
                         {% endfor %}
                     </div>
-                {% endfor %}
-
-                <div class="d-flex flex-wrap gap-2 justify-content-between mt-4">
-                    <button type="submit" class="btn btn-primary">{% trans "Save" %}</button>
-                    <button type="reset" class="btn btn-outline-secondary">{% trans "Reset" %}</button>
-                    <a href="{% url 'dashboard' %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
+                {% endif %}
+                {% trans "Select species" as select_species_label %}
+                {% trans "Select gender" as select_gender_label %}
+                {% trans "Select breed" as select_breed_label %}
+                <div class="alert alert-info mb-4" role="alert">
+                    <h5 class="alert-heading">{% trans "Multilingual Field Notice" %}</h5>
+                    <p>
+                        {% trans "Please enter all fields that end with 'in English' and 'in Bulgarian'. This helps us ensure proper language support for both local and international use." %}
+                    </p>
+                    <hr>
+                    <p class="mb-0">
+                        {% trans "These fields will appear in different parts of the application depending on the user's language preference." %}
+                    </p>
                 </div>
-            </form>
+                <form action="{% url 'pet-add' %}"
+                      method="post"
+                      enctype="multipart/form-data"
+                      class="p-4 border rounded bg-light">
+                    {% csrf_token %}
+                    {# Move passport_number to top #}
+                    {% if form.passport_number %}
+                        <div class="mb-3">
+                            <label for="{{ form.passport_number.id_for_label }}" class="form-label">{{ form.passport_number.label }}</label>
+                            {{ form.passport_number|add_class:"form-control" }}
+                            {% if form.passport_number.help_text %}
+                                <div class="form-text">{{ form.passport_number.help_text|safe }}</div>
+                            {% endif %}
+                            {% for error in form.passport_number.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                        </div>
+                    {% endif %}
+                    {# Render remaining fields #}
+                    {% for field in form %}
+                        {% if field.name != 'passport_number' %}
+                            <div class="mb-3">
+                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                {{ field|add_class:"form-control" }}
+                                {% if field.help_text %}<div class="form-text">{{ field.help_text|safe }}</div>{% endif %}
+                                {% for error in field.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="d-flex flex-wrap gap-2 justify-content-between mt-4">
+                        <button type="submit" class="btn btn-primary">{% trans "Save" %}</button>
+                        <button type="reset" class="btn btn-outline-secondary">{% trans "Reset" %}</button>
+                        <a href="{% url 'dashboard' %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+    <script>
+        const SELECT_SPECIES_LABEL = "{{ select_species_label }}";
+        const SELECT_GENDER_LABEL = "{{ select_gender_label }}";
+        const SELECT_BREED_LABEL = "{{ select_breed_label }}";
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const speciesSelect = document.getElementById('id_species');
-        const breedSelect = document.getElementById('id_breed');
+        document.addEventListener('DOMContentLoaded', function () {
+            const speciesSelect = document.getElementById('id_species');
+            speciesSelect.options[0].text = SELECT_SPECIES_LABEL
+            speciesSelect.options[0].value = '';
 
-        const dogBreeds = [
-            {% for value, label in dog_breeds %}['{{ value }}', '{{ label }}'],{% endfor %}
-        ];
+            const genderSelect = document.getElementById('id_sex')
+            genderSelect.options[0].text = SELECT_GENDER_LABEL
+            genderSelect.options[0].value = '';
 
-        const catBreeds = [
-            {% for value, label in cat_breeds %}['{{ value }}', '{{ label }}'],{% endfor %}
-        ];
+            const breedSelect = document.getElementById('id_breed');
+
+            const dogBreeds = [
+                {% for value, label in dog_breeds %}['{{ value }}', '{{ label }}'],{% endfor %}
+            ];
+
+            const catBreeds = [
+                {% for value, label in cat_breeds %}['{{ value }}', '{{ label }}'],{% endfor %}
+            ];
+
+
 
         function updateBreedChoices() {
             breedSelect.innerHTML = '';
 
             const defaultOption = document.createElement('option');
             defaultOption.value = '';
-            defaultOption.textContent = '-------';
+            defaultOption.textContent = SELECT_BREED_LABEL;
             breedSelect.appendChild(defaultOption);
 
             const selectedSpecies = speciesSelect.value;
@@ -89,15 +124,8 @@
             });
         }
 
-        if (!speciesSelect.querySelector('option[value=""]')) {
-            const defaultSpeciesOption = document.createElement('option');
-            defaultSpeciesOption.value = '';
-            defaultSpeciesOption.textContent = '-------';
-            speciesSelect.insertBefore(defaultSpeciesOption, speciesSelect.firstChild);
-        }
-
         speciesSelect.addEventListener('change', updateBreedChoices);
         updateBreedChoices();
     });
-</script>
+    </script>
 {% endblock %}

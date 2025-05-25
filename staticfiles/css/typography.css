@@ -26,7 +26,6 @@ html {
     }
 }
 
-/* Inherit font properties */
 body, input, button, table {
     font: inherit;
 }
