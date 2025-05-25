@@ -39,8 +39,8 @@ def create_clinic():
 
 
 def create_pet_markings():
-    max_pet = Pet.objects.get(name='Max')
-    luna_pet = Pet.objects.get(name='Luna')
+    max_pet = Pet.objects.get(id='1')
+    luna_pet = Pet.objects.get(id='2')
 
     # Create a transponder for Max
     try:
@@ -74,7 +74,7 @@ def create_pet_markings():
 
 
 def create_complete_examination_record_for_max():
-    max_pet = Pet.objects.get(name='Max')
+    max_pet = Pet.objects.get(id='1')
     clinic = Clinic.objects.get(clinic_name='Diana Vet')
     try:
         blood_test = BloodTest.objects.create(
@@ -452,7 +452,7 @@ def populate_vaccines():
 
 
 def populate_medication_records():
-    pet = Pet.objects.get(name='Max')
+    pet = Pet.objects.get(id='1')
     medication_data = [
         # Medication already given
         dict(
@@ -498,7 +498,7 @@ def populate_medication_records():
 
 
 def populate_vaccination_records():
-    pet = Pet.objects.get(name='Max')
+    pet = Pet.objects.get(id='1')
     vaccines_data = [
         dict(
             pet=pet,
