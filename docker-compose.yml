@@ -11,13 +11,12 @@ services:
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
     volumes:
       - .:/app
-      - static_volume:/app/collect_static
-      - media_volume:/app/media
-    command: sh -c "python manage.py migrate &&
-      python manage.py collectstatic --noinput &&
-      python manage.py compilemessages &&
-      python caller.py &&
-      gunicorn --bind=0.0.0.0:8000 pet_mvp.wsgi:application"
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             python manage.py compilemessages &&
+             python caller.py &&
+             gunicorn --bind=0.0.0.0:8000 pet_mvp.wsgi:application"
 
   redis:
     image: redis:7-alpine
@@ -56,19 +55,18 @@ services:
       - "1025:1025"
       - "8025:8025"
 
-
   nginx:
     image: nginx:latest
     ports:
       - "80:80"
+    depends_on:
+      - app
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - static_volume:/app/collect_static
-      - media_volume:/app/media
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./collect_static:/app/collect_static
+      - ./media:/app/media
     links:
       - app
 
 volumes:
-  static_volume:
-  media_volume:
   redis_data:
