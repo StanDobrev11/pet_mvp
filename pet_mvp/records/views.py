@@ -117,7 +117,8 @@ class StopVaccineAdditionsView(BaseStopAddingRecordsView):
 class StopTreatmentAdditionsView(BaseStopAddingRecordsView):
 
     def set_pet_attribute(self, pet, value):
-        pet.can_add_treatments = value
+        pass
+        # pet.can_add_treatments = value
 
 
 class ExaminationDetailsView(views.DetailView):

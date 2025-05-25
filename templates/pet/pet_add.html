@@ -6,9 +6,14 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <h2 class="mb-4 text-center">{% trans "Add a New Pet" %}</h2>
-                <div class="text-center mb-4">
-                    <p class="mb-2">{% trans "Already have a pet registered with a passport number?" %}</p>
-                    <a href="{% url 'pet-add-existing' %}" class="btn btn-primary">{% trans "Request Access to Existing Pet" %}</a>
+                <div class="alert alert-info text-center mb-4" role="alert">
+                    <p class="mb-2">
+                        {% trans "If your pet has already been registered by a veterinarian or another caregiver, you can request access to its medical records using its passport number." %}
+                    </p>
+                    <p class="mb-3">
+                        {% trans "Use this option only if you are sure the pet already exists in the system. Otherwise, please continue with the form below to register a new pet." %}
+                    </p>
+                    <a href="{% url 'pet-add-existing' %}" class="btn btn-primary">{% trans "Request access to an existing pet" %}</a>
                 </div>
                 {% if messages %}
                     <div class="mb-3">

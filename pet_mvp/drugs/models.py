@@ -1,13 +1,7 @@
 import datetime
 
 from django.db import models
-
-# Create your models here.
-from django.db import models
 from django.utils.translation import gettext_lazy as _
-
-from pet_mvp.common.mixins import TimeStampMixin
-from pet_mvp.pets.models import Pet
 
 
 class BaseMedication(models.Model):
