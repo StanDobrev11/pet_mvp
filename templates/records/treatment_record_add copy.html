@@ -41,10 +41,10 @@
                             {% endfor %}
                         </div>
                     {% endif %}
-                    {# ... template header omitted for brevity ... #}
                     <form action="{% url 'treatment-record-add' %}?pet_id={{ pet_id }}"
                           method="post">
                         {% csrf_token %}
+                        {# Custom rendering for the medication field with data-notes and data-interval #}
                         <div class="mb-3">
                             <label for="id_medication">{{ form.fields.medication.label }}</label>
                             <select name="medication" id="id_medication" class="form-select">
@@ -59,27 +59,27 @@
                                 <option value="custom">{{ _("Other (specify)") }}</option>
                             </select>
                         </div>
-                        <div id="medication-fields" style="display: none;">
-                            <div class="mb-3" id="custom-medication-wrapper" style="display: none;">
-                                <label for="id_custom_medication">{{ _("Custom Medication Name") }}</label>
-                                <input type="text"
-                                       name="custom_medication"
-                                       id="id_custom_medication"
-                                       class="form-control"
-                                       placeholder="{% trans 'Enter custom medication name' %}">
-                            </div>
-                            <div id="medication-notes" class="alert alert-info" style="display: none;"></div>
-                            {% for field in form %}
-                                {% if field.name != 'medication' %}
-                                    <div class="mb-3">
-                                        {{ field.label_tag }}
-                                        {{ field|add_class:"form-control" }}
-                                        {% if field.help_text %}<div class="form-text">{{ field.help_text|safe }}</div>{% endif %}
-                                        {% for error in field.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
+                        <div class="mb-3" id="custom-medication-wrapper" style="display: none;">
+                            <label for="id_custom_medication">{{ _("Custom Medication Name") }}</label>
+                            <input type="text"
+                                   name="custom_medication"
+                                   id="id_custom_medication"
+                                   class="form-control"
+                                   placeholder="{% trans 'Enter custom medication name' %}">
                         </div>
+                        {# Notes preview #}
+                        <div id="medication-notes" class="alert alert-info" style="display: none;"></div>
+                        {# Render remaining fields #}
+                        {% for field in form %}
+                            {% if field.name != 'medication' %}
+                                <div class="mb-3">
+                                    {{ field.label_tag }}
+                                    {{ field|add_class:"form-control" }}
+                                    {% if field.help_text %}<div class="form-text">{{ field.help_text|safe }}</div>{% endif %}
+                                    {% for error in field.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
                         <div class="d-flex flex-wrap gap-2 justify-content-between mt-4">
                             <button type="submit" class="btn btn-primary">{% trans "Save Record" %}</button>
                             <a href="{% url 'pet-details' pk=pet_id %}" class="btn btn-secondary">{% trans "Finish Adding Treatments" %}</a>
@@ -96,37 +96,25 @@
     const dateInput = document.getElementById("id_date");
     const validUntilInput = document.getElementById("id_valid_until");
     const customInputWrapper = document.getElementById("custom-medication-wrapper");
-    const fieldsWrapper = document.getElementById("medication-fields");
 
     function updateNotesAndInterval() {
         const selectedOption = medicationSelect.options[medicationSelect.selectedIndex];
         const isCustom = selectedOption.value === "custom";
-        const hasSelection = selectedOption.value !== "";
-
-        // Show/hide the rest of the form fields
-        fieldsWrapper.style.display = hasSelection ? "block" : "none";
-
-        if (!hasSelection) {
-            notesDiv.style.display = "none";
-            customInputWrapper.style.display = "none";
-            validUntilInput.value = "";
-            return;
-        }
-
         const notes = selectedOption.getAttribute("data-notes");
         const interval = parseInt(selectedOption.getAttribute("data-interval"));
 
         if (isCustom) {
-            customInputWrapper.style.display = "block";
             notesDiv.style.display = "none";
-            validUntilInput.value = "";
+            customInputWrapper.style.display = "block";
+            validUntilInput.value = ""; // clear date
         } else {
             customInputWrapper.style.display = "none";
             if (notes) {
-                notesDiv.textContent = notes;
                 notesDiv.style.display = "block";
+                notesDiv.textContent = notes;
             } else {
                 notesDiv.style.display = "none";
+                notesDiv.textContent = "";
             }
 
             if (interval && dateInput.value) {
@@ -140,7 +128,6 @@
     function updateValidUntilOnDateChange() {
         const selectedOption = medicationSelect.options[medicationSelect.selectedIndex];
         const interval = parseInt(selectedOption.getAttribute("data-interval"));
-
         if (interval && dateInput.value && selectedOption.value !== "custom") {
             const selectedDate = new Date(dateInput.value);
             selectedDate.setDate(selectedDate.getDate() + interval);

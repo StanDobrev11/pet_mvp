@@ -81,13 +81,14 @@ msgstr "Добре дошли"
 To help manage untranslated and fuzzy strings, you can extract only untranslated and fuzzy entries from your `.po` file using:
 
 ```sh
-msgattrib --untranslated --fuzzy -o untranslated.po locale/bg/LC_MESSAGES/django.po
+msgattrib --untranslated -o untranslated.po django.po        
+msgattrib --fuzzy -o untranslated.po django.po   
 ```
 
 You can then merge translations back using:
 
 ```sh
-msgcat locale/bg/LC_MESSAGES/django.po untranslated.po --use-first -o locale/bg/LC_MESSAGES/django.po
+msgcat django.po untranslated.po --use-first -o django.po
 ```
 
 #### 3. Compiling Messages

@@ -1,72 +1,199 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
 {% load i18n %}
-
 {% block content %}
-<section class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="p-4 border rounded bg-light">
-                <h3 class="mb-3">{% trans "Add Vaccination Record" %}</h3>
-                <p class="text-danger">
-                    {% trans "This can be done only once. No editing or deleting of the vaccination record is possible." %}
-                </p>
-                <p class="text-muted">
-                    {% trans "Ensure proper and correct data is entered." %}
-                </p>
-
-                {% if messages %}
-                    <div class="mb-3">
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                                {{ message }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        {% endfor %}
+    <section class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="p-4 border rounded bg-light">
+                    <h3 class="mb-3 text-center">{% trans "Add Vaccination Record" %}</h3>
+                    <div class="alert alert-warning">
+                        <p class="mb-1">{% trans "This form is used to record a vaccine that has already been administered to your pet." %}</p>
+                        <p class="mb-1">{% trans "Once saved, vaccination records cannot be edited or deleted." %}</p>
+                        <p class="mb-1">
+                            {% trans "The 'Valid Until' date is automatically calculated based on the selected vaccine's recommended interval and the vaccination date you provide." %}
+                        </p>
+                        <p class="mb-1">
+                            {% trans "If the vaccine is not listed, select 'Other (specify)' and enter the name manually in the provided field." %}
+                        </p>
+                        <p class="mb-1">
+                            {% trans "The 'Valid From' field will be auto-filled only for rabies vaccines (21 days after vaccination)." %}
+                        </p>
+                        <p class="mb-0">
+                            {% trans "Make sure all the information is accurate before saving, especially the vaccine name and administration date." %}
+                        </p>
                     </div>
-                {% endif %}
-
-                <form action="{% url 'vaccine-record-add' %}?pet_id={{ pet_id }}" method="post">
-                    {% csrf_token %}
-
-                    {# Put the vaccine type (first field) at the top #}
-                    {% if form.vaccine %}
+                    {% if messages %}
                         <div class="mb-3">
-                            {{ form.vaccine.label_tag }}
-                            {{ form.vaccine|add_class:"form-select" }}
-                            {% if form.vaccine.help_text %}
-                                <div class="form-text">{{ form.vaccine.help_text|safe }}</div>
-                            {% endif %}
-                            {% for error in form.vaccine.errors %}
-                                <div class="text-danger">{{ error }}</div>
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show"
+                                     role="alert">
+                                    {{ message }}
+                                    <button type="button"
+                                            class="btn-close"
+                                            data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                </div>
                             {% endfor %}
                         </div>
                     {% endif %}
-
-                    {# Render the rest of the fields, excluding vaccine #}
-                    {% for field in form %}
-                        {% if field.name != 'vaccine' %}
-                            <div class="mb-3">
-                                {{ field.label_tag }}
-                                {{ field|add_class:"form-control" }}
-                                {% if field.help_text %}
-                                    <div class="form-text">{{ field.help_text|safe }}</div>
-                                {% endif %}
-                                {% for error in field.errors %}
-                                    <div class="text-danger">{{ error }}</div>
+                    <form action="{% url 'vaccine-record-add' %}?pet_id={{ pet_id }}"
+                          method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="id_vaccine">{{ form.fields.vaccine.label }}</label>
+                            <select name="vaccine" id="id_vaccine" class="form-select">
+                                <option value="">{% trans "Select Vaccine" %}</option>
+                                {% for vaccine in form.fields.vaccine.queryset %}
+                                    <option value="{{ vaccine.pk }}"
+                                            data-notes="{{ vaccine.notes|escape }}"
+                                            data-interval="{{ vaccine.recommended_interval_days }}"
+                                            data-core-name="{{ vaccine.name_en|lower }}">{{ vaccine.name }}</option>
                                 {% endfor %}
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-
-                    <div class="d-flex flex-wrap gap-2 justify-content-between mt-4">
-                        <button type="submit" class="btn btn-primary">{% trans "Save Record" %}</button>
-                        <button type="reset" class="btn btn-outline-secondary">{% trans "Clear Fields" %}</button>
-                        <a href="{% url 'vaccine-record-stop' %}?pet_id={{ pet_id }}" class="btn btn-secondary">{% trans "Finish Adding Vaccines" %}</a>
-                    </div>
-                </form>
+                                <option value="custom">{{ _("Other (specify)") }}</option>
+                            </select>
+                        </div>
+                        <div class="mb-3" id="custom-vaccine-wrapper" style="display: none;">
+                            <label for="id_custom_vaccine">{{ _("Custom Vaccine Name") }}</label>
+                            <input type="text"
+                                   name="custom_vaccine"
+                                   id="id_custom_vaccine"
+                                   class="form-control"
+                                   placeholder="{% trans 'Enter custom vaccine name' %}">
+                        </div>
+                        <div id="vaccine-notes" class="alert alert-info" style="display: none;"></div>
+                        {% for field in form %}
+                            {% if field.name != 'vaccine' and field.name != 'custom_vaccine' %}
+                                <div class="mb-3 field-wrapper" id="field-{{ field.name }}">
+                                    {{ field.label_tag }}
+                                    {{ field|add_class:"form-control" }}
+                                    {% if field.help_text %}<div class="form-text">{{ field.help_text|safe }}</div>{% endif %}
+                                    {% for error in field.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        <div class="d-flex flex-wrap gap-2 justify-content-between mt-4">
+                            <button type="submit" class="btn btn-primary">{% trans "Save Record" %}</button>
+                            <a href="{% url 'vaccine-record-stop' %}?pet_id={{ pet_id }}"
+                               class="btn btn-secondary">{% trans "Finish Adding Vaccines" %}</a>
+                            <button type="reset" class="btn btn-outline-secondary">{% trans "Clear Fields" %}</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+    <script>
+    const vaccineSelect = document.getElementById("id_vaccine");
+    const customInputWrapper = document.getElementById("custom-vaccine-wrapper");
+    const notesDiv = document.getElementById("vaccine-notes");
+    const dateInput = document.getElementById("id_date_of_vaccination");
+    const validUntilInput = document.getElementById("id_valid_until");
+    const validFromInput = document.getElementById("id_valid_from");
+    const validFromWrapper = document.getElementById("field-valid_from");
+    const vaccineFieldsWrapper = document.getElementById("vaccine-fields");
+
+    const fieldWrappers = document.querySelectorAll(".field-wrapper");
+
+    // Hide all fields initially (except the select)
+    fieldWrappers.forEach(div => {
+        if (!div.id.includes("vaccine")) {
+            div.style.display = "none";
+        }
+    });
+    customInputWrapper.style.display = "none";
+    notesDiv.style.display = "none";
+    if (validFromWrapper) validFromWrapper.style.display = "none";
+
+    function updateOnVaccineChange() {
+    const selectedOption = vaccineSelect.options[vaccineSelect.selectedIndex];
+    const value = selectedOption.value;
+    const isCustom = value === "custom";
+    const notes = selectedOption.getAttribute("data-notes");
+    const interval = parseInt(selectedOption.getAttribute("data-interval"));
+
+    // If default option is selected (blank), hide everything
+    if (!value) {
+        fieldWrappers.forEach(div => div.style.display = "none");
+        notesDiv.style.display = "none";
+        customInputWrapper.style.display = "none";
+        if (validFromWrapper) validFromWrapper.style.display = "none";
+        validUntilInput.value = "";
+        validFromInput.value = "";
+        return;
+    }
+
+    // Show all fields when a real value is selected
+    fieldWrappers.forEach(div => {
+        if (!div.id.includes("vaccine")) {
+            div.style.display = "block";
+        }
+    });
+
+    // Show/hide custom name input
+    if (isCustom) {
+        customInputWrapper.style.display = "block";
+        notesDiv.style.display = "none";
+        validUntilInput.value = "";
+        validFromInput.value = "";
+        if (validFromWrapper) validFromWrapper.style.display = "none";
+    } else {
+        customInputWrapper.style.display = "none";
+
+        // Show notes
+        if (notes) {
+            notesDiv.textContent = notes;
+            notesDiv.style.display = "block";
+        } else {
+            notesDiv.style.display = "none";
+        }
+
+        // Set valid until
+        if (interval && dateInput.value) {
+            const d = new Date(dateInput.value);
+            d.setDate(d.getDate() + interval - 1);
+            validUntilInput.value = d.toISOString().split("T")[0];
+        }
+
+        // Handle rabies
+        const vaccineCoreName = selectedOption.getAttribute("data-core-name") || "";
+        if (/rabies/i.test(vaccineCoreName) && dateInput.value) {
+            const rabiesDate = new Date(dateInput.value);
+            rabiesDate.setDate(rabiesDate.getDate() + 21);
+            validFromInput.value = rabiesDate.toISOString().split("T")[0];
+            if (validFromWrapper) validFromWrapper.style.display = "block";
+        } else {
+            validFromInput.value = "";
+            if (validFromWrapper) validFromWrapper.style.display = "none";
+        }
+    }
+}
+
+    function updateValidUntilFromDate() {
+        const selectedOption = vaccineSelect.options[vaccineSelect.selectedIndex];
+        const interval = parseInt(selectedOption.getAttribute("data-interval"));
+        if (!selectedOption || selectedOption.value === "custom") return;
+
+        if (interval && dateInput.value) {
+            const d = new Date(dateInput.value);
+            d.setDate(d.getDate() + interval - 1);
+            validUntilInput.value = d.toISOString().split("T")[0];
+        }
+
+        // Rabies valid from
+        const vaccineName = selectedOption.textContent.toLowerCase();
+        if (vaccineName.includes("rabies") && dateInput.value) {
+            const rabiesDate = new Date(dateInput.value);
+            rabiesDate.setDate(rabiesDate.getDate() + 21);
+            validFromInput.value = rabiesDate.toISOString().split("T")[0];
+            if (validFromWrapper) validFromWrapper.style.display = "block";
+        } else {
+            validFromInput.value = "";
+            if (validFromWrapper) validFromWrapper.style.display = "none";
+        }
+    }
+
+    vaccineSelect.addEventListener("change", updateOnVaccineChange);
+    dateInput.addEventListener("change", updateValidUntilFromDate);
+    </script>
 {% endblock %}

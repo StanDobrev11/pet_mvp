@@ -10,19 +10,6 @@ from pet_mvp.pets.models import Pet
 
 
 class VaccinationRecord(TimeStampMixin):
-    batch_number = models.CharField(
-        max_length=50,
-        verbose_name=_('Batch number')
-    )
-
-    manufacturer = models.CharField(
-        max_length=50,
-        verbose_name=_('Manufacturer'),
-    )
-
-    manufacture_date = models.DateField(
-        verbose_name=_('Manufacture date')
-    )
 
     date_of_vaccination = models.DateField(
         verbose_name=_('Date of vaccination'),
@@ -38,6 +25,20 @@ class VaccinationRecord(TimeStampMixin):
 
     valid_until = models.DateField(
         verbose_name=_('Valid until')
+    )
+
+    manufacturer = models.CharField(
+        max_length=50,
+        verbose_name=_('Manufacturer'),
+    )
+
+    manufacture_date = models.DateField(
+        verbose_name=_('Manufacture date')
+    )
+
+    batch_number = models.CharField(
+        max_length=50,
+        verbose_name=_('Batch number')
     )
 
     pet = models.ForeignKey(
@@ -56,17 +57,17 @@ class VaccinationRecord(TimeStampMixin):
 
 
 class MedicationRecord(TimeStampMixin):
-    
+
     date = models.DateField(
         verbose_name=_('Date of intake'),
         default=datetime.date.today,
     )
- 
+
     valid_until = models.DateField(
         verbose_name=_('Valid Until'),
         help_text=_('Specify valid until date')
     )
-    
+
     time = models.TimeField(
         verbose_name=_('Time of intake'),
         help_text=_('Time of intake'),
@@ -80,13 +81,13 @@ class MedicationRecord(TimeStampMixin):
         help_text=_('Specify dosage, if different from reccomended'),
         blank=True,
     )
-    
+
     manufacturer = models.CharField(
         max_length=50,
         verbose_name=_('Manufacturer'),
         blank=True
     )
-    
+
     pet = models.ForeignKey(
         to=Pet,
         on_delete=models.CASCADE,
@@ -113,7 +114,8 @@ class MedicalExaminationRecord(TimeStampMixin):
         choices=EXAM_TYPE_CHOICES,
         default='primary',
         verbose_name=_('Examination Type'),
-        help_text=_('Indicates whether this is an initial examination or a follow-up')
+        help_text=_(
+            'Indicates whether this is an initial examination or a follow-up')
     )
 
     date_of_entry = models.DateField(
@@ -152,7 +154,8 @@ class MedicalExaminationRecord(TimeStampMixin):
 
     body_condition_score = models.IntegerField(
         verbose_name=_('Body Condition Score (1-9)'),
-        help_text=_('Assessment of body condition (1 = underweight, 9 = obese)'),
+        help_text=_(
+            'Assessment of body condition (1 = underweight, 9 = obese)'),
         blank=True,
         null=True
     )

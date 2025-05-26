@@ -1,3 +1,4 @@
+from datetime import timedelta
 from sys import prefix
 
 from pet_mvp.drugs.models import Vaccine, Drug, FecalTest, UrineTest, BloodTest
@@ -10,25 +11,62 @@ from django.utils.translation import gettext_lazy as _
 class VaccinationRecordForm(forms.ModelForm):
     class Meta:
         model = VaccinationRecord
-        # Exclude the `pet` field, it will be assigned automatically
         exclude = ['pet']
-        widgets = {
-            'manufacture_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'date_of_vaccination': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'valid_until': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'valid_from': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-        }
 
-    vaccine = forms.ModelChoiceField(
-        queryset=Vaccine.objects.all(),
-        label=_('Select Vaccine'),
-        widget=forms.Select(
-            attrs={
-                'class': 'form-control',
-            }
-        ),
-    )
+    def __init__(self, *args, pet=None, **kwargs):
+        super().__init__(*args, **kwargs)
 
+        # Filter vaccines by species if pet is given
+        if pet:
+            species = pet.species if hasattr(pet, 'species') else pet
+            self.fields['vaccine'].queryset = Vaccine.objects.filter(
+                suitable_for=species.lower()
+            )
+        else:
+            self.fields['vaccine'].queryset = Vaccine.objects.none()
+
+        self.fields['vaccine'].label = _('Select Vaccine')
+        self.fields['vaccine'].widget.attrs.update({
+            'class': 'form-control',
+            'id': 'id_vaccine',
+        })
+
+        # Style all fields and set help texts
+        for field_name in self.fields:
+            field = self.fields[field_name]
+
+            if field_name in ['date_of_vaccination']:
+                field.widget = forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+                field.help_text = _('Date of vaccination')
+            elif field_name == 'valid_until':
+                field.widget = forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+                field.help_text = _('Valid until date')
+            elif field_name == 'manufacture_date':
+                field.widget = forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+                field.help_text = _('Manufacture date')
+            elif field_name == 'valid_from':
+                field.widget = forms.DateInput(attrs={
+                    'type': 'date',
+                    'class': 'form-control',
+                    'readonly': 'readonly',
+                    'style': 'background-color: #e9ecef; cursor: not-allowed;',
+                })
+                field.help_text = _('This field is automatically filled for Rabies vaccine (21 days after vaccination).')
+            elif field_name != 'vaccine':
+                placeholder = self._meta.model._meta.get_field(field_name).verbose_name
+                field.widget.attrs.update({
+                    'class': 'form-control',
+                    'placeholder': str(placeholder).capitalize()
+                })
+    def clean(self):
+        cleaned_data = super().clean()
+        vaccine = cleaned_data.get("vaccine")
+        date_of_vaccination = cleaned_data.get("date_of_vaccination")
+
+        if vaccine and "rabies" in vaccine.name.lower() and date_of_vaccination:
+            cleaned_data["valid_from"] = date_of_vaccination + timedelta(days=21)
+
+        return cleaned_data
 
 class MedicationRecordForm(forms.ModelForm):
     class Meta:

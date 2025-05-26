@@ -56,6 +56,11 @@ class BaseRecordAddView(views.CreateView, ABC):
             "Record saved. You can now add another."))
         return super().form_valid(form)
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['pet'] = self.get_pet()
+        return kwargs
+
 
 class VaccineRecordAddView(BaseRecordAddView):
     model = VaccinationRecord
@@ -86,11 +91,6 @@ class TreatmentRecordAddView(BaseRecordAddView):
         pet = self.get_pet()
         base_url = reverse('treatment-record-add')
         return f"{base_url}?pet_id={pet.pk}"
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['pet'] = self.get_pet()
-        return kwargs
 
 
 class BaseStopAddingRecordsView(views.View, ABC):
