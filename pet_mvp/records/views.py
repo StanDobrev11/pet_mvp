@@ -93,6 +93,10 @@ class TreatmentRecordAddView(BaseRecordAddView):
     def get_pet_attribute(self, pet, value=None):
         return pet.can_add_treatments
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['pet'] = self.get_pet()
+        return kwargs
 
 class BaseStopAddingRecordsView(views.View, ABC):
 

@@ -2,66 +2,92 @@
 {% load widget_tweaks %}
 {% load i18n %}
 {% block content %}
-    <section class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="p-4 border rounded bg-light">
-                    <h3 class="mb-3">{% trans "Add Medication / Treatment Record" %}</h3>
-                    <div class="alert alert-warning">
-                        <p class="mb-1">
-                            {% trans "This form is used to record a treatment or medication that has already been administered to your pet." %}
-                        </p>
-                        <p class="mb-1">
-                            {% trans "You can add multiple treatment records over time, but each individual entry is final and cannot be edited or deleted after submission." %}
-                        </p>
-                        <p class="mb-0">{% trans "Make sure the information is accurate before saving." %}</p>
+<section class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="p-4 border rounded bg-light">
+                <h3 class="mb-3">{% trans "Add Medication / Treatment Record" %}</h3>
+
+                <div class="alert alert-warning">
+                    <p class="mb-1">{% trans "This form is used to record a treatment or medication that has already been administered to your pet." %}</p>
+                    <p class="mb-1">{% trans "You can add multiple treatment records over time, but each individual entry is final and cannot be edited or deleted after submission." %}</p>
+                    <p class="mb-0">{% trans "Make sure the information is accurate before saving." %}</p>
+                </div>
+
+                {% if messages %}
+                    <div class="mb-3">
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
                     </div>
-                    {% if messages %}
-                        <div class="mb-3">
-                            {% for message in messages %}
-                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show"
-                                     role="alert">
-                                    {{ message }}
-                                    <button type="button"
-                                            class="btn-close"
-                                            data-bs-dismiss="alert"
-                                            aria-label="Close"></button>
-                                </div>
+                {% endif %}
+
+                <form action="{% url 'treatment-record-add' %}?pet_id={{ pet_id }}" method="post">
+                    {% csrf_token %}
+
+                    {# Custom rendering for the medication field with data-notes #}
+                    <div class="mb-3">
+                        <label for="id_medication">{{ form.fields.medication.label }}</label>
+                        <select name="medication" id="id_medication" class="form-select">
+                            <option value="">{{ _('Select a treatment') }}</option>
+                            {% for drug in form.fields.medication.queryset %}
+                                <option value="{{ drug.pk }}" data-notes="{{ drug.notes|escape }}">{{ drug.name }}</option>
                             {% endfor %}
-                        </div>
-                    {% endif %}
-                    <form action="{% url 'treatment-record-add' %}?pet_id={{ pet_id }}"
-                          method="post">
-                        {% csrf_token %}
-                        {# Move treatment/medication field to the top #}
-                        {% if form.medication %}
+                        </select>
+                        <div class="form-text">{{ form.fields.medication.help_text }}</div>
+                        {% for error in form.medication.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    {# Notes preview #}
+                    <div id="medication-notes" class="alert alert-info" style="display: none;"></div>
+
+                    {# Render remaining fields #}
+                    {% for field in form %}
+                        {% if field.name != 'medication' %}
                             <div class="mb-3">
-                                {{ form.medication.label_tag }}
-                                {{ form.medication|add_class:"form-select" }}
-                                {% if form.medication.help_text %}<div class="form-text">{{ form.medication.help_text|safe }}</div>{% endif %}
-                                {% for error in form.medication.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                                {{ field.label_tag }}
+                                {{ field|add_class:"form-control" }}
+                                {% if field.help_text %}
+                                    <div class="form-text">{{ field.help_text|safe }}</div>
+                                {% endif %}
+                                {% for error in field.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
                             </div>
                         {% endif %}
-                        {# Render other fields below #}
-                        {% for field in form %}
-                            {% if field.name != 'medication' %}
-                                <div class="mb-3">
-                                    {{ field.label_tag }}
-                                    {{ field|add_class:"form-control" }}
-                                    {% if field.help_text %}<div class="form-text">{{ field.help_text|safe }}</div>{% endif %}
-                                    {% for error in field.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                        <div class="d-flex flex-wrap gap-2 justify-content-between mt-4">
-                            <button type="submit" class="btn btn-primary">{% trans "Save Record" %}</button>
-                            <button type="reset" class="btn btn-outline-secondary">{% trans "Clear Fields" %}</button>
-                            <a href="{% url 'treatment-record-stop' %}?pet_id={{ pet_id }}"
-                               class="btn btn-secondary">{% trans "Finish Adding Treatments" %}</a>
-                        </div>
-                    </form>
-                </div>
+                    {% endfor %}
+
+                    <div class="d-flex flex-wrap gap-2 justify-content-between mt-4">
+                        <button type="submit" class="btn btn-primary">{% trans "Save Record" %}</button>
+                        <button type="reset" class="btn btn-outline-secondary">{% trans "Clear Fields" %}</button>
+                        <a href="{% url 'treatment-record-stop' %}?pet_id={{ pet_id }}" class="btn btn-secondary">{% trans "Finish Adding Treatments" %}</a>
+                    </div>
+                </form>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
+<script>
+    const medicationSelect = document.getElementById("id_medication");
+    const notesDiv = document.getElementById("medication-notes");
+
+    medicationSelect.addEventListener("change", function () {
+        const selectedOption = this.options[this.selectedIndex];
+        const notes = selectedOption.getAttribute("data-notes");
+
+        if (notes) {
+            notesDiv.style.display = "block";
+            notesDiv.textContent = notes;
+        } else {
+            notesDiv.style.display = "none";
+            notesDiv.textContent = "";
+        }
+    });
+</script>
 {% endblock %}

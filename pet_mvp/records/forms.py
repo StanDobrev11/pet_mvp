@@ -33,49 +33,37 @@ class VaccinationRecordForm(forms.ModelForm):
 class MedicationRecordForm(forms.ModelForm):
     class Meta:
         model = MedicationRecord
-        # Exclude the `pet` field, it will be assigned automatically
         exclude = ['pet']
         
 
-    medication = forms.ModelChoiceField(
-        queryset=Drug.objects.all(),
-        label=_('Select Medication/Treatment'),
-        widget=forms.Select(
-            attrs={
-                'class': 'form-control',
-            }
-        ),
-    )
-    
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, pet=None, **kwargs):
         super().__init__(*args, **kwargs)
-        
+
+        if pet:
+            species = pet.species if hasattr(pet, 'species') else pet  # assume string if not model
+            self.fields['medication'].queryset = Drug.objects.filter(suitable_for=species.lower())
+        else:
+            self.fields['medication'].queryset = Drug.objects.none()
+
+        self.fields['medication'].label = _('Select Medication/Treatment')
+        self.fields['medication'].widget.attrs.update({'class': 'form-control', 'id': 'id_medication'})
+
         for field_name in self.fields:
             field = self.fields[field_name]
-            
             if field_name == 'date':
                 field.widget = forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
                 field.help_text = _('Date of treatment')
+            elif field_name == 'valid_until':
+                field.widget = forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+                field.help_text = _('Valid until date')
             elif field_name == 'time':
                 field.widget = forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'})
                 field.help_text = _('Time of treatment')
             else:
-                placeholder = self._meta.model._meta.get_field(
-                    field_name).verbose_name
-                field.widget.attrs['placeholder'] = str(
-                    placeholder).capitalize()
+                placeholder = self._meta.model._meta.get_field(field_name).verbose_name
+                field.widget.attrs['placeholder'] = str(placeholder).capitalize()
 
 
-    # widgets = {
-        #     'manufacturer': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Manufacturer name'}),
-        #     'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control', }),
-        #     'time': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control', }),
-        #     'dosage': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g. 5mg twice a day'}),
-        #     'valid_until': forms.DateInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': 'Valid until date'}),
-        #     'medication': forms.Select(attrs={'class': 'form-select', }),
-        # }
-
-        
         
 class BloodTestForm(forms.ModelForm):
     class Meta:

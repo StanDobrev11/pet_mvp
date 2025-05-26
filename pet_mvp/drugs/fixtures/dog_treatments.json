@@ -6,9 +6,9 @@
             "name": "Drontal Puppy",
             "name_en": "Drontal Puppy",
             "name_bg": "Дронтал Пъпи",
-            "notes": "Targets roundworms, hookworms, and whipworms. Keeps puppy and family safe from internal parasites.",
-            "notes_en": "Targets roundworms, hookworms, and whipworms. Keeps puppy and family safe from internal parasites.",
-            "notes_bg": "Действа срещу кръгли червеи, анкилостоми и камшичести червеи. Предпазва кученцето и семейството от вътрешни паразити.",
+            "notes": "Targets roundworms, hookworms, and whipworms. Keeps puppy and family safe from internal parasites. Recommended intake interval: every 30 days.",
+            "notes_en": "Targets roundworms, hookworms, and whipworms. Keeps puppy and family safe from internal parasites. Recommended intake interval: every 30 days.",
+            "notes_bg": "Действа срещу кръгли червеи, анкилостоми и камшичести червеи. Предпазва кученцето и семейството от вътрешни паразити. Препоръчителен интервал на прием: на всеки 30 дни.",
             "recommended_interval_days": 30,
             "suitable_for": "dog"
         }
@@ -20,9 +20,9 @@
             "name": "Panacur",
             "name_en": "Panacur",
             "name_bg": "Панакур",
-            "notes": "Effective against roundworms, hookworms, tapeworms, and whipworms in dogs and puppies.",
-            "notes_en": "Effective against roundworms, hookworms, tapeworms, and whipworms in dogs and puppies.",
-            "notes_bg": "Ефективен срещу кръгли червеи, анкилостоми, тении и камшичести червеи при кучета и кученца.",
+            "notes": "Effective against roundworms, hookworms, tapeworms, and whipworms in dogs and puppies. Recommended intake interval: every 30 days.",
+            "notes_en": "Effective against roundworms, hookworms, tapeworms, and whipworms in dogs and puppies. Recommended intake interval: every 30 days.",
+            "notes_bg": "Ефективен срещу кръгли червеи, анкилостоми, тении и камшичести червеи при кучета и кученца. Препоръчителен интервал на прием: на всеки 30 дни.",
             "recommended_interval_days": 30,
             "suitable_for": "dog"
         }
@@ -34,9 +34,9 @@
             "name": "Interceptor Plus",
             "name_en": "Interceptor Plus",
             "name_bg": "Интерцептор Плюс",
-            "notes": "Protects against heartworms, tapeworms, hookworms, and roundworms. A monthly chewable tablet for dogs.",
-            "notes_en": "Protects against heartworms, tapeworms, hookworms, and roundworms. A monthly chewable tablet for dogs.",
-            "notes_bg": "Предпазва от сърдечни червеи, тении, анкилостоми и кръгли червеи. Месечна дъвчаща таблетка за кучета.",
+            "notes": "Protects against heartworms, tapeworms, hookworms, and roundworms. A monthly chewable tablet for dogs. Recommended intake interval: every 30 days.",
+            "notes_en": "Protects against heartworms, tapeworms, hookworms, and roundworms. A monthly chewable tablet for dogs. Recommended intake interval: every 30 days.",
+            "notes_bg": "Предпазва от сърдечни червеи, тении, анкилостоми и кръгли червеи. Месечна дъвчаща таблетка за кучета. Препоръчителен интервал на прием: на всеки 30 дни.",
             "recommended_interval_days": 30,
             "suitable_for": "dog"
         }
@@ -48,9 +48,9 @@
             "name": "Frontline Plus",
             "name_en": "Frontline Plus",
             "name_bg": "Фронтлайн Плюс",
-            "notes": "Topical treatment protecting dogs from fleas, ticks, and lice. Apply monthly for prevention.",
-            "notes_en": "Topical treatment protecting dogs from fleas, ticks, and lice. Apply monthly for prevention.",
-            "notes_bg": "Локално лечение, предпазващо кучетата от бълхи, кърлежи и въшки. Прилагайте месечно за превенция.",
+            "notes": "Topical treatment protecting dogs from fleas, ticks, and lice. Apply monthly for prevention. Recommended intake interval: every 30 days.",
+            "notes_en": "Topical treatment protecting dogs from fleas, ticks, and lice. Apply monthly for prevention. Recommended intake interval: every 30 days.",
+            "notes_bg": "Локално лечение, предпазващо кучетата от бълхи, кърлежи и въшки. Прилагайте месечно за превенция. Препоръчителен интервал на прием: на всеки 30 дни.",
             "recommended_interval_days": 30,
             "suitable_for": "dog"
         }
@@ -62,9 +62,9 @@
             "name": "Advantix",
             "name_en": "Advantix",
             "name_bg": "Адвантикс",
-            "notes": "Protects against fleas, ticks, mosquitoes, and biting flies. External spot-on treatment for dogs.",
-            "notes_en": "Protects against fleas, ticks, mosquitoes, and biting flies. External spot-on treatment for dogs.",
-            "notes_bg": "Предпазва от бълхи, кърлежи, комари и хапещи мухи. Външно локално лечение за кучета.",
+            "notes": "Protects against fleas, ticks, mosquitoes, and biting flies. External spot-on treatment for dogs. Recommended intake interval: every 30 days.",
+            "notes_en": "Protects against fleas, ticks, mosquitoes, and biting flies. External spot-on treatment for dogs. Recommended intake interval: every 30 days.",
+            "notes_bg": "Предпазва от бълхи, кърлежи, комари и хапещи мухи. Външно локално лечение за кучета. Препоръчителен интервал на прием: на всеки 30 дни.",
             "recommended_interval_days": 30,
             "suitable_for": "dog"
         }
@@ -76,9 +76,9 @@
             "name": "NexGard",
             "name_en": "NexGard",
             "name_bg": "НексГард",
-            "notes": "Chewable tablet for dogs that kills fleas and ticks. Monthly dosage recommended.",
-            "notes_en": "Chewable tablet for dogs that kills fleas and ticks. Monthly dosage recommended.",
-            "notes_bg": "Дъвчаща таблетка за кучета, която убива бълхи и кърлежи. Препоръчва се месечна доза.",
+            "notes": "Chewable tablet for dogs that kills fleas and ticks. Monthly dosage recommended. Recommended intake interval: every 30 days.",
+            "notes_en": "Chewable tablet for dogs that kills fleas and ticks. Monthly dosage recommended. Recommended intake interval: every 30 days.",
+            "notes_bg": "Дъвчаща таблетка за кучета, която убива бълхи и кърлежи. Препоръчва се месечна доза. Препоръчителен интервал на прием: на всеки 30 дни.",
             "recommended_interval_days": 30,
             "suitable_for": "dog"
         }
@@ -90,9 +90,9 @@
             "name": "Thyro-Tabs",
             "name_en": "Thyro-Tabs",
             "name_bg": "Тиро-Табс",
-            "notes": "Used for treating hypothyroidism in dogs. Provides levothyroxine replacement therapy.",
-            "notes_en": "Used for treating hypothyroidism in dogs. Provides levothyroxine replacement therapy.",
-            "notes_bg": "Използва се за лечение на хипотиреоидизъм при кучета. Осигурява заместителна терапия с левотироксин.",
+            "notes": "Used for treating hypothyroidism in dogs. Provides levothyroxine replacement therapy. Recommended intake interval: every 30 days.",
+            "notes_en": "Used for treating hypothyroidism in dogs. Provides levothyroxine replacement therapy. Recommended intake interval: every 30 days.",
+            "notes_bg": "Използва се за лечение на хипотиреоидизъм при кучета. Осигурява заместителна терапия с левотироксин. Препоръчителен интервал на прием: на всеки 30 дни.",
             "recommended_interval_days": 30,
             "suitable_for": "dog"
         }
@@ -104,9 +104,9 @@
             "name": "Vetoryl",
             "name_en": "Vetoryl",
             "name_bg": "Веторил",
-            "notes": "Used for treating hyperadrenocorticism (Cushing's disease) in dogs.",
-            "notes_en": "Used for treating hyperadrenocorticism (Cushing's disease) in dogs.",
-            "notes_bg": "Използва се за лечение на хиперадренокортицизъм (болест на Кушинг) при кучета.",
+            "notes": "Used for treating hyperadrenocorticism (Cushing's disease) in dogs. Recommended intake interval: every 30 days.",
+            "notes_en": "Used for treating hyperadrenocorticism (Cushing's disease) in dogs. Recommended intake interval: every 30 days.",
+            "notes_bg": "Използва се за лечение на хиперадренокортицизъм (болест на Кушинг) при кучета. Препоръчителен интервал на прием: на всеки 30 дни.",
             "recommended_interval_days": 30,
             "suitable_for": "dog"
         }
@@ -118,9 +118,9 @@
             "name": "Carprofen (Rimadyl)",
             "name_en": "Carprofen (Rimadyl)",
             "name_bg": "Карпрофен (Римадил)",
-            "notes": "Commonly used as an anti-inflammatory and pain-relief drug for dogs with arthritis or after surgery.",
-            "notes_en": "Commonly used as an anti-inflammatory and pain-relief drug for dogs with arthritis or after surgery.",
-            "notes_bg": "Често се използва като противовъзпалително и обезболяващо лекарство за кучета с артрит или след операция.",
+            "notes": "Commonly used as an anti-inflammatory and pain-relief drug for dogs with arthritis or after surgery. Recommended intake interval: every 30 days.",
+            "notes_en": "Commonly used as an anti-inflammatory and pain-relief drug for dogs with arthritis or after surgery. Recommended intake interval: every 30 days.",
+            "notes_bg": "Често се използва като противовъзпалително и обезболяващо лекарство за кучета с артрит или след операция. Препоръчителен интервал на прием: на всеки 30 дни.",
             "recommended_interval_days": 30,
             "suitable_for": "dog"
         }
@@ -132,9 +132,9 @@
             "name": "Apoquel",
             "name_en": "Apoquel",
             "name_bg": "Апоквел",
-            "notes": "Provides relief for dogs from itching and inflammation associated with allergies.",
-            "notes_en": "Provides relief for dogs from itching and inflammation associated with allergies.",
-            "notes_bg": "Осигурява облекчение за кучета от сърбеж и възпаление, свързани с алергии.",
+            "notes": "Provides relief for dogs from itching and inflammation associated with allergies. Recommended intake interval: every 30 days.",
+            "notes_en": "Provides relief for dogs from itching and inflammation associated with allergies. Recommended intake interval: every 30 days.",
+            "notes_bg": "Осигурява облекчение за кучета от сърбеж и възпаление, свързани с алергии. Препоръчителен интервал на прием: на всеки 30 дни.",
             "recommended_interval_days": 30,
             "suitable_for": "dog"
         }
