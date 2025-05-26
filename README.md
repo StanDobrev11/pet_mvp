@@ -78,10 +78,10 @@ msgid "Welcome"
 msgstr "Добре дошли"
 ```
 
-To help manage untranslated strings, you can extract only untranslated entries from your `.po` file using:
+To help manage untranslated and fuzzy strings, you can extract only untranslated and fuzzy entries from your `.po` file using:
 
 ```sh
-msgattrib --untranslated -o untranslated.po locale/bg/LC_MESSAGES/django.po
+msgattrib --untranslated --fuzzy -o untranslated.po locale/bg/LC_MESSAGES/django.po
 ```
 
 You can then merge translations back using:
