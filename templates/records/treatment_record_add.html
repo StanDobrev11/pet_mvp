@@ -2,110 +2,133 @@
 {% load widget_tweaks %}
 {% load i18n %}
 {% block content %}
-<section class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="p-4 border rounded bg-light">
-                <h3 class="mb-3 text-center">{% trans "Add Medication / Treatment Record" %}</h3>
-
-                <div class="alert alert-warning">
-                    <p class="mb-1">{% trans "This form is used to record a treatment or medication that has already been administered to your pet." %}</p>
-                    <p class="mb-1">{% trans "You can add multiple treatment records over time, but each individual entry is final and cannot be edited or deleted after submission." %}</p>
-                    <p class="mb-0">{% trans "Make sure the information is accurate before saving." %}</p>
-                </div>
-
-                {% if messages %}
-                    <div class="mb-3">
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                                {{ message }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        {% endfor %}
+    <section class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="p-4 border rounded bg-light">
+                    <h3 class="mb-3 text-center">{% trans "Add Medication / Treatment Record" %}</h3>
+                    <div class="alert alert-warning">
+                        <p class="mb-1">
+                            {% trans "This form is used to record a treatment or medication that has already been administered to your pet." %}
+                        </p>
+                        <p class="mb-1">
+                            {% trans "You can add multiple treatment records over time, but each individual entry is final and cannot be edited or deleted after submission." %}
+                        </p>
+                        <p class="mb-1">
+                            {% trans "The 'Valid Until' date is automatically calculated based on the selected medication's recommended interval and the intake date you provide." %}
+                        </p>
+                        <p class="mb-1">
+                            {% trans "If the medication or treatment is not listed in the dropdown, select 'Other (specify)' and enter the name manually in the provided field." %}
+                        </p>
+                        <p class="mb-1">
+                            {% trans "Notifications will be sent automatically to remind you before the medication expires: one week in advance and again one day before expiration." %}
+                        </p>
+                        <p class="mb-0">
+                            {% trans "Make sure all the information is accurate before saving, especially the medication name and date of administration." %}
+                        </p>
                     </div>
-                {% endif %}
-
-                <form action="{% url 'treatment-record-add' %}?pet_id={{ pet_id }}" method="post">
-                    {% csrf_token %}
-
-                    {# Custom rendering for the medication field with data-notes and data-interval #}
-                    <div class="mb-3">
-                        <label for="id_medication">{{ form.fields.medication.label }}</label>
-                        <select name="medication" id="id_medication" class="form-select">
-                            <option value="">{{ _('Select a treatment') }}</option>
-                            {% for drug in form.fields.medication.queryset %}
-                                <option value="{{ drug.pk }}"
-                                        data-notes="{{ drug.notes|escape }}"
-                                        data-interval="{{ drug.recommended_interval_days }}">{{ drug.name }}</option>
+                    {% if messages %}
+                        <div class="mb-3">
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show"
+                                     role="alert">
+                                    {{ message }}
+                                    <button type="button"
+                                            class="btn-close"
+                                            data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                </div>
                             {% endfor %}
-                        </select>
-                        <div class="form-text">{{ form.fields.medication.help_text }}</div>
-                        {% for error in form.medication.errors %}
-                            <div class="text-danger">{{ error }}</div>
-                        {% endfor %}
-                    </div>
-
-                    {# Notes preview #}
-                    <div id="medication-notes" class="alert alert-info" style="display: none;"></div>
-
-                    {# Render remaining fields #}
-                    {% for field in form %}
-                        {% if field.name != 'medication' %}
-                            <div class="mb-3">
-                                {{ field.label_tag }}
-                                {{ field|add_class:"form-control" }}
-                                {% if field.help_text %}
-                                    <div class="form-text">{{ field.help_text|safe }}</div>
-                                {% endif %}
-                                {% for error in field.errors %}
-                                    <div class="text-danger">{{ error }}</div>
+                        </div>
+                    {% endif %}
+                    <form action="{% url 'treatment-record-add' %}?pet_id={{ pet_id }}"
+                          method="post">
+                        {% csrf_token %}
+                        {# Custom rendering for the medication field with data-notes and data-interval #}
+                        <div class="mb-3">
+                            <label for="id_medication">{{ form.fields.medication.label }}</label>
+                            <select name="medication" id="id_medication" class="form-select">
+                                <option value="">{{ _("Select a treatment") }}</option>
+                                {% for drug in form.fields.medication.queryset %}
+                                    <option value="{{ drug.pk }}"
+                                            data-notes="{{ drug.notes|escape }}"
+                                            data-interval="{{ drug.recommended_interval_days }}">
+                                        {{ drug.name }}
+                                    </option>
                                 {% endfor %}
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-
-                    <div class="d-flex flex-wrap gap-2 justify-content-between mt-4">
-                        <button type="submit" class="btn btn-primary">{% trans "Save Record" %}</button>
-                        <button type="reset" class="btn btn-outline-secondary">{% trans "Clear Fields" %}</button>
-                        <a href="{% url 'treatment-record-stop' %}?pet_id={{ pet_id }}" class="btn btn-secondary">{% trans "Finish Adding Treatments" %}</a>
-                    </div>
-                </form>
+                                <option value="custom">{{ _("Other (specify)") }}</option>
+                            </select>
+                        </div>
+                        <div class="mb-3" id="custom-medication-wrapper" style="display: none;">
+                            <label for="id_custom_medication">{{ _("Custom Medication Name") }}</label>
+                            <input type="text"
+                                   name="custom_medication"
+                                   id="id_custom_medication"
+                                   class="form-control"
+                                   placeholder="{% trans 'Enter custom medication name' %}">
+                        </div>
+                        {# Notes preview #}
+                        <div id="medication-notes" class="alert alert-info" style="display: none;"></div>
+                        {# Render remaining fields #}
+                        {% for field in form %}
+                            {% if field.name != 'medication' %}
+                                <div class="mb-3">
+                                    {{ field.label_tag }}
+                                    {{ field|add_class:"form-control" }}
+                                    {% if field.help_text %}<div class="form-text">{{ field.help_text|safe }}</div>{% endif %}
+                                    {% for error in field.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        <div class="d-flex flex-wrap gap-2 justify-content-between mt-4">
+                            <button type="submit" class="btn btn-primary">{% trans "Save Record" %}</button>
+                            <a href="{% url 'pet-details' pk=pet_id %}" class="btn btn-secondary">{% trans "Finish Adding Treatments" %}</a>
+                            <button type="reset" class="btn btn-outline-secondary">{% trans "Clear Fields" %}</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</section>
-
-<script>
+    </section>
+    <script>
     const medicationSelect = document.getElementById("id_medication");
     const notesDiv = document.getElementById("medication-notes");
     const dateInput = document.getElementById("id_date");
     const validUntilInput = document.getElementById("id_valid_until");
+    const customInputWrapper = document.getElementById("custom-medication-wrapper");
 
     function updateNotesAndInterval() {
         const selectedOption = medicationSelect.options[medicationSelect.selectedIndex];
+        const isCustom = selectedOption.value === "custom";
         const notes = selectedOption.getAttribute("data-notes");
         const interval = parseInt(selectedOption.getAttribute("data-interval"));
 
-        if (notes) {
-            notesDiv.style.display = "block";
-            notesDiv.textContent = notes;
-        } else {
+        if (isCustom) {
             notesDiv.style.display = "none";
-            notesDiv.textContent = "";
-        }
+            customInputWrapper.style.display = "block";
+            validUntilInput.value = ""; // clear date
+        } else {
+            customInputWrapper.style.display = "none";
+            if (notes) {
+                notesDiv.style.display = "block";
+                notesDiv.textContent = notes;
+            } else {
+                notesDiv.style.display = "none";
+                notesDiv.textContent = "";
+            }
 
-        // Trigger valid_until update if date is selected
-        if (interval && dateInput.value) {
-            const selectedDate = new Date(dateInput.value);
-            selectedDate.setDate(selectedDate.getDate() + interval);
-            validUntilInput.value = selectedDate.toISOString().split('T')[0];
+            if (interval && dateInput.value) {
+                const selectedDate = new Date(dateInput.value);
+                selectedDate.setDate(selectedDate.getDate() + interval);
+                validUntilInput.value = selectedDate.toISOString().split('T')[0];
+            }
         }
     }
 
     function updateValidUntilOnDateChange() {
         const selectedOption = medicationSelect.options[medicationSelect.selectedIndex];
         const interval = parseInt(selectedOption.getAttribute("data-interval"));
-        if (interval && dateInput.value) {
+        if (interval && dateInput.value && selectedOption.value !== "custom") {
             const selectedDate = new Date(dateInput.value);
             selectedDate.setDate(selectedDate.getDate() + interval);
             validUntilInput.value = selectedDate.toISOString().split('T')[0];
@@ -114,5 +137,5 @@
 
     medicationSelect.addEventListener("change", updateNotesAndInterval);
     dateInput.addEventListener("change", updateValidUntilOnDateChange);
-</script>
+    </script>
 {% endblock %}

@@ -1,0 +1,75 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans "Treatment Expiration Notice" %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .content {
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+        }
+        .highlight {
+            color: #388E3C;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{% trans "Treatment Expiration Notice" %}</h1>
+        </div>
+        <div class="content">
+            <p>{% trans "Dear Pet Owner," %}</p>
+            <p>
+                {% blocktrans with pet_name=pet_name %}
+                    This is a reminder about your pet <strong>{{ pet_name }}</strong>'s treatment schedule.
+                {% endblocktrans %}
+            </p>
+
+            <p>
+                {% blocktrans with medication=medication pet_name=pet_name time_left=time_left expiration_date=expiration_date %}
+                    The <strong>{{ medication }}</strong> treatment for {{ pet_name }} is due to expire in <span class="highlight">{{ time_left }}</span> (on <strong>{{ expiration_date }}</strong>).
+                {% endblocktrans %}
+            </p>
+
+            {% if time_left != "today" and time_left != "tomorrow" %}
+                <p>{% trans "Please plan the next treatment or consult your veterinarian to continue proper care." %}</p>
+            {% else %}
+                <p>{% trans "This treatment will expire very soon. Please take action to keep your pet on schedule." %}</p>
+            {% endif %}
+
+            <p>{% trans "Staying on top of treatments is crucial to your pet’s ongoing health." %}</p>
+
+            <p>{% trans "Thank you for your attention and for caring for your pet!" %}</p>
+            <p>{% trans "Best regards," %}<br>{% trans "The Pet MVP Team" %}</p>
+        </div>
+        <div class="footer">
+            <p>{% trans "This is an automated message. Please do not reply to this email." %}</p>
+        </div>
+    </div>
+</body>
+</html>

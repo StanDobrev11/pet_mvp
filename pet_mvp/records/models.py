@@ -83,7 +83,8 @@ class MedicationRecord(TimeStampMixin):
     
     manufacturer = models.CharField(
         max_length=50,
-        verbose_name=_('Manufacturer')
+        verbose_name=_('Manufacturer'),
+        blank=True
     )
     
     pet = models.ForeignKey(

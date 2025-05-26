@@ -7,53 +7,83 @@ from django.utils.translation import gettext_lazy as _
 
 from pet_mvp.notifications.email_service import EmailService
 
+
 UserModel = get_user_model()
 
 
 @shared_task
-def send_vaccine_expiration_notifications():
+def send_treatment_expiration_notifications():
     """
-    Periodic task to send vaccine expiration notifications
-    Checks for vaccines expiring in 4 weeks, 2 weeks, 1 week, and on the expiration date
-    This can be scheduled via Celery Beat
+    Periodic task to send treatment expiration notifications.
+    Sends notifications 7 days and 1 day before the 'valid_until' date.
     """
-    from pet_mvp.records.models import VaccinationRecord
+    from pet_mvp.records.models import MedicationRecord
 
     today = timezone.now().date()
 
-    # Define notification intervals
     intervals = {
-        'four_weeks': today + timedelta(days=28),
-        'two_weeks': today + timedelta(days=14),
         'one_week': today + timedelta(days=7),
-        'expiration_day': today
+        'one_day': today + timedelta(days=1),
     }
 
     notifications_sent = 0
 
     for interval_name, check_date in intervals.items():
-        # Find vaccination records that expire on the check date
-        expiring_vaccinations = VaccinationRecord.objects.filter(
+        expiring_treatments = MedicationRecord.objects.filter(
             valid_until=check_date
         )
 
-        for record in expiring_vaccinations:
+        for record in expiring_treatments:
+            owners = record.pet.owners.all()
 
-            # for each expiring vaccine, send email on the language set as default
-            owners = [owner for owner in record.pet.owners.all()]
+            time_left = _("1 week") if interval_name == "one_week" else _(
+                "tomorrow")
 
-            # Prepare notification message based on interval
-            if interval_name == 'four_weeks':
-                time_left = _("4 weeks")
-            elif interval_name == 'two_weeks':
-                time_left = _("2 weeks")
-            elif interval_name == 'one_week':
-                time_left = _("1 week")
-            else:  # expiration_day
-                time_left = _("today")
-
-            # Send expiration notification email for each owner
             for owner in owners:
+                EmailService.send_template_email_async.delay(
+                    subject=_("Treatment Expiration Reminder for {}").format(
+                        record.pet.name),
+                    to_email=owner.email,
+                    template_name="emails/treatment_expiration_notification.html",
+                    context={
+                        "pet_name": record.pet.name,
+                        "medication": record.medication.name,
+                        "expiration_date": record.valid_until,
+                        "time_left": time_left,
+                        "lang": owner.default_language,
+                    }
+                )
+                notifications_sent += 1
+
+    return _("Processed {} treatment expiration notifications").format(notifications_sent)
+
+
+@shared_task
+def send_vaccine_expiration_notifications():
+    """
+    Periodic task to send vaccine expiration notifications.
+    Checks for vaccines expiring in 4 weeks, 2 weeks, 1 week, and 1 day before expiration.
+    Intended to be scheduled via Celery Beat.
+    """
+    from pet_mvp.records.models import VaccinationRecord
+
+    today = timezone.now().date()
+
+    intervals = {
+        'four_weeks': (today + timedelta(days=28), _("4 weeks")),
+        'two_weeks': (today + timedelta(days=14), _("2 weeks")),
+        'one_week': (today + timedelta(days=7), _("1 week")),
+        'one_day': (today + timedelta(days=1), _("tomorrow")),
+    }
+
+    notifications_sent = 0
+
+    for label, (check_date, time_left) in intervals.items():
+        expiring_vaccinations = VaccinationRecord.objects.filter(
+            valid_until=check_date)
+
+        for record in expiring_vaccinations:
+            for owner in record.pet.owners.all():
                 EmailService.send_template_email_async.delay(
                     subject=_("Vaccine Expiration Notice for {}").format(
                         record.pet.name),
@@ -67,7 +97,6 @@ def send_vaccine_expiration_notifications():
                         "lang": owner.default_language,
                     }
                 )
-
                 notifications_sent += 1
 
     return _("Processed {} vaccine expiration notifications").format(notifications_sent)

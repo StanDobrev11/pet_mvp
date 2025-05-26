@@ -125,10 +125,10 @@
                             <p>
                                 <strong>{% trans "No treatment records" %}</strong>
                             </p>
-                            {% if user.is_owner %}
-                                <a href="{% url 'treatment-record-add' %}?pet_id={{ pet.id }}"
-                                   class="btn btn-sm btn-secondary">{% trans "Add Treatment Record" %}</a>
-                            {% endif %}
+                        {% endif %}
+                        {% if user.is_owner %}
+                            <a href="{% url 'treatment-record-add' %}?pet_id={{ pet.id }}"
+                               class="btn btn-sm btn-secondary">{% trans "Add Treatment Record" %}</a>
                         {% endif %}
                     </div>
                 </div>

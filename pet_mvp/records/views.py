@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.db import transaction
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views import generic as views
 from django.utils.translation import gettext_lazy as _
 
@@ -44,12 +44,6 @@ class BaseRecordAddView(views.CreateView, ABC):
     def get_pet(self):
         return get_object_or_404(Pet, pk=self.request.GET.get('pet_id'))
 
-    def dispatch(self, request, *args, **kwargs):
-        pet = self.get_pet()
-        if request.user in pet.owners.all() and not self.get_pet_attribute(pet):
-            return HttpResponseForbidden(_("You can no longer add records for this pet."))
-        return super().dispatch(request, *args, **kwargs)
-
     def get_context_data(self, **kwargs):
         pet = self.get_pet()
         context = super().get_context_data(**kwargs)
@@ -58,18 +52,21 @@ class BaseRecordAddView(views.CreateView, ABC):
 
     def form_valid(self, form):
         form.instance.pet = self.get_pet()
-        messages.success(self.request, _("Vaccine record saved. You can now add another."))
+        messages.success(self.request, _(
+            "Record saved. You can now add another."))
         return super().form_valid(form)
-
-    @abstractmethod
-    def get_pet_attribute(self, pet, value=None):
-        pass
 
 
 class VaccineRecordAddView(BaseRecordAddView):
     model = VaccinationRecord
     template_name = 'records/vaccine_record_add.html'
     form_class = VaccinationRecordForm
+
+    def dispatch(self, request, *args, **kwargs):
+        pet = self.get_pet()
+        if request.user in pet.owners.all() and not self.get_pet_attribute(pet):
+            return HttpResponseForbidden(_("You can no longer add records for this pet."))
+        return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         pet = self.get_pet()
@@ -87,16 +84,14 @@ class TreatmentRecordAddView(BaseRecordAddView):
 
     def get_success_url(self):
         pet = self.get_pet()
-        base_url = reverse_lazy('treatment-record-add')
+        base_url = reverse('treatment-record-add')
         return f"{base_url}?pet_id={pet.pk}"
-
-    def get_pet_attribute(self, pet, value=None):
-        return pet.can_add_treatments
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['pet'] = self.get_pet()
         return kwargs
+
 
 class BaseStopAddingRecordsView(views.View, ABC):
 
@@ -116,13 +111,6 @@ class StopVaccineAdditionsView(BaseStopAddingRecordsView):
 
     def set_pet_attribute(self, pet, value):
         pet.can_add_vaccines = value
-
-
-class StopTreatmentAdditionsView(BaseStopAddingRecordsView):
-
-    def set_pet_attribute(self, pet, value):
-        pass
-        # pet.can_add_treatments = value
 
 
 class ExaminationDetailsView(views.DetailView):
@@ -150,7 +138,7 @@ class MedicalExaminationReportCreateView(views.FormView):
         pet_id = self.request.GET.get('id')
 
         if pet_id is None:
-            pet_id = self.request.POST.get('id')          
+            pet_id = self.request.POST.get('id')
         return get_object_or_404(Pet, pk=pet_id)
 
     def get_context_data(self, **kwargs):

@@ -219,4 +219,8 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'pet_mvp.notifications.tasks.send_vaccine_expiration_notifications',
         'schedule': crontab(hour=7, minute=0),  # runs daily at 07:00 AM
     },
+    'send-treatment-expiration-notifications-daily': {
+        'task': 'pet_mvp.notifications.tasks.send_treatment_expiration_notifications',
+        'schedule': crontab(hour=7, minute=30),  # runs daily at 07:30 AM
+    },
 }
