@@ -1,7 +1,3 @@
-from pet_mvp.accounts.models import Clinic
-from pet_mvp.records.models import VaccinationRecord, MedicationRecord, MedicalExaminationRecord
-from pet_mvp.drugs.models import Vaccine, Drug, BloodTest, UrineTest, FecalTest
-from pet_mvp.pets.models import Pet, Transponder, Tattoo
 import os
 from datetime import datetime, timedelta
 
@@ -15,6 +11,10 @@ from django.utils.timezone import make_aware
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pet_mvp.settings')
 django.setup()
 
+from pet_mvp.accounts.models import Clinic
+from pet_mvp.records.models import VaccinationRecord, MedicationRecord, MedicalExaminationRecord
+from pet_mvp.drugs.models import Vaccine, Drug, BloodTest, UrineTest, FecalTest
+from pet_mvp.pets.models import Pet, Transponder, Tattoo
 
 UserModel = get_user_model()
 
