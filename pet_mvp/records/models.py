@@ -56,18 +56,20 @@ class VaccinationRecord(TimeStampMixin):
 
 
 class MedicationRecord(TimeStampMixin):
-    manufacturer = models.CharField(
-        max_length=50,
-        verbose_name=_('Manufacturer')
-    )
-
+    
     date = models.DateField(
-        verbose_name=_('Date'),
+        verbose_name=_('Date of intake'),
         default=datetime.date.today,
     )
-
+ 
+    valid_until = models.DateField(
+        verbose_name=_('Valid Until'),
+        help_text=_('Specify valid until date')
+    )
+    
     time = models.TimeField(
-        help_text=_('Time'),
+        verbose_name=_('Time of intake'),
+        help_text=_('Time of intake'),
         null=True,
         blank=True,
     )
@@ -75,15 +77,15 @@ class MedicationRecord(TimeStampMixin):
     dosage = models.CharField(
         max_length=50,
         verbose_name=_('Dosage'),
-        help_text=_('Specify dosage, e.g. "5mg twice a day"')
+        help_text=_('Specify dosage, if different from reccomended'),
+        blank=True,
     )
-
-    valid_until = models.DateField(
+    
+    manufacturer = models.CharField(
         max_length=50,
-        verbose_name=_('Valid Until'),
-        help_text=_('Specify valid until date')
+        verbose_name=_('Manufacturer')
     )
-
+    
     pet = models.ForeignKey(
         to=Pet,
         on_delete=models.CASCADE,

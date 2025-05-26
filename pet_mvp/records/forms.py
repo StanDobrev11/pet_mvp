@@ -35,7 +35,6 @@ class MedicationRecordForm(forms.ModelForm):
         model = MedicationRecord
         exclude = ['pet']
         
-
     def __init__(self, *args, pet=None, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -52,13 +51,13 @@ class MedicationRecordForm(forms.ModelForm):
             field = self.fields[field_name]
             if field_name == 'date':
                 field.widget = forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
-                field.help_text = _('Date of treatment')
+                field.help_text = _('Date of intake')
             elif field_name == 'valid_until':
                 field.widget = forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
                 field.help_text = _('Valid until date')
             elif field_name == 'time':
                 field.widget = forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'})
-                field.help_text = _('Time of treatment')
+                field.help_text = _('Time of intake')
             else:
                 placeholder = self._meta.model._meta.get_field(field_name).verbose_name
                 field.widget.attrs['placeholder'] = str(placeholder).capitalize()

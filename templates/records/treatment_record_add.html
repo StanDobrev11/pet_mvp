@@ -6,7 +6,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="p-4 border rounded bg-light">
-                <h3 class="mb-3">{% trans "Add Medication / Treatment Record" %}</h3>
+                <h3 class="mb-3 text-center">{% trans "Add Medication / Treatment Record" %}</h3>
 
                 <div class="alert alert-warning">
                     <p class="mb-1">{% trans "This form is used to record a treatment or medication that has already been administered to your pet." %}</p>
@@ -28,13 +28,15 @@
                 <form action="{% url 'treatment-record-add' %}?pet_id={{ pet_id }}" method="post">
                     {% csrf_token %}
 
-                    {# Custom rendering for the medication field with data-notes #}
+                    {# Custom rendering for the medication field with data-notes and data-interval #}
                     <div class="mb-3">
                         <label for="id_medication">{{ form.fields.medication.label }}</label>
                         <select name="medication" id="id_medication" class="form-select">
                             <option value="">{{ _('Select a treatment') }}</option>
                             {% for drug in form.fields.medication.queryset %}
-                                <option value="{{ drug.pk }}" data-notes="{{ drug.notes|escape }}">{{ drug.name }}</option>
+                                <option value="{{ drug.pk }}"
+                                        data-notes="{{ drug.notes|escape }}"
+                                        data-interval="{{ drug.recommended_interval_days }}">{{ drug.name }}</option>
                             {% endfor %}
                         </select>
                         <div class="form-text">{{ form.fields.medication.help_text }}</div>
@@ -76,10 +78,13 @@
 <script>
     const medicationSelect = document.getElementById("id_medication");
     const notesDiv = document.getElementById("medication-notes");
+    const dateInput = document.getElementById("id_date");
+    const validUntilInput = document.getElementById("id_valid_until");
 
-    medicationSelect.addEventListener("change", function () {
-        const selectedOption = this.options[this.selectedIndex];
+    function updateNotesAndInterval() {
+        const selectedOption = medicationSelect.options[medicationSelect.selectedIndex];
         const notes = selectedOption.getAttribute("data-notes");
+        const interval = parseInt(selectedOption.getAttribute("data-interval"));
 
         if (notes) {
             notesDiv.style.display = "block";
@@ -88,6 +93,26 @@
             notesDiv.style.display = "none";
             notesDiv.textContent = "";
         }
-    });
+
+        // Trigger valid_until update if date is selected
+        if (interval && dateInput.value) {
+            const selectedDate = new Date(dateInput.value);
+            selectedDate.setDate(selectedDate.getDate() + interval);
+            validUntilInput.value = selectedDate.toISOString().split('T')[0];
+        }
+    }
+
+    function updateValidUntilOnDateChange() {
+        const selectedOption = medicationSelect.options[medicationSelect.selectedIndex];
+        const interval = parseInt(selectedOption.getAttribute("data-interval"));
+        if (interval && dateInput.value) {
+            const selectedDate = new Date(dateInput.value);
+            selectedDate.setDate(selectedDate.getDate() + interval);
+            validUntilInput.value = selectedDate.toISOString().split('T')[0];
+        }
+    }
+
+    medicationSelect.addEventListener("change", updateNotesAndInterval);
+    dateInput.addEventListener("change", updateValidUntilOnDateChange);
 </script>
 {% endblock %}
