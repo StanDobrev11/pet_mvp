@@ -8,6 +8,26 @@
     }
 
     label.form-label {
-    display: none !important;
-  }
+        display: none !important;
+    }
+
+    .card.mb-4 {
+        text-align: center;
+    }
+
+    .center-button {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        /* optional spacing between buttons */
+        margin-top: 1rem;
+    }
+
+    .center-button a {
+        width: 100%;
+        /* optional: make buttons full width */
+        max-width: 300px;
+    }
 }
