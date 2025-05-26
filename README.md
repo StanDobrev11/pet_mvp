@@ -48,16 +48,24 @@ This project supports multiple languages using Django's internationalization fra
 
 To extract messages from your code and templates for translation, run:
 
-```
-python manage.py makemessages -l bg
+```sh
+python manage.py makemessages -l bg -i venv -i .venv -i node_modules -i staticfiles -i media
 ```
 
-This will create or update the `.po` file for Bulgarian in the `locale/bg/LC_MESSAGES/` directory.
+This will create or update the `.po` file for Bulgarian at:
+```
+locale/bg/LC_MESSAGES/django.po
+```
 
 For JavaScript files, use:
 
+```sh
+python manage.py makemessages -d djangojs -l bg -i venv -i .venv -i node_modules -i staticfiles -i media
 ```
-python manage.py makemessages -d djangojs -l bg
+
+This will create or update:
+```
+locale/bg/LC_MESSAGES/djangojs.po
 ```
 
 #### 2. Translating Messages
@@ -70,24 +78,36 @@ msgid "Welcome"
 msgstr "Добре дошли"
 ```
 
+To help manage untranslated strings, you can extract only untranslated entries from your `.po` file using:
+
+```sh
+msgattrib --untranslated -o untranslated.po locale/bg/LC_MESSAGES/django.po
+```
+
+You can then merge translations back using:
+
+```sh
+msgcat locale/bg/LC_MESSAGES/django.po untranslated.po --use-first -o locale/bg/LC_MESSAGES/django.po
+```
+
 #### 3. Compiling Messages
 
 After translating the messages, compile them into `.mo` files:
 
-```
-python manage.py compilemessages
+```sh
+python manage.py compilemessages -l bg
 ```
 
-This creates binary `.mo` files that Django uses for translations at runtime.
+This creates binary `.mo` files that Django uses for translations at runtime, in the same `locale/bg/LC_MESSAGES/` directory.
 
 #### 4. Adding New Languages
 
 To add support for a new language:
 
 1. Add the language to the `LANGUAGES` list in `settings.py`
-2. Run `python manage.py makemessages -l bg` to create the `.po` file
-3. Translate the messages in the `.po` file
-4. Compile the messages with `python manage.py compilemessages`
+2. Run `python manage.py makemessages -l <lang_code>` to create the `.po` file (e.g., `python manage.py makemessages -l de`)
+3. Translate the messages in the `.po` file at `locale/<lang_code>/LC_MESSAGES/django.po`
+4. Compile the messages with `python manage.py compilemessages -l <lang_code>`
 
 ## Email Service Setup with Brevo and Celery
 
