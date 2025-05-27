@@ -33,7 +33,7 @@ class TreatmentNotificationTestCase(TestCase):
             species='Cat',
             breed='Siamese',
             sex='female',
-            date_of_birth=timezone.now().date() - timedelta(days=500),
+            date_of_birth=timezone.now().date() - timedelta(days=500), 
             color='Grey',
             features='Testing treatment',
             current_weight=5.0,
