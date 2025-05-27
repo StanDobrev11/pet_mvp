@@ -94,13 +94,13 @@ class VaccineNotificationTestCase(TestCase):
         )
 
         # Record expiring today
-        self.record_today = VaccinationRecord.objects.create(
-            batch_number='TEST-TODAY',
+        self.record_tomorrow = VaccinationRecord.objects.create(
+            batch_number='TEST-TOMORROW',
             manufacturer='Test Manufacturer',
             manufacture_date=self.today - timedelta(days=30),
             date_of_vaccination=self.today - timedelta(days=7),
             valid_from=self.today - timedelta(days=7),
-            valid_until=self.today,
+            valid_until=self.today + timedelta(days=1),
             pet=self.test_pet,
             vaccine=self.test_vaccine
         )
@@ -127,10 +127,10 @@ class VaccineNotificationTestCase(TestCase):
             time_left_values.append(kwargs['context']['time_left'])
 
         # Check that we have one notification for each time interval
-        self.assertIn("4 weeks", time_left_values)
-        self.assertIn("2 weeks", time_left_values)
-        self.assertIn("1 week", time_left_values)
-        self.assertIn("today", time_left_values)
+        self.assertIn("in 4 weeks", time_left_values)
+        self.assertIn("in 2 weeks", time_left_values)
+        self.assertIn("in 1 week", time_left_values)
+        self.assertIn("tomorrow", time_left_values)
 
     def test_run_task_manually(self):
         """Test running the task manually (for demonstration purposes)."""

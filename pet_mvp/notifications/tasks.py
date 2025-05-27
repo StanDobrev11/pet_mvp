@@ -36,9 +36,8 @@ def send_treatment_expiration_notifications():
         for record in expiring_treatments:
             owners = record.pet.owners.all()
 
-            time_left = _("1 week") if interval_name == "one_week" else _(
-                "tomorrow")
-
+            time_left = _("in 1 week") if interval_name == 'one_week' else _("tomorrow")
+            
             for owner in owners:
                 EmailService.send_template_email_async.delay(
                     subject=_("Treatment Expiration Reminder for {}").format(
@@ -70,9 +69,9 @@ def send_vaccine_expiration_notifications():
     today = timezone.now().date()
 
     intervals = {
-        'four_weeks': (today + timedelta(days=28), _("4 weeks")),
-        'two_weeks': (today + timedelta(days=14), _("2 weeks")),
-        'one_week': (today + timedelta(days=7), _("1 week")),
+        'four_weeks': (today + timedelta(days=28), _("in 4 weeks")),
+        'two_weeks': (today + timedelta(days=14), _("in 2 weeks")),
+        'one_week': (today + timedelta(days=7), _("in 1 week")),
         'one_day': (today + timedelta(days=1), _("tomorrow")),
     }
 

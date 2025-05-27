@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-26 17:47+0000\n"
+"POT-Creation-Date: 2025-05-27 14:08+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -347,74 +347,74 @@ msgstr "Наличие на кръв в изпражненията"
 msgid "Indicates if blood was found in the sample"
 msgstr "Показва дали е открита кръв в пробата"
 
-#: .\pet_mvp\notifications\tasks.py:39 .\pet_mvp\notifications\tasks.py:75
-msgid "1 week"
-msgstr "1 седмица"
+#: .\pet_mvp\notifications\tasks.py:39 .\pet_mvp\notifications\tasks.py:74
+msgid "in 1 week"
+msgstr "след 1 седмица"
 
-#: .\pet_mvp\notifications\tasks.py:40 .\pet_mvp\notifications\tasks.py:76
+#: .\pet_mvp\notifications\tasks.py:39 .\pet_mvp\notifications\tasks.py:75
 msgid "tomorrow"
 msgstr "утре"
 
-#: .\pet_mvp\notifications\tasks.py:44
+#: .\pet_mvp\notifications\tasks.py:43
 msgid "Treatment Expiration Reminder for {}"
 msgstr "Напомняне за изтичане на лечение за {}"
 
-#: .\pet_mvp\notifications\tasks.py:58
+#: .\pet_mvp\notifications\tasks.py:57
 msgid "Processed {} treatment expiration notifications"
 msgstr "Обработени {} известия за изтичане на лечение"
 
+#: .\pet_mvp\notifications\tasks.py:72
+msgid "in 4 weeks"
+msgstr "след 4 седмици"
+
 #: .\pet_mvp\notifications\tasks.py:73
-msgid "4 weeks"
-msgstr "4 седмици"
+msgid "in 2 weeks"
+msgstr "след 2 седмици"
 
-#: .\pet_mvp\notifications\tasks.py:74
-msgid "2 weeks"
-msgstr "2 седмици"
-
-#: .\pet_mvp\notifications\tasks.py:88
+#: .\pet_mvp\notifications\tasks.py:87
 msgid "Vaccine Expiration Notice for {}"
 msgstr "Известие за изтичане на ваксина за {}"
 
-#: .\pet_mvp\notifications\tasks.py:102
+#: .\pet_mvp\notifications\tasks.py:101
 msgid "Processed {} vaccine expiration notifications"
 msgstr "Обработени {} известия за изтичане на ваксини"
 
-#: .\pet_mvp\notifications\tasks.py:113 .\pet_mvp\notifications\tasks.py:149
-#: .\pet_mvp\notifications\tasks.py:155 .\pet_mvp\notifications\tasks.py:157
+#: .\pet_mvp\notifications\tasks.py:112 .\pet_mvp\notifications\tasks.py:148
+#: .\pet_mvp\notifications\tasks.py:154 .\pet_mvp\notifications\tasks.py:156
 msgid "N/A"
 msgstr "Не е приложимо"
 
-#: .\pet_mvp\notifications\tasks.py:156
+#: .\pet_mvp\notifications\tasks.py:155
 #: .\templates\emails\medical_report_email.html:177
 #: .\templates\partials\fecal_test_card.html:13
 #: .\templates\partials\fecal_test_card.html:19
 msgid "Yes"
 msgstr "Да"
 
-#: .\pet_mvp\notifications\tasks.py:156
+#: .\pet_mvp\notifications\tasks.py:155
 #: .\templates\emails\medical_report_email.html:179
 #: .\templates\partials\fecal_test_card.html:13
 #: .\templates\partials\fecal_test_card.html:19
 msgid "No"
 msgstr "Не"
 
-#: .\pet_mvp\notifications\tasks.py:175
+#: .\pet_mvp\notifications\tasks.py:174
 msgid "Medical Examination Report for {} - {}"
 msgstr "Медицински преглед за {} - {}"
 
-#: .\pet_mvp\notifications\tasks.py:183
+#: .\pet_mvp\notifications\tasks.py:182
 msgid "Processed one medical report for {}"
 msgstr "Обработен един медицински доклад за {}"
 
-#: .\pet_mvp\notifications\tasks.py:198
+#: .\pet_mvp\notifications\tasks.py:197
 msgid "Welcome {} {}"
 msgstr "Добре дошли {} {}"
 
-#: .\pet_mvp\notifications\tasks.py:203
+#: .\pet_mvp\notifications\tasks.py:202
 msgid "Sent registration email to {}"
 msgstr "Изпратен медицински доклад за {}"
 
-#: .\pet_mvp\notifications\tasks.py:219
+#: .\pet_mvp\notifications\tasks.py:218
 #: .\templates\emails\pet_add_request_email.html:53
 msgid "Pet Addition Request"
 msgstr "Искане за добавяне на домашен любимец"
@@ -1550,27 +1550,27 @@ msgid "No medication records available."
 msgstr "Няма налични записи за медикаменти."
 
 #: .\templates\emails\medical_report_email.html:197
-#: .\templates\emails\vaccine_expiration_notification.html:67
+#: .\templates\emails\vaccine_expiration_notification.html:71
 msgid "Thank you for taking good care of your pet's health!"
 msgstr ""
 "Благодарим ви, че се грижите добре за здравето на вашия домашен любимец!"
 
 #: .\templates\emails\medical_report_email.html:199
-#: .\templates\emails\treatment_expiration_notification.html:68
-#: .\templates\emails\vaccine_expiration_notification.html:68
+#: .\templates\emails\treatment_expiration_notification.html:69
+#: .\templates\emails\vaccine_expiration_notification.html:73
 msgid "Best regards,"
 msgstr "С най-добри пожелания,"
 
 #: .\templates\emails\medical_report_email.html:201
-#: .\templates\emails\treatment_expiration_notification.html:68
-#: .\templates\emails\vaccine_expiration_notification.html:68
+#: .\templates\emails\treatment_expiration_notification.html:71
+#: .\templates\emails\vaccine_expiration_notification.html:75
 msgid "The Pet MVP Team"
 msgstr "Екипът на Pet MVP"
 
 #: .\templates\emails\medical_report_email.html:205
 #: .\templates\emails\password_reset_email.html:78
 #: .\templates\emails\pet_add_request_email.html:75
-#: .\templates\emails\user_registration_email.html:77
+#: .\templates\emails\user_registration_email.html:82
 msgid ""
 "This is an automated message from My Pet's Passport. Please do not reply to "
 "this email."
@@ -1659,22 +1659,31 @@ msgstr ""
 "домашен любимец <strong>%(pet_name)s</strong>.\n"
 "                "
 
-#: .\templates\emails\treatment_expiration_notification.html:54
+#: .\templates\emails\treatment_expiration_notification.html:53
 #, python-format
 msgid ""
 "\n"
 "                    The <strong>%(medication)s</strong> treatment for "
-"%(pet_name)s is due to expire in <span class=\"highlight\">%(time_left)s</"
-"span> (on <strong>%(expiration_date)s</strong>).\n"
-"                "
+"%(pet_name)s is due to expire \n"
+"                    "
 msgstr ""
 "\n"
 "                    Лечението <strong>%(medication)s</strong> за "
-"%(pet_name)s ще изтече след <span class=\"highlight\">%(time_left)s</span> "
-"(на <strong>%(expiration_date)s</strong>).\n"
-"                "
+"%(pet_name)s е на път да изтече\n"
+"                    "
 
-#: .\templates\emails\treatment_expiration_notification.html:60
+#: .\templates\emails\treatment_expiration_notification.html:57
+#, python-format
+msgid ""
+"\n"
+"                    (on <strong>%(expiration_date)s</strong>)\n"
+"                    "
+msgstr ""
+"\n"
+"                    (на <strong>%(expiration_date)s</strong>)\n"
+"                    "
+
+#: .\templates\emails\treatment_expiration_notification.html:62
 msgid ""
 "Please plan the next treatment or consult your veterinarian to continue "
 "proper care."
@@ -1682,7 +1691,7 @@ msgstr ""
 "Моля, планирайте следващото лечение или се консултирайте с ветеринарния си "
 "лекар, за да осигурите подходяща грижа."
 
-#: .\templates\emails\treatment_expiration_notification.html:62
+#: .\templates\emails\treatment_expiration_notification.html:64
 msgid ""
 "This treatment will expire very soon. Please take action to keep your pet on "
 "schedule."
@@ -1690,7 +1699,7 @@ msgstr ""
 "Това лечение ще изтече съвсем скоро. Моля, вземете необходимите мерки, за да "
 "поддържате графика на вашия домашен любимец."
 
-#: .\templates\emails\treatment_expiration_notification.html:65
+#: .\templates\emails\treatment_expiration_notification.html:66
 msgid "Staying on top of treatments is crucial to your pet’s ongoing health."
 msgstr ""
 "Спазването на лечението е от съществено значение за здравето на вашия "
@@ -1700,8 +1709,8 @@ msgstr ""
 msgid "Thank you for your attention and for caring for your pet!"
 msgstr "Благодарим ви за вниманието и че се грижите за своя домашен любимец!"
 
-#: .\templates\emails\treatment_expiration_notification.html:71
-#: .\templates\emails\vaccine_expiration_notification.html:71
+#: .\templates\emails\treatment_expiration_notification.html:75
+#: .\templates\emails\vaccine_expiration_notification.html:79
 msgid "This is an automated message. Please do not reply to this email."
 msgstr "Това е автоматично съобщение. Моля, не отговаряйте на този имейл."
 
@@ -1729,28 +1738,58 @@ msgstr ""
 "любимци, техните съществуващи ваксини и медикаменти към вашия профил."
 
 #: .\templates\emails\user_registration_email.html:67
+#, fuzzy
+#| msgid ""
+#| "Please note: Once you finish adding your pet's medical history, you will "
+#| "not be able to edit it anymore."
 msgid ""
-"Please note: Once you finish adding your pet's medical history, you will not "
-"be able to edit it anymore."
+"Please note: Once you finish adding your pet's vaccination history, you will "
+"not be able to edit it anymore."
 msgstr ""
 "Моля, имайте предвид: След като приключите с добавянето на медицинската "
 "история на вашия домашен любимец, няма да можете да я редактирате."
 
 #: .\templates\emails\user_registration_email.html:70
+#, fuzzy
+#| msgid ""
+#| "You will receive reminders about vaccine expirations: one month, 14 days, "
+#| "and one week before the expiration date."
 msgid ""
-"You will receive reminders about vaccine expirations: one month, 14 days, "
-"and one week before the expiration date."
+"You will receive automatic reminders before a vaccine expires — 4 weeks, 2 "
+"weeks, and 1 day prior to the expiration date."
+msgstr ""
+"Ще получавате напомняния за изтичане на ваксини: един месец, 14 дни и една "
+"седмица преди датата на изтичане."
+
+#: .\templates\emails\user_registration_email.html:72
+#, fuzzy
+#| msgid ""
+#| "You will receive reminders about vaccine expirations: one month, 14 days, "
+#| "and one week before the expiration date."
+msgid ""
+"You will also receive reminders for treatments — 7 days and 1 day before "
+"their expiration."
 msgstr ""
 "Ще получавате напомняния за изтичане на ваксини: един месец, 14 дни и една "
 "седмица преди датата на изтичане."
 
 #: .\templates\emails\user_registration_email.html:73
 msgid ""
-"You will also be notified whenever a new medical record is created for your "
-"pet after an examination by a doctor."
+"You can request co-ownership of a pet that is already registered with a "
+"passport number."
 msgstr ""
-"Ще бъдете уведомени всеки път, когато бъде създаден нов медицински запис за "
-"вашия домашен любимец след преглед от ветеринарен лекар."
+
+#: .\templates\emails\user_registration_email.html:75
+msgid ""
+"You can generate a secure access code and share it with your veterinarian so "
+"they can add vaccinations, treatments, and medical records directly."
+msgstr ""
+
+#: .\templates\emails\user_registration_email.html:78
+msgid ""
+"After each veterinary examination, you will receive a notification when the "
+"new medical record for your pet is created."
+msgstr ""
 
 #: .\templates\emails\vaccine_expiration_notification.html:6
 #: .\templates\emails\vaccine_expiration_notification.html:43
@@ -1769,21 +1808,31 @@ msgstr ""
 "Това е важно известие относно статуса на ваксинацията на вашия домашен "
 "любимец <strong>%(pet_name)s</strong>."
 
-#: .\templates\emails\vaccine_expiration_notification.html:54
+#: .\templates\emails\vaccine_expiration_notification.html:53
 #, python-format
 msgid ""
 "\n"
 "                    The <strong>%(vaccine)s</strong> vaccine for "
-"%(pet_name)s will expire <span class=\"highlight\">%(time_left)s</span> (on "
-"<strong>%(expiration_date)s</strong>).\n"
-"                "
+"%(pet_name)s is due to expire \n"
+"                    "
 msgstr ""
 "\n"
-"Ваксината <strong>%(vaccine)s</strong> за %(pet_name)s ще изтече <span "
-"class=\"highlight\">%(time_left)s</span> (на <strong>%(expiration_date)s</"
-"strong>)."
+"                    Ваксината <strong>%(vaccine)s</strong> за %(pet_name)s е "
+"на път да изтече\n"
+"                    "
 
-#: .\templates\emails\vaccine_expiration_notification.html:60
+#: .\templates\emails\vaccine_expiration_notification.html:57
+#, python-format
+msgid ""
+"\n"
+"                    (on <strong>%(expiration_date)s</strong>).\n"
+"                    "
+msgstr ""
+"\n"
+"                    (на <strong>%(expiration_date)s</strong>).\n"
+"                    "
+
+#: .\templates\emails\vaccine_expiration_notification.html:63
 msgid ""
 "Please plan to schedule a new vaccination appointment before the current one "
 "expires to ensure your pet remains protected."
@@ -1791,7 +1840,7 @@ msgstr ""
 "Моля, планирайте нова ваксинация преди изтичането на текущата, за да "
 "гарантирате, че вашият домашен любимец остава защитен."
 
-#: .\templates\emails\vaccine_expiration_notification.html:62
+#: .\templates\emails\vaccine_expiration_notification.html:67
 msgid ""
 "The vaccine has expired today. Please schedule a new vaccination appointment "
 "as soon as possible to ensure your pet remains protected."
@@ -1799,7 +1848,7 @@ msgstr ""
 "Ваксината изтече днес. Моля, планирайте нова ваксинация възможно най-скоро, "
 "за да гарантирате, че вашият домашен любимец остава защитен."
 
-#: .\templates\emails\vaccine_expiration_notification.html:65
+#: .\templates\emails\vaccine_expiration_notification.html:70
 msgid ""
 "Keeping vaccinations up to date is essential for your pet's health and "
 "wellbeing."
@@ -2405,11 +2454,9 @@ msgstr "Друго (посочете)"
 msgid "Custom Medication Name"
 msgstr "Име на ръчно въведено лекарство"
 
-
 #: .\templates\records\treatment_record_add.html:69
 msgid "Enter custom medication name"
 msgstr "Въведете име на лекарство"
-
 
 #: .\templates\records\treatment_record_add.html:84
 #: .\templates\records\vaccine_record_add.html:76
@@ -2419,7 +2466,6 @@ msgstr "Запази запис"
 #: .\templates\records\treatment_record_add.html:85
 msgid "Finish Adding Treatments"
 msgstr "Завърши добавянето на лечения"
-
 
 #: .\templates\records\treatment_record_add.html:86
 #: .\templates\records\vaccine_record_add.html:79
@@ -2483,3 +2529,10 @@ msgstr "Въведете име на ваксината"
 #: .\templates\records\vaccine_record_add.html:78
 msgid "Finish Adding Vaccines"
 msgstr "Завърши добавянето на ваксини"
+
+#~ msgid ""
+#~ "You will also be notified whenever a new medical record is created for "
+#~ "your pet after an examination by a doctor."
+#~ msgstr ""
+#~ "Ще бъдете уведомени всеки път, когато бъде създаден нов медицински запис "
+#~ "за вашия домашен любимец след преглед от ветеринарен лекар."
