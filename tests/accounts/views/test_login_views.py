@@ -1,6 +1,7 @@
 from django.test import TestCase, RequestFactory
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from django.contrib.messages import get_messages
 from django.contrib.messages.storage.fallback import FallbackStorage
 from django.contrib.sessions.middleware import SessionMiddleware
 
@@ -53,13 +54,15 @@ class BaseLoginViewTests(TestCase):
         response = self.client.post(url, {
             'username': self.user.email,  # AuthenticationForm expects 'username' field
             'password': 'wrongpassword'
-        })
+        }, follow=True)  # Follow redirects
+
         # Should stay on login page
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'accounts/login.html')
 
         # Should have error message
-        self.assertContains(response, 'Invalid email or password')
+        messages = list(get_messages(response.wsgi_request))
+        self.assertTrue(any("Invalid email or password" in str(m) for m in messages))
 
         # User should not be logged in
         self.assertNotIn('_auth_user_id', self.client.session)
@@ -299,3 +302,75 @@ class AccessCodeEmailViewTests(TestCase):
         # Should have form errors
         self.assertFalse(response.context['form'].is_valid())
         self.assertIn('access_code', response.context['form'].errors)
+
+
+class OwnerDetailsViewTests(TestCase):
+    """
+    Tests for the OwnerDetailsView.
+    """
+
+    def setUp(self):
+        """Set up test data."""
+        # Create a user
+        self.user = UserModel.objects.create_owner(
+            email='owner2@example.com',
+            password='testpass123',
+            first_name='Jane',
+            last_name='Doe',
+            phone_number='0887654321',
+            city='Sofia',
+            country='Bulgaria'
+        )
+
+    def test_owner_details_view(self):
+        """Test owner details view."""
+        url = reverse('owner-details', kwargs={'pk': self.user.pk})
+        self.client.force_login(self.user)
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'accounts/owner_details.html')
+        self.assertContains(response, self.user.first_name)
+        self.assertContains(response, self.user.email)
+
+
+class OwnerEditViewTests(TestCase):
+    """
+    Tests for the OwnerEditView.
+    """
+
+    def setUp(self):
+        """Set up test data."""
+        # Create a user
+        self.user = UserModel.objects.create_owner(
+            email='owner3@example.com',
+            password='testpass123',
+            first_name='Edit',
+            last_name='Me',
+            phone_number='0887654321',
+            city='Sofia',
+            country='Bulgaria'
+        )
+
+    def test_owner_edit_view(self):
+        """Test owner edit view."""
+        url = reverse('owner-edit', kwargs={'pk': self.user.pk})
+        self.client.force_login(self.user)
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'accounts/owner_edit.html')
+
+        # Test post
+        response = self.client.post(url, {
+            'first_name': 'Edited',
+            'last_name': 'Me',
+            'email': self.user.email,
+            'phone_number': self.user.phone_number,
+            'city': self.user.city,
+            'country': self.user.country,
+        }, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.first_name, 'Edited')
+        self.assertTemplateUsed(response, 'accounts/owner_details.html')
