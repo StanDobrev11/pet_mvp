@@ -59,22 +59,18 @@
         <h1>{% trans "Clinic Access Request" %}</h1>
     </div>
     <div class="content">
-        {% blocktrans with owner_name=owner_name clinic_name=clinic_name clinic_email=clinic_email clinic_phone=clinic_phone clinic_city=clinic_city clinic_country=clinic_country pet_name=pet_name approval_url=approval_url %}
+        <p>{% trans "Hello" %} {{ owner_name }},</p>
 
-        Hello {{ owner_name }},
+        <p>{% trans "A veterinary clinic named" %} "{{ clinic_name }}" {% trans "has requested access to your pet" %} "{{ pet_name }}"{% trans "'s medical records." %}</p>
 
-        A veterinary clinic named "{{ clinic_name }}" has requested access to your pet "{{ pet_name }}"'s medical records.
+        <p><strong>{% trans "Clinic details:" %}</strong></p>
+        <p>{% trans "Name:" %} {{ clinic_name }}</p>
+        <p>{% trans "Email:" %} {{ clinic_email }}</p>
+        <p>{% trans "Phone:" %} {{ clinic_phone }}</p>
+        <p>{% trans "City:" %} {{ clinic_city }}</p>
+        <p>{% trans "Country:" %} {{ clinic_country }}</p>
 
-        Clinic details:
-        Name: {{ clinic_name }}
-        Email: {{ clinic_email }}
-        Phone: {{ clinic_phone }}
-        City: {{ clinic_city }}
-        Country: {{ clinic_country }}
-
-        If you approve this request, please click the button below to confirm and grant access.
-
-        {% endblocktrans %}
+        <p>{% trans "If you approve this request, please click the button below to confirm and grant access." %}</p>
 
         <p style="text-align: center;">
             <a href="{{ approval_url }}" class="button">{% trans "Approve Clinic Access" %}</a>

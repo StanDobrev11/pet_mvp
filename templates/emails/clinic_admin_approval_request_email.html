@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>{% trans "Clinic Activation Request" %}</title>
+    <title>{% trans "Clinic Approval Request Notification" %}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -56,24 +56,22 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>{% trans "Clinic Activation Request" %}</h1>
+        <h1>{% trans "Clinic Approval Request" %}</h1>
     </div>
     <div class="content">
-        <p>{% trans "This is an activation email for" %} {{ clinic_name }}.</p>
+        <p>{% trans "A new veterinary clinic has requested access to the system:" %}</p>
 
-        <p><strong>{% trans "Clinic details are as follows:" %}</strong></p>
+        <p><strong>{% trans "Clinic details:" %}</strong></p>
         <p>{% trans "Name:" %} {{ clinic_name }}</p>
-        <p>{% trans "Address:" %} {{ clinic_address }}</p>
-        <p>{% trans "City:" %} {{ city }}</p>
+        <p>{% trans "Email:" %} {{ clinic_email }}</p>
+        <p>{% trans "Phone:" %} {{ clinic_phone }}</p>
+        <p>{% trans "City:" %} {{ clinic_city }}</p>
         <p>{% trans "Country:" %} {{ clinic_country }}</p>
-        <p>{% trans "Phone number:" %} {{ phone_number }}</p>
-        <p>{% trans "Email address:" %} {{ clinic_email }}</p>
 
-        <p>{% trans "If you did not expect this request, you can safely ignore this email." %}</p>
+        <p>{% trans "This clinic was linked to pet" %} "{{ pet_name }}" {% trans "(Owner:" %} {{ owner_name }}{% trans ")." %}</p>
 
-        <p style="text-align: center;">
-            <a href="{{ activation_url }}" class="button">{% trans "Activate Clinic" %}</a>
-        </p>
+        <p>{% trans "Please review and approve the clinic in the admin panel:" %}</p>
+        <p><a href="{{ admin_panel_url }}">{{ admin_panel_url }}</a></p>
     </div>
     <div class="footer">
         <p>{% trans "This is an automated message from My Pet's Passport. Please do not reply to this email." %}</p>

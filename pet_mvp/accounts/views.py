@@ -19,8 +19,8 @@ from django.utils.encoding import force_bytes
 from pet_mvp.accounts.forms import OwnerCreationForm, AccessCodeEmailForm, ClinicRegistrationForm
 # Add import for the edit form if you have one
 # from pet_mvp.accounts.forms import OwnerEditForm
-from pet_mvp.notifications.tasks import send_user_registration_email, send_clinic_approval_request_email, \
-    send_clinic_access_request_email
+from pet_mvp.notifications.tasks import send_user_registration_email, send_clinic_admin_approval_request_email, \
+    send_clinic_owner_access_request_email, send_clinic_activation_email
 from pet_mvp.pets.models import Pet
 
 UserModel = get_user_model()
@@ -68,21 +68,6 @@ class BaseUserRegisterView(views.CreateView):
     def get_success_url(self):
         return self.success_url
 
-    def form_valid(self, form):
-        """
-        All new user with never-existing-in-DB email is handled through form_valid(),
-        after validation, the user is logged in automatically
-        Added mail sending on creation"""
-        valid = super().form_valid(form)
-        login(self.request, self.object)
-
-        # get the user
-        user = self.object
-        # set and get the language param
-        lang = self.set_default_language()
-        # send user welcome email
-        send_user_registration_email(user, lang)
-        return valid
 
     def form_invalid(self, form):
         """
@@ -137,6 +122,10 @@ class ClinicRegistrationView(BaseUserRegisterView):
         return context
 
     def form_valid(self, form):
+        # set the clinic not to be active
+        clinic = form.instance
+        clinic.is_active = False
+
         response = super().form_valid(form)
 
         # Store code for later flow
@@ -156,7 +145,7 @@ class ClinicRegistrationView(BaseUserRegisterView):
         )
 
         for owner in owners:
-            send_clinic_access_request_email(
+            send_clinic_owner_access_request_email(
                 owner=owner,
                 clinic=self.object,
                 pet=pet,
@@ -165,7 +154,7 @@ class ClinicRegistrationView(BaseUserRegisterView):
             )
 
         # sending email to the admin for review of the clinic and mark as approved
-        send_clinic_approval_request_email(
+        send_clinic_admin_approval_request_email(
             clinic=self.object,
             pet=pet,
         )
@@ -184,6 +173,21 @@ class RegisterOwnerView(BaseUserRegisterView):
     template_name = 'accounts/register.html'
     success_url = reverse_lazy('index')
 
+    def form_valid(self, form):
+        """
+        All new user with never-existing-in-DB email is handled through form_valid(),
+        after validation, the user is logged in automatically
+        Added mail sending on creation"""
+        valid = super().form_valid(form)
+        login(self.request, self.object)
+
+        # get the user
+        user = self.object
+        # set and get the language param
+        lang = self.set_default_language()
+        # send user welcome email
+        send_user_registration_email(user, lang)
+        return valid
 
 class BaseLoginView(auth_views.LoginView):
     # this is needed to redirect the user out of the login page
@@ -244,8 +248,8 @@ class AccessCodeEmailView(views.FormView):
                 reverse('approve-temp-clinic') + f'?clinic_id={user.id}&pet_id={pet.id}')
 
             for owner in owners:
-                send_clinic_access_request_email(
-                    owners=owners,
+                send_clinic_owner_access_request_email(
+                    owner=owner,
                     clinic=user,
                     pet=pet,
                     url=approval_url,
@@ -266,7 +270,7 @@ class AccessCodeEmailView(views.FormView):
         activation_url = self.request.build_absolute_uri(
             reverse('password_reset_confirm', kwargs={'uidb64': uid, 'token': token})
         )
-        send_user_registration_email(
+        send_clinic_activation_email(
             user=user,
             lang=user.default_language,
             url=activation_url,

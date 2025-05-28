@@ -14,7 +14,7 @@ from pet_mvp.notifications.email_service import EmailService
 UserModel = get_user_model()
 
 @shared_task
-def send_clinic_access_request_email(owner, clinic,pet, url, lang):
+def send_clinic_owner_access_request_email(owner, clinic, pet, url, lang):
 
     context = {
         "owner_name": owner.get_full_name(),
@@ -25,6 +25,7 @@ def send_clinic_access_request_email(owner, clinic,pet, url, lang):
         "clinic_country": clinic.country,
         "pet_name": pet.name,
         "approval_url": url,
+        "lang": lang,
     }
 
     subject = _("Approval Request for Access to {{ pet_name }}'s Medical Records").replace(
@@ -34,14 +35,13 @@ def send_clinic_access_request_email(owner, clinic,pet, url, lang):
     EmailService.send_template_email_async(
         subject=subject,
         to_email=owner.email,
-        template_name="emails/clinic_access_request_email.html",
+        template_name="emails/clinic_owner_access_request_email.html",
         context=context,
-        language=lang,
     )
 
 # sending email to the admin for review of the clinic and mark as approved
 @shared_task
-def send_clinic_approval_request_email(clinic, pet):
+def send_clinic_admin_approval_request_email(clinic, pet):
 
     context = {
         "clinic_name": clinic.clinic_name,
@@ -50,14 +50,12 @@ def send_clinic_approval_request_email(clinic, pet):
         "clinic_city": clinic.city,
         "clinic_country": clinic.country,
         "pet_name": pet.name,
-        "owner_name": pet.owner.get_full_name(),
-        "admin_panel_url": f"{settings.BASE_URL}/admin/accounts/appuser/{clinic.id}/change/"
     }
 
     EmailService.send_template_email_async(
         subject=_("Clinic approval request: {}").format(clinic.clinic_name),
-        to_email=os.getenv("ADMIN_EMAIL", "admin@example.com"),
-        template_name='emails/clinic_approval_request_email.html',
+        to_email=os.getenv("ADMIN_EMAIL"),
+        template_name='emails/clinic_admin_approval_request_email.html',
         context=context
     )
 
@@ -233,12 +231,16 @@ def send_medical_record_email(exam, lang):
 
 
 @shared_task
-def send_user_registration_email(user, lang, url=None):
-    """task to send one-time notification on registration of a user
-    also to be used for clinic activation/registration"""
+def send_user_registration_email(user, lang):
+    """
+    Task to send a one-time notification on registration of a user.
+    - For owners: sends a welcome email.
+    - For clinics: sends a notification for registration email.
+    """
 
     user_email = user.email
-    # send owner welcome email
+
+    # Send owner welcome email
     if user.is_owner:
         context = {
             "first_name": user.first_name,
@@ -249,33 +251,55 @@ def send_user_registration_email(user, lang, url=None):
             subject=_("Welcome {} {}").format(user.first_name, user.last_name),
             to_email=user_email,
             template_name='emails/user_registration_email.html',
-            context=context
+            context=context,
         )
         return _("Sent registration email to {}").format(user_email)
-    
-    # send clinic activation email
-    elif not user.is_owner and not user.is_active:
-        
-        context = {
-            "clinic_email": user_email,
-            "clinic_name": user.clinic_name,
-            "clinic_address": user.clinic_address,
-            "city": user.city,
-            "country": user.country,
-            "phone_number": user.phone_number,
-            "activation_url": url,
-            "lang": lang,
-        }
-        
-        EmailService.send_template_email_async.delay(
-            subject=_("Activation confirmation email"),
-            to_email=user_email,
-            template_name='emails/clinic_activation_email.html',
-            context=context
-        )
-        return _("Sent activation email to {}").format(user_email)
 
-    return
+    # Send clinic registration notification email
+
+    context = {
+        "clinic_name": user.clinic_name,
+        "clinic_address": user.clinic_address,
+        "clinic_email": user.email,
+        "clinic_country": user.country,
+        "city": user.city,
+        "phone_number": user.phone_number,
+        "admin_email": os.getenv("ADMIN_EMAIL"),
+    }
+
+    EmailService.send_template_email_async.delay(
+        subject=_("Activate your clinic account: {}").format(user.clinic_name),
+        to_email=user_email,
+        template_name='emails/clinic_registration_notification_email.html',
+        context=context,
+    )
+    return _("Sent clinic notification email to {}").format(user_email)
+
+@shared_task
+def send_clinic_activation_email(user, lang, url):
+    # send clinic activation email
+
+    user_email = user.email
+        
+    context = {
+        "clinic_email": user_email,
+        "clinic_name": user.clinic_name,
+        "clinic_address": user.clinic_address,
+        "city": user.city,
+        "country": user.country,
+        "phone_number": user.phone_number,
+        "activation_url": url,
+        "lang": lang,
+    }
+
+    EmailService.send_template_email_async.delay(
+        subject=_("Activation confirmation email"),
+        to_email=user_email,
+        template_name='emails/clinic_activation_email.html',
+        context=context
+    )
+    return _("Sent activation email to {}").format(user_email)
+
 
 @shared_task
 def send_owner_pet_addition_request(existing_owner, new_owner, pet, approval_url):

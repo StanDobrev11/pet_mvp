@@ -13,7 +13,7 @@ urlpatterns = [
          name='password-entry'),
     path('clinic-register/', login_not_required(ClinicRegistrationView.as_view()),
          name='clinic-register'),
-    path('approve-temp-clinic/', ApproveTempClinicView.as_view(), name='approve_temp_clinic'),
+    path('approve-temp-clinic/', login_not_required(ApproveTempClinicView.as_view()), name='approve-temp-clinic'),
     path('login/', login_not_required(LoginOwnerView.as_view()), name='login'),
     path('logout/', logout_view, name='logout'),
     path('register/', login_not_required(RegisterOwnerView.as_view()), name='register'),
