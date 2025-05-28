@@ -1,0 +1,90 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans "Clinic Registration Pending Approval" %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .content {
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 15px;
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .highlight {
+            color: #E91E63;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>{% trans "Welcome to My Pet's Passport" %}</h1>
+    </div>
+    <div class="content">
+        <p>{% trans "Your clinic has been successfully registered." %}</p>
+
+        <p><strong>{% trans "Clinic details:" %}</strong></p>
+        <p>{% trans "Name:" %} {{ clinic_name }}</p>
+        <p>{% trans "Address:" %} {{ clinic_address }}</p>
+        <p>{% trans "City:" %} {{ city }}</p>
+        <p>{% trans "Country:" %} {{ clinic_country }}</p>
+        <p>{% trans "Email:" %} {{ clinic_email }}</p>
+        <p>{% trans "Phone:" %} {{ phone_number }}</p>
+
+        <p>{% trans "Before you can access the platform, an administrator must approve your account." %}</p>
+        <p>{% trans "An email with your clinic details has been sent to the site administrator for review." %}</p>
+
+        <p>{% trans "In the meantime, you must activate your account by setting a password:" %}</p>
+        <p style="text-align: center;">
+            <a href="{{ activation_url }}" class="button">{% trans "Set Your Password" %}</a>
+        </p>
+
+        <p>{% trans "Please note: If your account is not approved within 7 days, it will be automatically removed from our system." %}</p>
+        <p>{% trans "If you have any questions, please contact our administrator at:" %}</p>
+        <p><a href="mailto:{{ admin_email }}">{{ admin_email }}</a></p>
+    </div>
+
+    <div class="footer">
+        <p>{% trans "This is an automated message from My Pet's Passport. Please do not reply to this email." %}</p>
+    </div>
+</div>
+</body>
+</html>

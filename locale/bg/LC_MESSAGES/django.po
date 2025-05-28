@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-27 14:08+0000\n"
+"POT-Creation-Date: 2025-05-28 15:24+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -63,78 +63,85 @@ msgstr "Статус на персонала"
 #: .\pet_mvp\accounts\models.py:43
 msgid ""
 "Designates whether this user should be treated as active. Unselect this "
-"instead of deleting accounts."
+"instead of deleting accounts. If the user is vet clinic and not active, an "
+"email with activation link will be sent one valid email address is entered"
 msgstr ""
 "Определя дали този потребител трябва да се третира като активен. Премахнете "
-"отметката вместо да изтривате акаунти."
+"отметката вместо да изтривате акаунта. Ако потребителят е ветеринарна "
+"клиника и не е активен, ще бъде изпратен имейл с линк за активация при "
+"въведен валиден имейл адрес."
 
-#: .\pet_mvp\accounts\models.py:46
+#: .\pet_mvp\accounts\models.py:48
 msgid "Active"
 msgstr "Активен"
 
-#: .\pet_mvp\accounts\models.py:51
+#: .\pet_mvp\accounts\models.py:53
 msgid "Owner status"
 msgstr "Статус на собственика"
 
-#: .\pet_mvp\accounts\models.py:58
+#: .\pet_mvp\accounts\models.py:60
 msgid "Phone number"
 msgstr "Телефонен номер"
 
-#: .\pet_mvp\accounts\models.py:63 .\templates\accounts\owner_details.html:29
+#: .\pet_mvp\accounts\models.py:65 .\templates\accounts\owner_details.html:29
 #: .\templates\accounts\owner_profile.html:28
 msgid "City"
 msgstr "Град"
 
-#: .\pet_mvp\accounts\models.py:68 .\templates\accounts\owner_details.html:32
+#: .\pet_mvp\accounts\models.py:70 .\templates\accounts\owner_details.html:32
 #: .\templates\accounts\owner_profile.html:31
 msgid "Country"
 msgstr "Държава"
 
-#: .\pet_mvp\accounts\models.py:78
+#: .\pet_mvp\accounts\models.py:80
 msgid "First name"
 msgstr "Име"
 
-#: .\pet_mvp\accounts\models.py:80
+#: .\pet_mvp\accounts\models.py:82
 msgid "Last name"
 msgstr "Фамилия"
 
-#: .\pet_mvp\accounts\models.py:84
+#: .\pet_mvp\accounts\models.py:86
 msgid "Clinic name"
 msgstr "Име на клиниката"
 
-#: .\pet_mvp\accounts\models.py:86
+#: .\pet_mvp\accounts\models.py:88
 msgid "Clinic address"
 msgstr "Адрес на клиниката"
 
-#: .\pet_mvp\accounts\models.py:96
+#: .\pet_mvp\accounts\models.py:90
+msgid "Clinic approved"
+msgstr "Клиниката е одобрена"
+
+#: .\pet_mvp\accounts\models.py:104
 msgid "Owners must have a first name and last name."
 msgstr "Собствениците трябва да имат име и фамилия."
 
-#: .\pet_mvp\accounts\models.py:100
+#: .\pet_mvp\accounts\models.py:108
 msgid "Owners cannot have clinic-related information."
 msgstr "Собствениците не могат да имат информация, свързана с клиника."
 
-#: .\pet_mvp\accounts\models.py:105
+#: .\pet_mvp\accounts\models.py:113
 msgid "Clinics must have a name and address."
 msgstr "Клиниките трябва да имат име и адрес."
 
-#: .\pet_mvp\accounts\models.py:109
+#: .\pet_mvp\accounts\models.py:117
 msgid "Clinics cannot have owner-related information."
 msgstr "Клиниките не могат да имат информация, свързана със собственик."
 
-#: .\pet_mvp\accounts\models.py:124
+#: .\pet_mvp\accounts\models.py:136
 msgid "Owner"
 msgstr "Собственик"
 
-#: .\pet_mvp\accounts\models.py:125
+#: .\pet_mvp\accounts\models.py:137
 msgid "Owners"
 msgstr "Собственици"
 
-#: .\pet_mvp\accounts\models.py:134 .\pet_mvp\records\models.py:134
+#: .\pet_mvp\accounts\models.py:146 .\pet_mvp\records\models.py:134
 msgid "Clinic"
 msgstr "Клиника"
 
-#: .\pet_mvp\accounts\models.py:135
+#: .\pet_mvp\accounts\models.py:147
 msgid "Clinics"
 msgstr "Клиники"
 
@@ -154,6 +161,61 @@ msgstr "Невалиден формат на български мобилен �
 msgid "Enter a valid Bulgarian mobile number (e.g. 0887123456, +359887123456)."
 msgstr ""
 "Въведете валиден български мобилен номер (напр. 0887123456, +359887123456)."
+
+#: .\pet_mvp\accounts\views.py:139 .\pet_mvp\accounts\views.py:242
+msgid "Invalid access code."
+msgstr "Невалиден код за достъп."
+
+#: .\pet_mvp\accounts\views.py:163
+msgid ""
+"Your registration was successful. An approval request has been sent to the "
+"pet's owner."
+msgstr ""
+"Регистрацията ви беше успешна. Заявка за одобрение е изпратена до "
+"собственика на домашния любимец."
+
+#: .\pet_mvp\accounts\views.py:228
+msgid ""
+"This clinic is not in the system. Please complete the registration form "
+"below to request temporary 7-day access."
+msgstr ""
+"Тази клиника не е в системата. Моля, попълнете формата по-долу, за да "
+"заявите временно 7-дневно разрешение за достъп."
+
+#: .\pet_mvp\accounts\views.py:234
+msgid "Owners cannot access the website as vets."
+msgstr "Собствениците не могат да влизат в сайта като ветеринарни лекари."
+
+#: .\pet_mvp\accounts\views.py:260
+msgid ""
+"This clinic is awaiting approval. An access request was sent to the pet's "
+"owner."
+msgstr ""
+"Тази клиника очаква одобрение. Заявка за достъп беше изпратена до "
+"собственика на домашния любимец."
+
+#: .\pet_mvp\accounts\views.py:279
+msgid ""
+"Activation email sent. Please check your inbox to confirm your clinic access."
+msgstr ""
+"Изпратен е имейл за активация. Моля, проверете входящата си поща, за да "
+"потвърдите достъпа на вашата клиника."
+
+#: .\pet_mvp\accounts\views.py:283
+msgid "Please correct the errors below."
+msgstr "Моля, коригирайте грешките по-долу."
+
+#: .\pet_mvp\accounts\views.py:294
+msgid "Invalid approval request."
+msgstr "Невалидна заявка за одобрение."
+
+#: .\pet_mvp\accounts\views.py:308
+msgid "This clinic was already activated."
+msgstr "Тази клиника вече беше активирана."
+
+#: .\pet_mvp\accounts\views.py:324
+msgid "Password set successfully. Please continue."
+msgstr "Паролата е зададена успешно. Моля, продължете."
 
 #: .\pet_mvp\drugs\models.py:10 .\pet_mvp\pets\models.py:28
 msgid "Cat"
@@ -347,74 +409,99 @@ msgstr "Наличие на кръв в изпражненията"
 msgid "Indicates if blood was found in the sample"
 msgstr "Показва дали е открита кръв в пробата"
 
-#: .\pet_mvp\notifications\tasks.py:39 .\pet_mvp\notifications\tasks.py:74
+#: .\pet_mvp\notifications\tasks.py:31
+msgid "Approval Request for Access to {{ pet_name }}'s Medical Records"
+msgstr ""
+"Заявка за одобрение за достъп до медицинските досиета на {{ pet_name }}"
+
+#: .\pet_mvp\notifications\tasks.py:56
+msgid "Clinic approval request: {}"
+msgstr "Заявка за одобрение на клиника: {}"
+
+#: .\pet_mvp\notifications\tasks.py:87 .\pet_mvp\notifications\tasks.py:122
 msgid "in 1 week"
 msgstr "след 1 седмица"
 
-#: .\pet_mvp\notifications\tasks.py:39 .\pet_mvp\notifications\tasks.py:75
+#: .\pet_mvp\notifications\tasks.py:87 .\pet_mvp\notifications\tasks.py:123
 msgid "tomorrow"
 msgstr "утре"
 
-#: .\pet_mvp\notifications\tasks.py:43
+#: .\pet_mvp\notifications\tasks.py:91
 msgid "Treatment Expiration Reminder for {}"
 msgstr "Напомняне за изтичане на лечение за {}"
 
-#: .\pet_mvp\notifications\tasks.py:57
+#: .\pet_mvp\notifications\tasks.py:105
 msgid "Processed {} treatment expiration notifications"
 msgstr "Обработени {} известия за изтичане на лечение"
 
-#: .\pet_mvp\notifications\tasks.py:72
+#: .\pet_mvp\notifications\tasks.py:120
 msgid "in 4 weeks"
 msgstr "след 4 седмици"
 
-#: .\pet_mvp\notifications\tasks.py:73
+#: .\pet_mvp\notifications\tasks.py:121
 msgid "in 2 weeks"
 msgstr "след 2 седмици"
 
-#: .\pet_mvp\notifications\tasks.py:87
+#: .\pet_mvp\notifications\tasks.py:135
 msgid "Vaccine Expiration Notice for {}"
 msgstr "Известие за изтичане на ваксина за {}"
 
-#: .\pet_mvp\notifications\tasks.py:101
+#: .\pet_mvp\notifications\tasks.py:149
 msgid "Processed {} vaccine expiration notifications"
 msgstr "Обработени {} известия за изтичане на ваксини"
 
-#: .\pet_mvp\notifications\tasks.py:112 .\pet_mvp\notifications\tasks.py:148
-#: .\pet_mvp\notifications\tasks.py:154 .\pet_mvp\notifications\tasks.py:156
+#: .\pet_mvp\notifications\tasks.py:160 .\pet_mvp\notifications\tasks.py:196
+#: .\pet_mvp\notifications\tasks.py:202 .\pet_mvp\notifications\tasks.py:204
 msgid "N/A"
 msgstr "Не е приложимо"
 
-#: .\pet_mvp\notifications\tasks.py:155
+#: .\pet_mvp\notifications\tasks.py:203
 #: .\templates\emails\medical_report_email.html:177
 #: .\templates\partials\fecal_test_card.html:13
 #: .\templates\partials\fecal_test_card.html:19
 msgid "Yes"
 msgstr "Да"
 
-#: .\pet_mvp\notifications\tasks.py:155
+#: .\pet_mvp\notifications\tasks.py:203
 #: .\templates\emails\medical_report_email.html:179
 #: .\templates\partials\fecal_test_card.html:13
 #: .\templates\partials\fecal_test_card.html:19
 msgid "No"
 msgstr "Не"
 
-#: .\pet_mvp\notifications\tasks.py:174
+#: .\pet_mvp\notifications\tasks.py:222
 msgid "Medical Examination Report for {} - {}"
 msgstr "Медицински преглед за {} - {}"
 
-#: .\pet_mvp\notifications\tasks.py:182
+#: .\pet_mvp\notifications\tasks.py:230
 msgid "Processed one medical report for {}"
 msgstr "Обработен един медицински доклад за {}"
 
-#: .\pet_mvp\notifications\tasks.py:197
+#: .\pet_mvp\notifications\tasks.py:251
 msgid "Welcome {} {}"
 msgstr "Добре дошли {} {}"
 
-#: .\pet_mvp\notifications\tasks.py:202
+#: .\pet_mvp\notifications\tasks.py:256
 msgid "Sent registration email to {}"
 msgstr "Изпратен медицински доклад за {}"
 
-#: .\pet_mvp\notifications\tasks.py:218
+#: .\pet_mvp\notifications\tasks.py:271
+msgid "Activate your clinic account: {}"
+msgstr "Активирайте акаунта на вашата клиника: {}"
+
+#: .\pet_mvp\notifications\tasks.py:276
+msgid "Sent clinic notification email to {}"
+msgstr "Изпратен уведомителен имейл до клиниката: {}"
+
+#: .\pet_mvp\notifications\tasks.py:296
+msgid "Activation confirmation email"
+msgstr "Имейл за потвърждение на активацията"
+
+#: .\pet_mvp\notifications\tasks.py:301
+msgid "Sent activation email to {}"
+msgstr "Изпратен имейл за активация до {}"
+
+#: .\pet_mvp\notifications\tasks.py:317
 #: .\templates\emails\pet_add_request_email.html:53
 msgid "Pet Addition Request"
 msgstr "Искане за добавяне на домашен любимец"
@@ -878,11 +965,11 @@ msgstr "Записът е запазен. Можете да добавите н�
 msgid "You can no longer add records for this pet."
 msgstr "Вече не можете да добавяте записи за това животно."
 
-#: .\pet_mvp\settings.py:134 .\templates\partials\nav_bar.html:16
+#: .\pet_mvp\settings.py:135 .\templates\partials\nav_bar.html:16
 msgid "English"
 msgstr "Английски"
 
-#: .\pet_mvp\settings.py:135 .\templates\partials\nav_bar.html:19
+#: .\pet_mvp\settings.py:136 .\templates\partials\nav_bar.html:19
 msgid "Bulgarian"
 msgstr "Български"
 
@@ -1358,6 +1445,216 @@ msgstr "Известие, когато е време за лекарства и�
 msgid "Access to the records from everywhere!"
 msgstr "Достъп до досиетата отвсякъде!"
 
+#: .\templates\emails\clinic_activation_email.html:6
+#: .\templates\emails\clinic_activation_email.html:59
+msgid "Clinic Activation Request"
+msgstr "Заявка за активация на клиника"
+
+#: .\templates\emails\clinic_activation_email.html:62
+msgid "This is an activation email for"
+msgstr "Това е имейл за активация на"
+
+#: .\templates\emails\clinic_activation_email.html:64
+msgid "Clinic details are as follows:"
+msgstr "Данни за клиниката:"
+
+#: .\templates\emails\clinic_activation_email.html:65
+#: .\templates\emails\clinic_admin_approval_request_email.html:65
+#: .\templates\emails\clinic_owner_access_request_email.html:67
+#: .\templates\emails\clinic_registration_notification_email.html:65
+#: .\templates\emails\medical_report_email.html:62
+msgid "Name:"
+msgstr "Име:"
+
+#: .\templates\emails\clinic_activation_email.html:66
+#: .\templates\emails\clinic_registration_notification_email.html:66
+msgid "Address:"
+msgstr "Адрес:"
+
+#: .\templates\emails\clinic_activation_email.html:67
+#: .\templates\emails\clinic_admin_approval_request_email.html:68
+#: .\templates\emails\clinic_owner_access_request_email.html:70
+#: .\templates\emails\clinic_registration_notification_email.html:67
+#: .\templates\emails\medical_report_email.html:68
+msgid "City:"
+msgstr "Град:"
+
+#: .\templates\emails\clinic_activation_email.html:68
+#: .\templates\emails\clinic_admin_approval_request_email.html:69
+#: .\templates\emails\clinic_owner_access_request_email.html:71
+#: .\templates\emails\clinic_registration_notification_email.html:68
+#: .\templates\emails\medical_report_email.html:70
+msgid "Country:"
+msgstr "Държава:"
+
+#: .\templates\emails\clinic_activation_email.html:69
+msgid "Phone number:"
+msgstr "Телефонен номер:"
+
+#: .\templates\emails\clinic_activation_email.html:70
+msgid "Email address:"
+msgstr "Имейл адрес:"
+
+#: .\templates\emails\clinic_activation_email.html:72
+#: .\templates\emails\pet_add_request_email.html:68
+msgid "If you did not expect this request, you can safely ignore this email."
+msgstr ""
+"Ако не сте очаквали тази заявка, можете спокойно да игнорирате този имейл."
+
+#: .\templates\emails\clinic_activation_email.html:75
+msgid "Activate Clinic"
+msgstr "Активирай клиниката"
+
+#: .\templates\emails\clinic_activation_email.html:79
+#: .\templates\emails\clinic_admin_approval_request_email.html:77
+#: .\templates\emails\clinic_owner_access_request_email.html:82
+#: .\templates\emails\clinic_registration_notification_email.html:86
+#: .\templates\emails\medical_report_email.html:205
+#: .\templates\emails\password_reset_email.html:78
+#: .\templates\emails\pet_add_request_email.html:75
+#: .\templates\emails\user_registration_email.html:82
+msgid ""
+"This is an automated message from My Pet's Passport. Please do not reply to "
+"this email."
+msgstr ""
+"Това е автоматично съобщение от паспорта на моя домашен любимец. Моля, не "
+"отговаряйте на този имейл."
+
+#: .\templates\emails\clinic_admin_approval_request_email.html:6
+msgid "Clinic Approval Request Notification"
+msgstr "Известие за заявка за одобрение на клиника"
+
+#: .\templates\emails\clinic_admin_approval_request_email.html:59
+msgid "Clinic Approval Request"
+msgstr "Заявка за одобрение на клиника"
+
+#: .\templates\emails\clinic_admin_approval_request_email.html:62
+msgid "A new veterinary clinic has requested access to the system:"
+msgstr "Нова ветеринарна клиника е заявила достъп до системата:"
+
+#: .\templates\emails\clinic_admin_approval_request_email.html:64
+#: .\templates\emails\clinic_owner_access_request_email.html:66
+#: .\templates\emails\clinic_registration_notification_email.html:64
+msgid "Clinic details:"
+msgstr "Детайли за клиниката:"
+
+#: .\templates\emails\clinic_admin_approval_request_email.html:66
+#: .\templates\emails\clinic_owner_access_request_email.html:68
+#: .\templates\emails\clinic_registration_notification_email.html:69
+#: .\templates\emails\medical_report_email.html:64
+msgid "Email:"
+msgstr "Имейл:"
+
+#: .\templates\emails\clinic_admin_approval_request_email.html:67
+#: .\templates\emails\clinic_owner_access_request_email.html:69
+#: .\templates\emails\clinic_registration_notification_email.html:70
+#: .\templates\emails\medical_report_email.html:66
+msgid "Phone:"
+msgstr "Телефон:"
+
+#: .\templates\emails\clinic_admin_approval_request_email.html:71
+msgid "This clinic was linked to pet"
+msgstr "Тази клиника беше свързана с домашния любимец"
+
+#: .\templates\emails\clinic_admin_approval_request_email.html:71
+msgid "(Owner:"
+msgstr "(Собственик:"
+
+#: .\templates\emails\clinic_admin_approval_request_email.html:71
+msgid ")."
+msgstr ")."
+
+#: .\templates\emails\clinic_admin_approval_request_email.html:73
+msgid "Please review and approve the clinic in the admin panel:"
+msgstr "Моля, прегледайте и одобрете клиниката в административния панел:"
+
+#: .\templates\emails\clinic_owner_access_request_email.html:6
+msgid "Clinic Access Request Notification"
+msgstr "Известие за заявка за достъп до клиника"
+
+#: .\templates\emails\clinic_owner_access_request_email.html:59
+msgid "Clinic Access Request"
+msgstr "Заявка за достъп до клиника"
+
+#: .\templates\emails\clinic_owner_access_request_email.html:62
+msgid "Hello"
+msgstr "Здравейте"
+
+#: .\templates\emails\clinic_owner_access_request_email.html:64
+msgid "A veterinary clinic named"
+msgstr "Ветеринарна клиника с име"
+
+#: .\templates\emails\clinic_owner_access_request_email.html:64
+msgid "has requested access to your pet"
+msgstr "заяви достъп до вашия домашен любимец"
+
+#: .\templates\emails\clinic_owner_access_request_email.html:64
+msgid "'s medical records."
+msgstr " – медицински досиета."
+
+#: .\templates\emails\clinic_owner_access_request_email.html:73
+msgid ""
+"If you approve this request, please click the button below to confirm and "
+"grant access."
+msgstr ""
+"Ако одобрявате тази заявка, моля натиснете бутона по-долу, за да потвърдите "
+"и предоставите достъп."
+
+#: .\templates\emails\clinic_owner_access_request_email.html:76
+msgid "Approve Clinic Access"
+msgstr "Одобри достъпа на клиниката"
+
+#: .\templates\emails\clinic_owner_access_request_email.html:79
+msgid "If you do not recognize this request, you can ignore this message."
+msgstr "Ако не разпознавате тази заявка, можете да игнорирате съобщението."
+
+#: .\templates\emails\clinic_registration_notification_email.html:6
+msgid "Clinic Registration Pending Approval"
+msgstr "Регистрацията на клиниката очаква одобрение"
+
+#: .\templates\emails\clinic_registration_notification_email.html:59
+msgid "Welcome to My Pet's Passport"
+msgstr "Добре дошли в Паспортът на моя домашен любимец"
+
+#: .\templates\emails\clinic_registration_notification_email.html:62
+msgid "Your clinic has been successfully registered."
+msgstr "Вашата клиника беше успешно регистрирана."
+
+#: .\templates\emails\clinic_registration_notification_email.html:72
+msgid ""
+"Before you can access the platform, an administrator must approve your "
+"account."
+msgstr ""
+"Преди да получите достъп до платформата, администратор трябва да одобри "
+"вашия акаунт."
+
+#: .\templates\emails\clinic_registration_notification_email.html:73
+msgid ""
+"An email with your clinic details has been sent to the site administrator "
+"for review."
+msgstr ""
+"Имейл с данните на вашата клиника беше изпратен до администратора за преглед."
+
+#: .\templates\emails\clinic_registration_notification_email.html:75
+msgid "In the meantime, you must activate your account by setting a password:"
+msgstr "Междувременно трябва да активирате акаунта си, като зададете парола:"
+
+#: .\templates\emails\clinic_registration_notification_email.html:77
+msgid "Set Your Password"
+msgstr "Задай своята парола"
+
+#: .\templates\emails\clinic_registration_notification_email.html:80
+msgid ""
+"Please note: If your account is not approved within 7 days, it will be "
+"automatically removed from our system."
+msgstr ""
+"Моля, обърнете внимание: Ако акаунтът ви не бъде одобрен в рамките на 7 дни, "
+"той ще бъде автоматично изтрит от нашата система."
+
+#: .\templates\emails\clinic_registration_notification_email.html:81
+msgid "If you have any questions, please contact our administrator at:"
+msgstr "Ако имате въпроси, моля свържете се с нашия администратор на:"
+
 #: .\templates\emails\medical_report_email.html:6
 #: .\templates\emails\user_registration_email.html:6
 msgid "Your Pet's Medical Examination Record"
@@ -1370,26 +1667,6 @@ msgstr "Медицински преглед"
 #: .\templates\emails\medical_report_email.html:58
 msgid "Owner Information"
 msgstr "Информация за собственика"
-
-#: .\templates\emails\medical_report_email.html:62
-msgid "Name:"
-msgstr "Име:"
-
-#: .\templates\emails\medical_report_email.html:64
-msgid "Email:"
-msgstr "Имейл:"
-
-#: .\templates\emails\medical_report_email.html:66
-msgid "Phone:"
-msgstr "Телефон:"
-
-#: .\templates\emails\medical_report_email.html:68
-msgid "City:"
-msgstr "Град:"
-
-#: .\templates\emails\medical_report_email.html:70
-msgid "Country:"
-msgstr "Държава:"
 
 #: .\templates\emails\medical_report_email.html:75
 msgid "No owner information available."
@@ -1567,17 +1844,6 @@ msgstr "С най-добри пожелания,"
 msgid "The Pet MVP Team"
 msgstr "Екипът на Pet MVP"
 
-#: .\templates\emails\medical_report_email.html:205
-#: .\templates\emails\password_reset_email.html:78
-#: .\templates\emails\pet_add_request_email.html:75
-#: .\templates\emails\user_registration_email.html:82
-msgid ""
-"This is an automated message from My Pet's Passport. Please do not reply to "
-"this email."
-msgstr ""
-"Това е автоматично съобщение от паспорта на моя домашен любимец. Моля, не "
-"отговаряйте на този имейл."
-
 #: .\templates\emails\password_reset_email.html:52
 msgid "Pet Medical Records"
 msgstr "Медицински досиета на моя любимец"
@@ -1631,11 +1897,6 @@ msgid ""
 msgstr ""
 "Ако одобрите тази заявка, те ще могат да виждат и управляват медицинските "
 "записи на домашния любимец заедно с вас."
-
-#: .\templates\emails\pet_add_request_email.html:68
-msgid "If you did not expect this request, you can safely ignore this email."
-msgstr ""
-"Ако не сте очаквали тази заявка, можете спокойно да игнорирате този имейл."
 
 #: .\templates\emails\pet_add_request_email.html:71
 msgid "Approve Request"
@@ -1738,58 +1999,53 @@ msgstr ""
 "любимци, техните съществуващи ваксини и медикаменти към вашия профил."
 
 #: .\templates\emails\user_registration_email.html:67
-#, fuzzy
-#| msgid ""
-#| "Please note: Once you finish adding your pet's medical history, you will "
-#| "not be able to edit it anymore."
 msgid ""
 "Please note: Once you finish adding your pet's vaccination history, you will "
 "not be able to edit it anymore."
 msgstr ""
-"Моля, имайте предвид: След като приключите с добавянето на медицинската "
-"история на вашия домашен любимец, няма да можете да я редактирате."
+"Моля, имайте предвид: След като добавите ваксинационната история на домашния "
+"си любимец, няма да можете да я редактирате."
 
 #: .\templates\emails\user_registration_email.html:70
-#, fuzzy
-#| msgid ""
-#| "You will receive reminders about vaccine expirations: one month, 14 days, "
-#| "and one week before the expiration date."
 msgid ""
 "You will receive automatic reminders before a vaccine expires — 4 weeks, 2 "
 "weeks, and 1 day prior to the expiration date."
 msgstr ""
-"Ще получавате напомняния за изтичане на ваксини: един месец, 14 дни и една "
-"седмица преди датата на изтичане."
+"Ще получавате автоматични напомняния преди изтичането на ваксина — 4 "
+"седмици, 2 седмици и 1 ден предварително."
 
 #: .\templates\emails\user_registration_email.html:72
-#, fuzzy
-#| msgid ""
-#| "You will receive reminders about vaccine expirations: one month, 14 days, "
-#| "and one week before the expiration date."
 msgid ""
 "You will also receive reminders for treatments — 7 days and 1 day before "
 "their expiration."
 msgstr ""
-"Ще получавате напомняния за изтичане на ваксини: един месец, 14 дни и една "
-"седмица преди датата на изтичане."
+"Ще получавате напомняния за предстоящи лечения — 7 дни и 1 ден преди "
+"изтичането им."
 
 #: .\templates\emails\user_registration_email.html:73
 msgid ""
 "You can request co-ownership of a pet that is already registered with a "
 "passport number."
 msgstr ""
+"Можете да заявите съсобственост на домашен любимец, който вече е регистриран "
+"с номер на паспорт."
 
 #: .\templates\emails\user_registration_email.html:75
 msgid ""
 "You can generate a secure access code and share it with your veterinarian so "
 "they can add vaccinations, treatments, and medical records directly."
 msgstr ""
+"Можете да генерирате сигурен код за достъп и да го споделите с вашия "
+"ветеринар, за да може той директно да добавя ваксини, лечения и медицински "
+"досиета."
 
 #: .\templates\emails\user_registration_email.html:78
 msgid ""
 "After each veterinary examination, you will receive a notification when the "
 "new medical record for your pet is created."
 msgstr ""
+"След всяко ветеринарно преглеждане ще получавате известие, когато бъде "
+"създаден нов медицински запис за вашия домашен любимец."
 
 #: .\templates\emails\vaccine_expiration_notification.html:6
 #: .\templates\emails\vaccine_expiration_notification.html:43

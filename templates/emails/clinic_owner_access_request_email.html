@@ -1,0 +1,86 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans "Clinic Access Request Notification" %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .content {
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 15px;
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .highlight {
+            color: #E91E63;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>{% trans "Clinic Access Request" %}</h1>
+    </div>
+    <div class="content">
+        <p>{% trans "Hello" %} {{ owner_name }},</p>
+
+        <p>{% trans "A veterinary clinic named" %} "{{ clinic_name }}" {% trans "has requested access to your pet" %} "{{ pet_name }}"{% trans "'s medical records." %}</p>
+
+        <p><strong>{% trans "Clinic details:" %}</strong></p>
+        <p>{% trans "Name:" %} {{ clinic_name }}</p>
+        <p>{% trans "Email:" %} {{ clinic_email }}</p>
+        <p>{% trans "Phone:" %} {{ clinic_phone }}</p>
+        <p>{% trans "City:" %} {{ clinic_city }}</p>
+        <p>{% trans "Country:" %} {{ clinic_country }}</p>
+
+        <p>{% trans "If you approve this request, please click the button below to confirm and grant access." %}</p>
+
+        <p style="text-align: center;">
+            <a href="{{ approval_url }}" class="button">{% trans "Approve Clinic Access" %}</a>
+        </p>
+
+        <p>{% trans "If you do not recognize this request, you can ignore this message." %}</p>
+    </div>
+    <div class="footer">
+        <p>{% trans "This is an automated message from My Pet's Passport. Please do not reply to this email." %}</p>
+    </div>
+</div>
+</body>
+</html>
