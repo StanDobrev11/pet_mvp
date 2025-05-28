@@ -1,0 +1,85 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans "Clinic Approval Request Notification" %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .content {
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 15px;
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .highlight {
+            color: #E91E63;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>{% trans "Clinic Approval Request" %}</h1>
+    </div>
+    <div class="content">
+        {% blocktrans with clinic_name=clinic_name clinic_email=clinic_email clinic_phone=clinic_phone clinic_city=clinic_city clinic_country=clinic_country pet_name=pet_name owner_name=owner_name admin_panel_url=admin_panel_url %}
+        
+        A new veterinary clinic has requested access to the system:
+
+        Clinic details:
+        Name: {{ clinic_name }}
+        Email: {{ clinic_email }}
+        Phone: {{ clinic_phone }}
+        City: {{ clinic_city }}
+        Country: {{ clinic_country }}
+
+        This clinic was linked to pet "{{ pet_name }}" (Owner: {{ owner_name }}).
+
+        Please review and approve the clinic in the admin panel:
+        {{ admin_panel_url }}
+
+        {% endblocktrans %}
+    </div>
+    <div class="footer">
+        <p>{% trans "This is an automated message from My Pet's Passport. Please do not reply to this email." %}</p>
+    </div>
+</div>
+</body>
+</html>

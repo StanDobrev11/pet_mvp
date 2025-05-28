@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_not_required
 from django.urls import path, include, reverse_lazy
 
 from pet_mvp.accounts.views import RegisterOwnerView, LoginOwnerView, logout_view, AccessCodeEmailView, \
-    PasswordEntryView, ClinicRegistrationView, OwnerDetailsView, OwnerEditView
+    PasswordEntryView, ClinicRegistrationView, OwnerDetailsView, OwnerEditView, CustomPasswordResetConfirmView
 
 urlpatterns = [
     path('access-code/', login_not_required(AccessCodeEmailView.as_view()),
@@ -32,15 +32,15 @@ urlpatterns = [
     ), name='password_reset_done'),
 
     # Password reset link clicked (from email)
-    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(
+    path('reset/<uidb64>/<token>/', login_not_required(CustomPasswordResetConfirmView.as_view(
         template_name='accounts/password/password_reset_confirm.html',
-    ), name='password_reset_confirm'),
+    )), name='password_reset_confirm'),
 
     # Final confirmation after reset
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(
         template_name='accounts/password/password_reset_complete.html',
     ), name='password_reset_complete'),
-    
+
     # Password change views
     path('password-change/', auth_views.PasswordChangeView.as_view(
         template_name='accounts/password/password_change_form.html',

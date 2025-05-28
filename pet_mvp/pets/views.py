@@ -114,7 +114,7 @@ class ApprovePetAdditionView(views.View):
     def get(self, request, token):
         try:
             data = signer.unsign(token)
-            pet_id, user_id = map(int, data.split(':'))
+            pet_id, user_id = map(int, data.split(':')) 
             pet = Pet.objects.get(id=pet_id)
             user = UserModel.objects.get(id=user_id)
 

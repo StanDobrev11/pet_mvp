@@ -41,7 +41,9 @@ class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
         default=True,
         help_text=_(
             "Designates whether this user should be treated as active. "
-            "Unselect this instead of deleting accounts."
+            "Unselect this instead of deleting accounts. "
+            "If the user is vet clinic and not active, an email with activation link will be sent "
+            "one valid email address is entered"
         ),
         verbose_name=_("Active"),
     )
@@ -84,6 +86,12 @@ class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
         max_length=255, null=True, blank=True, verbose_name=_("Clinic name"))
     clinic_address = models.CharField(
         max_length=255, null=True, blank=True, verbose_name=_("Clinic address"))
+    is_approved = models.BooleanField(
+        verbose_name=_("Clinic approved"),
+        null=True,
+        blank=True
+    )
+
 
     def clean(self):
         """
@@ -107,6 +115,9 @@ class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
             if self.first_name or self.last_name:
                 raise ValidationError(
                     _("Clinics cannot have owner-related information."))
+            # Ensure is_approved is set to False for clinic creation
+            if self.is_approved is None:
+                self.is_approved = False
 
         super().clean()
 
@@ -117,6 +128,7 @@ class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
 
     def get_full_name(self):
         return f'{self.first_name} {self.last_name}'
+
 
 class Owner(AppUser):
     class Meta:

@@ -2,22 +2,29 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth import views as auth_views, login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpResponseRedirect
-from django.shortcuts import redirect
-from django.urls import reverse_lazy
+from django.core.signing import Signer, BadSignature
+from django.http import HttpResponseBadRequest, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect, resolve_url
+from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import generic as views
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
+from django.utils.translation import gettext as _
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
 
 from pet_mvp.accounts.forms import OwnerCreationForm, AccessCodeEmailForm, ClinicRegistrationForm
 # Add import for the edit form if you have one
 # from pet_mvp.accounts.forms import OwnerEditForm
-from pet_mvp.notifications.tasks import send_user_registration_email
+from pet_mvp.notifications.tasks import send_user_registration_email, send_clinic_approval_request_email, \
+    send_clinic_access_request_email
 from pet_mvp.pets.models import Pet
 
 UserModel = get_user_model()
+signer = Signer()
 
 
 # Create your views here.
@@ -115,9 +122,9 @@ class ClinicRegistrationView(BaseUserRegisterView):
     template_name = 'accounts/clinc-register.html'
 
     def get_initial(self):
-        # Pre-fill the email field from the query parameter
-        email = self.request.GET.get('email', '')
-        return {'email': email}
+        return {
+            'email': self.request.GET.get('email', ''),
+        }
 
     def get_success_url(self):
         code = self.request.GET.get('code')
@@ -131,19 +138,46 @@ class ClinicRegistrationView(BaseUserRegisterView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        # response.set_cookie('code', self.request.GET.get('code'))
-        login(self.request, self.object)
-        self.request.session['code'] = self.request.GET.get('code')
 
-        # set and get the language param
-        # lang = self.set_default_language()
-        # TODO create send_clinic_registration_email
+        # Store code for later flow
+        code = self.request.GET.get('code')
+        self.request.session['code'] = code
+
+        try:
+            pet = Pet.objects.get(pet_access_code__code=code)
+            owners = pet.owners.all()
+        except Pet.DoesNotExist:
+            messages.error(self.request, _("Invalid access code."))
+            return redirect('index')
+
+        # Send access email to owner
+        approval_url = self.request.build_absolute_uri(
+            reverse('approve-temp-clinic') + f'?clinic_id={self.object.id}&pet_id={pet.id}'
+        )
+
+        for owner in owners:
+            send_clinic_access_request_email(
+                owner=owner,
+                clinic=self.object,
+                pet=pet,
+                url=approval_url,
+                lang=owner.default_language
+            )
+
+        # sending email to the admin for review of the clinic and mark as approved
+        send_clinic_approval_request_email(
+            clinic=self.object,
+            pet=pet,
+        )
+
+        messages.success(self.request, _(
+            "Your registration was successful. An approval request has been sent to the pet's owner."))
 
         return response
-    
+
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data(form=form))
-        
+
 
 class RegisterOwnerView(BaseUserRegisterView):
     form_class = OwnerCreationForm
@@ -175,39 +209,101 @@ class LoginOwnerView(BaseLoginView):
 
 
 class AccessCodeEmailView(views.FormView):
-    # Page with Access Code + Email fields
     template_name = 'accounts/access_code_email.html'
     form_class = AccessCodeEmailForm
 
     def form_valid(self, form):
         access_code = form.cleaned_data.get('access_code')
-        email_data = form.cleaned_data.get('email')
-        email = email_data['email']
-        email_exists = email_data['exists']
+        email = form.cleaned_data.get('email')['email']
 
-        if email_exists:
+        # Lookup clinic user
+        try:
             user = UserModel.objects.get(email=email)
-            if not user.is_owner:
-                # Redirect to password page if email exists and access code is valid
-                url = reverse_lazy('password-entry') + \
-                    f'?email={email}&code={access_code}'
-                return redirect(url)
-            else:
-                # Add a message explaining why they were redirected
-                messages.error(
-                    self.request, 'You cannot log in as a veterinarian.')
-                # Redirect to index page
-                return self.form_invalid(form)
-        else:
-            # If email doesn’t exist but is valid, redirect to registration
-            url = reverse_lazy('clinic-register') + \
-                f'?email={email}&code={access_code}'
-            return redirect(url)
+        except UserModel.DoesNotExist:
+            messages.info(self.request, _(
+                "This clinic is not in the system. "
+                "Please complete the registration form below to request temporary 7-day access."))
+            return redirect(f"{reverse('clinic-register')}?email={email}&code={access_code}")
+
+        # Owners cannot act as clinics
+        if user.is_owner:
+            messages.error(self.request, _("Owners cannot access the website as vets."))
+            return self.form_invalid(form)
+
+        # Lookup pet & owner
+        try:
+            pet = Pet.objects.get(pet_access_code__code=access_code)
+            owners = pet.owners.all()
+        except Pet.DoesNotExist:
+            messages.error(self.request, _("Invalid access code."))
+            return self.form_invalid(form)
+
+        # If clinic is registered but not approved yet
+        if not user.is_approved:
+            approval_url = self.request.build_absolute_uri(
+                reverse('approve-temp-clinic') + f'?clinic_id={user.id}&pet_id={pet.id}')
+
+            for owner in owners:
+
+                send_clinic_access_request_email(
+                    owners=owners,
+                    clinic=user,
+                    pet=pet,
+                    url=approval_url,
+                    lang=owner.default_language
+                )
+
+            messages.info(self.request, _(
+                "This clinic is awaiting approval. An access request was sent to the pet's owner."))
+            return redirect('clinic-login')
+
+        # If approved and active, send to password entry
+        if user.is_active:
+            return redirect(f"{reverse('password-entry')}?email={email}&code={access_code}")
+
+        # If approved but not activated, send password set email
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        token = default_token_generator.make_token(user)
+        activation_url = self.request.build_absolute_uri(
+            reverse('password_reset_confirm', kwargs={'uidb64': uid, 'token': token})
+        )
+        send_user_registration_email(
+            user=user,
+            lang=user.default_language,
+            url=activation_url,
+        )
+        messages.success(self.request, _(
+            "Activation email sent. Please check your inbox to confirm your clinic access."))
+        return redirect('clinic-login')
 
     def form_invalid(self, form):
-        # If the form has errors, re-render it with the errors displayed
-        messages.error(self.request, 'Please correct the errors below.')
+        messages.error(self.request, _("Please correct the errors below."))
         return self.render_to_response(self.get_context_data(form=form))
+
+
+def form_invalid(self, form):
+    # If the form has errors, re-render it with the errors displayed
+    messages.error(self.request, 'Please correct the errors.')
+    return self.render_to_response(self.get_context_data(form=form))
+
+
+class CustomPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
+
+    def form_valid(self, form):
+        # Save the new password
+        super().form_valid(form)
+
+        # Activate vet clinic on first-time activation
+        if not self.user.is_owner and not self.user.is_active:
+            self.user.is_active = True
+            self.user.save()
+
+        messages.success(self.request, _("Password set successfully. Please continue."))
+        # Redirect depending on user type
+        if self.user.is_owner:
+            return redirect('login')
+        else:
+            return redirect('clinic-login')
 
 
 class PasswordEntryView(BaseLoginView):

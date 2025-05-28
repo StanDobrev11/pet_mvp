@@ -10,7 +10,9 @@
             "clinic_address": "кв.Галата, ул.Панорамна 24",
             "city": "Варна",
             "country": "Българиа",
-            "is_owner": false
+            "is_owner": false,
+            "is_active": false,
+            "is_approved": true
         }
     }, 
     {
@@ -24,7 +26,9 @@
             "clinic_address": "кв.Аспарухово, ул.Моряшка 19",
             "city": "Варна",
             "country": "Българиа",
-            "is_owner": false
+            "is_owner": false,
+            "is_active": false,
+            "is_approved": true
         }
     }
 ]
