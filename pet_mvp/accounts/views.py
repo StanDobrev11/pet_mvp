@@ -244,7 +244,6 @@ class AccessCodeEmailView(views.FormView):
                 reverse('approve-temp-clinic') + f'?clinic_id={user.id}&pet_id={pet.id}')
 
             for owner in owners:
-
                 send_clinic_access_request_email(
                     owners=owners,
                     clinic=user,
@@ -281,10 +280,30 @@ class AccessCodeEmailView(views.FormView):
         return self.render_to_response(self.get_context_data(form=form))
 
 
-def form_invalid(self, form):
-    # If the form has errors, re-render it with the errors displayed
-    messages.error(self.request, 'Please correct the errors.')
-    return self.render_to_response(self.get_context_data(form=form))
+class ApproveTempClinicView(views.View):
+
+    def get(self, request):
+        clinic_id = request.GET.get('clinic_id')
+        pet_id = request.GET.get('pet_id')
+
+        if not clinic_id or not pet_id:
+            messages.error(request, _("Invalid approval request."))
+            return redirect('index')
+
+        # Get clinic and pet
+        clinic = get_object_or_404(UserModel, id=clinic_id, is_owner=False)
+        pet = get_object_or_404(Pet, id=pet_id)
+
+        if not clinic.is_active:
+            clinic.is_active = True
+            clinic.save()
+            messages.success(request, _(
+                f"Access for clinic '{clinic.clinic_name}' has been activated. They can now manage records for '{pet.name}'."
+            ))
+        else:
+            messages.info(request, _("This clinic was already activated."))
+
+        return redirect('index')
 
 
 class CustomPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
