@@ -6,7 +6,7 @@ from pet_mvp.records.models import VaccinationRecord, MedicationRecord, MedicalE
 
 from django import forms
 from django.utils.translation import gettext_lazy as _
-
+from django.forms.models import BaseModelFormSet
 
 class VaccinationRecordForm(forms.ModelForm):
     class Meta:
@@ -164,16 +164,40 @@ class MedicalExaminationRecordForm(forms.ModelForm):
                    'blood_test', 'urine_test', 'fecal_test']
 
 
+class BaseFormSet(BaseModelFormSet):
+
+    def __init__(self, *args, **kwargs):
+        self.pet = kwargs.pop('pet', None)
+        super().__init__(*args, **kwargs)
+
+    def _construct_form(self, i, **kwargs):
+        kwargs['pet'] = self.pet
+        return super()._construct_form(i, **kwargs)
+
+    @property
+    def empty_form(self):
+        form = self.form(
+            auto_id=self.auto_id,
+            prefix=self.add_prefix('__prefix__'),
+            empty_permitted=True,
+            use_required_attribute=False,
+            pet=self.pet,  # inject pet
+        )
+        self.add_fields(form, None)
+        return form
+
 VaccineFormSet = forms.modelformset_factory(
     VaccinationRecord,
     form=VaccinationRecordForm,
     extra=0,
-    can_delete=True
+    can_delete=True,
+    formset=BaseFormSet,
 )
 
 TreatmentFormSet = forms.modelformset_factory(
     MedicationRecord,
     form=MedicationRecordForm,
     extra=0,
-    can_delete=True
+    can_delete=True,
+    formset=BaseFormSet,
 )

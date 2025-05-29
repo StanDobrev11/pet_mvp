@@ -187,15 +187,8 @@ class PasswordEntryViewTests(TestCase):
         kwargs = view.get_form_kwargs()
         self.assertEqual(kwargs['data']['username'], 'clinic@example.com')
 
-
 class AccessCodeEmailViewTests(TestCase):
-    """
-    Tests for the AccessCodeEmailView.
-    """
-
     def setUp(self):
-        """Set up test data."""
-        # Create a user
         self.owner = UserModel.objects.create_owner(
             email='owner@example.com',
             password='testpass123',
@@ -213,11 +206,35 @@ class AccessCodeEmailViewTests(TestCase):
             clinic_address='123 Test Street',
             phone_number='0887654321',
             city='Sofia',
-            country='Bulgaria'
+            country='Bulgaria',
+            is_active=True,
+            is_approved=True
         )
 
-        # Create a pet with access code, using a unique passport number
-        unique_passport = f'BG01VP{uuid.uuid4().hex[:6].upper()}'
+        self.inactive_clinic = UserModel.objects.create_clinic(
+            email='inactive@example.com',
+            password='testpass123',
+            clinic_name='Inactive Clinic',
+            clinic_address='Nowhere',
+            phone_number='0887000000',
+            city='Plovdiv',
+            country='Bulgaria',
+            is_active=False,
+            is_approved=True
+        )
+
+        self.unapproved_clinic = UserModel.objects.create_clinic(
+            email='unapproved@example.com',
+            password='testpass123',
+            clinic_name='Unapproved Clinic',
+            clinic_address='Unknown',
+            phone_number='0887111111',
+            city='Varna',
+            country='Bulgaria',
+            is_active=False,
+            is_approved=False
+        )
+
         self.pet = Pet.objects.create(
             name='Test Pet',
             species='Dog',
@@ -226,82 +243,63 @@ class AccessCodeEmailViewTests(TestCase):
             date_of_birth='2020-01-01',
             sex='male',
             current_weight='28',
-            passport_number=unique_passport,
+            passport_number=f'BG01VP{uuid.uuid4().hex[:6].upper()}',
         )
+        self.pet.owners.add(self.owner)
+
         self.access_code = PetAccessCode.objects.create(
             pet=self.pet,
             code='TEST123',
-            expires_at='2099-01-01 00:00:00'  # Far future date
+            expires_at='2099-01-01 00:00:00'
         )
 
-    def test_get_request(self):
-        """Test GET request to the view."""
-        url = reverse('clinic-login')
-        response = self.client.get(url)
+    def post_data(self, email, code='TEST123'):
+        return self.client.post(reverse('clinic-login'), data={'access_code': code, 'email': email})
 
+    def test_get_request(self):
+        response = self.client.get(reverse('clinic-login'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'accounts/access_code_email.html')
         self.assertIsInstance(response.context['form'], AccessCodeEmailForm)
 
     def test_form_valid_existing_clinic(self):
-        """Test form_valid with existing clinic user."""
-        url = reverse('clinic-login')
-        form_data = {
-            'access_code': 'TEST123',
-            'email': 'clinic@example.com'
-        }
-        response = self.client.post(url, data=form_data)
-
-        # Should redirect to password entry page
-        expected_url = reverse('password-entry') + \
-            '?email=clinic@example.com&code=TEST123'
-        self.assertRedirects(response, expected_url,
-                             fetch_redirect_response=False)
+        response = self.post_data('clinic@example.com')
+        expected_url = reverse('password-entry') + '?email=clinic@example.com&code=TEST123'
+        self.assertRedirects(response, expected_url, fetch_redirect_response=False)
 
     def test_form_valid_existing_owner(self):
-        """Test form_valid with existing owner user."""
-        url = reverse('clinic-login')
-        form_data = {
-            'access_code': 'TEST123',
-            'email': 'owner@example.com'
-        }
-        response = self.client.post(url, data=form_data)
-
-        # Should redirect to index with error message
-        self.assertRedirects(response, reverse('index'),
-                             fetch_redirect_response=False)
-
-    def test_form_valid_new_email(self):
-        """Test form_valid with new email."""
-        url = reverse('clinic-login')
-        form_data = {
-            'access_code': 'TEST123',
-            'email': 'new@example.com'
-        }
-        response = self.client.post(url, data=form_data)
-
-        # Should redirect to clinic registration page
-        expected_url = reverse('clinic-register') + \
-            '?email=new@example.com&code=TEST123'
-        self.assertRedirects(response, expected_url,
-                             fetch_redirect_response=False)
-
-    def test_form_invalid(self):
-        """Test form_invalid method."""
-        url = reverse('clinic-login')
-        form_data = {
-            'access_code': 'INVALID',  # Invalid access code
-            'email': 'clinic@example.com'
-        }
-        response = self.client.post(url, data=form_data)
-
-        # Should stay on the same page
+        response = self.post_data('owner@example.com')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'accounts/access_code_email.html')
+        messages = list(get_messages(response.wsgi_request))
+        self.assertTrue(any("Owners cannot access" in str(m) for m in messages))
 
-        # Should have form errors
+    def test_form_valid_new_email(self):
+        response = self.post_data('new@example.com')
+        expected_url = reverse('clinic-register') + '?email=new@example.com&code=TEST123'
+        self.assertRedirects(response, expected_url, fetch_redirect_response=False)
+        messages = list(get_messages(response.wsgi_request))
+        self.assertTrue(any("not in the system" in str(m) for m in messages))
+
+    def test_form_invalid_access_code(self):
+        response = self.post_data('clinic@example.com', code='INVALID')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'accounts/access_code_email.html')
         self.assertFalse(response.context['form'].is_valid())
-        self.assertIn('access_code', response.context['form'].errors)
+        messages = list(get_messages(response.wsgi_request))
+        self.assertTrue(any("Please correct the errors below" in str(m) for m in messages))
+
+    def test_unapproved_clinic_redirects_with_email_sent(self):
+        response = self.post_data('unapproved@example.com')
+        self.assertRedirects(response, reverse('clinic-login'), fetch_redirect_response=False)
+        messages = list(get_messages(response.wsgi_request))
+        self.assertTrue(any("awaiting approval" in str(m) for m in messages))
+
+    def test_inactive_clinic_activation_email_sent(self):
+        response = self.post_data('inactive@example.com')
+        self.assertRedirects(response, reverse('clinic-login'), fetch_redirect_response=False)
+        messages = list(get_messages(response.wsgi_request))
+        self.assertTrue(any("Activation email sent" in str(m) for m in messages))
 
 
 class OwnerDetailsViewTests(TestCase):

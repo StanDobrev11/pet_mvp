@@ -154,9 +154,11 @@ class MedicalExaminationReportCreateView(views.FormView):
 
         context['report_form'] = MedicalExaminationRecordForm(post_data)
         context['vaccine_formset'] = VaccineFormSet(post_data, prefix='vaccines',
-                                                    queryset=VaccinationRecord.objects.none())
-        context['treatment_formset'] = TreatmentFormSet(post_data, prefix='treatments',
-                                                        queryset=MedicationRecord.objects.none())
+                                                    queryset=VaccinationRecord.objects.none(),
+                                                    pet=pet)
+        context['treatment_formset'] = TreatmentFormSet(data=post_data, prefix='treatments',
+                                                        queryset=MedicationRecord.objects.none(),
+                                                        pet=pet)
         context['blood_test_form'] = BloodTestForm(post_data)
         context['urine_test_form'] = UrineTestForm(post_data)
         context['fecal_test_form'] = FecalTestForm(post_data)
@@ -169,6 +171,7 @@ class MedicalExaminationReportCreateView(views.FormView):
         ]
 
         return context
+
 
     def form_invalid(self, form):
         """

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-28 15:24+0000\n"
+"POT-Creation-Date: 2025-05-29 21:04+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -38,6 +38,14 @@ msgstr "Код за достъп"
 #: .\templates\accounts\password\password_reset_form.html:29
 msgid "Email Address"
 msgstr "Имейл адрес"
+
+#: .\pet_mvp\accounts\forms.py:86
+msgid "Invalid Access Code"
+msgstr "Невалиден код за достъп."
+
+#: .\pet_mvp\accounts\forms.py:94
+msgid "Enter a valid email address."
+msgstr "Въведи валиден имейл адрес"
 
 #: .\pet_mvp\accounts\models.py:25
 msgid "A user with that email already exists."
@@ -93,55 +101,59 @@ msgstr "Град"
 msgid "Country"
 msgstr "Държава"
 
-#: .\pet_mvp\accounts\models.py:80
+#: .\pet_mvp\accounts\models.py:76
+msgid "Default language"
+msgstr "Език по подразбиране"
+
+#: .\pet_mvp\accounts\models.py:81
 msgid "First name"
 msgstr "Име"
 
-#: .\pet_mvp\accounts\models.py:82
+#: .\pet_mvp\accounts\models.py:83
 msgid "Last name"
 msgstr "Фамилия"
 
-#: .\pet_mvp\accounts\models.py:86
+#: .\pet_mvp\accounts\models.py:87
 msgid "Clinic name"
 msgstr "Име на клиниката"
 
-#: .\pet_mvp\accounts\models.py:88
+#: .\pet_mvp\accounts\models.py:89
 msgid "Clinic address"
 msgstr "Адрес на клиниката"
 
-#: .\pet_mvp\accounts\models.py:90
+#: .\pet_mvp\accounts\models.py:91
 msgid "Clinic approved"
 msgstr "Клиниката е одобрена"
 
-#: .\pet_mvp\accounts\models.py:104
+#: .\pet_mvp\accounts\models.py:105
 msgid "Owners must have a first name and last name."
 msgstr "Собствениците трябва да имат име и фамилия."
 
-#: .\pet_mvp\accounts\models.py:108
+#: .\pet_mvp\accounts\models.py:109
 msgid "Owners cannot have clinic-related information."
 msgstr "Собствениците не могат да имат информация, свързана с клиника."
 
-#: .\pet_mvp\accounts\models.py:113
+#: .\pet_mvp\accounts\models.py:114
 msgid "Clinics must have a name and address."
 msgstr "Клиниките трябва да имат име и адрес."
 
-#: .\pet_mvp\accounts\models.py:117
+#: .\pet_mvp\accounts\models.py:118
 msgid "Clinics cannot have owner-related information."
 msgstr "Клиниките не могат да имат информация, свързана със собственик."
 
-#: .\pet_mvp\accounts\models.py:136
+#: .\pet_mvp\accounts\models.py:137
 msgid "Owner"
 msgstr "Собственик"
 
-#: .\pet_mvp\accounts\models.py:137
+#: .\pet_mvp\accounts\models.py:138
 msgid "Owners"
 msgstr "Собственици"
 
-#: .\pet_mvp\accounts\models.py:146 .\pet_mvp\records\models.py:134
+#: .\pet_mvp\accounts\models.py:147 .\pet_mvp\records\models.py:134
 msgid "Clinic"
 msgstr "Клиника"
 
-#: .\pet_mvp\accounts\models.py:147
+#: .\pet_mvp\accounts\models.py:148
 msgid "Clinics"
 msgstr "Клиники"
 

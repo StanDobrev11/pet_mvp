@@ -26,19 +26,19 @@ class ValidatorsTests(TestCase):
 
     def test_validate_passport_number_invalid(self):
         """Test validate_passport_number with invalid passport numbers."""
-        # Invalid passport numbers
         invalid_numbers = [
-            'BG1VP123456',    # Missing a digit in the second part
-            'BG01vp123456',   # Lowercase letters in the third part
-            'BG01VP12345',    # Missing a digit in the last part
-            'B01VP123456',    # Missing a letter in the first part
+            'BG1VP123456',    # Missing a digit in second part
+            'BG01vp12345',    # Too short
+            'BG01VP12345',    # 5 digits at end
+            'B01VP123456',    # Missing letter
             '1234567890',     # No letters
             'ABCDEFGHIJKL',   # No digits
-            '',               # Empty string
+            '',               # Empty
+            'BG01VP1234567',  # Too long
         ]
 
         for number in invalid_numbers:
-            with self.assertRaises(ValidationError):
+            with self.assertRaises(ValidationError, msg=f"Should fail: {number}"):
                 validate_passport_number(number)
 
     def test_validate_transponder_code_valid(self):

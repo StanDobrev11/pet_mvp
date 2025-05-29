@@ -19,25 +19,6 @@ from pet_mvp.pets.models import Pet, Transponder, Tattoo
 UserModel = get_user_model()
 
 
-def create_clinic():
-
-    clinic = Clinic.objects.get_or_create(
-        email='dyana.vet@abv.bg',
-        password='1234',
-        clinic_name='Diana Vet',
-        is_owner=False,
-        phone_number='0887142536',
-        clinic_address='123 Some Address',
-        city='Varna',
-        country='Bulgaria',
-    )
-
-    if clinic[1]:
-        print('Clinic created')
-    else:
-        print('Clinic already exists')
-
-
 def create_pet_markings():
     max_pet = Pet.objects.get(id='1')
     luna_pet = Pet.objects.get(id='2')
@@ -416,7 +397,6 @@ def populate_vaccination_records():
 if __name__ == '__main__':
     create_superuser()
     create_pets()
-    create_clinic()
     create_pet_markings()
     populate_vaccination_records()
     populate_medication_records()

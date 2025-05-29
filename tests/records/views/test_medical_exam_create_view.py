@@ -334,16 +334,11 @@ class MedicalExaminationReportCreateViewTest(TestCase):
             view.get_context_data()
 
     def test_form_invalid(self):
-        """Test behavior with invalid form data"""
+        """Test form submission with invalid data returns to form with error messages."""
         url = reverse('exam-add')
-
-        # Create post data with missing required fields
         post_data = {
             'id': self.pet.id,
-            # Missing exam_type, doctor, etc.
-            'reason_for_visit': 'Annual checkup',
-
-            # Formset data
+            'reason_for_visit': 'Annual checkup',  # Missing required fields like exam_type, doctor
             'vaccines-TOTAL_FORMS': '0',
             'vaccines-INITIAL_FORMS': '0',
             'vaccines-MIN_NUM_FORMS': '0',
@@ -354,13 +349,47 @@ class MedicalExaminationReportCreateViewTest(TestCase):
             'treatments-MAX_NUM_FORMS': '1000',
         }
 
-        request = self.factory.post(f"{url}?code={self.access_code.code}", data=post_data)
+        request = self.factory.post(url, data=post_data)
+        request = self.setup_request(request)
+
+        # Call the view with the request
+        response = MedicalExaminationReportCreateView.as_view()(request)
+
+        # Should render the form again
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Please correct the errors in the form.")
+
+        # Should not create any records
+        self.assertEqual(MedicalExaminationRecord.objects.count(), 0)
+
+    def test_form_invalid_with_invalid_vaccine_formset(self):
+        """Test that view correctly handles an invalid vaccine formset."""
+        url = reverse('exam-add')
+
+        post_data = {
+            'id': self.pet.id,
+            'exam_type': 'primary',
+            'date_of_entry': datetime.date.today().strftime('%Y-%m-%d'),
+            'doctor': 'Dr. Test',
+            'reason_for_visit': 'Annual checkup',
+            'treatment_performed': 'Check',
+
+            'vaccines-TOTAL_FORMS': '1',
+            'vaccines-INITIAL_FORMS': '0',
+            'vaccines-MIN_NUM_FORMS': '0',
+            'vaccines-MAX_NUM_FORMS': '1000',
+            'vaccines-0-vaccine': '',  # Required field missing to cause formset invalid
+            'vaccines-0-batch_number': '',
+            'treatments-TOTAL_FORMS': '0',
+            'treatments-INITIAL_FORMS': '0',
+            'treatments-MIN_NUM_FORMS': '0',
+            'treatments-MAX_NUM_FORMS': '1000',
+        }
+
+        request = self.factory.post(url, data=post_data)
         request = self.setup_request(request)
 
         response = MedicalExaminationReportCreateView.as_view()(request)
-
-        # Should not redirect (form invalid)
         self.assertEqual(response.status_code, 200)
-
-        # No records should be created
+        self.assertContains(response, "Vaccine information contains errors.")
         self.assertEqual(MedicalExaminationRecord.objects.count(), 0)

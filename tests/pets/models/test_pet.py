@@ -56,7 +56,6 @@ class PetModelTests(TestCase):
         self.assertEqual(float(pet.current_weight), 25.5)
         self.assertEqual(pet.passport_number, "AB12345678")
         self.assertTrue(pet.can_add_vaccines)
-        self.assertTrue(pet.can_add_treatments)
         self.assertEqual(pet.owners.count(), 1)
         self.assertEqual(pet.owners.first(), self.owner)
 

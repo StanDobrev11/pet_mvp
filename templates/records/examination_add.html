@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
 {% load i18n %}
+{% load static %}
 
 <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
 {% block content %}
@@ -74,7 +75,8 @@
                     <button type="button" class="btn btn-danger remove-vaccine-form">{% trans "Remove" %}</button>
                 </div>
             </template>
-            <button type="button" id="add-vaccine-form" class="btn btn-outline-primary">{% trans "Add Vaccine" %}</button>
+            <button type="button" id="add-vaccine-form"
+                    class="btn btn-outline-primary">{% trans "Add Vaccine" %}</button>
             <h4 class="mt-4">{% trans "Treatments" %}</h4>
             <div id="treatment-forms">
                 {{ treatment_formset.management_form }}
@@ -91,7 +93,8 @@
                     <button type="button" class="btn btn-danger remove-treatment-form">{% trans "Remove" %}</button>
                 </div>
             </template>
-            <button type="button" id="add-treatment-form" class="btn btn-outline-primary">{% trans "Add Treatment" %}</button>
+            <button type="button" id="add-treatment-form"
+                    class="btn btn-outline-primary">{% trans "Add Treatment" %}</button>
             <h4 class="mt-4">{% trans "Blood Test" %}</h4>
             <div id="blood-test-form-container"></div>
             <template id="blood-test-template">
@@ -135,86 +138,163 @@
     {% comment %} <script src="{% static "scripts/examination_func.js" %}"></script> {% endcomment %}
     <script>
         // ======= Add info form ======
-const addInfoFormButton = document.getElementById('add-info-form-button');
-const addInfoContainer = document.getElementById('add-info-container');
-const addInfoFormTemplate = document.getElementById('add-info-form-template');
+        const addInfoFormButton = document.getElementById('add-info-form-button');
+        const addInfoContainer = document.getElementById('add-info-container');
+        const addInfoFormTemplate = document.getElementById('add-info-form-template');
 
-addInfoFormButton.addEventListener('click', (e) => {
-    if (addInfoFormButton.innerText === gettext('Show')) {
-        addInfoFormButton.innerText = gettext('Hide')
-        addInfoContainer.innerHTML = addInfoFormTemplate.innerHTML
-    } else {
-        addInfoFormButton.innerText = gettext('Show')
-        addInfoContainer.innerHTML = ''
-    }
-})
+        addInfoFormButton.addEventListener('click', (e) => {
+            if (addInfoFormButton.innerText === gettext('Show')) {
+                addInfoFormButton.innerText = gettext('Hide')
+                addInfoContainer.innerHTML = addInfoFormTemplate.innerHTML
+            } else {
+                addInfoFormButton.innerText = gettext('Show')
+                addInfoContainer.innerHTML = ''
+            }
+        })
 
-// ========== Vaccines ==========
-const vaccinationFormsContainer = document.getElementById('vaccination-forms');
-const addVaccineButton = document.getElementById('add-vaccine-form');
-let vaccineFormIndex = {{ vaccine_formset.total_form_count }};
-const vaccineTotalFormsInput = document.querySelector('input[name="vaccines-TOTAL_FORMS"]');
-const vaccineTemplate = document.getElementById("empty-vaccine-form").innerHTML;
+        // ========== Vaccines ==========
+        let vaccineFormIndex = {{ vaccine_formset.total_form_count }};
+        const vaccinationFormsContainer = document.getElementById('vaccination-forms');
+        const addVaccineButton = document.getElementById('add-vaccine-form');
+        const vaccineTotalFormsInput = document.querySelector('input[name="vaccines-TOTAL_FORMS"]');
+        const vaccineTemplate = document.getElementById("empty-vaccine-form").innerHTML;
 
-addVaccineButton.addEventListener('click', () => {
-    const newFormHTML = vaccineTemplate.replace(/__prefix__/g, vaccineFormIndex);
-    vaccinationFormsContainer.insertAdjacentHTML('beforeend', newFormHTML);
-    vaccineFormIndex++;
-    vaccineTotalFormsInput.value = vaccineFormIndex;
-});
+        addVaccineButton.addEventListener('click', () => {
 
-vaccinationFormsContainer.addEventListener('click', (e) => {
-    if (e.target.classList.contains('remove-vaccine-form')) {
-        e.target.closest('.vaccine-form').remove();
-        vaccineFormIndex--;
-        vaccineTotalFormsInput.value = vaccineFormIndex;
-    }
-});
+            const newFormHTML = vaccineTemplate.replace(/__prefix__/g, vaccineFormIndex);
+            vaccinationFormsContainer.insertAdjacentHTML('beforeend', newFormHTML);
 
-// ========== Treatments ==========
-const treatmentFormsContainer = document.getElementById('treatment-forms');
-const addTreatmentButton = document.getElementById('add-treatment-form');
-let treatmentFormIndex = {{ treatment_formset.total_form_count }};
-const treatmentTotalFormsInput = document.querySelector('input[name="treatments-TOTAL_FORMS"]');
-const treatmentTemplate = document.getElementById("empty-treatment-form").innerHTML;
+            const newFormPrefix = `vaccines-${vaccineFormIndex}`;
+            const vaccineSelectList = document.getElementsByName(`${newFormPrefix}-vaccine`);
+            const vaccineSelect = vaccineSelectList.length ? vaccineSelectList[0] : null;
+
+            const dateInput = document.getElementById(`id_${newFormPrefix}-date_of_vaccination`);
+            const validUntilInput = document.getElementById(`id_${newFormPrefix}-valid_until`);
+            const validFromInput = document.getElementById(`id_${newFormPrefix}-valid_from`);
+            const validFromWrapper = document.getElementById(`field-${newFormPrefix}-valid_from`);
+            const customInputWrapper = document.getElementById(`custom-${newFormPrefix}-wrapper`);
+
+            console.log(vaccineSelect)
+            {#console.log(dateInput)#}
+            {#vaccineSelect.forEach(element => console.log(element))#}
+            {#console.log({{vaccine_formset.total_form_count}})#}
+
+            function updateVaccineForm() {
+                const selectedOption = vaccineSelect.options[vaccineSelect.selectedIndex];
+                const value = selectedOption.value;
+                const isCustom = value === "custom";
+                const interval = parseInt(selectedOption.getAttribute("data-interval"));
+
+                if (isCustom) {
+                    if (customInputWrapper) customInputWrapper.style.display = "block";
+                    if (validUntilInput) validUntilInput.value = "";
+                    if (validFromInput) validFromInput.value = "";
+                    if (validFromWrapper) validFromWrapper.style.display = "none";
+                } else {
+                    if (customInputWrapper) customInputWrapper.style.display = "none";
+
+                    if (interval && dateInput && dateInput.value) {
+                        const d = new Date(dateInput.value);
+                        d.setDate(d.getDate() + interval - 1);
+                        validUntilInput.value = d.toISOString().split("T")[0];
+                    }
+
+                    const coreName = selectedOption.getAttribute("data-core-name") || "";
+                    if (/rabies/i.test(coreName) && dateInput && dateInput.value) {
+                        const rabiesDate = new Date(dateInput.value);
+                        rabiesDate.setDate(rabiesDate.getDate() + 21);
+                        validFromInput.value = rabiesDate.toISOString().split("T")[0];
+                        if (validFromWrapper) validFromWrapper.style.display = "block";
+                    } else {
+                        validFromInput.value = "";
+                        if (validFromWrapper) validFromWrapper.style.display = "none";
+                    }
+                }
+            }
+
+            function updateValidUntil() {
+                const selectedOption = vaccineSelect.options[vaccineSelect.selectedIndex];
+                const interval = parseInt(selectedOption.getAttribute("data-interval"));
+                if (!selectedOption || selectedOption.value === "custom") return;
+
+                if (interval && dateInput && dateInput.value) {
+                    const d = new Date(dateInput.value);
+                    d.setDate(d.getDate() + interval - 1);
+                    validUntilInput.value = d.toISOString().split("T")[0];
+                }
+
+                const label = selectedOption.textContent.toLowerCase();
+                if (label.includes("rabies") && dateInput && dateInput.value) {
+                    const rabiesDate = new Date(dateInput.value);
+                    rabiesDate.setDate(rabiesDate.getDate() + 21);
+                    validFromInput.value = rabiesDate.toISOString().split("T")[0];
+                    if (validFromWrapper) validFromWrapper.style.display = "block";
+                } else {
+                    validFromInput.value = "";
+                    if (validFromWrapper) validFromWrapper.style.display = "none";
+                }
+            }
+
+            // Add listeners after form is rendered
+            if (vaccineSelect) vaccineSelect.addEventListener("change", updateVaccineForm);
+            if (dateInput) dateInput.addEventListener("change", updateValidUntil);
+
+            vaccineFormIndex++;
+            vaccineTotalFormsInput.value = vaccineFormIndex;
+        });
+
+        vaccinationFormsContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-vaccine-form')) {
+                e.target.closest('.vaccine-form').remove();
+                vaccineFormIndex--;
+                vaccineTotalFormsInput.value = vaccineFormIndex;
+            }
+        });
+
+        // ========== Treatments ==========
+        const treatmentFormsContainer = document.getElementById('treatment-forms');
+        const addTreatmentButton = document.getElementById('add-treatment-form');
+        let treatmentFormIndex = {{ treatment_formset.total_form_count }};
+        const treatmentTotalFormsInput = document.querySelector('input[name="treatments-TOTAL_FORMS"]');
+        const treatmentTemplate = document.getElementById("empty-treatment-form").innerHTML;
 
 
-addTreatmentButton.addEventListener('click', () => {
-    const newFormHTML = treatmentTemplate.replace(/__prefix__/g, treatmentFormIndex);
-    treatmentFormsContainer.insertAdjacentHTML('beforeend', newFormHTML);
-    treatmentFormIndex++;
-    treatmentTotalFormsInput.value = treatmentFormIndex;
-});
+        addTreatmentButton.addEventListener('click', () => {
+            const newFormHTML = treatmentTemplate.replace(/__prefix__/g, treatmentFormIndex);
+            treatmentFormsContainer.insertAdjacentHTML('beforeend', newFormHTML);
+            treatmentFormIndex++;
+            treatmentTotalFormsInput.value = treatmentFormIndex;
+        });
 
-treatmentFormsContainer.addEventListener('click', (e) => {
-    if (e.target.classList.contains('remove-treatment-form')) {
-        e.target.closest('.treatment-form').remove();
-        treatmentFormIndex--;
-        treatmentTotalFormsInput.value = treatmentFormIndex;
-    }
-});
+        treatmentFormsContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-treatment-form')) {
+                e.target.closest('.treatment-form').remove();
+                treatmentFormIndex--;
+                treatmentTotalFormsInput.value = treatmentFormIndex;
+            }
+        });
 
-// ========== Toggle Helper ==========
-function setupSingleToggle(buttonId, containerId, templateId, addText, removeText) {
-    const button = document.getElementById(buttonId);
-    const container = document.getElementById(containerId);
-    const template = document.getElementById(templateId).innerHTML;
+        // ========== Toggle Helper ==========
+        function setupSingleToggle(buttonId, containerId, templateId, addText, removeText) {
+            const button = document.getElementById(buttonId);
+            const container = document.getElementById(containerId);
+            const template = document.getElementById(templateId).innerHTML;
 
-    button.addEventListener('click', () => {
-        const formEl = container.querySelector('div');
-        if (!formEl) {
-            container.innerHTML = template;
-            button.classList.remove('btn-outline-secondary');
-            button.classList.add('btn-danger');
-            button.innerText = removeText;
-        } else {
-            container.innerHTML = '';
-            button.classList.remove('btn-danger');
-            button.classList.add('btn-outline-secondary');
-            button.innerText = addText;
+            button.addEventListener('click', () => {
+                const formEl = container.querySelector('div');
+                if (!formEl) {
+                    container.innerHTML = template;
+                    button.classList.remove('btn-outline-secondary');
+                    button.classList.add('btn-danger');
+                    button.innerText = removeText;
+                } else {
+                    container.innerHTML = '';
+                    button.classList.remove('btn-danger');
+                    button.classList.add('btn-outline-secondary');
+                    button.innerText = addText;
+                }
+            });
         }
-    });
-}
 
         // ========== Initialize Toggles ==========
         setupSingleToggle('add-remove-blood-test-form', 'blood-test-form-container', 'blood-test-template', "{% trans "Add Blood Test" %}", "{% trans "Remove Blood Test" %}");
@@ -223,4 +303,5 @@ function setupSingleToggle(buttonId, containerId, templateId, addText, removeTex
 
 
     </script>
+    {#    <script src="{% static 'scripts/vaccine_add.js' %}"></script>#}
 {% endblock content %}

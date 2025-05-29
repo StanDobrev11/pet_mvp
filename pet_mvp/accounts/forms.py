@@ -83,7 +83,7 @@ class AccessCodeEmailForm(forms.Form):
         pet_exists = Pet.objects.filter(
             pet_access_code__code=access_code).exists()
         if not pet_exists:
-            raise forms.ValidationError('Invalid Access Code')
+            raise forms.ValidationError(_('Invalid Access Code'))
         return access_code
 
     def clean_email(self):
@@ -91,7 +91,7 @@ class AccessCodeEmailForm(forms.Form):
         try:
             validate_email(email)  # Ensures a properly formatted email address
         except forms.ValidationError:
-            raise forms.ValidationError('Enter a valid email address.')
+            raise forms.ValidationError(_('Enter a valid email address.'))
 
         # Verify if email exists in the database
         email_exists = UserModel.objects.filter(email=email).exists()

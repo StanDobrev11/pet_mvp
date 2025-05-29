@@ -72,7 +72,8 @@ class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
     
     default_language = models.CharField(
         default='bg',
-        choices=LANGUAGE_CHOICES
+        choices=LANGUAGE_CHOICES,
+        verbose_name=_("Default language")
     )
     
     # Owner-specific fields

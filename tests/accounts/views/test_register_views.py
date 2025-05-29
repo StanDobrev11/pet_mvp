@@ -239,9 +239,9 @@ class ClinicRegistrationViewTests(TestCase):
         # User should be created
         self.assertTrue(UserModel.objects.filter(email='clinic@example.com').exists())
 
-        # User should be logged in
+        # User should not be logged in
         user = UserModel.objects.get(email='clinic@example.com')
-        self.assertEqual(int(self.client.session['_auth_user_id']), user.pk)
+        self.assertNotIn('_auth_user_id', self.client.session)
 
         # Access code should be in session
         self.assertEqual(self.client.session['code'], 'TEST123')
