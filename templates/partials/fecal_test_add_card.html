@@ -14,12 +14,8 @@
             {% endif %}
             {{ form.date_conducted.errors }}
         </div>
+
         <div class="col-md-4">
-            <label class="form-label" for="{{ form.result.id_for_label }}">{{ form.result.label }}</label>
-            {{ form.result|add_class:"form-control" }}
-            {{ form.result.errors }}
-        </div>
-        <div class="col-md-12">
             <label class="form-label"
                    for="{{ form.parasites_detected.id_for_label }}">{{ form.parasites_detected.label }}</label>
             {{ form.parasites_detected|add_class:"form-control" }}
@@ -30,13 +26,18 @@
             {% endif %}
             {{ form.parasites_detected.errors }}
         </div>
-        <div class="col-md-12">
+        <div class="col-md-4">
             <label class="form-label"
                    for="{{ form.parasite_type.id_for_label }}">{{ form.parasite_type.label }}</label>
             {{ form.parasite_type|add_class:"form-control" }}
             {{ form.parasite_type.errors }}
         </div>
-        <div class="col-md-12">
+        <div class="col-md-4">
+            <label class="form-label" for="{{ form.result.id_for_label }}">{{ form.result.label }}</label>
+            {{ form.result|add_class:"form-control" }}
+            {{ form.result.errors }}
+        </div>
+        <div class="col-md-4">
             <label class="form-label"
                    for="{{ form.blood_presence.id_for_label }}">{{ form.blood_presence.label }}</label>
             {{ form.blood_presence|add_class:"form-control" }}

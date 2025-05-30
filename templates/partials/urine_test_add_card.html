@@ -17,11 +17,6 @@
     <div class="col-md-4">
       <label class="form-label" for="{{ form.result.id_for_label }}">{{ form.result.label }}</label>
       {{ form.result|add_class:"form-control" }}
-      {% if form.result.help_text %}
-        <small id="{{ form.result.id_for_label }}_helptext" class="form-text text-muted">
-          {{ form.result.help_text }}
-        </small>
-      {% endif %}
       {{ form.result.errors }}
     </div>
 
@@ -30,11 +25,6 @@
         <div class="col-md-4">
           <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
           {{ field|add_class:"form-control" }}
-          {% if field.help_text %}
-            <small id="{{ field.id_for_label }}_helptext" class="form-text text-muted">
-              {{ field.help_text }}
-            </small>
-          {% endif %}
           {{ field.errors }}
         </div>
       {% endif %}
@@ -43,11 +33,6 @@
     <div class="col-md-12">
       <label class="form-label" for="{{ form.additional_notes.id_for_label }}">{{ form.additional_notes.label }}</label>
       {{ form.additional_notes|add_class:"form-control" }}
-      {% if form.additional_notes.help_text %}
-        <small id="{{ form.additional_notes.id_for_label }}_helptext" class="form-text text-muted">
-          {{ form.additional_notes.help_text }}
-        </small>
-      {% endif %}
       {{ form.additional_notes.errors }}
     </div>
   </div>

@@ -124,36 +124,7 @@ class MedicationRecordForm(forms.ModelForm):
         return cleaned_data
 
 
-class BloodTestForm(forms.ModelForm):
-    class Meta:
-        model = BloodTest
-        fields = ['date_conducted', 'result', 'white_blood_cells',
-                  'red_blood_cells', 'hemoglobin', 'platelets', 'additional_notes']
-        widgets = {
-            'result': forms.TextInput(attrs={'class': 'form-control'}),
-            'date_conducted': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'additional_notes': forms.Textarea(attrs={'rows': 2}),
-        }
-
-
-class UrineTestForm(forms.ModelForm):
-    class Meta:
-        model = UrineTest
-        fields = ['date_conducted', 'result', 'color', 'clarity',
-                  'ph', 'specific_gravity', 'protein', 'glucose',
-                  'white_blood_cells', 'red_blood_cells', 'additional_notes']
-        widgets = {
-            'result': forms.TextInput(attrs={'class': 'form-control'}),
-            'date_conducted': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'additional_notes': forms.Textarea(attrs={'rows': 2}),
-        }
-
-
-class FecalTestForm(forms.ModelForm):
-    class Meta:
-        model = FecalTest
-        fields = ['date_conducted', 'result', 'consistency',
-                  'parasites_detected', 'parasite_type', 'blood_presence', 'additional_notes']
+class BaseTestForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -162,19 +133,54 @@ class FecalTestForm(forms.ModelForm):
             field = self.fields[field_name]
             placeholder = self._meta.model._meta.get_field(field_name).verbose_name
 
-            if field_name == 'parasites_detected':
-                field.widget = forms.Select(
-                    choices=[('true', _('Yes')), ('false', _('No'))],
-                    attrs={'class': 'form-select'}
-                )
-                self.initial['parasites_detected'] = 'false'
+            if field_name == 'result':
+                field.widget = forms.TextInput(attrs={'class': 'form-control'})
+                field.widget.attrs['placeholder'] = str(placeholder).capitalize()
+            elif field_name == 'date_conducted':
+                field.widget = forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+            elif field_name == 'additional_notes':
+                field.widget = forms.Textarea(attrs={'rows': 2})
+                field.widget.attrs['placeholder'] = str(placeholder).capitalize()
+            else:
+                field.widget.attrs['placeholder'] = str(placeholder).capitalize()
 
-            elif field_name == 'blood_presence':
+class BloodTestForm(BaseTestForm):
+    class Meta:
+        model = BloodTest
+        fields = ['date_conducted', 'result', 'white_blood_cells',
+                  'red_blood_cells', 'hemoglobin', 'platelets', 'additional_notes']
+
+
+
+class UrineTestForm(BaseTestForm):
+    class Meta:
+        model = UrineTest
+        fields = ['date_conducted', 'result', 'color', 'clarity',
+                  'ph', 'specific_gravity', 'protein', 'glucose',
+                  'white_blood_cells', 'red_blood_cells', 'additional_notes']
+
+
+class FecalTestForm(BaseTestForm):
+    class Meta:
+        model = FecalTest
+        fields = ['date_conducted', 'result', 'consistency',
+                  'parasites_detected', 'parasite_type', 'blood_presence', 'additional_notes']
+
+    boolean_select_fields = ['parasites_detected', 'blood_presence']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field_name in self.fields:
+            field = self.fields[field_name]
+            placeholder = self._meta.model._meta.get_field(field_name).verbose_name
+
+            if field_name in self.boolean_select_fields:
                 field.widget = forms.Select(
                     choices=[('true', _('Yes')), ('false', _('No'))],
-                    attrs={'class': 'form-select'}
+                    attrs={'class': 'form-control'}
                 )
-                self.initial['blood_presence'] = 'false'
+                self.initial[field_name] = 'false'
 
             elif field_name == 'parasite_type':
                 field.widget = forms.TextInput(
@@ -184,27 +190,15 @@ class FecalTestForm(forms.ModelForm):
                         'placeholder': str(placeholder).capitalize()
                     }
                 )
-            else:
-                field.widget.attrs['placeholder'] = str(
-                    placeholder).capitalize()
 
     def clean_parasites_detected(self):
-        value = self.cleaned_data.get('parasites_detected')
-        if value == 'true':
-            return True
-        else:
-            return False
+        return self.cleaned_data.get('parasites_detected') == 'true'
 
     def clean_blood_presence(self):
-        value = self.cleaned_data.get('blood_presence')
-        if value == 'true':
-            return True
-        else:
-            return False
+        return self.cleaned_data.get('blood_presence') == 'true'
 
     def clean_parasite_type(self):
-        parasite_detected = self.cleaned_data.get('parasites_detected')  # corrected field name
-        if parasite_detected == 'true':
+        if self.cleaned_data.get('parasites_detected'):
             return self.cleaned_data.get('parasite_type')
         return None
 

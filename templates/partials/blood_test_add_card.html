@@ -17,66 +17,36 @@
     <div class="col-md-4">
       <label class="form-label" for="{{ form.result.id_for_label }}">{{ form.result.label }}</label>
       {{ form.result|add_class:"form-control" }}
-      {% if form.result.help_text %}
-        <small id="{{ form.result.id_for_label }}_helptext" class="form-text text-muted">
-          {{ form.result.help_text }}
-        </small>
-      {% endif %}
       {{ form.result.errors }}
     </div>
 
     <div class="col-md-4">
       <label class="form-label" for="{{ form.white_blood_cells.id_for_label }}">{{ form.white_blood_cells.label }}</label>
       {{ form.white_blood_cells|add_class:"form-control" }}
-      {% if form.white_blood_cells.help_text %}
-        <small id="{{ form.white_blood_cells.id_for_label }}_helptext" class="form-text text-muted">
-          {{ form.white_blood_cells.help_text }}
-        </small>
-      {% endif %}
       {{ form.white_blood_cells.errors }}
     </div>
 
     <div class="col-md-4">
       <label class="form-label" for="{{ form.red_blood_cells.id_for_label }}">{{ form.red_blood_cells.label }}</label>
       {{ form.red_blood_cells|add_class:"form-control" }}
-      {% if form.red_blood_cells.help_text %}
-        <small id="{{ form.red_blood_cells.id_for_label }}_helptext" class="form-text text-muted">
-          {{ form.red_blood_cells.help_text }}
-        </small>
-      {% endif %}
       {{ form.red_blood_cells.errors }}
     </div>
 
     <div class="col-md-4">
       <label class="form-label" for="{{ form.hemoglobin.id_for_label }}">{{ form.hemoglobin.label }}</label>
       {{ form.hemoglobin|add_class:"form-control" }}
-      {% if form.hemoglobin.help_text %}
-        <small id="{{ form.hemoglobin.id_for_label }}_helptext" class="form-text text-muted">
-          {{ form.hemoglobin.help_text }}
-        </small>
-      {% endif %}
       {{ form.hemoglobin.errors }}
     </div>
 
     <div class="col-md-4">
       <label class="form-label" for="{{ form.platelets.id_for_label }}">{{ form.platelets.label }}</label>
       {{ form.platelets|add_class:"form-control" }}
-      {% if form.platelets.help_text %}
-        <small id="{{ form.platelets.id_for_label }}_helptext" class="form-text text-muted">
-          {{ form.platelets.help_text }}
-        </small>
-      {% endif %}
       {{ form.platelets.errors }}
     </div>
 
     <div class="col-md-12">
       <label class="form-label" for="{{ form.additional_notes.id_for_label }}">{{ form.additional_notes.label }}</label>
       {{ form.additional_notes|add_class:"form-control" }}
-      {% if form.additional_notes.help_text %}
-        <small id="{{ form.additional_notes.id_for_label }}_helptext" class="form-text text-muted">
-          {{ form.additional_notes.help_text }}
-        </small>
-      {% endif %}
       {{ form.additional_notes.errors }}
     </div>
   </div>

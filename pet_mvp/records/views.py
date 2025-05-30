@@ -192,11 +192,6 @@ class MedicalExaminationReportCreateView(views.FormView):
         # Check if main form and all formsets are valid
         all_valid = True
 
-        if not form.is_valid():
-            messages.error(
-                self.request, "Medical examination form contains errors.")
-            all_valid = False
-
         if not vaccine_formset.is_valid():
             messages.error(
                 self.request, "Vaccine information contains errors.")

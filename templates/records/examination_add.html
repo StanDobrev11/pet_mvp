@@ -48,9 +48,6 @@
                 </div>
             </div>
             <h4 class="mt-4">{% trans "Additional Information" %}</h4>
-            {#            <button type="button"#}
-            {#                    id="add-info-form-button"#}
-            {#                    class="btn btn-outline-secondary mb-3">{% trans "Show" %}</button>#}
             <button type="button"
                     id="add-info-form-button"
                     class="btn btn-outline-secondary mb-3"
@@ -119,10 +116,10 @@
             <h4 class="mt-4">{% trans "Urine Test" %}</h4>
             <div id="urine-test-form-container"></div>
             <template id="urine-test-template">
-                <div id="urine-test-form" class="border rounded p-3 mb-3">
-                    {% include 'partials/urine_test_add_card.html' with form=urine_test_form %}
-                    <input type="hidden" name="has_urine_test" value="1">
-                </div>
+
+                {% include 'partials/urine_test_add_card.html' with form=urine_test_form %}
+                <input type="hidden" name="has_urine_test" value="1">
+
             </template>
             <button type="button"
                     id="add-remove-urine-test-form"
@@ -130,10 +127,10 @@
             <h4 class="mt-4">{% trans "Fecal Test" %}</h4>
             <div id="fecal-test-form-container"></div>
             <template id="fecal-test-template">
-                <div id="fecal-test-form" class="border rounded p-3 mb-3">
-                    {% include 'partials/fecal_test_add_card.html' with form=fecal_test_form %}
-                    <input type="hidden" name="has_fecal_test" value="1">
-                </div>
+
+                {% include 'partials/fecal_test_add_card.html' with form=fecal_test_form %}
+                <input type="hidden" name="has_fecal_test" value="1">
+
             </template>
             <button type="button"
                     id="add-remove-fecal-test-form"
@@ -360,15 +357,18 @@
                     if (buttonId === 'add-remove-fecal-test-form') {
                         const selectDetected = document.getElementById('id_parasites_detected');
                         const parasiteType = document.getElementById('id_parasite_type');
+                        const parasiteLabel = document.querySelector("label[for='id_parasite_type']");
 
                         function toggleParasiteType() {
                             if (selectDetected.value === 'true') {
                                 parasiteType.removeAttribute('readonly');
                                 parasiteType.classList.remove('d-none');
+                                if (parasiteLabel) parasiteLabel.classList.remove('d-none');
                             } else {
                                 parasiteType.setAttribute('readonly', 'readonly');
                                 parasiteType.classList.add('d-none');
                                 parasiteType.value = '';
+                                if (parasiteLabel) parasiteLabel.classList.add('d-none');
                             }
                         }
 
@@ -386,6 +386,7 @@
                 }
             });
         }
+
 
         // ========== Initialize Toggles ==========
         setupSingleToggle('add-remove-blood-test-form', 'blood-test-form-container', 'blood-test-template', "{% trans "Add Blood Test" %}", "{% trans "Remove Blood Test" %}");
