@@ -4,37 +4,60 @@
 <div class="border rounded p-3 mb-3 treatment-form">
     <div class="row g-3">
         <div class="col-md-4">
-            <label class="form-label">{{ form.medication.label }}</label>
-            {{ form.medication }}
+            <label class="form-label" for="id_{{ form.prefix }}-medication">{{ form.fields.medication.label }}</label>
+            <select name="{{ form.prefix }}-medication"
+                    id="id_{{ form.prefix }}-medication"
+                    class="form-select">
+                <option value="">{% trans "Select Medication" %}</option>
+                {% for medication in form.fields.medication.queryset %}
+                    {#          <option value="{{ med.pk }}">{{ med.name }}</option>#}
+                    <option value="{{ medication.pk }}"
+                            data-notes="{{ medication.notes|escape }}"
+                            data-interval="{{ medication.recommended_interval_days }}"
+                            data-core-name="{{ medication.name_en|lower }}">
+                        {{ medication.name }}
+                    </option>
+                {% endfor %}
+                <option value="custom">{{ _("Other (specify)") }}</option>
+            </select>
             {{ form.medication.errors }}
         </div>
+
+        <!-- Custom medication name input -->
+        <div class="col-md-4" id="custom-{{ form.prefix }}-wrapper" style="display: none;">
+            <label class="form-label"
+                   for="id_{{ form.prefix }}-custom_medication">{{ _("Custom Medication Name") }}</label>
+            <input type="text"
+                   name="{{ form.prefix }}-custom_medication"
+                   id="id_{{ form.prefix }}-custom_medication"
+                   class="form-control"
+                   placeholder="{% trans 'Enter custom medication name' %}">
+        </div>
+
         <div class="col-md-4">
             <label class="form-label">{{ form.manufacturer.label }}</label>
-            {{ form.manufacturer }}
+            {{ form.manufacturer|add_class:"form-control" }}
             {{ form.manufacturer.errors }}
         </div>
         <div class="col-md-4">
             <label class="form-label">{{ form.date.label }}</label>
-            {{ form.date }}
+            {{ form.date|add_class:"form-control" }}
             {{ form.date.errors }}
         </div>
         <div class="col-md-4">
             <label class="form-label">{{ form.time.label }}</label>
-            {{ form.time }}
+            {{ form.time|add_class:"form-control" }}
             {{ form.time.errors }}
         </div>
-
         <div class="col-md-4">
             <label class="form-label">{{ form.dosage.label }}</label>
-            {{ form.dosage }}
+            {{ form.dosage|add_class:"form-control" }}
             {{ form.dosage.errors }}
         </div>
         <div class="col-md-4">
             <label class="form-label">{{ form.valid_until.label }}</label>
-            {{ form.valid_until }}
+            {{ form.valid_until|add_class:"form-control" }}
             {{ form.valid_until.errors }}
         </div>
-
     </div>
-
 </div>

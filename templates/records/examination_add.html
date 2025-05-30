@@ -165,25 +165,29 @@
             vaccinationFormsContainer.insertAdjacentHTML('beforeend', newFormHTML);
 
             const newFormPrefix = `vaccines-${vaccineFormIndex}`;
-            const vaccineSelectList = document.getElementsByName(`${newFormPrefix}-vaccine`);
-            const vaccineSelect = vaccineSelectList.length ? vaccineSelectList[0] : null;
 
+            const vaccineSelect = document.querySelector(`[name="${newFormPrefix}-vaccine"]`);
             const dateInput = document.getElementById(`id_${newFormPrefix}-date_of_vaccination`);
             const validUntilInput = document.getElementById(`id_${newFormPrefix}-valid_until`);
             const validFromInput = document.getElementById(`id_${newFormPrefix}-valid_from`);
             const validFromWrapper = document.getElementById(`field-${newFormPrefix}-valid_from`);
             const customInputWrapper = document.getElementById(`custom-${newFormPrefix}-wrapper`);
 
-            console.log(vaccineSelect)
-            {#console.log(dateInput)#}
-            {#vaccineSelect.forEach(element => console.log(element))#}
-            {#console.log({{vaccine_formset.total_form_count}})#}
 
             function updateVaccineForm() {
                 const selectedOption = vaccineSelect.options[vaccineSelect.selectedIndex];
                 const value = selectedOption.value;
                 const isCustom = value === "custom";
                 const interval = parseInt(selectedOption.getAttribute("data-interval"));
+                console.log(interval);
+                console.log(selectedOption.value)
+                console.log(isCustom)
+
+                if (!value) {
+                    validUntilInput.value = "";
+                    validFromInput.value = "";
+                    return;
+                }
 
                 if (isCustom) {
                     if (customInputWrapper) customInputWrapper.style.display = "block";
@@ -200,6 +204,7 @@
                     }
 
                     const coreName = selectedOption.getAttribute("data-core-name") || "";
+                    console.log(coreName);
                     if (/rabies/i.test(coreName) && dateInput && dateInput.value) {
                         const rabiesDate = new Date(dateInput.value);
                         rabiesDate.setDate(rabiesDate.getDate() + 21);
@@ -252,16 +257,66 @@
         });
 
         // ========== Treatments ==========
+        let treatmentFormIndex = {{ treatment_formset.total_form_count }};
         const treatmentFormsContainer = document.getElementById('treatment-forms');
         const addTreatmentButton = document.getElementById('add-treatment-form');
-        let treatmentFormIndex = {{ treatment_formset.total_form_count }};
         const treatmentTotalFormsInput = document.querySelector('input[name="treatments-TOTAL_FORMS"]');
         const treatmentTemplate = document.getElementById("empty-treatment-form").innerHTML;
 
-
         addTreatmentButton.addEventListener('click', () => {
+
             const newFormHTML = treatmentTemplate.replace(/__prefix__/g, treatmentFormIndex);
             treatmentFormsContainer.insertAdjacentHTML('beforeend', newFormHTML);
+
+            const newFormPrefix = `treatments-${treatmentFormIndex}`;
+
+            const medicationSelect = document.querySelector(`[name="${newFormPrefix}-medication"]`);
+            const dateInput = document.getElementById(`id_${newFormPrefix}-date`);
+            const validUntilInput = document.getElementById(`id_${newFormPrefix}-valid_until`);
+            const customInputWrapper = document.getElementById(`custom-${newFormPrefix}-wrapper`);
+
+            function updateTreatmentForm() {
+                const selectedOption = medicationSelect.options[medicationSelect.selectedIndex];
+                const value = selectedOption.value;
+                const isCustom = value === "custom";
+                const interval = parseInt(selectedOption.getAttribute("data-interval"));
+
+                if (!value) {
+                    validUntilInput.value = "";
+                    validFromInput.value = "";
+                    return;
+                }
+
+                if (isCustom) {
+                    if (customInputWrapper) customInputWrapper.style.display = "block";
+                    if (validUntilInput) validUntilInput.value = "";
+                } else {
+                    if (customInputWrapper) customInputWrapper.style.display = "none";
+
+                    if (interval && dateInput && dateInput.value) {
+                        const d = new Date(dateInput.value);
+                        d.setDate(d.getDate() + interval - 1);
+                        validUntilInput.value = d.toISOString().split("T")[0];
+                    }
+                }
+
+            }
+
+            function updateValidUntil() {
+                const selectedOption = medicationSelect.options[medicationSelect.selectedIndex];
+                const interval = parseInt(selectedOption.getAttribute("data-interval"));
+
+                if (interval && dateInput && dateInput.value) {
+                    const d = new Date(dateInput.value);
+                    d.setDate(d.getDate() + interval - 1);
+                    validUntilInput.value = d.toISOString().split("T")[0];
+                }
+
+            }
+
+            if (medicationSelect) medicationSelect.addEventListener("change", updateValidUntil);
+            if (dateInput) dateInput.addEventListener("change", updateValidUntil);
+
             treatmentFormIndex++;
             treatmentTotalFormsInput.value = treatmentFormIndex;
         });

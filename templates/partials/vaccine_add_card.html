@@ -11,35 +11,71 @@
         {% endfor %}
     </div>
 {% endif %}
+
 <div class="border rounded p-3 mb-3 vaccine-form">
     <div class="row g-3">
         <div class="col-md-4">
-            <label class="form-label">{% trans form.vaccine.label %}</label>
-            {{ form.vaccine|add_class:"form-select" }}
+            <label class="form-label" for="id_{{ form.prefix }}-vaccine">{{ form.fields.vaccine.label }}</label>
+            <select name="{{ form.prefix }}-vaccine"
+                    id="id_{{ form.prefix }}-vaccine"
+                    class="form-select">
+                <option value="">{% trans "Select Vaccine" %}</option>
+                {% for vaccine in form.fields.vaccine.queryset %}
+                    <option value="{{ vaccine.pk }}"
+                            data-notes="{{ vaccine.notes|escape }}"
+                            data-interval="{{ vaccine.recommended_interval_days }}"
+                            data-core-name="{{ vaccine.name_en|lower }}">
+                        {{ vaccine.name }}
+                    </option>
+                {% endfor %}
+                <option value="custom">{{ _("Other (specify)") }}</option>
+            </select>
             {{ form.vaccine.errors }}
         </div>
+
+        <!-- Custom input wrapper (hidden by default) -->
+        <div class="col-md-4" id="custom-{{ form.prefix }}-wrapper" style="display: none;">
+            <label class="form-label" for="id_{{ form.prefix }}-custom_vaccine">{{ _("Custom Vaccine Name") }}</label>
+            <input type="text"
+                   name="{{ form.prefix }}-custom_vaccine"
+                   id="id_{{ form.prefix }}-custom_vaccine"
+                   class="form-control"
+                   placeholder="{% trans 'Enter custom vaccine name' %}">
+        </div>
+
         <div class="col-md-4">
-            <label class="form-label">{% trans form.date_of_vaccination.label %}</label>
+            <label class="form-label"
+                   for="id_{{ form.prefix }}-date_of_vaccination">{% trans form.date_of_vaccination.label %}</label>
             {{ form.date_of_vaccination|add_class:"form-control" }}
             {{ form.date_of_vaccination.errors }}
         </div>
+        <div class="col-md-4" id="field-{{ form.prefix }}-valid_from" style="display: none;">
+            <label class="form-label" for="id_{{ form.prefix }}-valid_from">{% trans "Valid From" %}</label>
+            <input type="date"
+                   name="{{ form.prefix }}-valid_from"
+                   id="id_{{ form.prefix }}-valid_from"
+                   class="form-control">
+        </div>
         <div class="col-md-4">
-            <label class="form-label">{% trans form.valid_until.label %}</label>
+            <label class="form-label" for="id_{{ form.prefix }}-valid_until">{% trans form.valid_until.label %}</label>
             {{ form.valid_until|add_class:"form-control" }}
             {{ form.valid_until.errors }}
         </div>
         <div class="col-md-4">
-            <label class="form-label">{% trans form.manufacturer.label %}</label>
+            <label class="form-label"
+                   for="id_{{ form.prefix }}-manufacturer">{% trans form.manufacturer.label %}</label>
             {{ form.manufacturer|add_class:"form-control" }}
             {{ form.manufacturer.errors }}
         </div>
         <div class="col-md-4">
-            <label class="form-label">{% trans form.manufacture_date.label %}</label>
+            <label class="form-label"
+                   for="id_{{ form.prefix }}-manufacture_date">{% trans form.manufacture_date.label %}</label>
             {{ form.manufacture_date|add_class:"form-control" }}
             {{ form.manufacture_date.errors }}
         </div>
         <div class="col-md-4">
-            <label class="form-label">{% trans form.batch_number.label %}</label>
+            <label class="form-label"
+                   for="id_{{ form.prefix }}-batch_number">{% trans form.batch_number.label %}</label>
             {{ form.batch_number|add_class:"form-control" }}
             {{ form.batch_number.errors }}
         </div>
