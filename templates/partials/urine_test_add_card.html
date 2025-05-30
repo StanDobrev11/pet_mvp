@@ -1,0 +1,54 @@
+{% load widget_tweaks %}
+{% load i18n %}
+
+<div class="border rounded p-3 mb-3 urine-test-form">
+  <div class="row g-3">
+    <div class="col-md-4">
+      <label class="form-label" for="{{ form.date_conducted.id_for_label }}">{{ form.date_conducted.label }}</label>
+      {{ form.date_conducted|add_class:"form-control" }}
+      {% if form.date_conducted.help_text %}
+        <small id="{{ form.date_conducted.id_for_label }}_helptext" class="form-text text-muted">
+          {{ form.date_conducted.help_text }}
+        </small>
+      {% endif %}
+      {{ form.date_conducted.errors }}
+    </div>
+
+    <div class="col-md-4">
+      <label class="form-label" for="{{ form.result.id_for_label }}">{{ form.result.label }}</label>
+      {{ form.result|add_class:"form-control" }}
+      {% if form.result.help_text %}
+        <small id="{{ form.result.id_for_label }}_helptext" class="form-text text-muted">
+          {{ form.result.help_text }}
+        </small>
+      {% endif %}
+      {{ form.result.errors }}
+    </div>
+
+    {% for field in form.visible_fields %}
+      {% if not field.name in "date_conducted result additional_notes" %}
+        <div class="col-md-4">
+          <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field|add_class:"form-control" }}
+          {% if field.help_text %}
+            <small id="{{ field.id_for_label }}_helptext" class="form-text text-muted">
+              {{ field.help_text }}
+            </small>
+          {% endif %}
+          {{ field.errors }}
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    <div class="col-md-12">
+      <label class="form-label" for="{{ form.additional_notes.id_for_label }}">{{ form.additional_notes.label }}</label>
+      {{ form.additional_notes|add_class:"form-control" }}
+      {% if form.additional_notes.help_text %}
+        <small id="{{ form.additional_notes.id_for_label }}_helptext" class="form-text text-muted">
+          {{ form.additional_notes.help_text }}
+        </small>
+      {% endif %}
+      {{ form.additional_notes.errors }}
+    </div>
+  </div>
+</div>

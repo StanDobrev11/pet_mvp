@@ -48,9 +48,9 @@
                 </div>
             </div>
             <h4 class="mt-4">{% trans "Additional Information" %}</h4>
-{#            <button type="button"#}
-{#                    id="add-info-form-button"#}
-{#                    class="btn btn-outline-secondary mb-3">{% trans "Show" %}</button>#}
+            {#            <button type="button"#}
+            {#                    id="add-info-form-button"#}
+            {#                    class="btn btn-outline-secondary mb-3">{% trans "Show" %}</button>#}
             <button type="button"
                     id="add-info-form-button"
                     class="btn btn-outline-secondary mb-3"
@@ -111,10 +111,7 @@
             <h4 class="mt-4">{% trans "Blood Test" %}</h4>
             <div id="blood-test-form-container"></div>
             <template id="blood-test-template">
-                <div id="blood-test-form" class="border rounded p-3 mb-3">
-                    {{ blood_test_form.as_p }}
-                    <input type="hidden" name="has_blood_test" value="1">
-                </div>
+                {% include 'partials/blood_test_add_card.html' with form=blood_test_form %}
             </template>
             <button type="button"
                     id="add-remove-blood-test-form"
@@ -123,7 +120,7 @@
             <div id="urine-test-form-container"></div>
             <template id="urine-test-template">
                 <div id="urine-test-form" class="border rounded p-3 mb-3">
-                    {{ urine_test_form.as_p }}
+                    {% include 'partials/urine_test_add_card.html' with form=urine_test_form %}
                     <input type="hidden" name="has_urine_test" value="1">
                 </div>
             </template>
@@ -134,7 +131,7 @@
             <div id="fecal-test-form-container"></div>
             <template id="fecal-test-template">
                 <div id="fecal-test-form" class="border rounded p-3 mb-3">
-                    {{ fecal_test_form.as_p }}
+                    {% include 'partials/fecal_test_add_card.html' with form=fecal_test_form %}
                     <input type="hidden" name="has_fecal_test" value="1">
                 </div>
             </template>
@@ -359,6 +356,28 @@
                     button.classList.remove('btn-outline-secondary');
                     button.classList.add('btn-danger');
                     button.innerText = removeText;
+
+                    if (buttonId === 'add-remove-fecal-test-form') {
+                        const selectDetected = document.getElementById('id_parasites_detected');
+                        const parasiteType = document.getElementById('id_parasite_type');
+
+                        function toggleParasiteType() {
+                            if (selectDetected.value === 'true') {
+                                parasiteType.removeAttribute('readonly');
+                                parasiteType.classList.remove('d-none');
+                            } else {
+                                parasiteType.setAttribute('readonly', 'readonly');
+                                parasiteType.classList.add('d-none');
+                                parasiteType.value = '';
+                            }
+                        }
+
+                        if (selectDetected && parasiteType) {
+                            toggleParasiteType(); // Initial toggle
+                            selectDetected.addEventListener('change', toggleParasiteType);
+                        }
+                    }
+
                 } else {
                     container.innerHTML = '';
                     button.classList.remove('btn-danger');
@@ -375,5 +394,4 @@
 
 
     </script>
-    {#    <script src="{% static 'scripts/vaccine_add.js' %}"></script>#}
 {% endblock content %}

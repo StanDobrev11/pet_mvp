@@ -154,11 +154,59 @@ class FecalTestForm(forms.ModelForm):
         model = FecalTest
         fields = ['date_conducted', 'result', 'consistency',
                   'parasites_detected', 'parasite_type', 'blood_presence', 'additional_notes']
-        widgets = {
-            'result': forms.TextInput(attrs={'class': 'form-control'}),
-            'date_conducted': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'additional_notes': forms.Textarea(attrs={'rows': 2}),
-        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field_name in self.fields:
+            field = self.fields[field_name]
+            placeholder = self._meta.model._meta.get_field(field_name).verbose_name
+
+            if field_name == 'parasites_detected':
+                field.widget = forms.Select(
+                    choices=[('true', _('Yes')), ('false', _('No'))],
+                    attrs={'class': 'form-select'}
+                )
+                self.initial['parasites_detected'] = 'false'
+
+            elif field_name == 'blood_presence':
+                field.widget = forms.Select(
+                    choices=[('true', _('Yes')), ('false', _('No'))],
+                    attrs={'class': 'form-select'}
+                )
+                self.initial['blood_presence'] = 'false'
+
+            elif field_name == 'parasite_type':
+                field.widget = forms.TextInput(
+                    attrs={
+                        'readonly': 'readonly',
+                        'class': 'form-control d-none',
+                        'placeholder': str(placeholder).capitalize()
+                    }
+                )
+            else:
+                field.widget.attrs['placeholder'] = str(
+                    placeholder).capitalize()
+
+    def clean_parasites_detected(self):
+        value = self.cleaned_data.get('parasites_detected')
+        if value == 'true':
+            return True
+        else:
+            return False
+
+    def clean_blood_presence(self):
+        value = self.cleaned_data.get('blood_presence')
+        if value == 'true':
+            return True
+        else:
+            return False
+
+    def clean_parasite_type(self):
+        parasite_detected = self.cleaned_data.get('parasites_detected')  # corrected field name
+        if parasite_detected == 'true':
+            return self.cleaned_data.get('parasite_type')
+        return None
 
 
 class MedicalExaminationRecordForm(forms.ModelForm):

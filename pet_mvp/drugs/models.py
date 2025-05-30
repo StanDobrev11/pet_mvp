@@ -196,7 +196,7 @@ class FecalTest(BaseTest):
     parasites_detected = models.BooleanField(
         verbose_name=_('Parasites Detected'),
         default=False,
-        help_text=_('Were any parasites detected in the sample?')
+        help_text=_('Parasites Detected')
     )
     parasite_type = models.CharField(
         max_length=100,
@@ -208,5 +208,5 @@ class FecalTest(BaseTest):
     blood_presence = models.BooleanField(
         verbose_name=_('Blood Presence in Stool'),
         default=False,
-        help_text=_('Indicates if blood was found in the sample')
+        help_text=_('Blood Presence in Stool')
     )

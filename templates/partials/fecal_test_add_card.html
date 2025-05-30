@@ -1,0 +1,57 @@
+{% load widget_tweaks %}
+{% load i18n %}
+
+<div class="border rounded p-3 mb-3 fecal-test-form">
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label class="form-label"
+                   for="{{ form.date_conducted.id_for_label }}">{{ form.date_conducted.label }}</label>
+            {{ form.date_conducted|add_class:"form-control" }}
+            {% if form.date_conducted.help_text %}
+                <small id="{{ form.date_conducted.id_for_label }}_helptext" class="form-text text-muted">
+                    {{ form.date_conducted.help_text }}
+                </small>
+            {% endif %}
+            {{ form.date_conducted.errors }}
+        </div>
+        <div class="col-md-4">
+            <label class="form-label" for="{{ form.result.id_for_label }}">{{ form.result.label }}</label>
+            {{ form.result|add_class:"form-control" }}
+            {{ form.result.errors }}
+        </div>
+        <div class="col-md-12">
+            <label class="form-label"
+                   for="{{ form.parasites_detected.id_for_label }}">{{ form.parasites_detected.label }}</label>
+            {{ form.parasites_detected|add_class:"form-control" }}
+            {% if form.parasites_detected.help_text %}
+                <small id="{{ form.parasites_detected.id_for_label }}_helptext" class="form-text text-muted">
+                    {{ form.parasites_detected.help_text }}
+                </small>
+            {% endif %}
+            {{ form.parasites_detected.errors }}
+        </div>
+        <div class="col-md-12">
+            <label class="form-label"
+                   for="{{ form.parasite_type.id_for_label }}">{{ form.parasite_type.label }}</label>
+            {{ form.parasite_type|add_class:"form-control" }}
+            {{ form.parasite_type.errors }}
+        </div>
+        <div class="col-md-12">
+            <label class="form-label"
+                   for="{{ form.blood_presence.id_for_label }}">{{ form.blood_presence.label }}</label>
+            {{ form.blood_presence|add_class:"form-control" }}
+            {% if form.blood_presence.help_text %}
+                <small id="{{ form.blood_presence.id_for_label }}_helptext" class="form-text text-muted">
+                    {{ form.blood_presence.help_text }}
+                </small>
+            {% endif %}
+            {{ form.blood_presence.errors }}
+        </div>
+        <div class="col-md-12">
+            <label class="form-label"
+                   for="{{ form.additional_notes.id_for_label }}">{{ form.additional_notes.label }}</label>
+            {{ form.additional_notes|add_class:"form-control" }}
+            {{ form.additional_notes.errors }}
+        </div>
+    </div>
+</div>
