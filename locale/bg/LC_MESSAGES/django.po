@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-29 21:04+0000\n"
+"POT-Creation-Date: 2025-05-30 15:05+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -149,7 +149,7 @@ msgstr "Собственик"
 msgid "Owners"
 msgstr "Собственици"
 
-#: .\pet_mvp\accounts\models.py:147 .\pet_mvp\records\models.py:134
+#: .\pet_mvp\accounts\models.py:147 .\pet_mvp\records\models.py:141
 msgid "Clinic"
 msgstr "Клиника"
 
@@ -467,14 +467,14 @@ msgstr "Обработени {} известия за изтичане на ва
 msgid "N/A"
 msgstr "Не е приложимо"
 
-#: .\pet_mvp\notifications\tasks.py:203
+#: .\pet_mvp\notifications\tasks.py:203 .\pet_mvp\records\forms.py:180
 #: .\templates\emails\medical_report_email.html:177
 #: .\templates\partials\fecal_test_card.html:13
 #: .\templates\partials\fecal_test_card.html:19
 msgid "Yes"
 msgstr "Да"
 
-#: .\pet_mvp\notifications\tasks.py:203
+#: .\pet_mvp\notifications\tasks.py:203 .\pet_mvp\records\forms.py:180
 #: .\templates\emails\medical_report_email.html:179
 #: .\templates\partials\fecal_test_card.html:13
 #: .\templates\partials\fecal_test_card.html:19
@@ -746,23 +746,27 @@ msgstr "Вашето запитване за добавяне на същест�
 msgid "Invalid or expired link."
 msgstr "Невалиден линк."
 
-#: .\pet_mvp\records\forms.py:28 .\templates\records\vaccine_record_add.html:46
+#: .\pet_mvp\records\forms.py:29 .\templates\partials\vaccine_add_card.html:22
+#: .\templates\records\vaccine_record_add.html:46
 msgid "Select Vaccine"
 msgstr "Избери ваксина"
 
-#: .\pet_mvp\records\forms.py:40 .\pet_mvp\records\models.py:15
+#: .\pet_mvp\records\forms.py:41 .\pet_mvp\records\models.py:15
+#: .\pet_mvp\records\models.py:16
 msgid "Date of vaccination"
 msgstr "Дата на ваксинация"
 
-#: .\pet_mvp\records\forms.py:43 .\pet_mvp\records\forms.py:100
+#: .\pet_mvp\records\forms.py:44 .\pet_mvp\records\forms.py:104
+#: .\pet_mvp\records\models.py:30 .\pet_mvp\records\models.py:73
 msgid "Valid until date"
 msgstr "Валидно до дата"
 
-#: .\pet_mvp\records\forms.py:46 .\pet_mvp\records\models.py:36
+#: .\pet_mvp\records\forms.py:47 .\pet_mvp\records\models.py:39
+#: .\pet_mvp\records\models.py:40
 msgid "Manufacture date"
 msgstr "Дата на производство"
 
-#: .\pet_mvp\records\forms.py:54
+#: .\pet_mvp\records\forms.py:56
 msgid ""
 "This field is automatically filled for Rabies vaccine (21 days after "
 "vaccination)."
@@ -770,202 +774,207 @@ msgstr ""
 "Това поле се попълва автоматично за ваксината срещу бяс (21 дни след "
 "ваксинацията)."
 
-#: .\pet_mvp\records\forms.py:87
+#: .\pet_mvp\records\forms.py:91
 msgid "Select Medication/Treatment"
 msgstr "Избери лекарство/лечение"
 
-#: .\pet_mvp\records\forms.py:96 .\pet_mvp\records\models.py:62
+#: .\pet_mvp\records\forms.py:100 .\pet_mvp\records\models.py:66
+#: .\pet_mvp\records\models.py:67
 msgid "Date of intake"
 msgstr "Дата на прилагане"
 
-#: .\pet_mvp\records\forms.py:104 .\pet_mvp\records\models.py:72
-#: .\pet_mvp\records\models.py:73
+#: .\pet_mvp\records\forms.py:108 .\pet_mvp\records\models.py:77
+#: .\pet_mvp\records\models.py:78
 msgid "Time of intake"
 msgstr "Час на прилагане"
 
-#: .\pet_mvp\records\forms.py:118
+#: .\pet_mvp\records\forms.py:122
 msgid "Please select a medication or enter a custom one."
 msgstr "Моля, изберете лекарство или въведете име на ръчно добавено."
 
-#: .\pet_mvp\records\models.py:22
+#: .\pet_mvp\records\models.py:23
 msgid "Valid from"
 msgstr "Валидно от"
 
-#: .\pet_mvp\records\models.py:27
+#: .\pet_mvp\records\models.py:24
+msgid "Valid from date"
+msgstr "Валидно от"
+
+#: .\pet_mvp\records\models.py:29
 msgid "Valid until"
 msgstr "Валидно до"
 
-#: .\pet_mvp\records\models.py:32 .\pet_mvp\records\models.py:87
+#: .\pet_mvp\records\models.py:35 .\pet_mvp\records\models.py:92
 msgid "Manufacturer"
 msgstr "Производител"
 
-#: .\pet_mvp\records\models.py:41
+#: .\pet_mvp\records\models.py:45
 msgid "Batch number"
 msgstr "Партиден номер"
 
-#: .\pet_mvp\records\models.py:56 .\pet_mvp\records\models.py:103
+#: .\pet_mvp\records\models.py:60 .\pet_mvp\records\models.py:108
 msgid "{} - Valid to: {}"
 msgstr "{} - Валидно до: {}"
 
-#: .\pet_mvp\records\models.py:67
+#: .\pet_mvp\records\models.py:72
 msgid "Valid Until"
 msgstr "Валидно до"
 
-#: .\pet_mvp\records\models.py:68
-msgid "Specify valid until date"
-msgstr "Посочете дата на валидност"
-
-#: .\pet_mvp\records\models.py:80
+#: .\pet_mvp\records\models.py:85
 msgid "Dosage"
 msgstr "Дозировка"
 
-#: .\pet_mvp\records\models.py:81
-msgid "Specify dosage, if different from reccomended"
-msgstr "Посочете дозировката, ако е различна от препоръчаната"
+#: .\pet_mvp\records\models.py:86
+msgid "Specify dosage, if different from recommended"
+msgstr "Посочете дозировката, ако е различна от препоръчителната"
 
-#: .\pet_mvp\records\models.py:108
+#: .\pet_mvp\records\models.py:113
 msgid "Primary Examination"
 msgstr "Първичен преглед"
 
-#: .\pet_mvp\records\models.py:109
+#: .\pet_mvp\records\models.py:114
 msgid "Follow-up Examination"
 msgstr "Последващ преглед"
 
-#: .\pet_mvp\records\models.py:116
+#: .\pet_mvp\records\models.py:121
 msgid "Examination Type"
 msgstr "Тип на прегледа"
 
-#: .\pet_mvp\records\models.py:118
+#: .\pet_mvp\records\models.py:123
 msgid "Indicates whether this is an initial examination or a follow-up"
 msgstr "Показва дали това е първоначален преглед или последващ"
 
-#: .\pet_mvp\records\models.py:122
-msgid "Date of the entry"
+#: .\pet_mvp\records\models.py:127 .\pet_mvp\records\models.py:128
+msgid "Date of entry"
 msgstr "Дата на записа"
 
-#: .\pet_mvp\records\models.py:135
+#: .\pet_mvp\records\models.py:134
+msgid "Name of attending veterinarian"
+msgstr "Име на лекуващия ветеринар"
+
+#: .\pet_mvp\records\models.py:142
 msgid "Clinic where the examination was conducted"
 msgstr "Клиника, където е проведен прегледът"
 
-#: .\pet_mvp\records\models.py:145
+#: .\pet_mvp\records\models.py:152
 msgid "Reason for visit"
 msgstr "Причина за посещението"
 
-#: .\pet_mvp\records\models.py:146
+#: .\pet_mvp\records\models.py:153
 msgid "Description of the problem or reason for the visit"
 msgstr "Описание на проблема или причина за посещението"
 
-#: .\pet_mvp\records\models.py:150
+#: .\pet_mvp\records\models.py:157
 msgid "General health"
 msgstr "Общо здравословно състояние"
 
-#: .\pet_mvp\records\models.py:156
+#: .\pet_mvp\records\models.py:163
 msgid "Body Condition Score (1-9)"
 msgstr "Оценка на телесното състояние (1-9)"
 
-#: .\pet_mvp\records\models.py:158
+#: .\pet_mvp\records\models.py:165
 msgid "Assessment of body condition (1 = underweight, 9 = obese)"
 msgstr "Оценка на телесното състояние (1 = поднормено тегло, 9 = затлъстяване)"
 
-#: .\pet_mvp\records\models.py:166
+#: .\pet_mvp\records\models.py:173
 msgid "Temperature (°C)"
 msgstr "Температура (°C)"
 
-#: .\pet_mvp\records\models.py:167
+#: .\pet_mvp\records\models.py:174
 msgid "Body temperature of the animal"
 msgstr "Телесна температура на животното"
 
-#: .\pet_mvp\records\models.py:173
+#: .\pet_mvp\records\models.py:180
 msgid "Heart rate (bpm)"
 msgstr "Пулс (уд/мин)"
 
-#: .\pet_mvp\records\models.py:174
+#: .\pet_mvp\records\models.py:181
 msgid "Heart rate in beats per minute"
 msgstr "Честота на сърдечния ритъм в удари в минута"
 
-#: .\pet_mvp\records\models.py:180
+#: .\pet_mvp\records\models.py:187
 msgid "Respiratory rate"
 msgstr "Дихателна честота"
 
-#: .\pet_mvp\records\models.py:181
+#: .\pet_mvp\records\models.py:188
 msgid "Respiratory rate in breaths per minute"
 msgstr "Брой вдишвания в минута"
 
-#: .\pet_mvp\records\models.py:188
+#: .\pet_mvp\records\models.py:195
 msgid "Mucous Membrane Color"
 msgstr "Цвят на лигавиците"
 
-#: .\pet_mvp\records\models.py:195
+#: .\pet_mvp\records\models.py:202
 msgid "Hydration Status"
 msgstr "Ниво на хидратация"
 
-#: .\pet_mvp\records\models.py:201
+#: .\pet_mvp\records\models.py:208
 msgid "Skin and Coat Condition"
 msgstr "Състояние на кожата и козината"
 
-#: .\pet_mvp\records\models.py:207
+#: .\pet_mvp\records\models.py:214
 msgid "Teeth and Gums"
 msgstr "Зъби и венци"
 
-#: .\pet_mvp\records\models.py:213
+#: .\pet_mvp\records\models.py:220
 msgid "Eyes, Ears, and Nose"
 msgstr "Очи, уши и нос"
 
-#: .\pet_mvp\records\models.py:221
+#: .\pet_mvp\records\models.py:228
 msgid "Medications Prescribed"
 msgstr "Предписани медикаменти"
 
-#: .\pet_mvp\records\models.py:228
+#: .\pet_mvp\records\models.py:235
 msgid "Vaccinations Applied"
 msgstr "Поставени ваксини"
 
-#: .\pet_mvp\records\models.py:234
+#: .\pet_mvp\records\models.py:241
 #: .\templates\emails\medical_report_email.html:110
-#: .\templates\records\examination_add.html:95
+#: .\templates\records\examination_add.html:111
 msgid "Blood Test"
 msgstr "Кръвно изследване"
 
-#: .\pet_mvp\records\models.py:242
+#: .\pet_mvp\records\models.py:249
 msgid "Urine Analysis"
 msgstr "Анализ на урина"
 
-#: .\pet_mvp\records\models.py:250
+#: .\pet_mvp\records\models.py:257
 msgid "Fecal Analysis"
 msgstr "Анализ на изпражнения"
 
-#: .\pet_mvp\records\models.py:257
+#: .\pet_mvp\records\models.py:264
 msgid "Treatment Carried Out"
 msgstr "Извършено лечение"
 
-#: .\pet_mvp\records\models.py:258
+#: .\pet_mvp\records\models.py:265
 msgid "Description of the Treatment"
 msgstr "Описание на лечението"
 
-#: .\pet_mvp\records\models.py:262
+#: .\pet_mvp\records\models.py:269
 msgid "Diagnosis"
 msgstr "Диагноза"
 
-#: .\pet_mvp\records\models.py:263
+#: .\pet_mvp\records\models.py:270
 msgid "Description of the final diagnosis"
 msgstr "Описание на крайната диагноза"
 
-#: .\pet_mvp\records\models.py:270
+#: .\pet_mvp\records\models.py:277 .\pet_mvp\records\models.py:278
 msgid "Follow-up Required?"
 msgstr "Необходимо ли е проследяване?"
 
-#: .\pet_mvp\records\models.py:274
+#: .\pet_mvp\records\models.py:282
 msgid "Examination Notes"
 msgstr "Бележки от прегледа"
 
-#: .\pet_mvp\records\models.py:280
+#: .\pet_mvp\records\models.py:288
 msgid "Unknown Pet"
 msgstr "Неизвестен любимец"
 
-#: .\pet_mvp\records\models.py:281
+#: .\pet_mvp\records\models.py:289
 msgid "Unknown Date"
 msgstr "Неизвестна дата"
 
-#: .\pet_mvp\records\models.py:282
+#: .\pet_mvp\records\models.py:290
 msgid "Medical Record for {} on {}"
 msgstr "Медицински запис за {} на {}"
 
@@ -1778,7 +1787,7 @@ msgid "No blood test performed."
 msgstr "Не е извършено кръвно изследване."
 
 #: .\templates\emails\medical_report_email.html:129
-#: .\templates\records\examination_add.html:106
+#: .\templates\records\examination_add.html:122
 msgid "Urine Test"
 msgstr "Изследване на урина"
 
@@ -1787,7 +1796,7 @@ msgid "No urine test performed."
 msgstr "Не е извършено изследване на урина."
 
 #: .\templates\emails\medical_report_email.html:148
-#: .\templates\records\examination_add.html:117
+#: .\templates\records\examination_add.html:133
 msgid "Fecal Test"
 msgstr "Изследване на изпражнения"
 
@@ -2217,6 +2226,27 @@ msgstr "Часове"
 msgid "About"
 msgstr "Относно"
 
+#: .\templates\partials\treatment_add_card.html:11
+msgid "Select Medication"
+msgstr "Изберете лекарство"
+
+#: .\templates\partials\treatment_add_card.html:21
+#: .\templates\partials\vaccine_add_card.html:31
+#: .\templates\records\treatment_record_add.html:59
+#: .\templates\records\vaccine_record_add.html:53
+msgid "Other (specify)"
+msgstr "Друго (посочете)"
+
+#: .\templates\partials\treatment_add_card.html:29
+#: .\templates\records\treatment_record_add.html:64
+msgid "Custom Medication Name"
+msgstr "Име на ръчно въведено лекарство"
+
+#: .\templates\partials\treatment_add_card.html:34
+#: .\templates\records\treatment_record_add.html:69
+msgid "Enter custom medication name"
+msgstr "Въведете име на лекарство"
+
 #: .\templates\partials\treatment_card.html:4
 msgid "Name of the medication/treatment:"
 msgstr "Име на медикамента/лечението:"
@@ -2262,6 +2292,20 @@ msgstr "Протеин:"
 #: .\templates\partials\urine_test_card.html:29
 msgid "Glucose:"
 msgstr "Глюкоза:"
+
+#: .\templates\partials\vaccine_add_card.html:38
+#: .\templates\records\vaccine_record_add.html:57
+msgid "Custom Vaccine Name"
+msgstr "Име на ръчно въведената ваксина"
+
+#: .\templates\partials\vaccine_add_card.html:43
+#: .\templates\records\vaccine_record_add.html:62
+msgid "Enter custom vaccine name"
+msgstr "Въведете име на ваксината"
+
+#: .\templates\partials\vaccine_add_card.html:56
+msgid "Valid From"
+msgstr "Валидно от"
 
 #: .\templates\partials\vaccine_card.html:5
 msgid "Name of the vaccine:"
@@ -2328,7 +2372,7 @@ msgstr "Добави маркировка"
 
 #: .\templates\pet\marking_add.html:28 .\templates\pet\pet_add.html:73
 #: .\templates\pet\pet_edit.html:28
-#: .\templates\records\examination_add.html:129
+#: .\templates\records\examination_add.html:145
 msgid "Save"
 msgstr "Запази"
 
@@ -2546,69 +2590,74 @@ msgstr "Завърши и излез"
 msgid "Edit Pet Details"
 msgstr "Редактирай детайлите на домашния любимец"
 
-#: .\templates\records\examination_add.html:10
+#: .\templates\records\examination_add.html:11
 msgid "Medical Examination Report for"
 msgstr "Медицински преглед за"
 
-#: .\templates\records\examination_add.html:11
+#: .\templates\records\examination_add.html:12
 msgid "Basic Information"
 msgstr "Основна информация"
 
-#: .\templates\records\examination_add.html:43
+#: .\templates\records\examination_add.html:50
 msgid "Additional Information"
 msgstr "Допълнителна информация"
 
-#: .\templates\records\examination_add.html:46
+#: .\templates\records\examination_add.html:57
+#: .\templates\records\examination_add.html:59
 msgid "Show"
 msgstr "Покажи"
 
-#: .\templates\records\examination_add.html:61
+#: .\templates\records\examination_add.html:58
+msgid "Hide"
+msgstr "Скрий"
+
+#: .\templates\records\examination_add.html:75
 msgid "Vaccines"
 msgstr "Ваксини"
 
-#: .\templates\records\examination_add.html:67
-#: .\templates\records\examination_add.html:74
-#: .\templates\records\examination_add.html:84
-#: .\templates\records\examination_add.html:91
+#: .\templates\records\examination_add.html:81
+#: .\templates\records\examination_add.html:88
+#: .\templates\records\examination_add.html:99
+#: .\templates\records\examination_add.html:106
 msgid "Remove"
 msgstr "Премахни"
 
-#: .\templates\records\examination_add.html:77
+#: .\templates\records\examination_add.html:92
 msgid "Add Vaccine"
 msgstr "Добави ваксина"
 
-#: .\templates\records\examination_add.html:78
+#: .\templates\records\examination_add.html:93
 msgid "Treatments"
 msgstr "Лечения"
 
-#: .\templates\records\examination_add.html:94
+#: .\templates\records\examination_add.html:110
 msgid "Add Treatment"
 msgstr "Добави лечение"
 
-#: .\templates\records\examination_add.html:105
-#: .\templates\records\examination_add.html:221
+#: .\templates\records\examination_add.html:121
+#: .\templates\records\examination_add.html:372
 msgid "Add Blood Test"
 msgstr "Добави кръвно изследване"
 
-#: .\templates\records\examination_add.html:116
-#: .\templates\records\examination_add.html:222
+#: .\templates\records\examination_add.html:132
+#: .\templates\records\examination_add.html:373
 msgid "Add Urine Test"
 msgstr "Добави изследване на урина"
 
-#: .\templates\records\examination_add.html:127
-#: .\templates\records\examination_add.html:223
+#: .\templates\records\examination_add.html:143
+#: .\templates\records\examination_add.html:374
 msgid "Add Fecal Test"
 msgstr "Добави изследване на изпражнения"
 
-#: .\templates\records\examination_add.html:221
+#: .\templates\records\examination_add.html:372
 msgid "Remove Blood Test"
 msgstr "Премахни кръвно изследване"
 
-#: .\templates\records\examination_add.html:222
+#: .\templates\records\examination_add.html:373
 msgid "Remove Urine Test"
 msgstr "Премахни изследване на урина"
 
-#: .\templates\records\examination_add.html:223
+#: .\templates\records\examination_add.html:374
 msgid "Remove Fecal Test"
 msgstr "Премахни изследване на изпражнения"
 
@@ -2713,19 +2762,6 @@ msgstr ""
 msgid "Select a treatment"
 msgstr "Изберете лечение"
 
-#: .\templates\records\treatment_record_add.html:59
-#: .\templates\records\vaccine_record_add.html:53
-msgid "Other (specify)"
-msgstr "Друго (посочете)"
-
-#: .\templates\records\treatment_record_add.html:64
-msgid "Custom Medication Name"
-msgstr "Име на ръчно въведено лекарство"
-
-#: .\templates\records\treatment_record_add.html:69
-msgid "Enter custom medication name"
-msgstr "Въведете име на лекарство"
-
 #: .\templates\records\treatment_record_add.html:84
 #: .\templates\records\vaccine_record_add.html:76
 msgid "Save Record"
@@ -2786,17 +2822,15 @@ msgstr ""
 "Уверете се, че цялата информация е точна преди запазване, особено името на "
 "ваксината и датата на прилагане."
 
-#: .\templates\records\vaccine_record_add.html:57
-msgid "Custom Vaccine Name"
-msgstr "Име на ръчно въведената ваксина"
-
-#: .\templates\records\vaccine_record_add.html:62
-msgid "Enter custom vaccine name"
-msgstr "Въведете име на ваксината"
-
 #: .\templates\records\vaccine_record_add.html:78
 msgid "Finish Adding Vaccines"
 msgstr "Завърши добавянето на ваксини"
+
+#~ msgid "Specify valid until date"
+#~ msgstr "Посочете дата на валидност"
+
+#~ msgid "Date of the entry"
+#~ msgstr "Дата на записа"
 
 #~ msgid ""
 #~ "You will also be notified whenever a new medical record is created for "

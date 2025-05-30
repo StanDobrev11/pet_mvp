@@ -14,6 +14,9 @@
                 <div class="col-md-6">
                     <label for="id_date_of_entry" class="form-label">{{ form.date_of_entry.label }}</label>
                     {{ form.date_of_entry|add_class:"form-control" }}
+                    <small id="{{ form.date_of_entry.id_for_label }}_helptext" class="form-text text-muted">
+                        {{ form.date_of_entry.help_text }}
+                    </small>
                     {{ form.date_of_entry.errors }}
                     <label class="form-label">{{ form.doctor.label }}</label>
                     {{ form.doctor|add_class:"form-control" }}
@@ -22,7 +25,10 @@
                     {{ form.exam_type|add_class:"form-check rounded" }}
                     {{ form.exam_type.errors }}
                     <label class="form-label">{{ form.follow_up.label }}</label>
-                    {{ form.follow_up|add_class:"form-check-input" }}
+                    {{ form.follow_up }}
+                    <small id="{{ form.follow_up.id_for_label }}_helptext" class="form-text text-muted">
+                        {{ form.follow_up.help_text }}
+                    </small>
                     {{ form.follow_up.errors }}
                 </div>
                 <div class="col-md-6">
@@ -42,9 +48,16 @@
                 </div>
             </div>
             <h4 class="mt-4">{% trans "Additional Information" %}</h4>
+{#            <button type="button"#}
+{#                    id="add-info-form-button"#}
+{#                    class="btn btn-outline-secondary mb-3">{% trans "Show" %}</button>#}
             <button type="button"
                     id="add-info-form-button"
-                    class="btn btn-outline-secondary mb-3">{% trans "Show" %}</button>
+                    class="btn btn-outline-secondary mb-3"
+                    data-show="{% trans 'Show' %}"
+                    data-hide="{% trans 'Hide' %}">
+                {% trans 'Show' %}
+            </button>
             <div id="add-info-container"></div>
             <template id="add-info-form-template">
                 <div class="row g-3">
@@ -135,22 +148,27 @@
         </div>
     </form>
     <script src="{% url 'javascript-catalog' %}"></script>
-    {% comment %} <script src="{% static "scripts/examination_func.js" %}"></script> {% endcomment %}
     <script>
+
         // ======= Add info form ======
         const addInfoFormButton = document.getElementById('add-info-form-button');
         const addInfoContainer = document.getElementById('add-info-container');
         const addInfoFormTemplate = document.getElementById('add-info-form-template');
 
-        addInfoFormButton.addEventListener('click', (e) => {
-            if (addInfoFormButton.innerText === gettext('Show')) {
-                addInfoFormButton.innerText = gettext('Hide')
-                addInfoContainer.innerHTML = addInfoFormTemplate.innerHTML
+        const showText = addInfoFormButton.dataset.show;
+        const hideText = addInfoFormButton.dataset.hide;
+
+        addInfoFormButton.addEventListener('click', () => {
+            const isHidden = addInfoFormButton.innerText.trim() === showText;
+
+            if (isHidden) {
+                addInfoFormButton.innerText = hideText;
+                addInfoContainer.innerHTML = addInfoFormTemplate.innerHTML;
             } else {
-                addInfoFormButton.innerText = gettext('Show')
-                addInfoContainer.innerHTML = ''
+                addInfoFormButton.innerText = showText;
+                addInfoContainer.innerHTML = '';
             }
-        })
+        });
 
         // ========== Vaccines ==========
         let vaccineFormIndex = {{ vaccine_formset.total_form_count }};
@@ -276,14 +294,13 @@
             const customInputWrapper = document.getElementById(`custom-${newFormPrefix}-wrapper`);
 
             function updateTreatmentForm() {
-                const selectedOption = medicationSelect.options[medicationSelect.selectedIndex];
+                const selectedOption = medicationSelect.options[medicationSelect.selectedIndex]
                 const value = selectedOption.value;
                 const isCustom = value === "custom";
                 const interval = parseInt(selectedOption.getAttribute("data-interval"));
 
                 if (!value) {
                     validUntilInput.value = "";
-                    validFromInput.value = "";
                     return;
                 }
 
@@ -314,7 +331,7 @@
 
             }
 
-            if (medicationSelect) medicationSelect.addEventListener("change", updateValidUntil);
+            if (medicationSelect) medicationSelect.addEventListener("change", updateTreatmentForm);
             if (dateInput) dateInput.addEventListener("change", updateValidUntil);
 
             treatmentFormIndex++;

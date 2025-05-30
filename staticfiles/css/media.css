@@ -29,5 +29,22 @@
         width: 100%;
         /* optional: make buttons full width */
         max-width: 300px;
+
+    }
+
+    .form-text.text-muted {
+        display: block !important;
+    }
+
+    .col-md-6 {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .col-md-6 select {
+        margin-top: 1rem;
+        width: auto; /* optional: avoid stretching */
     }
 }
+

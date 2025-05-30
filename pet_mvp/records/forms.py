@@ -8,6 +8,7 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from django.forms.models import BaseModelFormSet
 
+
 class VaccinationRecordForm(forms.ModelForm):
     class Meta:
         model = VaccinationRecord
@@ -51,13 +52,15 @@ class VaccinationRecordForm(forms.ModelForm):
                     'readonly': 'readonly',
                     'style': 'background-color: #e9ecef; cursor: not-allowed;',
                 })
-                field.help_text = _('This field is automatically filled for Rabies vaccine (21 days after vaccination).')
+                field.help_text = _(
+                    'This field is automatically filled for Rabies vaccine (21 days after vaccination).')
             elif field_name != 'vaccine':
                 placeholder = self._meta.model._meta.get_field(field_name).verbose_name
                 field.widget.attrs.update({
                     'class': 'form-control',
                     'placeholder': str(placeholder).capitalize()
                 })
+
     def clean(self):
         cleaned_data = super().clean()
         vaccine = cleaned_data.get("vaccine")
@@ -67,6 +70,7 @@ class VaccinationRecordForm(forms.ModelForm):
             cleaned_data["valid_from"] = date_of_vaccination + timedelta(days=21)
 
         return cleaned_data
+
 
 class MedicationRecordForm(forms.ModelForm):
     class Meta:
@@ -163,6 +167,33 @@ class MedicalExaminationRecordForm(forms.ModelForm):
         exclude = ['pet', 'clinic', 'vaccinations', 'medications',
                    'blood_test', 'urine_test', 'fecal_test']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field_name in self.fields:
+            field = self.fields[field_name]
+            if field_name == 'date_of_entry':
+                field.widget = forms.DateInput(
+                    attrs={'type': 'date', 'class': 'form-control'})
+            elif field_name == 'follow_up':
+                field.widget = forms.Select(
+                    choices=[('true', _('Yes')), ('false', _('No'))],
+                    attrs={'class': 'form-select'}
+                )
+                self.initial['follow_up'] = 'false'
+            else:
+                placeholder = self._meta.model._meta.get_field(
+                    field_name).verbose_name
+                field.widget.attrs['placeholder'] = str(
+                    placeholder).capitalize()
+
+    def clean_follow_up(self):
+        value = self.cleaned_data.get('follow_up')
+        if value == 'true':
+            return True
+        else:
+            return False
+
 
 class BaseFormSet(BaseModelFormSet):
 
@@ -185,6 +216,7 @@ class BaseFormSet(BaseModelFormSet):
         )
         self.add_fields(form, None)
         return form
+
 
 VaccineFormSet = forms.modelformset_factory(
     VaccinationRecord,

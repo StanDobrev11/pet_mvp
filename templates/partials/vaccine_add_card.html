@@ -42,40 +42,53 @@
                    class="form-control"
                    placeholder="{% trans 'Enter custom vaccine name' %}">
         </div>
-
         <div class="col-md-4">
-            <label class="form-label"
-                   for="id_{{ form.prefix }}-date_of_vaccination">{% trans form.date_of_vaccination.label %}</label>
+            <label class="form-label">{{ form.date_of_vaccination.label }}</label>
             {{ form.date_of_vaccination|add_class:"form-control" }}
+            {% if form.date_of_vaccination.help_text %}
+                <small id="{{ form.date_of_vaccination.id_for_label }}_helptext" class="form-text text-muted">
+                    {{ form.date_of_vaccination.help_text }}
+                </small>
+            {% endif %}
             {{ form.date_of_vaccination.errors }}
         </div>
         <div class="col-md-4" id="field-{{ form.prefix }}-valid_from" style="display: none;">
             <label class="form-label" for="id_{{ form.prefix }}-valid_from">{% trans "Valid From" %}</label>
-            <input type="date"
-                   name="{{ form.prefix }}-valid_from"
-                   id="id_{{ form.prefix }}-valid_from"
-                   class="form-control">
+            {{ form.valid_from|add_class:"form-control" }}
+            {% if form.valid_from.help_text %}
+                <small id="{{ form.valid_from.id_for_label }}_helptext" class="form-text text-muted">
+                    {{ form.valid_from.help_text }}
+                </small>
+            {% endif %}
+            {{ form.valid_from.errors }}
         </div>
         <div class="col-md-4">
-            <label class="form-label" for="id_{{ form.prefix }}-valid_until">{% trans form.valid_until.label %}</label>
+            <label class="form-label">{{ form.valid_until.label }}</label>
             {{ form.valid_until|add_class:"form-control" }}
+            {% if form.valid_until.help_text %}
+                <small id="{{ form.valid_until.id_for_label }}_helptext" class="form-text text-muted">
+                    {{ form.valid_until.help_text }}
+                </small>
+            {% endif %}
             {{ form.valid_until.errors }}
         </div>
         <div class="col-md-4">
-            <label class="form-label"
-                   for="id_{{ form.prefix }}-manufacturer">{% trans form.manufacturer.label %}</label>
+            <label class="form-label">{{ form.manufacturer.label }}</label>
             {{ form.manufacturer|add_class:"form-control" }}
             {{ form.manufacturer.errors }}
         </div>
         <div class="col-md-4">
-            <label class="form-label"
-                   for="id_{{ form.prefix }}-manufacture_date">{% trans form.manufacture_date.label %}</label>
+            <label class="form-label">{{ form.manufacture_date.label }}</label>
             {{ form.manufacture_date|add_class:"form-control" }}
+            {% if form.manufacture_date.help_text %}
+                 <small id="{{ form.manufacture_date.id_for_label }}_helptext" class="form-text text-muted">
+                    {{ form.manufacture_date.help_text }}
+                </small>
+            {% endif %}
             {{ form.manufacture_date.errors }}
         </div>
         <div class="col-md-4">
-            <label class="form-label"
-                   for="id_{{ form.prefix }}-batch_number">{% trans form.batch_number.label %}</label>
+            <label class="form-label">{{ form.batch_number.label }}</label>
             {{ form.batch_number|add_class:"form-control" }}
             {{ form.batch_number.errors }}
         </div>

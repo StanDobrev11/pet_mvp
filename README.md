@@ -82,7 +82,7 @@ To help manage untranslated and fuzzy strings, you can extract only untranslated
 
 ```sh
 msgattrib --untranslated -o untranslated.po django.po        
-msgattrib --fuzzy -o untranslated.po django.po   
+msgattrib --fuzzy -o untranslated.po django.po
 ```
 
 You can then merge translations back using:

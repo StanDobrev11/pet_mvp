@@ -13,6 +13,7 @@ class VaccinationRecord(TimeStampMixin):
 
     date_of_vaccination = models.DateField(
         verbose_name=_('Date of vaccination'),
+        help_text=_('Date of vaccination'),
         default=datetime.date.today,
     )
 
@@ -20,11 +21,13 @@ class VaccinationRecord(TimeStampMixin):
         null=True,
         blank=True,
         verbose_name=_('Valid from'),
+        help_text=_('Valid from date'),
         default=datetime.date.today,
     )
 
     valid_until = models.DateField(
-        verbose_name=_('Valid until')
+        verbose_name=_('Valid until'),
+        help_text=_('Valid until date'),
     )
 
     manufacturer = models.CharField(
@@ -33,7 +36,8 @@ class VaccinationRecord(TimeStampMixin):
     )
 
     manufacture_date = models.DateField(
-        verbose_name=_('Manufacture date')
+        verbose_name=_('Manufacture date'),
+        help_text=_('Manufacture date'),
     )
 
     batch_number = models.CharField(
@@ -60,12 +64,13 @@ class MedicationRecord(TimeStampMixin):
 
     date = models.DateField(
         verbose_name=_('Date of intake'),
+        help_text=_('Date of intake'),
         default=datetime.date.today,
     )
 
     valid_until = models.DateField(
         verbose_name=_('Valid Until'),
-        help_text=_('Specify valid until date')
+        help_text=_('Valid until date')
     )
 
     time = models.TimeField(
@@ -78,7 +83,7 @@ class MedicationRecord(TimeStampMixin):
     dosage = models.CharField(
         max_length=50,
         verbose_name=_('Dosage'),
-        help_text=_('Specify dosage, if different from reccomended'),
+        help_text=_('Specify dosage, if different from recommended'),
         blank=True,
     )
 
@@ -119,12 +124,14 @@ class MedicalExaminationRecord(TimeStampMixin):
     )
 
     date_of_entry = models.DateField(
-        verbose_name=_('Date of the entry'),
+        verbose_name=_('Date of entry'),
+        help_text=_('Date of entry'),
         default=datetime.date.today,
     )
 
     doctor = models.CharField(
         max_length=100,
+        verbose_name=_('Name of attending veterinarian'),
     )
 
     clinic = models.ForeignKey(
@@ -268,6 +275,7 @@ class MedicalExaminationRecord(TimeStampMixin):
     follow_up = models.BooleanField(
         default=False,
         verbose_name=_('Follow-up Required?'),
+        help_text=_('Follow-up Required?'),
     )
 
     notes = models.TextField(

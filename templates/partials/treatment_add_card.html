@@ -33,31 +33,45 @@
                    class="form-control"
                    placeholder="{% trans 'Enter custom medication name' %}">
         </div>
-
+        <div class="col-md-4">
+            <label class="form-label">{{ form.date.label }}</label>
+            {{ form.date|add_class:"form-control" }}
+            {% if form.date.help_text %}
+                <small id="{{ form.date.id_for_label }}_helptext" class="form-text text-muted">
+                    {{ form.date.help_text }}
+                </small>
+            {% endif %}
+            {{ form.date.errors }}
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">{{ form.valid_until.label }}</label>
+            {{ form.valid_until|add_class:"form-control" }}
+            {% if form.valid_until.help_text %}
+                <small id="{{ form.valid_until.id_for_label }}_helptext" class="form-text text-muted">
+                    {{ form.valid_until.help_text }}
+                </small>
+            {% endif %}
+            {{ form.valid_until.errors }}
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">{{ form.time.label }}</label>
+            {{ form.time|add_class:"form-control" }}
+            {% if form.time.help_text %}
+                <small id="{{ form.time.id_for_label }}_helptext" class="form-text text-muted">
+                    {{ form.time.help_text }}
+                </small>
+            {% endif %}
+            {{ form.time.errors }}
+        </div>
         <div class="col-md-4">
             <label class="form-label">{{ form.manufacturer.label }}</label>
             {{ form.manufacturer|add_class:"form-control" }}
             {{ form.manufacturer.errors }}
         </div>
         <div class="col-md-4">
-            <label class="form-label">{{ form.date.label }}</label>
-            {{ form.date|add_class:"form-control" }}
-            {{ form.date.errors }}
-        </div>
-        <div class="col-md-4">
-            <label class="form-label">{{ form.time.label }}</label>
-            {{ form.time|add_class:"form-control" }}
-            {{ form.time.errors }}
-        </div>
-        <div class="col-md-4">
             <label class="form-label">{{ form.dosage.label }}</label>
             {{ form.dosage|add_class:"form-control" }}
             {{ form.dosage.errors }}
-        </div>
-        <div class="col-md-4">
-            <label class="form-label">{{ form.valid_until.label }}</label>
-            {{ form.valid_until|add_class:"form-control" }}
-            {{ form.valid_until.errors }}
         </div>
     </div>
 </div>

@@ -39,3 +39,7 @@ a {
     align-items: center;
     height: 100%;
 }
+
+.form-text.text-muted {
+    display: none;
+  }
