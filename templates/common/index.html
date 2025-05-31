@@ -3,30 +3,36 @@
 {% load i18n %}
 
 {% block content %}
-<section class="container mt-5">
-    <div class="text-center mb-4">
-        <h2>{% trans "My Pet's Medical Records" %}</h2>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6 mb-4">
-            <h4>{% trans "Join now and get:" %}</h4>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">{% trans "Tracking of your pet's vaccinations and medical records!" %}</li>
-                <li class="list-group-item">{% trans "Notification when it is time for medication or treatment!" %}</li>
-                <li class="list-group-item">{% trans "Access to the records from everywhere!" %}</li>
-            </ul>
+    <section class="container mt-5">
+        <div class="text-center mb-4">
+            <h2>{% trans "My Pet's Medical Records" %}</h2>
         </div>
 
-        <div class="col-md-6 d-flex align-items-center justify-content-center">
-            <div class="d-grid gap-3 w-100">
-                <a href="{% url 'login' %}" class="btn btn-primary btn-lg">{% trans "Login" %}</a>
-                <a href="{% url 'register' %}" class="btn btn-secondary btn-lg">{% trans "Register" %}</a>
-                <a href="{% url 'clinic-login' %}" class="btn btn-outline-secondary btn-lg">{% trans "Enter Access Code" %}</a>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <h4>{% trans "Join now and get:" %}</h4>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">{% trans "Tracking of your pet's vaccinations and medical records!" %}</li>
+                    <li class="list-group-item">{% trans "Notification when it is time for medication or treatment!" %}</li>
+                    <li class="list-group-item">{% trans "Access to the records from everywhere!" %}</li>
+                </ul>
+            </div>
+
+            <div class="col-md-6 d-flex align-items-center justify-content-center">
+                <div class="d-grid gap-3 w-100">
+                    <a href="{% url 'login' %}" class="btn btn-primary btn-lg">{% trans "Login" %}</a>
+                    <a href="{% url 'register' %}" class="btn btn-secondary btn-lg">{% trans "Register" %}</a>
+                    <div class="text-center my-3">
+                        <small class="text-muted">{% trans "Or use your Google account" %}</small>
+
+                        {% include 'partials/social_login.html' %}
+                    </div>
+                    <a href="{% url 'clinic-login' %}"
+                       class="btn btn-outline-secondary btn-lg">{% trans "Enter Access Code" %}</a>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 {% endblock %}
 
 {% block scripts %}

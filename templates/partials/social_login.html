@@ -1,0 +1,10 @@
+{% load socialaccount %}
+{% load static %}
+{% load i18n %}
+
+<div class="d-flex justify-content-center my-3">
+    <a href="{% provider_login_url 'google' method='oauth2' %}" class="btn btn-light border shadow-sm d-flex align-items-center px-3 py-2" style="gap: 10px;">
+        <img src="{% static 'imgs/g-logo.png' %}" alt="Google" width="20" height="20">
+        <span class="text-dark fw-bold">{% trans "Continue with Google" %}</span>
+    </a>
+</div>

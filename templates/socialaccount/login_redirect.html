@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<section class="container mt-5 text-center">
+  <h2>{% trans "You are about to log in with your Google account." %}</h2>
+  <form method="post" action="">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary mt-3">
+      {% trans "Continue" %}
+    </button>
+  </form>
+</section>
+{% endblock %}

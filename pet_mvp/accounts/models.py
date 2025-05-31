@@ -58,16 +58,22 @@ class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
     phone_number = models.CharField(
         max_length=PHONE_NUMBER_LENGTH,
         verbose_name=_("Phone number"),
+        blank=True,
+        null=True,
     )
 
     city = models.CharField(
         max_length=255,
         verbose_name=_("City"),
+        blank=True,
+        null=True,
     )
 
     country = models.CharField(
         max_length=255,
         verbose_name=_("Country"),
+        blank=True,
+        null=True,
     )
     
     default_language = models.CharField(
