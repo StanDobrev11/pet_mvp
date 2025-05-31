@@ -62,23 +62,27 @@
                         </p>
                         {% if pet.transponder %}
                             <p>
-                                <strong>{% trans "Marking:" %}</strong> <a href="{% url 'marking-details' pk=pet.pk %}" class="btn btn-link">{{ pet.transponder }}</a>
+                                <strong>{% trans "Marking:" %}</strong> <a href="{% url 'marking-details' pk=pet.pk %}"
+                                                                           class="btn btn-link">{{ pet.transponder }}</a>
                             </p>
                         {% elif pet.tattoo %}
                             <p>
-                                <strong>{% trans "Marking:" %}</strong> <a href="{% url 'marking-details' pk=pet.pk %}" class="btn btn-link">{{ pet.tattoo }}</a>
+                                <strong>{% trans "Marking:" %}</strong> <a href="{% url 'marking-details' pk=pet.pk %}"
+                                                                           class="btn btn-link">{{ pet.tattoo }}</a>
                             </p>
                         {% else %}
                             <p>
                                 <strong>{% trans "No marking of the animal" %}</strong> -
-                                <a href="{% url 'marking-add' pk=pet.pk %}" class="btn btn-secondary">{% trans "Add marking?" %}</a>
+                                <a href="{% url 'marking-add' pk=pet.pk %}"
+                                   class="btn btn-secondary">{% trans "Add marking?" %}</a>
                             </p>
                         {% endif %}
                     </div>
                     {% if user.is_owner %}
                         <div class="card-footer d-flex justify-content-between">
                             <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">{% trans "Back" %}</a>
-                            <a href="{% url 'pet-edit' pk=pet.pk %}" class="btn btn-outline-primary">{% trans "Edit" %}</a>
+                            <a href="{% url 'pet-edit' pk=pet.pk %}"
+                               class="btn btn-outline-primary">{% trans "Edit" %}</a>
                             <a href="{% url 'pet-delete' pk=pet.pk %}"
                                class="btn btn-outline-danger">{% trans "Delete" %}</a>
                         </div>
@@ -137,6 +141,13 @@
                         <h5 class="card-title">
                             <strong>{% trans "Last Examination Records" %}</strong>
                         </h5>
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
                         {% if last_examinations %}
                             {% for exam in last_examinations %}
                                 <p>

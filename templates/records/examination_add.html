@@ -109,6 +109,7 @@
             <div id="blood-test-form-container"></div>
             <template id="blood-test-template">
                 {% include 'partials/blood_test_add_card.html' with form=blood_test_form %}
+                <input type="hidden" name="has_blood_test" value="1">
             </template>
             <button type="button"
                     id="add-remove-blood-test-form"

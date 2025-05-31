@@ -18,10 +18,8 @@ from pet_mvp.records.views import MedicalExaminationReportCreateView
 
 class MedicalExaminationReportCreateViewTest(TestCase):
     def setUp(self):
-        # Create mock objects needed for tests
         self.factory = RequestFactory()
 
-        # Create a clinic (user)
         self.clinic = Clinic.objects.create(
             email='test-clinic@test.com',
             password='1234',
@@ -33,7 +31,6 @@ class MedicalExaminationReportCreateViewTest(TestCase):
             country='Bulgaria',
         )
 
-        # Create a pet with access code
         self.pet = Pet.objects.create(
             name='Some Test Dog',
             species='Dog',
@@ -47,19 +44,19 @@ class MedicalExaminationReportCreateViewTest(TestCase):
 
         self.access_code = generate_access_code(self.pet)
 
-        # Create test data for optional models
         self.vaccine = Vaccine.objects.create(
             name='Test Vaccine',
+            suitable_for='dog',  # MUST match pet.species.lower()
             notes='Test vaccine description'
         )
 
         self.drug = Drug.objects.create(
             name='Test Drug',
+            suitable_for='dog',  # MUST match pet.species.lower()
             notes='Test drug description'
         )
 
     def setup_request(self, request, user=None):
-        """Helper method to set up request with session and messages"""
         request.user = user or self.clinic
         setattr(request, 'session', 'session')
         messages = FallbackStorage(request)
@@ -135,10 +132,7 @@ class MedicalExaminationReportCreateViewTest(TestCase):
         self.assertEqual(record.exam_type, 'primary')
 
     def test_form_valid_with_vaccines(self):
-        """Test form submission with vaccine records"""
         url = reverse('exam-add')
-
-        # Create post data for examination with vaccines
         post_data = {
             'id': self.pet.id,
             'exam_type': 'primary',
@@ -146,8 +140,6 @@ class MedicalExaminationReportCreateViewTest(TestCase):
             'doctor': 'Dr. Test',
             'reason_for_visit': 'Annual checkup',
             'treatment_performed': 'General examination',
-
-            # Vaccine formset data
             'vaccines-TOTAL_FORMS': '1',
             'vaccines-INITIAL_FORMS': '0',
             'vaccines-MIN_NUM_FORMS': '0',
@@ -159,44 +151,38 @@ class MedicalExaminationReportCreateViewTest(TestCase):
             'vaccines-0-date_of_vaccination': datetime.date.today().strftime('%Y-%m-%d'),
             'vaccines-0-valid_from': datetime.date.today().strftime('%Y-%m-%d'),
             'vaccines-0-valid_until': (datetime.date.today() + datetime.timedelta(days=365)).strftime('%Y-%m-%d'),
-
-            # Treatment formset data
             'treatments-TOTAL_FORMS': '0',
             'treatments-INITIAL_FORMS': '0',
             'treatments-MIN_NUM_FORMS': '0',
             'treatments-MAX_NUM_FORMS': '1000',
         }
 
-        request = self.factory.post(f"{url}", data=post_data)
+        request = self.factory.post(url, data=post_data)
         request = self.setup_request(request)
 
         view = MedicalExaminationReportCreateView()
         view.request = request
         view.kwargs = {}
 
-        # Get the form
+        # Patch get_pet to return self.pet
+        view.get_pet = lambda: self.pet
+
         form = MedicalExaminationRecordForm(post_data)
         self.assertTrue(form.is_valid())
 
-        # Call form_valid and check redirect
         response = view.form_valid(form)
-        self.assertEqual(response.status_code, 302)  # Redirect
+        self.assertEqual(response.status_code, 302)
 
-        # Check that records were created
         self.assertEqual(MedicalExaminationRecord.objects.count(), 1)
         self.assertEqual(VaccinationRecord.objects.count(), 1)
 
-        # Check relationships
-        examination = MedicalExaminationRecord.objects.first()
+        record = MedicalExaminationRecord.objects.first()
         vaccine_record = VaccinationRecord.objects.first()
         self.assertEqual(vaccine_record.pet, self.pet)
-        self.assertEqual(list(examination.vaccinations.all()), [vaccine_record])
+        self.assertEqual(list(record.vaccinations.all()), [vaccine_record])
 
     def test_form_valid_with_treatments(self):
-        """Test form submission with medication records"""
         url = reverse('exam-add')
-
-        # Create post data for examination with treatments
         post_data = {
             'id': self.pet.id,
             'exam_type': 'primary',
@@ -204,14 +190,10 @@ class MedicalExaminationReportCreateViewTest(TestCase):
             'doctor': 'Dr. Test',
             'reason_for_visit': 'Annual checkup',
             'treatment_performed': 'General examination',
-
-            # Vaccine formset data
             'vaccines-TOTAL_FORMS': '0',
             'vaccines-INITIAL_FORMS': '0',
             'vaccines-MIN_NUM_FORMS': '0',
             'vaccines-MAX_NUM_FORMS': '1000',
-
-            # Treatment formset data
             'treatments-TOTAL_FORMS': '1',
             'treatments-INITIAL_FORMS': '0',
             'treatments-MIN_NUM_FORMS': '0',
@@ -223,30 +205,29 @@ class MedicalExaminationReportCreateViewTest(TestCase):
             'treatments-0-valid_until': (datetime.date.today() + datetime.timedelta(days=30)).strftime('%Y-%m-%d'),
         }
 
-        request = self.factory.post(f"{url}", data=post_data)
+        request = self.factory.post(url, data=post_data)
         request = self.setup_request(request)
 
         view = MedicalExaminationReportCreateView()
         view.request = request
         view.kwargs = {}
 
-        # Get the form
+        # Patch get_pet to return self.pet
+        view.get_pet = lambda: self.pet
+
         form = MedicalExaminationRecordForm(post_data)
         self.assertTrue(form.is_valid())
 
-        # Call form_valid and check redirect
         response = view.form_valid(form)
-        self.assertEqual(response.status_code, 302)  # Redirect
+        self.assertEqual(response.status_code, 302)
 
-        # Check that records were created
         self.assertEqual(MedicalExaminationRecord.objects.count(), 1)
         self.assertEqual(MedicationRecord.objects.count(), 1)
 
-        # Check relationships
-        examination = MedicalExaminationRecord.objects.first()
-        medication_record = MedicationRecord.objects.first()
-        self.assertEqual(medication_record.pet, self.pet)
-        self.assertEqual(list(examination.medications.all()), [medication_record])
+        record = MedicalExaminationRecord.objects.first()
+        treatment_record = MedicationRecord.objects.first()
+        self.assertEqual(treatment_record.pet, self.pet)
+        self.assertEqual(list(record.medications.all()), [treatment_record])
 
     def test_form_valid_with_tests(self):
         """Test form submission with blood, urine and fecal tests"""
@@ -380,6 +361,7 @@ class MedicalExaminationReportCreateViewTest(TestCase):
             'vaccines-MAX_NUM_FORMS': '1000',
             'vaccines-0-vaccine': '',  # Required field missing to cause formset invalid
             'vaccines-0-batch_number': '',
+            'vaccines-0-valid_until': datetime.date.today().strftime('%Y-%m-%d'),
             'treatments-TOTAL_FORMS': '0',
             'treatments-INITIAL_FORMS': '0',
             'treatments-MIN_NUM_FORMS': '0',

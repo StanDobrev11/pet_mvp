@@ -178,15 +178,14 @@ class MedicalExaminationReportCreateView(views.FormView):
         If the form is invalid, re-render the context data with the
         data-filled form and errors.
         """
-        messages.error(self.request, "Please correct the errors in the form.")
+        messages.error(self.request, _("Please correct the errors in the form."))
         return self.render_to_response(self.get_context_data(form=form))
 
     def form_valid(self, form):
         pet = self.get_pet()
 
-        vaccine_formset = VaccineFormSet(self.request.POST, prefix='vaccines')
-        treatment_formset = TreatmentFormSet(
-            self.request.POST, prefix='treatments')
+        vaccine_formset = VaccineFormSet(self.request.POST, prefix='vaccines', pet=pet)
+        treatment_formset = TreatmentFormSet(self.request.POST, prefix='treatments', pet=pet)
         request_data = self.request.POST
 
         # Check if main form and all formsets are valid
@@ -194,12 +193,12 @@ class MedicalExaminationReportCreateView(views.FormView):
 
         if not vaccine_formset.is_valid():
             messages.error(
-                self.request, "Vaccine information contains errors.")
+                self.request, _("Vaccine information contains errors."))
             all_valid = False
 
         if not treatment_formset.is_valid():
             messages.error(
-                self.request, "Treatment information contains errors.")
+                self.request, _("Treatment information contains errors."))
             all_valid = False
 
         # Check optional test forms if they're included
@@ -207,21 +206,21 @@ class MedicalExaminationReportCreateView(views.FormView):
             blood_test_form = BloodTestForm(request_data)
             if not blood_test_form.is_valid():
                 messages.error(
-                    self.request, "Blood test form contains errors.")
+                    self.request, _("Blood test form contains errors."))
                 all_valid = False
 
         if request_data.get('has_urine_test'):
             urine_test_form = UrineTestForm(request_data)
             if not urine_test_form.is_valid():
                 messages.error(
-                    self.request, "Urine test form contains errors.")
+                    self.request, _("Urine test form contains errors."))
                 all_valid = False
 
         if request_data.get('has_fecal_test'):
             fecal_test_form = FecalTestForm(request_data)
             if not fecal_test_form.is_valid():
                 messages.error(
-                    self.request, "Fecal test form contains errors.")
+                    self.request, _("Fecal test form contains errors."))
                 all_valid = False
 
         # If any form is invalid, return to the same page with form data preserved
@@ -268,5 +267,5 @@ class MedicalExaminationReportCreateView(views.FormView):
 
         lang = self.request.COOKIES.get('django_language', 'en')
         send_medical_record_email(report, lang)
-        messages.success(self.request, "Examination data saved successfully!")
+        messages.success(self.request, _("Examination data saved successfully!"))
         return redirect(reverse_lazy('pet-details', kwargs={'pk': pet.pk}))
