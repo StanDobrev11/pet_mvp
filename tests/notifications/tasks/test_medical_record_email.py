@@ -5,6 +5,7 @@ This module contains tests for the send_medical_record_email task.
 """
 from django.test import TestCase
 from django.utils import timezone
+from django.utils.translation import gettext as _
 from datetime import timedelta
 from unittest.mock import patch
 
@@ -87,30 +88,35 @@ class MedicalRecordEmailTestCase(TestCase):
         self.assertIn(f"Processed one medical report for {self.test_pet.name}", result)
 
         # Check that send_template_email_async was called once
-        self.assertEqual(mock_send_email.delay.call_count, 1)
+        self.assertEqual(mock_send_email.delay.call_count, 2)
 
-        # Check the call to send_template_email_async
-        call = mock_send_email.delay.call_args
-        args, kwargs = call
+        # ----- First call: to owner(s)
+        call1_args, call1_kwargs = mock_send_email.delay.call_args_list[0]
+        self.assertIn(self.test_owner.email, call1_kwargs['to_email'])
+        self.assertIn(self.test_pet.name, call1_kwargs['subject'])
+        self.assertEqual(call1_kwargs['template_name'], 'emails/medical_report_email.html')
 
-        # Check that the email was sent to the pet owner and clinic
-        self.assertIn(self.test_owner.email, kwargs['to_email'])
-        self.assertIn(self.test_clinic.email, kwargs['cc'])
+        owner_context = call1_kwargs['context']
+        self.assertEqual(owner_context['pet_name'], self.test_pet.name)
+        self.assertEqual(owner_context['doctor'], self.test_exam.doctor)
+        self.assertEqual(owner_context['clinic_name'], self.test_clinic.clinic_name)
+        self.assertEqual(owner_context['reason_for_visit'], self.test_exam.reason_for_visit)
+        self.assertEqual(owner_context['diagnosis'], self.test_exam.diagnosis)
+        self.assertEqual(owner_context['follow_up'], _('No'))
+        self.assertEqual(owner_context['lang'], 'bg')
 
-        # Check that the subject contains the pet name
-        self.assertIn(self.test_pet.name, kwargs['subject'])
+        # ----- Second call: to clinic
+        call2_args, call2_kwargs = mock_send_email.delay.call_args_list[1]
+        self.assertEqual(call2_kwargs['to_email'], self.test_clinic.email)
+        self.assertIn(self.test_pet.name, call2_kwargs['subject'])
+        self.assertEqual(call2_kwargs['template_name'], 'emails/medical_report_email.html')
 
-        # Check that the template name is correct
-        self.assertEqual(kwargs['template_name'], 'emails/medical_report_email.html')
-
-        # Check that the context contains the expected data
-        context = kwargs['context']
-        self.assertEqual(context['pet_name'], self.test_pet.name)
-        self.assertEqual(context['doctor'], 'Dr. Test')
-        self.assertEqual(context['clinic_name'], self.test_clinic.clinic_name)
-        self.assertEqual(context['reason_for_visit'], 'Annual checkup')
-        self.assertEqual(context['diagnosis'], 'Healthy')
-        self.assertEqual(context['follow_up'], 'No')
+        clinic_context = call2_kwargs['context']
+        self.assertEqual(clinic_context['pet_name'], self.test_pet.name)
+        self.assertEqual(clinic_context['doctor'], self.test_exam.doctor)
+        self.assertEqual(clinic_context['clinic_name'], self.test_clinic.clinic_name)
+        self.assertEqual(clinic_context['follow_up'], _('No'))
+        self.assertEqual(clinic_context['lang'], 'bg')
 
     def test_run_task_manually(self):
         """Test running the task manually (for demonstration purposes)."""

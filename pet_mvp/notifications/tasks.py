@@ -164,7 +164,7 @@ def test_to_dict(test_obj):
 
 @shared_task
 def send_medical_record_email(exam, lang):
-    """task to send one-time notification on creation of a medical record to owners"""
+    """task to send one-time notification on creation of a medical record to owners and the clinic"""
 
     # get owners' details
     owners_details = [owner for owner in exam.pet.owners.all()]
@@ -222,7 +222,17 @@ def send_medical_record_email(exam, lang):
         subject=_("Medical Examination Report for {} - {}").format(exam.pet.name,
                                                                    exam.date_of_entry.strftime('%Y-%m-%d')),
         to_email=owners_emails,
-        cc=clinic.email,
+        template_name='emails/medical_report_email.html',
+        context=context
+    )
+
+    if clinic.default_language != lang:
+        context['lant'] = clinic.default_language
+
+    EmailService.send_template_email_async.delay(
+        subject=_("Medical Examination Report for {} - {}").format(exam.pet.name,
+                                                                   exam.date_of_entry.strftime('%Y-%m-%d')),
+        to_email=clinic.email,
         template_name='emails/medical_report_email.html',
         context=context
     )
