@@ -1,0 +1,19 @@
+[
+  {
+    "model": "accounts.user",
+    "pk": 1,
+    "fields": {
+      "email": "admin@petpal.cloudmachine.uk",
+      "password": "pbkdf2_sha256$1000000$hVthpmxb5tYDpQOlZ4C0Dh$XMY9oC7qy0qN9NYw7MAHbK7ortaWd+t6K2yAJVIqNps=",
+      "first_name": "Admin",
+      "last_name": "Superuser",
+      "city": "Varna",
+      "country": "Bulgaria",
+      "phone_number": "0887888888",
+      "is_owner": true,
+      "is_staff": true,
+      "is_superuser": true,
+      "is_active": true
+    }
+  }
+]

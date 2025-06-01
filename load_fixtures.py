@@ -8,17 +8,19 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pet_mvp.settings")
 django.setup()
 
 from pet_mvp.drugs.models import Drug, Vaccine
-from pet_mvp.accounts.models import Clinic
+from pet_mvp.accounts.models import Clinic, AppUser
 
 # Maps model label to actual Django model
 MODEL_MAP = {
     "drugs.drug": Drug,
     "drugs.vaccine": Vaccine,
     "accounts.clinic": Clinic,
+    "accounts.user": AppUser,
 }
 
 # Paths to your fixtures
 fixture_paths = [
+    "pet_mvp/accounts/fixtures/superuser.json",
     "pet_mvp/accounts/fixtures/clinics.json",
     "pet_mvp/drugs/fixtures/cat_vaccines.json",
     "pet_mvp/drugs/fixtures/dog_vaccines.json",

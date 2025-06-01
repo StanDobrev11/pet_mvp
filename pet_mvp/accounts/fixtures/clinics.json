@@ -1,7 +1,7 @@
 [
     {
         "model": "accounts.clinic",
-        "pk": "1",
+        "pk": "2",
         "fields": {
             "email": "dianavet@pet-mvp.com",
             "password": "pbkdf2_sha256$1000000$gw79YcygkIT8iyZneLKV6k$OQ91xsQ/9CL5y3hV4ezjTX53fIYHlQU3x6WtcDsfxN4=",
@@ -17,7 +17,7 @@
     }, 
     {
         "model": "accounts.clinic",
-        "pk": "2",
+        "pk": "3",
         "fields": {
             "email": "zoovet@pet-mvp.com",
             "password": "pbkdf2_sha256$1000000$gw79YcygkIT8iyZneLKV6k$OQ91xsQ/9CL5y3hV4ezjTX53fIYHlQU3x6WtcDsfxN4=",

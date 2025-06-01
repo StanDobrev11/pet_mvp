@@ -56,7 +56,7 @@ def create_pet_markings():
 
 def create_complete_examination_record_for_max():
     max_pet = Pet.objects.get(id='1')
-    clinic = Clinic.objects.get(clinic_name='Diana Vet')
+    clinic = Clinic.objects.get(email='dianavet@pet-mvp.com')
     try:
         blood_test = BloodTest.objects.create(
             result="WBC and RBC levels normal, low platelets detected",
@@ -117,27 +117,6 @@ def create_complete_examination_record_for_max():
     medical_record[0].medications.add(medication_record)
 
     print(f"Medical Examination Record created for {max_pet.name}.")
-
-
-def create_superuser(email='admin@petpal.cloudmachine.uk', password='1234'):
-    try:
-        UserModel.objects.create_superuser(
-            email=email,
-            password=password,
-            first_name='Admin',
-            last_name='Superuser',
-            city='Varna',
-            country='Bulgaria',
-            phone_number='0887888888',
-            is_owner=True,
-        )
-        print('Superuser created')
-    except IntegrityError:
-        print('Superuser already exists')
-    except ValidationError:
-        print('Superuser already exists')
-
-    print(f'email: {email}\npassword: {password}')
 
 
 def create_user(email, password):
@@ -395,7 +374,6 @@ def populate_vaccination_records():
 
 
 if __name__ == '__main__':
-    create_superuser()
     create_pets()
     create_pet_markings()
     populate_vaccination_records()
