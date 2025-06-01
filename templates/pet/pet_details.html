@@ -6,7 +6,16 @@
         <div class="row">
             <div class="col-lg-6 mb-4">
                 <div class="card">
-                    <div class="card-header d-flex align-items-center">
+                    {% if user.is_owner %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="card-header d-flex align-items-center pet-card-header">
                         <div style="flex-shrink: 0;">
                             {% if pet.photo %}
                                 <img src="{{ pet.photo.url }}"
@@ -152,13 +161,15 @@
                         <h5 class="card-title">
                             <strong>{% trans "Last Examination Records" %}</strong>
                         </h5>
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                                {{ message }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
-                            </div>
-                        {% endfor %}
+                        {% if not user.is_owner %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
                         {% if last_examinations %}
                             {% for exam in last_examinations %}
                                 <p>

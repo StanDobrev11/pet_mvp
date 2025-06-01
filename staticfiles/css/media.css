@@ -50,5 +50,16 @@
     .pet-div {
         flex-direction: column;
     }
+
+    .pet-card-header {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 1rem;
+    }
+
+    .pet-card-header .ms-3 {
+        margin-top: 1rem;
+    }
 }
 

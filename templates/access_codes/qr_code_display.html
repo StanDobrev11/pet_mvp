@@ -15,7 +15,7 @@
         <p class="mt-4 text-muted">
             {% trans "This code is single-use and will expire in 10 minutes." %}
         </p>
-        <a href="{% url 'dashboard' %}" class="btn btn-outline-primary mt-3">{% trans "Back to Dashboard" %}</a>
+        <a href="{% url 'pet-details' pk=pet.id %}" class="btn btn-outline-primary mt-3">{% trans "Back to pet's details" %}</a>
     </div>
 </section>
 {% endblock %}
