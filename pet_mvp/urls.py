@@ -30,6 +30,7 @@ urlpatterns = [
     path('accounts/', include('pet_mvp.accounts.urls')),
     path('accounts/', include('allauth.urls')),
     path('admin/', admin.site.urls),
+    path('api/', include('pet_mvp.api.urls')),
     path('pets/', include("pet_mvp.pets.urls")),
     path('records/',
          include([

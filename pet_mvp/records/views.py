@@ -13,7 +13,7 @@ from django.urls import reverse, reverse_lazy
 from django.views import generic as views
 from django.utils.translation import gettext_lazy as _
 
-from pet_mvp.access_codes.models import VetAccessToken
+
 from pet_mvp.notifications.tasks import send_medical_record_email
 from pet_mvp.pets.models import Pet
 from pet_mvp.records.forms import FecalTestForm, UrineTestForm, \
@@ -278,52 +278,3 @@ class MedicalExaminationReportCreateView(views.FormView):
         send_medical_record_email(report, lang)
         messages.success(self.request, _("Examination data saved successfully!"))
         return redirect(reverse_lazy('pet-details', kwargs={'pk': pet.pk}))
-
-
-
-
-class GenerateVetQRCodeView(views.View):
-    def get(self, request, pet_id):
-        pet = get_object_or_404(Pet, pk=pet_id)
-
-        # Create or get token
-        token_obj = VetAccessToken.objects.create(pet=pet)
-        token_url = request.build_absolute_uri(f"/vet/quick-access/?token={token_obj.token}")
-
-        # Generate QR code image
-        qr = qrcode.make(token_url)
-        buffer = BytesIO()
-        qr.save(buffer, format="PNG")
-        qr_base64 = base64.b64encode(buffer.getvalue()).decode()
-
-        return render(request, "access_codes/qr_code_display.html", {"qr_code_base64": qr_base64, "pet": pet})
-
-
-class VetQuickAccessView(views.View):
-    def get(self, request):
-
-        if not request.user.is_authenticated or request.user.is_owner:
-            return HttpResponseForbidden("Unauthorized access.")
-
-        token_value = request.GET.get("token")
-
-        try:
-            UUID(token_value)
-        except (ValueError, TypeError):
-            return HttpResponseForbidden("Invalid token.")
-
-        try:
-            token_obj = VetAccessToken.objects.get(token=token_value)
-        except VetAccessToken.DoesNotExist:
-            return HttpResponseForbidden("Invalid token.")
-
-        if not token_obj.is_valid():
-            return HttpResponseForbidden("Token expired or already used.")
-
-        # Optionally mark as used (if one-time use)
-        token_obj.used = True
-        token_obj.save()
-
-        # Redirect to medical record creation form
-        url = reverse('exam-add')
-        return redirect(f'{url}?source=pet&id={token_obj.pet.pk}')

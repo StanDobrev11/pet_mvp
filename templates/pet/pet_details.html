@@ -44,15 +44,10 @@
                                 <p class="text-muted mb-2">
                                     <strong>{% trans "Pet Access Code:" %}</strong> {{ access_code }}
                                 </p>
-
                                 <div class="d-flex gap-2">
-                                    <a href="{% url 'generate-vet-qr' pet.pk %}"
-                                       class="btn btn-sm btn-outline-success">
-                                        🩺 {% trans "Share with Vet" %}
-                                    </a>
                                     <a href="{% url 'generate-share-qr' pet.pk %}"
                                        class="btn btn-sm btn-outline-primary">
-                                        👨‍👩‍👧 {% trans "Share with Co-owner" %}
+                                        👨‍👩‍👧 🩺 {% trans "Generate QR Code" %}
                                     </a>
                                 </div>
                             {% endif %}

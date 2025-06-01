@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     # my apps
     'pet_mvp.access_codes.apps.AccessCodesConfig',
     'pet_mvp.accounts.apps.AccountsConfig',
+    'pet_mvp.api.apps.ApiConfig',
     'pet_mvp.common.apps.CommonConfig',
     'pet_mvp.drugs.apps.DrugsConfig',
     'pet_mvp.pets.apps.PetsConfig',
@@ -263,5 +264,9 @@ CELERY_BEAT_SCHEDULE = {
     'send-treatment-expiration-notifications-daily': {
         'task': 'pet_mvp.notifications.tasks.send_treatment_expiration_notifications',
         'schedule': crontab(hour=7, minute=30),  # runs daily at 07:30 AM
+    },
+    'cleanup-used-qr-codes-daily': {
+        'task': 'pet_mvp.access_codes.tasks.qr_code_cleanup_task',
+        'schedule': crontab(hour=0, minute=0),
     },
 }

@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">{% trans "Clinic Dashboard" %}</h2>
+
+    <div class="alert alert-info" role="alert">
+        {% trans "Welcome! This dashboard lists all pets you currently have access to. Use an access code provided by an owner to add a new pet. Access is temporary and will expire unless renewed." %}
+    </div>
+
+    <!-- Access Code Entry -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">{% trans "Add Pet via Access Code" %}</h5>
+            <form id="access-code-form" class="row g-2">
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="access_code"
+                           placeholder="{% trans 'Enter access code' %}" required>
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary w-100">{% trans "Add Pet" %}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Accessible Pets List -->
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{% trans "Accessible Pets" %}</h5>
+            <ul id="pet-list" class="list-group list-group-flush">
+                {% for pet in accessible_pets %}
+                    <li class="list-group-item" id="pet-{{ pet.id }}">
+                        <div class="d-flex align-items-center">
+                            {% if pet.photo %}
+                                <img src="{{ pet.photo.url }}"
+                                     alt="{% trans 'Pet Photo' %}"
+                                     class="rounded me-3"
+                                     style="width: 60px; height: 60px; object-fit: cover;">
+                            {% else %}
+                                <img src="{% static 'imgs/pet_profile.jfif' %}"
+                                     alt="{% trans 'Pet Photo' %}"
+                                     class="rounded me-3"
+                                     style="width: 60px; height: 60px; object-fit: cover;">
+                            {% endif %}
+                            <div>
+                                <a href="{% url 'pet-details' pet.pk %}" class="fw-bold">
+                                    {{ pet.name }} – {{ pet.species }}
+                                </a>
+                                <div class="text-muted">
+                                    {% trans "Owner(s):" %}
+                                    {% for owner in pet.owners.all %}
+                                        <a href="{% url 'owner-details' pk=owner.pk %}">
+                                            {{ owner.get_full_name }}
+                                        </a>{% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                {% empty %}
+                    <li id=no-pets class="list-group-item text-muted">{% trans "No pets accessible at this moment." %}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript to Add Pets Dynamically & Prevent Duplicates -->
+<script>
+document.getElementById('access-code-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const petList = document.getElementById('pet-list');
+    const codeInput = document.getElementById('access_code');
+    const code = codeInput.value.trim();
+
+    if (!code) return;
+
+    fetch("{% url 'verify-access-code' %}", {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `access_code=${encodeURIComponent(code)}`
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
+        } else {
+            const noPets = document.getElementById('no-pets')
+            const petList = document.getElementById('pet-list');
+            const existingItem = document.getElementById(`pet-${data.pet_id}`);
+            if (existingItem) {
+                alert("This pet is already in the list.");
+                codeInput.value = '';
+                return;
+            }
+
+            noPets.remove();
+            const li = document.createElement('li');
+            li.className = "list-group-item";
+            li.id = `pet-${data.pet_id}`;
+
+            const ownerLinks = data.owners.map(owner =>
+                `<a href="/accounts/owners/${owner.pk}/">${owner.full_name}</a>`
+            ).join(', ');
+
+            li.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <img src="${data.photo_url || '{% static 'imgs/pet_profile.jfif' %}'}" alt="${data.pet_name}"
+                         class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                    <div>
+                        <a href="/pets/${data.pet_id}/" class="fw-bold">${data.pet_name} – ${data.species}</a>
+                        <div class="text-muted">
+                            Owner(s): ${ownerLinks}
+                        </div>
+                    </div>
+                </div>`;
+
+            petList.appendChild(li);
+            codeInput.value = '';
+        }
+    })
+    .catch(err => {
+        console.error("Error verifying access code:", err);
+        alert("An unexpected error occurred. Please try again.");
+    });
+});
+</script>
+{% endblock %}
