@@ -6,51 +6,60 @@
             <h2>{% trans "Pets" %}</h2>
             <p class="text-muted">{% trans "Welcome" %}, {{ user.first_name }} {{ user.last_name }}</p>
         </div>
+
         <div class="alert alert-info mb-4" role="alert">
-            <h5 class="alert-heading">{% trans "Access Codes" %}</h5>
+            <h5 class="alert-heading">{% trans "Access Codes & QR Codes" %}</h5>
             <p>
-                {% trans "Each pet has a unique access code that can be shared with veterinarians or other caregivers to allow them to view and update your pet's medical records." %}
+                {% trans "Each pet has a unique access code that can be shared with veterinarians or caregivers to give them access to view or update your pet's medical records." %}
+            </p>
+            <p>
+                {% trans "For faster access at clinics, you can also generate a QR code. When scanned by a vet, it opens a secure form to create a new medical record — no typing required." %}
             </p>
             <hr>
             <p class="mb-0">
-                {% trans "Access codes are valid for 4 hours after generation and are automatically refreshed when viewed." %}
+                {% trans "Access codes are valid for 4 hours after generation and refresh when viewed. QR codes are single-use and expire after 10 minutes." %}
             </p>
         </div>
+
         <ul class="list-group mb-4">
             {% for pet in pets %}
                 <li class="list-group-item">
-                    <div class="d-flex justify-content-between align-items-center">
+                    <div class="pet-div d-flex justify-content-between align-items-center flex-wrap gap-2">
                         <a href="{% url 'pet-details' pk=pet.pk %}" class="fs-5">{{ pet.name }}</a>
-                        {% with access_code=pet.pet_access_code.first %}
-                            {% if access_code %}
-                                <div class="ms-3">
-                                    <span class="badge bg-success p-2 fs-5" style="letter-spacing: 1px;">
-                                        {% trans "Access Code:" %} {{ access_code.code }}
-                                    </span>
-                                </div>
-                            {% endif %}
-                        {% endwith %}
+                        <div class="d-flex gap-3 align-items-center">
+                            {% with access_code=pet.pet_access_code.first %}
+                                {% if access_code %}
+                                    <span class="bg-success text-white rounded px-3 py-2 fs-6"
+                                          style="letter-spacing: 1px;">
+                {% trans "Access Code:" %} {{ access_code.code }}
+            </span>
+                                    <a href="{% url 'generate-vet-qr' pet.pk %}"
+                                       class="text-white text-decoration-none fs-6 px-3 py-2 rounded"
+                                       style="background-color: #198754; letter-spacing: 1px;">
+                                        {% trans "Generate Vet QR" %}
+                                    </a>
+                                {% endif %}
+                            {% endwith %}
+                        </div>
                     </div>
                 </li>
             {% empty %}
                 <li class="list-group-item text-muted">{% trans "No pets added yet." %}</li>
             {% endfor %}
         </ul>
+
         <div class="d-flex justify-content-center gap-3">
             <a href="{% url 'pet-add' %}" class="btn btn-success">{% trans "Add Pet" %}</a>
             <a href="{% url 'logout' %}" class="btn btn-outline-danger">{% trans "Logout" %}</a>
         </div>
     </section>
+
     {% if messages %}
         <div class="container mt-3">
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show"
-                     role="alert">
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
                     {{ message }}
-                    <button type="button"
-                            class="btn-close"
-                            data-bs-dismiss="alert"
-                            aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             {% endfor %}
         </div>

@@ -62,7 +62,10 @@ class ClinicRegistrationForm(auth_forms.UserCreationForm):
                 field.widget.attrs['placeholder'] = str(placeholder).capitalize()
                 
     def clean_phone_number(self):
+
         value = self.cleaned_data.get('phone_number')
+        if not value:
+            return
         return normalize_bulgarian_phone(value)
     
 
