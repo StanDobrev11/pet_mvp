@@ -28,12 +28,14 @@ class PetAccessCode(models.Model):
         return self.code
 
 
+class BaseAccessToken(models.Model):
+    class Meta:
+        abstract = True
 
-class VetAccessToken(models.Model):
     token = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
 
     pet = models.ForeignKey(
-       to=Pet,
+        to=Pet,
         on_delete=models.CASCADE
     )
 
@@ -45,9 +47,17 @@ class VetAccessToken(models.Model):
 
     def is_valid(self):
         return (
-            not self.used and
-            (timezone.now() - self.created_at).total_seconds() < 600  # 10 mins
+                not self.used and
+                (timezone.now() - self.created_at).total_seconds() < 600  # 10 mins
         )
 
     def __str__(self):
         return f'Created at: {self.created_at.strftime("%H%M%S")}, Valid: {self.is_valid()}'
+
+
+class VetAccessToken(BaseAccessToken):
+    pass
+
+
+class PetShareToken(BaseAccessToken):
+    pass
