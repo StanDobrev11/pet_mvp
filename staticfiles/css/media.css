@@ -46,5 +46,9 @@
         margin-top: 1rem;
         width: auto; /* optional: avoid stretching */
     }
+
+    .pet-div {
+        flex-direction: column;
+    }
 }
 
