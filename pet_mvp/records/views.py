@@ -288,7 +288,9 @@ class GenerateVetQRCodeView(views.View):
 
         # Create or get token
         token_obj = VetAccessToken.objects.create(pet=pet)
-        token_url = request.build_absolute_uri(f"/vet/quick-access/?token={token_obj.token}")
+        token_url = request.build_absolute_uri(
+            reverse('vet-quick-access', kwargs={'token': token_obj.token})
+        )
 
         # Generate QR code image
         qr = qrcode.make(token_url)

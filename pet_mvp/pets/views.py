@@ -203,7 +203,9 @@ class GenerateShareTokenView(views.View):
 
         # Create or get token
         token_obj = PetShareToken.objects.create(pet=pet)
-        token_url = request.build_absolute_uri(f"/pet/share/?token={token_obj.token}")
+        token_url = request.build_absolute_uri(
+            reverse('accept-share-token', kwargs={'token': token_obj.token})
+        )
 
         # Generate QR code image
         qr = qrcode.make(token_url)
