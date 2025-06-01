@@ -3,7 +3,6 @@ from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from datetime import timedelta
-from io import BytesIO
 
 from pet_mvp.accounts.models import Clinic
 from pet_mvp.pets.models import Pet
@@ -51,7 +50,7 @@ class VetAccessQRCodeTests(TestCase):
         self.client_owner = Client()
         self.client_vet = Client()
         self.client_owner.login(email='owner@example.com', password='testpass123')
-        # self.client_vet.login(email='test-clinic@test.com', password='1234')
+
         self.client_vet.force_login(self.vet)
 
     def test_generate_qr_code_view(self):

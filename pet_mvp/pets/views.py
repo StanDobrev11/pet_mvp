@@ -1,4 +1,7 @@
 from datetime import date
+import qrcode
+import base64
+from io import BytesIO
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseBadRequest, HttpResponseRedirect
@@ -10,6 +13,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext as _
 from django.contrib import messages
 
+from pet_mvp.access_codes.models import PetShareToken
 from pet_mvp.access_codes.utils import generate_access_code
 from pet_mvp.notifications.tasks import send_owner_pet_addition_request
 from pet_mvp.pets.forms import AddExistingPetForm, PetAddForm, MarkingAddForm, PetEditForm
@@ -17,6 +21,7 @@ from pet_mvp.pets.models import Pet
 
 UserModel = get_user_model()
 signer = Signer()
+
 
 # Create your views here.
 
@@ -114,7 +119,7 @@ class ApprovePetAdditionView(views.View):
     def get(self, request, token):
         try:
             data = signer.unsign(token)
-            pet_id, user_id = map(int, data.split(':')) 
+            pet_id, user_id = map(int, data.split(':'))
             pet = Pet.objects.get(id=pet_id)
             user = UserModel.objects.get(id=user_id)
 
@@ -184,3 +189,55 @@ class MarkingDetailsView(views.DetailView):
         context['pet_pk'] = self.kwargs['pk']
 
         return context
+
+
+class GenerateShareTokenView(views.View):
+
+    def get(self, request, pk):
+
+        if not self.request.user.is_owner:
+            messages.error(self.request, _("You must be an owner to generate a share link."))
+            return redirect('index')
+
+        pet = get_object_or_404(Pet, pk=pk)
+
+        # Create or get token
+        token_obj = PetShareToken.objects.create(pet=pet)
+        token_url = request.build_absolute_uri(f"/pet/share/?token={token_obj.token}")
+
+        # Generate QR code image
+        qr = qrcode.make(token_url)
+        buffer = BytesIO()
+        qr.save(buffer, format="PNG")
+        qr_base64 = base64.b64encode(buffer.getvalue()).decode()
+
+        return render(request, "access_codes/pet_qr_share.html", {"qr_code_base64": qr_base64, "pet": pet})
+
+
+class AcceptShareTokenView(views.RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+
+        if not self.request.user.is_authenticated and not self.request.user.is_owner:
+            messages.error(self.request, _("You must be an owner to be able to add pets."))
+            return reverse('dashboard')
+
+        token_str = self.kwargs['token']
+        try:
+            token = PetShareToken.objects.get(token=token_str)
+        except PetShareToken.DoesNotExist:
+            messages.error(self.request, _("Invalid or expired token."))
+            return reverse('dashboard')
+
+        if not token.is_valid():
+            messages.error(self.request, _("This share link has expired or already been used."))
+            return reverse('dashboard')
+
+        pet = token.pet
+        # Add current user as co-owner
+        pet.owners.add(self.request.user)
+        token.used = True
+        token.save()
+
+        messages.success(self.request,
+                         message=_("You now have access to %(pet_name)s's profile.") % {"pet_name": pet.name})
+        return reverse('pet-details', kwargs={'pk': pet.id})
