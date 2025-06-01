@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-31 19:11+0000\n"
+"POT-Creation-Date: 2025-06-01 11:33+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -28,22 +28,22 @@ msgstr "Повтори паролата"
 msgid "Phone number (e.g. 0887123456)"
 msgstr "Мобилен номер (напр. 0887123456)."
 
-#: .\pet_mvp\accounts\forms.py:70
+#: .\pet_mvp\accounts\forms.py:73
 #: .\templates\accounts\access_code_email.html:30
 msgid "Access Code"
 msgstr "Код за достъп"
 
-#: .\pet_mvp\accounts\forms.py:71
+#: .\pet_mvp\accounts\forms.py:74
 #: .\templates\accounts\access_code_email.html:35
 #: .\templates\accounts\password\password_reset_form.html:29
 msgid "Email Address"
 msgstr "Имейл адрес"
 
-#: .\pet_mvp\accounts\forms.py:86
+#: .\pet_mvp\accounts\forms.py:89
 msgid "Invalid Access Code"
 msgstr "Невалиден код за достъп."
 
-#: .\pet_mvp\accounts\forms.py:94
+#: .\pet_mvp\accounts\forms.py:97
 msgid "Enter a valid email address."
 msgstr "Въведи валиден имейл адрес"
 
@@ -974,39 +974,39 @@ msgstr "Неизвестна дата"
 msgid "Medical Record for {} on {}"
 msgstr "Медицински запис за {} на {}"
 
-#: .\pet_mvp\records\views.py:56
+#: .\pet_mvp\records\views.py:65
 msgid "Record saved. You can now add another."
 msgstr "Записът е запазен. Можете да добавите нов."
 
-#: .\pet_mvp\records\views.py:73
+#: .\pet_mvp\records\views.py:82
 msgid "You can no longer add records for this pet."
 msgstr "Вече не можете да добавяте записи за това животно."
 
-#: .\pet_mvp\records\views.py:181
+#: .\pet_mvp\records\views.py:190
 msgid "Please correct the errors in the form."
 msgstr "Моля, коригирайте грешките във формуляра."
 
-#: .\pet_mvp\records\views.py:196
+#: .\pet_mvp\records\views.py:205
 msgid "Vaccine information contains errors."
 msgstr "Информацията за ваксината съдържа грешки."
 
-#: .\pet_mvp\records\views.py:201
+#: .\pet_mvp\records\views.py:210
 msgid "Treatment information contains errors."
 msgstr "Информацията за лечението съдържа грешки."
 
-#: .\pet_mvp\records\views.py:209
+#: .\pet_mvp\records\views.py:218
 msgid "Blood test form contains errors."
 msgstr "Формулярът за кръвен тест съдържа грешки."
 
-#: .\pet_mvp\records\views.py:216
+#: .\pet_mvp\records\views.py:225
 msgid "Urine test form contains errors."
 msgstr "Формулярът за изследване на урина съдържа грешки."
 
-#: .\pet_mvp\records\views.py:223
+#: .\pet_mvp\records\views.py:232
 msgid "Fecal test form contains errors."
 msgstr "Формулярът за фекален тест съдържа грешки."
 
-#: .\pet_mvp\records\views.py:270
+#: .\pet_mvp\records\views.py:279
 msgid "Examination data saved successfully!"
 msgstr "Данните от прегледа бяха успешно запазени!"
 
@@ -1017,6 +1017,31 @@ msgstr "Английски"
 #: .\pet_mvp\settings.py:142 .\templates\partials\nav_bar.html:19
 msgid "Bulgarian"
 msgstr "Български"
+
+#: .\templates\access_codes\qr_code_display.html:7
+msgid "Vet QR Code"
+msgstr "QR код за ветеринар"
+
+#: .\templates\access_codes\qr_code_display.html:9
+msgid ""
+"Scan this QR code at the vet clinic to instantly open the medical record "
+"form for"
+msgstr ""
+"Сканирайте този QR код във ветеринарната клиника, за да отворите незабавно "
+"формуляра за медицински преглед на"
+
+#: .\templates\access_codes\qr_code_display.html:13
+msgid "Vet Access QR Code"
+msgstr "QR код за достъп на ветеринар"
+
+#: .\templates\access_codes\qr_code_display.html:16
+msgid "This code is single-use and will expire in 10 minutes."
+msgstr "Този код е за еднократна употреба и ще изтече след 10 минути."
+
+#: .\templates\access_codes\qr_code_display.html:18
+#: .\templates\accounts\owner_details.html:41
+msgid "Back to Dashboard"
+msgstr "Обратно към таблото"
 
 #: .\templates\accounts\access_code_email.html:10
 msgid "Enter Access Code"
@@ -1121,10 +1146,6 @@ msgstr "Телефонен номер"
 #: .\templates\accounts\owner_profile.html:37
 msgid "Edit Profile"
 msgstr "Редактирай профила"
-
-#: .\templates\accounts\owner_details.html:41
-msgid "Back to Dashboard"
-msgstr "Обратно към таблото"
 
 #: .\templates\accounts\owner_edit.html:12
 msgid "Edit Owner Profile"
@@ -1270,7 +1291,7 @@ msgstr "Превключване на навигацията"
 msgid "Dashboard"
 msgstr "Табло"
 
-#: .\templates\base.html:39 .\templates\common\dashboard.html:40
+#: .\templates\base.html:39 .\templates\common\dashboard.html:52
 msgid "Add Pet"
 msgstr "Добави домашен любимец"
 
@@ -1279,7 +1300,7 @@ msgstr "Добави домашен любимец"
 msgid "Profile"
 msgstr "Профил"
 
-#: .\templates\base.html:45 .\templates\common\dashboard.html:41
+#: .\templates\base.html:45 .\templates\common\dashboard.html:53
 #: .\templates\partials\nav_bar.html:27 .\templates\partials\nav_bar.html:30
 msgid "Logout"
 msgstr "Изход"
@@ -1440,32 +1461,46 @@ msgstr "Домашни любимци"
 msgid "Welcome"
 msgstr "Добре дошли"
 
-#: .\templates\common\dashboard.html:10
-msgid "Access Codes"
-msgstr "Кодове за достъп"
+#: .\templates\common\dashboard.html:11
+msgid "Access Codes & QR Codes"
+msgstr "Кодове за достъп и QR кодове"
 
-#: .\templates\common\dashboard.html:12
+#: .\templates\common\dashboard.html:13
 msgid ""
 "Each pet has a unique access code that can be shared with veterinarians or "
-"other caregivers to allow them to view and update your pet's medical records."
+"caregivers to give them access to view or update your pet's medical records."
 msgstr ""
 "Всеки домашен любимец има уникален код за достъп, който може да бъде "
-"споделен с ветеринари или други грижещи се лица, за да могат да преглеждат и "
-"актуализират медицинските му досиета."
+"споделен с ветеринари или лица, полагащи грижи, за да могат да преглеждат "
+"или актуализират медицинските му досиета."
 
 #: .\templates\common\dashboard.html:16
 msgid ""
-"Access codes are valid for 4 hours after generation and are automatically "
-"refreshed when viewed."
+"For faster access at clinics, you can also generate a QR code. When scanned "
+"by a vet, it opens a secure form to create a new medical record — no typing "
+"required."
 msgstr ""
-"Кодовете за достъп са валидни 4 часа след генериране и се обновяват "
-"автоматично при преглед."
+"За по-бърз достъп във ветеринарни клиники можете да генерирате и QR код. "
+"Когато бъде сканиран от ветеринар, той отваря защитен формуляр за създаване "
+"на нов медицински запис — без писане."
 
-#: .\templates\common\dashboard.html:28
+#: .\templates\common\dashboard.html:20
+msgid ""
+"Access codes are valid for 4 hours after generation and refresh when viewed. "
+"QR codes are single-use and expire after 10 minutes."
+msgstr ""
+"Кодовете за достъп са валидни 4 часа след създаване и се обновяват при "
+"преглед. QR кодовете са за еднократна употреба и изтичат след 10 минути."
+
+#: .\templates\common\dashboard.html:34
 msgid "Access Code:"
 msgstr "Код за достъп:"
 
-#: .\templates\common\dashboard.html:36
+#: .\templates\common\dashboard.html:39
+msgid "Generate Vet QR"
+msgstr "Генерирай QR за ветеринар"
+
+#: .\templates\common\dashboard.html:47
 msgid "No pets added yet."
 msgstr "Все още няма добавени домашни любимци."
 
@@ -2305,11 +2340,7 @@ msgstr "Часове"
 msgid "About"
 msgstr "Относно"
 
-#: .\templates\partials\social_login.html:6
-msgid "Or sign in with your social accounts:"
-msgstr "Или влезте с вашия социален акаунт:"
-
-#: .\templates\partials\social_login.html:10
+#: .\templates\partials\social_login.html:9
 msgid "Sign in with Google"
 msgstr "Влез с Google"
 
@@ -2912,34 +2943,3 @@ msgstr ""
 #: .\templates\records\vaccine_record_add.html:78
 msgid "Finish Adding Vaccines"
 msgstr "Завърши добавянето на ваксини"
-
-#~ msgid "Were any parasites detected in the sample?"
-#~ msgstr "Бяха ли открити паразити в пробата?"
-
-#~ msgid "Indicates if blood was found in the sample"
-#~ msgstr "Показва дали е открита кръв в пробата"
-
-#~ msgid "Join now and get:"
-#~ msgstr "Присъединете се сега и получете:"
-
-#~ msgid "Tracking of your pet's vaccinations and medical records!"
-#~ msgstr "Проследяване на ваксинации и медицински досиета на вашия любимец!"
-
-#~ msgid "Notification when it is time for medication or treatment!"
-#~ msgstr "Известие, когато е време за лекарства или лечение!"
-
-#~ msgid "Access to the records from everywhere!"
-#~ msgstr "Достъп до досиетата отвсякъде!"
-
-#~ msgid "Specify valid until date"
-#~ msgstr "Посочете дата на валидност"
-
-#~ msgid "Date of the entry"
-#~ msgstr "Дата на записа"
-
-#~ msgid ""
-#~ "You will also be notified whenever a new medical record is created for "
-#~ "your pet after an examination by a doctor."
-#~ msgstr ""
-#~ "Ще бъдете уведомени всеки път, когато бъде създаден нов медицински запис "
-#~ "за вашия домашен любимец след преглед от ветеринарен лекар."
