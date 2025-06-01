@@ -97,7 +97,7 @@ class BaseUserRegisterView(views.CreateView):
         user.is_active = True
         user.save()
 
-        login(self.request, user)
+        login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
 
         return True
 
@@ -179,7 +179,7 @@ class RegisterOwnerView(BaseUserRegisterView):
         after validation, the user is logged in automatically
         Added mail sending on creation"""
         valid = super().form_valid(form)
-        login(self.request, self.object)
+        login(self.request, self.object, backend='django.contrib.auth.backends.ModelBackend')
 
         # get the user
         user = self.object
@@ -341,7 +341,7 @@ class PasswordEntryView(BaseLoginView):
         code = self.request.GET.get('code')
 
         # Log in the user
-        login(self.request, user)
+        login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
 
         # Get the pet ID
         pet_id = Pet.objects.get(pet_access_code__code=code).pk
