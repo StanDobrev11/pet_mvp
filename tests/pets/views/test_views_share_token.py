@@ -6,7 +6,7 @@ from datetime import timedelta
 
 from pet_mvp.accounts.models import Clinic
 from pet_mvp.pets.models import Pet
-from pet_mvp.access_codes.models import PetShareToken
+from pet_mvp.access_codes.models import QRShareToken, VetPetAccess
 
 import uuid
 
@@ -79,7 +79,7 @@ class PetShareTokenViewsTest(TestCase):
         self.assertIn('pet', response.context)
 
         # Ensure a token was created
-        self.assertTrue(PetShareToken.objects.filter(pet=self.pet).exists())
+        self.assertTrue(QRShareToken.objects.filter(pet=self.pet).exists())
 
     def test_generate_share_token_requires_owner(self):
         response = self.client_vet.get(reverse('generate-share-qr', args=[self.pet.pk]))
@@ -88,7 +88,7 @@ class PetShareTokenViewsTest(TestCase):
         self.assertTrue(any("must be an owner" in str(m) for m in messages))
 
     def test_accept_valid_share_token(self):
-        token = PetShareToken.objects.create(pet=self.pet)
+        token = QRShareToken.objects.create(pet=self.pet)
         url = reverse('accept-share-token', kwargs={'token': str(token.token)})
         response = self.client_other.get(url)
         self.assertRedirects(response, reverse('pet-details', kwargs={'pk': self.pet.pk}))
@@ -100,7 +100,7 @@ class PetShareTokenViewsTest(TestCase):
         self.assertTrue(token.used)
 
     def test_accept_expired_share_token(self):
-        token = PetShareToken.objects.create(pet=self.pet)
+        token = QRShareToken.objects.create(pet=self.pet)
         token.created_at = timezone.now() - timedelta(minutes=11)
         token.save()
 
@@ -112,7 +112,7 @@ class PetShareTokenViewsTest(TestCase):
         self.assertTrue(any("expired or already been used" in str(m) for m in messages))
 
     def test_accept_already_used_token(self):
-        token = PetShareToken.objects.create(pet=self.pet, used=True)
+        token = QRShareToken.objects.create(pet=self.pet, used=True)
         url = reverse('accept-share-token', kwargs={'token': str(token.token)})
         response = self.client_other.get(url)
         self.assertRedirects(response, reverse('dashboard'))
@@ -130,7 +130,72 @@ class PetShareTokenViewsTest(TestCase):
 
     def test_accept_token_unauthenticated(self):
         self.client_other.logout()
-        token = PetShareToken.objects.create(pet=self.pet)
+        token = QRShareToken.objects.create(pet=self.pet)
         url = reverse('accept-share-token', kwargs={'token': str(token.token)})
         response = self.client_other.get(url)
         self.assertRedirects(response, '/accounts/login/?next=' + url)
+
+    def test_accept_valid_share_token_as_vet(self):
+        token = QRShareToken.objects.create(pet=self.pet)
+        url = reverse('accept-share-token', kwargs={'token': str(token.token)})
+
+        response = self.client_vet.get(url)
+
+        # Should redirect to pet details
+        self.assertRedirects(response, reverse('pet-details', kwargs={'pk': self.pet.pk}))
+
+        # Vet should now have temporary access
+        access = VetPetAccess.objects.filter(vet=self.vet, pet=self.pet).first()
+        self.assertIsNotNone(access)
+        self.assertTrue(timezone.now() < access.expires_at)
+
+        # Token should be marked as used
+        token.refresh_from_db()
+        self.assertTrue(token.used)
+
+        messages = list(response.wsgi_request._messages)
+        self.assertTrue(any("access to" in str(m) for m in messages))
+
+    def test_vet_accepts_expired_token(self):
+        token = QRShareToken.objects.create(pet=self.pet)
+        token.created_at = timezone.now() - timedelta(minutes=11)
+        token.save()
+
+        url = reverse('accept-share-token', kwargs={'token': str(token.token)})
+        response = self.client_vet.get(url)
+
+        self.assertRedirects(response, reverse('clinic-dashboard'))
+
+        messages = list(response.wsgi_request._messages)
+        self.assertTrue(any("expired or already been used" in str(m) for m in messages))
+
+        # Should not grant access
+        self.assertFalse(VetPetAccess.objects.filter(vet=self.vet, pet=self.pet).exists())
+
+    def test_vet_accepts_used_token(self):
+        token = QRShareToken.objects.create(pet=self.pet, used=True)
+        url = reverse('accept-share-token', kwargs={'token': str(token.token)})
+        response = self.client_vet.get(url)
+
+        self.assertRedirects(response, reverse('clinic-dashboard'))
+
+        messages = list(response.wsgi_request._messages)
+        self.assertTrue(any("expired or already been used" in str(m) for m in messages))
+
+    def test_vet_accepts_invalid_token(self):
+        invalid_token = uuid.uuid4()
+        url = reverse('accept-share-token', kwargs={'token': str(invalid_token)})
+        response = self.client_vet.get(url)
+
+        self.assertRedirects(response, reverse('clinic-dashboard'))
+
+        messages = list(response.wsgi_request._messages)
+        self.assertTrue(any("Invalid or expired token" in str(m) for m in messages))
+
+    def test_vet_accepts_token_unauthenticated(self):
+        self.client_vet.logout()
+        token = QRShareToken.objects.create(pet=self.pet)
+        url = reverse('accept-share-token', kwargs={'token': str(token.token)})
+        response = self.client_vet.get(url)
+
+        self.assertRedirects(response, f'/accounts/login/?next={url}')

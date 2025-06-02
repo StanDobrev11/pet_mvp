@@ -2,10 +2,30 @@ import uuid
 from django.utils import timezone
 from django.db import models
 
+from pet_mvp.accounts.models import Clinic
 from pet_mvp.pets.models import Pet
 
 
 # Create your models here.
+class VetPetAccess(models.Model):
+
+    vet = models.ForeignKey(
+        to=Clinic,
+        on_delete=models.CASCADE
+    )
+    pet = models.ForeignKey(
+        to=Pet,
+        on_delete=models.CASCADE
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    expires_at = models.DateTimeField()
+    granted_by = models.CharField(max_length=50, choices=(('code', 'Access Code'), ('qr', 'QR Code')))
+
+    def is_active(self):
+        return timezone.now() < self.expires_at
+
 class PetAccessCode(models.Model):
     code = models.CharField(
         max_length=6
@@ -28,9 +48,7 @@ class PetAccessCode(models.Model):
         return self.code
 
 
-class BaseAccessToken(models.Model):
-    class Meta:
-        abstract = True
+class QRShareToken(models.Model):
 
     token = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
 
@@ -53,11 +71,3 @@ class BaseAccessToken(models.Model):
 
     def __str__(self):
         return f'Created at: {self.created_at.strftime("%H%M%S")}, Valid: {self.is_valid()}'
-
-
-class VetAccessToken(BaseAccessToken):
-    pass
-
-
-class PetShareToken(BaseAccessToken):
-    pass

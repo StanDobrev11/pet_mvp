@@ -2,9 +2,9 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_not_required
 from django.urls import path, include, reverse_lazy
 
-from pet_mvp.accounts.views import RegisterOwnerView, LoginOwnerView, logout_view, AccessCodeEmailView, \
+from pet_mvp.accounts.views import RegisterOwnerView, logout_view, AccessCodeEmailView, \
     PasswordEntryView, ClinicRegistrationView, OwnerDetailsView, OwnerEditView, CustomPasswordResetConfirmView, \
-    ApproveTempClinicView
+    ApproveTempClinicView, BaseLoginView
 
 urlpatterns = [
     path('access-code/', login_not_required(AccessCodeEmailView.as_view()),
@@ -14,7 +14,7 @@ urlpatterns = [
     path('clinic-register/', login_not_required(ClinicRegistrationView.as_view()),
          name='clinic-register'),
     path('approve-temp-clinic/', login_not_required(ApproveTempClinicView.as_view()), name='approve-temp-clinic'),
-    path('login/', login_not_required(LoginOwnerView.as_view()), name='login'),
+    path('login/', login_not_required(BaseLoginView.as_view()), name='login'),
     path('logout/', logout_view, name='logout'),
     path('register/', login_not_required(RegisterOwnerView.as_view()), name='register'),
     path('<int:pk>/', include([

@@ -20,8 +20,8 @@ UserModel = get_user_model()
 
 
 def create_pet_markings():
-    max_pet = Pet.objects.get(id='1')
-    luna_pet = Pet.objects.get(id='2')
+    max_pet = Pet.objects.get(name_en='Max')
+    luna_pet = Pet.objects.get(name_en='Luna')
 
     # Create a transponder for Max
     try:
@@ -55,7 +55,7 @@ def create_pet_markings():
 
 
 def create_complete_examination_record_for_max():
-    max_pet = Pet.objects.get(id='1')
+    max_pet = Pet.objects.get(name='Max')
     clinic = Clinic.objects.get(email='dianavet@pet-mvp.com')
     try:
         blood_test = BloodTest.objects.create(
@@ -180,7 +180,7 @@ def create_pets():
 
 
 def populate_medication_records():
-    pet = Pet.objects.get(id='1')
+    pet = Pet.objects.get(name='Max')
     medication_data = [
         # Medication already given
         dict(
@@ -229,7 +229,7 @@ def populate_medication_records():
 
 
 def populate_vaccination_records():
-    pet = Pet.objects.get(id='1')
+    pet = Pet.objects.get(name='Max')
     vaccines_data = [
         dict(
             pet=pet,

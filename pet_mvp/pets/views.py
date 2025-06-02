@@ -2,7 +2,8 @@ from datetime import date
 import qrcode
 import base64
 from io import BytesIO
-
+from datetime import timedelta
+from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404, render
@@ -13,7 +14,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext as _
 from django.contrib import messages
 
-from pet_mvp.access_codes.models import PetShareToken
+from pet_mvp.access_codes.models import QRShareToken, VetPetAccess
 from pet_mvp.access_codes.utils import generate_access_code
 from pet_mvp.notifications.tasks import send_owner_pet_addition_request
 from pet_mvp.pets.forms import AddExistingPetForm, PetAddForm, MarkingAddForm, PetEditForm
@@ -194,7 +195,6 @@ class MarkingDetailsView(views.DetailView):
 class GenerateShareTokenView(views.View):
 
     def get(self, request, pk):
-
         if not self.request.user.is_owner:
             messages.error(self.request, _("You must be an owner to generate a share link."))
             return redirect('index')
@@ -202,7 +202,7 @@ class GenerateShareTokenView(views.View):
         pet = get_object_or_404(Pet, pk=pk)
 
         # Create or get token
-        token_obj = PetShareToken.objects.create(pet=pet)
+        token_obj = QRShareToken.objects.create(pet=pet)
         token_url = request.build_absolute_uri(
             reverse('accept-share-token', kwargs={'token': token_obj.token})
         )
@@ -217,29 +217,49 @@ class GenerateShareTokenView(views.View):
 
 
 class AcceptShareTokenView(views.RedirectView):
+
+    def get_not_success_url(self):
+        if self.request.user.is_owner:
+            return reverse('dashboard')
+        else:
+            return reverse('clinic-dashboard')
+
     def get_redirect_url(self, *args, **kwargs):
-
-        if not self.request.user.is_authenticated and not self.request.user.is_owner:
-            messages.error(self.request, _("You must be an owner to be able to add pets."))
-            return reverse('dashboard')
-
+        # extract the token
         token_str = self.kwargs['token']
-        try:
-            token = PetShareToken.objects.get(token=token_str)
-        except PetShareToken.DoesNotExist:
-            messages.error(self.request, _("Invalid or expired token."))
-            return reverse('dashboard')
 
+        # verify token exists
+        try:
+            token = QRShareToken.objects.get(token=token_str)
+        except QRShareToken.DoesNotExist:
+            messages.error(self.request, _("Invalid or expired token."))
+            return self.get_not_success_url()
+
+        # verify token is valid
         if not token.is_valid():
             messages.error(self.request, _("This share link has expired or already been used."))
-            return reverse('dashboard')
+            return self.get_not_success_url()
 
+        # get the pet associated with the token
         pet = token.pet
-        # Add current user as co-owner
-        pet.owners.add(self.request.user)
+        user = self.request.user
+        # logic for the current user, checking the code
+        # owner - add the current user to an owner list
+        if user.is_owner:
+            pet.owners.add(self.request.user)
+
+        # user is clinic - add the access to vetpet access model
+        else:
+            VetPetAccess.objects.update_or_create(
+                vet=user,
+                pet=pet,
+                defaults={
+                    'expires_at': timezone.now() + timedelta(minutes=10),
+                    'granted_by': 'qr'
+                }
+            )
         token.used = True
         token.save()
-
         messages.success(self.request,
                          message=_("You now have access to %(pet_name)s's profile.") % {"pet_name": pet.name})
         return reverse('pet-details', kwargs={'pk': pet.id})

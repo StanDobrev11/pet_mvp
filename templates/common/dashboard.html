@@ -33,10 +33,10 @@
                                           style="letter-spacing: 1px;">
                 {% trans "Access Code:" %} {{ access_code.code }}
             </span>
-                                    <a href="{% url 'generate-vet-qr' pet.pk %}"
+                                    <a href="{% url 'generate-share-qr' pet.pk %}"
                                        class="text-white text-decoration-none fs-6 px-3 py-2 rounded"
                                        style="background-color: #198754; letter-spacing: 1px;">
-                                        {% trans "Generate Vet QR" %}
+                                        {% trans "Generate QR Code" %}
                                     </a>
                                 {% endif %}
                             {% endwith %}

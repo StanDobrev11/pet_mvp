@@ -1,9 +1,10 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth import mixins as auth_mixins
+from django.contrib import messages
 from django.shortcuts import redirect, get_object_or_404
-
+from django.utils.translation import gettext as _
 from django.views import generic as views
-
+from django.utils import timezone
+from pet_mvp.access_codes.models import PetAccessCode
 from pet_mvp.pets.models import Pet
 
 UserModel = get_user_model()
@@ -11,7 +12,7 @@ UserModel = get_user_model()
 
 class AboutView(views.TemplateView):
     template_name = 'common/about.html'
-    
+
 
 class IndexView(views.TemplateView):
     template_name = 'common/index.html'
@@ -21,23 +22,55 @@ class IndexView(views.TemplateView):
         if request.user.is_authenticated:
             if not request.user.is_owner:
                 code = request.session.get('code')
-                pet_id = get_object_or_404(Pet, pet_access_code__code=code).pk
-                return redirect('pet-details', pk=pet_id)
+                try:
+                    pet = Pet.objects.get(pet_access_code__code=code)
+                except Pet.DoesNotExist:
+                    return redirect('clinic-dashboard')
+                return redirect('pet-details', pk=pet.id)
 
             return redirect('dashboard')
         return super().get(request, *args, **kwargs)
 
 
-class DashboardView(auth_mixins.LoginRequiredMixin, views.TemplateView):
+class DashboardView(views.TemplateView):
     template_name = 'common/dashboard.html'
+
+    def get(self, request, *args, **kwargs):
+        if not self.request.user.is_owner:
+            messages.error(self.request, _('You do not have permission to access this page.'))
+            return redirect('clinic-dashboard')
+
+        return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         user = self.request.user
+        pets = user.pets.all()
+        context['pets'] = pets
 
-        if user.is_authenticated:
-            pets = user.pets.all()
-            context['pets'] = pets
+        return context
 
+
+class ClinicDashboardView(views.TemplateView):
+    template_name = 'accounts/../../templates/common/clinic_dashboard.html'
+
+    def get(self, request, *args, **kwargs):
+        if self.request.user.is_owner:
+            messages.error(self.request, _('You do not have permission to access this page.'))
+            return redirect('clinic-dashboard')
+
+        return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        vet = self.request.user
+
+        # Only include currently valid pet access
+        accessible_pets = Pet.objects.filter(
+            vetpetaccess__vet=vet,
+            vetpetaccess__expires_at__gt=timezone.now()
+        ).distinct()
+
+        context['accessible_pets'] = accessible_pets
         return context

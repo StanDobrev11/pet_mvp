@@ -1,10 +1,12 @@
+from datetime import timedelta
+from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth import views as auth_views, login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from django.core.signing import Signer, BadSignature
-from django.http import HttpResponseBadRequest, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, redirect, resolve_url
+from django.core.signing import Signer
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import generic as views
@@ -16,9 +18,8 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 
+from pet_mvp.access_codes.models import VetPetAccess
 from pet_mvp.accounts.forms import OwnerCreationForm, AccessCodeEmailForm, ClinicRegistrationForm
-# Add import for the edit form if you have one
-# from pet_mvp.accounts.forms import OwnerEditForm
 from pet_mvp.notifications.tasks import send_user_registration_email, send_clinic_admin_approval_request_email, \
     send_clinic_owner_access_request_email, send_clinic_activation_email
 from pet_mvp.pets.models import Pet
@@ -28,6 +29,7 @@ signer = Signer()
 
 
 # Create your views here.
+
 class BaseUserRegisterView(views.CreateView):
     """
         Newly created user will be handled by this view.
@@ -67,7 +69,6 @@ class BaseUserRegisterView(views.CreateView):
 
     def get_success_url(self):
         return self.success_url
-
 
     def form_invalid(self, form):
         """
@@ -189,9 +190,22 @@ class RegisterOwnerView(BaseUserRegisterView):
         send_user_registration_email(user, lang)
         return valid
 
+
 class BaseLoginView(auth_views.LoginView):
     # this is needed to redirect the user out of the login page
     redirect_authenticated_user = True
+    template_name = 'accounts/login.html'
+
+    def get_success_url(self):
+        if self.request.user.is_owner:
+            return reverse_lazy('dashboard')
+
+        if self.request.user.is_approved and self.request.user.is_active:
+            return reverse_lazy('clinic-dashboard')
+
+        messages.error(self.request, _('Must be a registered pet owner or active and approved vet clinic'))
+        return reverse_lazy('index')
+
 
     def form_valid(self, form):
         # attempting to clear the messages
@@ -199,16 +213,10 @@ class BaseLoginView(auth_views.LoginView):
         storage.used = True
         return super().form_valid(form)
 
-
-class LoginOwnerView(BaseLoginView):
-    # this view requires template and 'next' to be used
-    # 'next' is defined in settings.py LOGIN_REDIRECT_URL using reverse_lazy
-    template_name = 'accounts/login.html'
-
     def form_invalid(self, form):
         # this form handles error msgs upon passing invalid credentials and
         # can be used in the template as {{ messages }} tag
-        messages.error(self.request, 'Invalid email or password.')
+        messages.error(self.request, _('Invalid email or password.'))
         return super().form_invalid(form)
 
 
@@ -241,6 +249,15 @@ class AccessCodeEmailView(views.FormView):
         except Pet.DoesNotExist:
             messages.error(self.request, _("Invalid access code."))
             return self.form_invalid(form)
+
+        VetPetAccess.objects.update_or_create(
+            vet=user,
+            pet=pet,
+            defaults={
+                'expires_at': timezone.now() + timedelta(minutes=10),
+                'granted_by': 'qr'
+            }
+        )
 
         # If clinic is registered but not approved yet
         if not user.is_approved:
@@ -401,6 +418,16 @@ class OwnerEditView(views.UpdateView):
               'phone_number', 'city', 'country']  # fallback if no form
     template_name = 'accounts/owner_edit.html'
     context_object_name = 'owner'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_owner:
+            if request.method == 'GET':
+                return super().get(request, *args, **kwargs)
+            else:
+                return super().post(request, *args, **kwargs)
+        else:
+            messages.error(request, _("You are not allowed to edit the owner."))
+            return redirect('clinic-dashboard')
 
     def get_success_url(self):
         return reverse_lazy('owner-details', kwargs={'pk': self.object.pk})
