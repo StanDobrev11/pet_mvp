@@ -55,8 +55,6 @@
                     <strong>{% trans "Co-Owners:" %}</strong>
                     {% for owner in pet.owners.all %}
                         {{ owner.get_full_name }}{% if not forloop.last %}, {% endif %}
-                    {% empty %}
-                        {% trans "No co-owners." %}
                     {% endfor %}
                 </div>
             {% endif %}
