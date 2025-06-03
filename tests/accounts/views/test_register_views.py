@@ -5,7 +5,7 @@ from django.contrib.messages.storage.fallback import FallbackStorage
 from django.contrib.sessions.middleware import SessionMiddleware
 
 from pet_mvp.accounts.views import RegisterOwnerView
-from pet_mvp.accounts.forms import OwnerCreationForm, ClinicRegistrationForm
+from pet_mvp.accounts.forms import OwnerCreateForm, ClinicRegistrationForm
 from pet_mvp.pets.models import Pet
 from pet_mvp.access_codes.models import PetAccessCode
 
@@ -92,7 +92,7 @@ class BaseUserRegisterViewTests(TestCase):
         view.request = request
         view.setup(request)
 
-        form = OwnerCreationForm(data=form_data)
+        form = OwnerCreateForm(data=form_data)
         self.assertTrue(form.is_valid())
 
         response = view.form_valid(form)
@@ -124,7 +124,7 @@ class BaseUserRegisterViewTests(TestCase):
         view.request = request
         view.setup(request)
 
-        form = OwnerCreationForm(data=form_data)
+        form = OwnerCreateForm(data=form_data)
         # Form will be invalid due to unique email constraint
         self.assertFalse(form.is_valid())
 
@@ -151,7 +151,7 @@ class RegisterOwnerViewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'accounts/register.html')
-        self.assertIsInstance(response.context['form'], OwnerCreationForm)
+        self.assertIsInstance(response.context['form'], OwnerCreateForm)
 
     def test_post_valid_data(self):
         """Test POST request with valid data."""
@@ -177,6 +177,30 @@ class RegisterOwnerViewTests(TestCase):
         # User should be logged in
         user = UserModel.objects.get(email='newowner@example.com')
         self.assertEqual(int(self.client.session['_auth_user_id']), user.pk)
+
+
+    def test_phone_number_invalid(self):
+        url = reverse('register')
+        form_data = {
+            'email': 'newowner@example.com',
+            'password1': 'testpass123',
+            'password2': 'testpass123',
+            'first_name': 'New',
+            'last_name': 'Owner',
+            'phone_number': '088722333654321', # wrong phone number
+            'city': 'Sofia',
+            'country': 'Bulgaria'
+        }
+        response = self.client.post(url, data=form_data)
+
+        # Should load same form
+        self.assertEqual(response.status_code, 200)
+
+        # User should not be created
+        self.assertFalse(UserModel.objects.filter(email='newowner@example.com').exists())
+
+        # Following error message
+        self.assertContains(response, 'Invalid Bulgarian mobile number format.')
 
 
 class ClinicRegistrationViewTests(TestCase):

@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
-from pet_mvp.accounts.forms import OwnerCreationForm, ClinicRegistrationForm, AccessCodeEmailForm
+from pet_mvp.accounts.forms import OwnerCreateForm, ClinicRegistrationForm, AccessCodeEmailForm
 from pet_mvp.pets.models import Pet
 from pet_mvp.access_codes.models import PetAccessCode
 
@@ -27,7 +27,7 @@ class OwnerCreationFormTests(TestCase):
             'city': 'Sofia',
             'country': 'Bulgaria'
         }
-        form = OwnerCreationForm(data=form_data)
+        form = OwnerCreateForm(data=form_data)
         self.assertTrue(form.is_valid())
 
     def test_form_with_mismatched_passwords(self):
@@ -42,7 +42,7 @@ class OwnerCreationFormTests(TestCase):
             'city': 'Sofia',
             'country': 'Bulgaria'
         }
-        form = OwnerCreationForm(data=form_data)
+        form = OwnerCreateForm(data=form_data)
         self.assertFalse(form.is_valid())
         self.assertIn('password2', form.errors)
 
@@ -54,7 +54,7 @@ class OwnerCreationFormTests(TestCase):
             'password2': 'testpass123',
             # Missing first_name, last_name, etc.
         }
-        form = OwnerCreationForm(data=form_data)
+        form = OwnerCreateForm(data=form_data)
         self.assertFalse(form.is_valid())
         # Check that the non-field error about first_name and last_name is present
         self.assertIn('__all__', form.errors)

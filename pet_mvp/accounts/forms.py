@@ -8,13 +8,12 @@ from pet_mvp.pets.models import Pet
 UserModel = get_user_model()
 
 
-class OwnerCreationForm(auth_forms.UserCreationForm):
-
+class BaseOwnerForm(forms.ModelForm):
     class Meta:
         model = UserModel
         fields = ('email', 'first_name', 'last_name',
                   'phone_number', 'city', 'country')
-        
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -30,6 +29,23 @@ class OwnerCreationForm(auth_forms.UserCreationForm):
             else:
                 placeholder = self._meta.model._meta.get_field(field_name).verbose_name
                 field.widget.attrs['placeholder'] = str(placeholder).capitalize()
+
+    def clean_phone_number(self):
+        value = self.cleaned_data.get('phone_number')
+        if not value:
+            return
+        return normalize_bulgarian_phone(value)
+
+
+class OwnerCreateForm(auth_forms.UserCreationForm, BaseOwnerForm):
+    class Meta(auth_forms.UserCreationForm.Meta, BaseOwnerForm.Meta):
+        model = UserModel
+        fields = ('email', 'first_name', 'last_name',
+                  'phone_number', 'city', 'country')
+
+
+class OwnerEditForm(BaseOwnerForm):
+    pass
 
 
 class ClinicRegistrationForm(auth_forms.UserCreationForm):
@@ -47,7 +63,7 @@ class ClinicRegistrationForm(auth_forms.UserCreationForm):
         # Ensure is_owner defaults to False on the instance
         if self.instance:  # If we have a model instance, set is_owner to False here
             self.instance.is_owner = False
-        
+
         for field_name in self.fields:
             field = self.fields[field_name]
 
@@ -60,14 +76,14 @@ class ClinicRegistrationForm(auth_forms.UserCreationForm):
             else:
                 placeholder = self._meta.model._meta.get_field(field_name).verbose_name
                 field.widget.attrs['placeholder'] = str(placeholder).capitalize()
-                
+
     def clean_phone_number(self):
 
         value = self.cleaned_data.get('phone_number')
         if not value:
             return
         return normalize_bulgarian_phone(value)
-    
+
 
 class AccessCodeEmailForm(forms.Form):
     access_code = forms.CharField(label=_("Access Code"), required=True)
@@ -79,8 +95,7 @@ class AccessCodeEmailForm(forms.Form):
         for field_name, field in self.fields.items():
             translated_label = _(field.label)
             field.widget.attrs['placeholder'] = translated_label
-    
-    
+
     def clean_access_code(self):
         access_code = self.cleaned_data.get('access_code')
         pet_exists = Pet.objects.filter(

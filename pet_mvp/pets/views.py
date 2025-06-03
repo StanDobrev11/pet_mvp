@@ -142,6 +142,20 @@ class PetDeleteView(views.DeleteView):
     success_url = reverse_lazy('dashboard')
     template_name = 'pet/pet_delete.html'
 
+    def form_valid(self, form):
+        success_url = self.get_success_url()
+        pet = self.object
+        # if more than one owner - remove the user from the owners
+        if len(pet.owners.all()) > 1:
+            pet.owners.remove(self.request.user)
+
+        # delete the pet otherwise
+        else:
+            self.object.delete()
+
+        return HttpResponseRedirect(success_url)
+
+
     def get_object(self, queryset=None):
         return Pet.objects.get(pk=self.kwargs['pk'])
 

@@ -19,7 +19,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 
 from pet_mvp.access_codes.models import VetPetAccess
-from pet_mvp.accounts.forms import OwnerCreationForm, AccessCodeEmailForm, ClinicRegistrationForm
+from pet_mvp.accounts.forms import OwnerCreateForm, AccessCodeEmailForm, ClinicRegistrationForm, OwnerEditForm
 from pet_mvp.notifications.tasks import send_user_registration_email, send_clinic_admin_approval_request_email, \
     send_clinic_owner_access_request_email, send_clinic_activation_email
 from pet_mvp.pets.models import Pet
@@ -170,7 +170,7 @@ class ClinicRegistrationView(BaseUserRegisterView):
 
 
 class RegisterOwnerView(BaseUserRegisterView):
-    form_class = OwnerCreationForm
+    form_class = OwnerCreateForm
     template_name = 'accounts/register.html'
     success_url = reverse_lazy('index')
 
@@ -413,9 +413,7 @@ class OwnerEditView(views.UpdateView):
     View for editing the details of a pet owner.
     """
     model = UserModel
-    # form_class = OwnerEditForm  # Uncomment and use your actual edit form
-    fields = ['first_name', 'last_name', 'email',
-              'phone_number', 'city', 'country']  # fallback if no form
+    form_class = OwnerEditForm
     template_name = 'accounts/owner_edit.html'
     context_object_name = 'owner'
 
@@ -431,3 +429,10 @@ class OwnerEditView(views.UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('owner-details', kwargs={'pk': self.object.pk})
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        # Disable email editing if social account exists
+        if self.request.user.socialaccount_set.filter(provider='google').exists():
+            form.fields['email'].disabled = True
+        return form

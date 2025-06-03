@@ -16,43 +16,54 @@
                         {% endfor %}
                     {% endif %}
                     <div class="card-header d-flex align-items-center pet-card-header">
-                        <div style="flex-shrink: 0;">
-                            {% if pet.photo %}
-                                <img src="{{ pet.photo.url }}"
-                                     alt="{% trans 'Pet Photo' %}"
-                                     class="img-thumbnail"
-                                     style="width: 150px;
-                                            height: 150px;
-                                            object-fit: cover">
-                            {% else %}
-                                <img src="{% static "imgs/pet_profile.jfif" %}"
-                                     alt="{% trans 'Pet Photo' %}"
-                                     class="img-thumbnail"
-                                     style="width: 150px;
-                                            height: 150px;
-                                            object-fit: cover">
-                            {% endif %}
-                        </div>
-                        <div class="ms-3">
-                            <h5 class="mb-0">
-                                <strong>{{ pet.name }}, {% trans pet.get_species_display %}, {% trans pet.get_breed_display %} </strong>
-                            </h5>
-                            <p class="mb-0">
-                                <strong>{% trans "Passport:" %}</strong> {{ pet.passport_number }}
-                            </p>
-                            {% if user.is_owner %}
-                                <p class="text-muted mb-2">
-                                    <strong>{% trans "Pet Access Code:" %}</strong> {{ access_code }}
-                                </p>
-                                <div class="d-flex gap-2">
-                                    <a href="{% url 'generate-share-qr' pet.pk %}"
-                                       class="btn btn-sm btn-outline-primary">
-                                        👨‍👩‍👧 🩺 {% trans "Generate QR Code" %}
-                                    </a>
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
+    <div style="flex-shrink: 0;">
+        {% if pet.photo %}
+            <img src="{{ pet.photo.url }}"
+                 alt="{% trans 'Pet Photo' %}"
+                 class="img-thumbnail"
+                 style="width: 150px; height: 150px; object-fit: cover">
+        {% else %}
+            <img src="{% static "imgs/pet_profile.jfif" %}"
+                 alt="{% trans 'Pet Photo' %}"
+                 class="img-thumbnail"
+                 style="width: 150px; height: 150px; object-fit: cover">
+        {% endif %}
+    </div>
+
+    <div class="ms-3 ps-2 pt-1 flex-grow-1">
+        <h5 class="mb-2">
+            <strong>{{ pet.name }}, {% trans pet.get_species_display %}, {% trans pet.get_breed_display %}</strong>
+        </h5>
+        <p class="mb-1">
+            <strong>{% trans "Passport:" %}</strong> {{ pet.passport_number }}
+        </p>
+
+        {% if user.is_owner %}
+            <p class="text-muted mb-2">
+                <strong>{% trans "Pet Access Code:" %}</strong> {{ access_code }}
+            </p>
+
+            <div class="d-flex gap-2 mb-2">
+                <a href="{% url 'generate-share-qr' pet.pk %}"
+                   class="btn btn-sm btn-outline-primary">
+                    👨‍👩‍👧 🩺 {% trans "Generate QR Code" %}
+                </a>
+            </div>
+
+            {% if pet.owners.all %}
+                <div class="small text-muted">
+                    <strong>{% trans "Co-Owners:" %}</strong>
+                    {% for owner in pet.owners.all %}
+                        {{ owner.get_full_name }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        {% trans "No co-owners." %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+
                     <div class="card-body">
                         <p class="card-text">
                             <strong>{% trans "Species:" %}</strong> {% trans pet.get_species_display %}

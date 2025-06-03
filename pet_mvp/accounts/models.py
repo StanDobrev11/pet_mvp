@@ -12,7 +12,7 @@ from pet_mvp.common.mixins import TimeStampMixin
 # Create your models here.
 class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
     USERNAME_FIELD = 'email'
-    PHONE_NUMBER_LENGTH = 14
+    PHONE_NUMBER_LENGTH = 32
     
     LANGUAGE_CHOICES = [
         ('bg', 'BG'),

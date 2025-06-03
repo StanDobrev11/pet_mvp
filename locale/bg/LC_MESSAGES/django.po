@@ -1064,7 +1064,7 @@ msgid ""
 "to your pet"
 msgstr ""
 "Споделете този QR код със съсобственици или ветеринари, за да им "
-"предоставите незабавен достъп до вашия домашен любимец."
+"предоставите незабавен достъп до вашия домашен любимец"
 
 #: .\templates\access_codes\pet_qr_share.html:16
 msgid "This code is single-use and will expire in 10 minutes."
