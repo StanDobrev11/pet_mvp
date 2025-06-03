@@ -16,6 +16,8 @@ from django.contrib import messages
 
 from pet_mvp.access_codes.models import QRShareToken, VetPetAccess
 from pet_mvp.access_codes.utils import generate_access_code
+from pet_mvp.logs.mixins import PetAccessLoggingMixin
+from pet_mvp.logs.models import PetAccessLog
 from pet_mvp.notifications.tasks import send_owner_pet_addition_request
 from pet_mvp.pets.forms import AddExistingPetForm, PetAddForm, MarkingAddForm, PetEditForm
 from pet_mvp.pets.models import Pet
@@ -23,13 +25,19 @@ from pet_mvp.pets.models import Pet
 UserModel = get_user_model()
 signer = Signer()
 
-
-# Create your views here.
-
-
-class PetDetailView(views.DetailView):
+class PetDetailView(PetAccessLoggingMixin, views.DetailView, ):
     model = Pet
     template_name = "pet/pet_details.html"
+
+    def get(self, request, *args, **kwargs):
+
+        if not request.user.is_owner:
+            self.access_log_method = 'clinic'
+
+        response = super().get(request, *args, **kwargs)
+        pet = self.get_object()
+        self.log_pet_access_once_per_session(request, pet)
+        return response
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -278,3 +286,22 @@ class AcceptShareTokenView(views.RedirectView):
         messages.success(self.request,
                          message=_("You now have access to %(pet_name)s's profile.") % {"pet_name": pet.name})
         return reverse('pet-details', kwargs={'pk': pet.id})
+
+
+class PetAccessHistoryView(views.TemplateView):
+    template_name = 'pet/access_history.html'
+    model = PetAccessLog
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        pet = get_object_or_404(Pet, pk=self.kwargs['pk'])
+        access_logs = PetAccessLog.objects.filter(pet=pet).order_by('-access_time')
+
+        context['access_logs'] = access_logs
+        context['source'] = self.request.GET.get('source')
+        context['id'] = pet.id
+
+        return context
+
+
