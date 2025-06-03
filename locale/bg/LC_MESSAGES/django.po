@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-03 00:25+0000\n"
+"POT-Creation-Date: 2025-06-03 02:15+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -15,6 +15,39 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\pet_mvp\access_codes\admin.py:17 .\pet_mvp\accounts\forms.py:89
+#: .\templates\accounts\access_code_email.html:30
+msgid "Access Code"
+msgstr "Код за достъп"
+
+#: .\pet_mvp\access_codes\admin.py:20
+msgid "Validity"
+msgstr "Валидност"
+
+#: .\pet_mvp\access_codes\admin.py:29 .\pet_mvp\access_codes\admin.py:53
+msgid "Is Valid"
+msgstr "Валиден"
+
+#: .\pet_mvp\access_codes\admin.py:41
+msgid "QR Share Token"
+msgstr "QR код за споделяне"
+
+#: .\pet_mvp\access_codes\admin.py:44
+msgid "Status"
+msgstr "Статус"
+
+#: .\pet_mvp\access_codes\admin.py:65
+msgid "Access Info"
+msgstr "Информация за достъп"
+
+#: .\pet_mvp\access_codes\admin.py:68
+msgid "Timing"
+msgstr "Времеви данни"
+
+#: .\pet_mvp\access_codes\admin.py:77
+msgid "Is Active"
+msgstr "Активен"
 
 #: .\pet_mvp\accounts\forms.py:24 .\pet_mvp\accounts\forms.py:71
 msgid "Enter a password"
@@ -27,11 +60,6 @@ msgstr "Повтори паролата"
 #: .\pet_mvp\accounts\forms.py:28 .\pet_mvp\accounts\forms.py:75
 msgid "Phone number (e.g. 0887123456)"
 msgstr "Мобилен номер (напр. 0887123456)."
-
-#: .\pet_mvp\accounts\forms.py:89
-#: .\templates\accounts\access_code_email.html:30
-msgid "Access Code"
-msgstr "Код за достъп"
 
 #: .\pet_mvp\accounts\forms.py:90
 #: .\templates\accounts\access_code_email.html:35
@@ -247,6 +275,42 @@ msgstr "Нямате право да редактирате собственик
 msgid "You do not have permission to access this page."
 msgstr "Нямате разрешение за достъп до тази страница."
 
+#: .\pet_mvp\drugs\admin.py:13 .\pet_mvp\drugs\admin.py:31
+#: .\pet_mvp\drugs\admin.py:52 .\pet_mvp\drugs\admin.py:73
+#: .\pet_mvp\drugs\admin.py:97 .\pet_mvp\pets\admin.py:35
+#: .\pet_mvp\records\admin.py:51 .\templates\records\examination_add.html:12
+msgid "Basic Information"
+msgstr "Основна информация"
+
+#: .\pet_mvp\drugs\admin.py:16 .\pet_mvp\drugs\admin.py:34
+msgid "Scheduling"
+msgstr "График"
+
+#: .\pet_mvp\drugs\admin.py:19 .\pet_mvp\drugs\admin.py:37
+msgid "Details"
+msgstr "Детайли"
+
+#: .\pet_mvp\drugs\admin.py:55
+msgid "Blood Cell Counts"
+msgstr "Брой на кръвните клетки"
+
+#: .\pet_mvp\drugs\admin.py:58 .\pet_mvp\drugs\admin.py:82
+#: .\pet_mvp\drugs\admin.py:106 .\templates\records\examination_add.html:50
+msgid "Additional Information"
+msgstr "Допълнителна информация"
+
+#: .\pet_mvp\drugs\admin.py:76 .\pet_mvp\drugs\admin.py:100
+msgid "Physical Properties"
+msgstr "Физични свойства"
+
+#: .\pet_mvp\drugs\admin.py:79
+msgid "Chemical Analysis"
+msgstr "Химичен анализ"
+
+#: .\pet_mvp\drugs\admin.py:103
+msgid "Findings"
+msgstr "Наблюдения"
+
 #: .\pet_mvp\drugs\models.py:10 .\pet_mvp\pets\models.py:28
 msgid "Cat"
 msgstr "Котка"
@@ -303,7 +367,7 @@ msgstr "Дата на провеждане"
 msgid "Date when the test was conducted"
 msgstr "Дата, когато е проведен тестът"
 
-#: .\pet_mvp\drugs\models.py:78
+#: .\pet_mvp\drugs\models.py:78 .\pet_mvp\records\admin.py:74
 msgid "Additional Notes"
 msgstr "Допълнителни бележки"
 
@@ -532,6 +596,27 @@ msgstr "Изпратен имейл за активация до {}"
 msgid "Pet Addition Request"
 msgstr "Искане за добавяне на домашен любимец"
 
+#: .\pet_mvp\pets\admin.py:41 .\pet_mvp\pets\admin.py:58
+#: .\pet_mvp\pets\models.py:120
+msgid "Photo"
+msgstr "Снимка"
+
+#: .\pet_mvp\pets\admin.py:44
+msgid "Permissions"
+msgstr "Права за достъп"
+
+#: .\pet_mvp\pets\admin.py:47
+msgid "Ownership"
+msgstr "Собственост"
+
+#: .\pet_mvp\pets\admin.py:56
+msgid "No Photo"
+msgstr "Няма снимка"
+
+#: .\pet_mvp\pets\admin.py:63
+msgid "Age"
+msgstr "Възраст"
+
 #: .\pet_mvp\pets\forms.py:52 .\pet_mvp\pets\models.py:103
 msgid "Date of birth"
 msgstr "Дата на раждане"
@@ -672,10 +757,6 @@ msgstr "Пол"
 msgid "Features"
 msgstr "Характеристики"
 
-#: .\pet_mvp\pets\models.py:120
-msgid "Photo"
-msgstr "Снимка"
-
 #: .\pet_mvp\pets\models.py:126
 msgid "Current weight"
 msgstr "Текущо тегло"
@@ -776,6 +857,42 @@ msgstr "Този линк за споделяне е изтекъл или ве�
 #, python-format
 msgid "You now have access to %(pet_name)s's profile."
 msgstr "Вече имате достъп до профила на %(pet_name)s."
+
+#: .\pet_mvp\records\admin.py:18
+msgid "Vaccination Details"
+msgstr "Детайли за ваксината"
+
+#: .\pet_mvp\records\admin.py:21
+msgid "Manufacturing Info"
+msgstr "Информация за производство"
+
+#: .\pet_mvp\records\admin.py:34
+msgid "Medication Details"
+msgstr "Детайли за медикамента"
+
+#: .\pet_mvp\records\admin.py:37
+msgid "Manufacturer Info"
+msgstr "Информация за производителя"
+
+#: .\pet_mvp\records\admin.py:54
+msgid "Health Assessment"
+msgstr "Оценка на здравословното състояние"
+
+#: .\pet_mvp\records\admin.py:60
+msgid "Physical Condition"
+msgstr "Физическо състояние"
+
+#: .\pet_mvp\records\admin.py:65
+msgid "Lab Tests"
+msgstr "Лабораторни изследвания"
+
+#: .\pet_mvp\records\admin.py:68
+msgid "Treatments & Diagnosis"
+msgstr "Лечение и диагноза"
+
+#: .\pet_mvp\records\admin.py:71
+msgid "Prescribed Records"
+msgstr "Предписани записи"
 
 #: .\pet_mvp\records\forms.py:29 .\templates\partials\vaccine_add_card.html:22
 #: .\templates\records\vaccine_record_add.html:46
@@ -2813,14 +2930,6 @@ msgstr "Редактирай детайлите на домашния любим
 #: .\templates\records\examination_add.html:11
 msgid "Medical Examination Report for"
 msgstr "Медицински преглед за"
-
-#: .\templates\records\examination_add.html:12
-msgid "Basic Information"
-msgstr "Основна информация"
-
-#: .\templates\records\examination_add.html:50
-msgid "Additional Information"
-msgstr "Допълнителна информация"
 
 #: .\templates\records\examination_add.html:54
 #: .\templates\records\examination_add.html:56
