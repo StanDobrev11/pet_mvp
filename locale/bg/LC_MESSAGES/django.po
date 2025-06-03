@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-03 02:15+0000\n"
+"POT-Creation-Date: 2025-06-03 22:59+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -169,7 +169,7 @@ msgstr "Клиниките трябва да имат име и адрес."
 msgid "Clinics cannot have owner-related information."
 msgstr "Клиниките не могат да имат информация, свързана със собственик."
 
-#: .\pet_mvp\accounts\models.py:143
+#: .\pet_mvp\accounts\models.py:143 .\pet_mvp\logs\models.py:34
 msgid "Owner"
 msgstr "Собственик"
 
@@ -494,6 +494,26 @@ msgstr "Вид на откритите паразити, ако има таки�
 #: .\pet_mvp\drugs\models.py:209 .\pet_mvp\drugs\models.py:211
 msgid "Blood Presence in Stool"
 msgstr "Наличие на кръв в изпражненията"
+
+#: .\pet_mvp\logs\models.py:22 .\templates\pet\access_history.html:13
+msgid "Accessed By"
+msgstr "Достъпено от"
+
+#: .\pet_mvp\logs\models.py:26
+msgid "Access Time"
+msgstr "Време на достъп"
+
+#: .\pet_mvp\logs\models.py:33
+msgid "Shared Link"
+msgstr "Споделен линк"
+
+#: .\pet_mvp\logs\models.py:35
+msgid "Clinic View"
+msgstr "Преглед от клиника"
+
+#: .\pet_mvp\logs\models.py:38
+msgid "Access Method"
+msgstr "Метод на достъп"
 
 #: .\pet_mvp\notifications\tasks.py:30
 msgid "Approval Request for Access to {{ pet_name }}'s Medical Records"
@@ -829,31 +849,31 @@ msgstr "{} не е валиден номер на транспондер."
 msgid "Invalid country code"
 msgstr "Невалиден код на държава"
 
-#: .\pet_mvp\pets\views.py:97
+#: .\pet_mvp\pets\views.py:105
 msgid "Invalid passport number: no pet found with these details."
 msgstr "Невалиден номер на паспорт: несъществуващ домашен любимец."
 
-#: .\pet_mvp\pets\views.py:114
+#: .\pet_mvp\pets\views.py:123
 msgid "Your request to access the pet has been sent to the owner."
 msgstr "Вашето запитване за добавяне на съществуващ любимец е изпратено."
 
-#: .\pet_mvp\pets\views.py:137
+#: .\pet_mvp\pets\views.py:146
 msgid "Invalid or expired link."
 msgstr "Невалиден линк."
 
-#: .\pet_mvp\pets\views.py:213
+#: .\pet_mvp\pets\views.py:222
 msgid "You must be an owner to generate a share link."
 msgstr "Трябва да сте собственик, за да генерирате връзка за споделяне."
 
-#: .\pet_mvp\pets\views.py:249
+#: .\pet_mvp\pets\views.py:258
 msgid "Invalid or expired token."
 msgstr "Невалиден или изтекъл токен."
 
-#: .\pet_mvp\pets\views.py:254
+#: .\pet_mvp\pets\views.py:263
 msgid "This share link has expired or already been used."
 msgstr "Този линк за споделяне е изтекъл или вече е използван."
 
-#: .\pet_mvp\pets\views.py:278
+#: .\pet_mvp\pets\views.py:287
 #, python-format
 msgid "You now have access to %(pet_name)s's profile."
 msgstr "Вече имате достъп до профила на %(pet_name)s."
@@ -1162,11 +1182,11 @@ msgstr "Формулярът за фекален тест съдържа гре�
 msgid "Examination data saved successfully!"
 msgstr "Данните от прегледа бяха успешно запазени!"
 
-#: .\pet_mvp\settings.py:142 .\templates\partials\nav_bar.html:16
+#: .\pet_mvp\settings.py:143 .\templates\partials\nav_bar.html:16
 msgid "English"
 msgstr "Английски"
 
-#: .\pet_mvp\settings.py:143 .\templates\partials\nav_bar.html:19
+#: .\pet_mvp\settings.py:144 .\templates\partials\nav_bar.html:19
 msgid "Bulgarian"
 msgstr "Български"
 
@@ -2666,6 +2686,26 @@ msgstr "според ваксинационния календар."
 msgid "not compulsory"
 msgstr "не е задължителна"
 
+#: .\templates\pet\access_history.html:6 .\templates\pet\pet_details.html:200
+msgid "Access History"
+msgstr "История на достъп"
+
+#: .\templates\pet\access_history.html:12
+msgid "Time"
+msgstr "Време"
+
+#: .\templates\pet\access_history.html:14
+msgid "Method"
+msgstr "Метод"
+
+#: .\templates\pet\access_history.html:15
+msgid "IP"
+msgstr "IP"
+
+#: .\templates\pet\access_history.html:28
+msgid "No access history yet."
+msgstr "Няма история на достъп."
+
 #: .\templates\pet\approve_confirmation.html:8
 msgid "Request Approved"
 msgstr "Заявката е одобрена"
@@ -2919,7 +2959,7 @@ msgstr "Нов преглед"
 msgid "View all history records"
 msgstr "Преглед на всички исторически записи"
 
-#: .\templates\pet\pet_details.html:199
+#: .\templates\pet\pet_details.html:203
 msgid "Finish and Logout"
 msgstr "Завърши и излез"
 
