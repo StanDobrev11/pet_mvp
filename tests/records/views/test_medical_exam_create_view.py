@@ -33,7 +33,7 @@ class MedicalExaminationReportCreateViewTest(TestCase):
 
         self.pet = Pet.objects.create(
             name='Some Test Dog',
-            species='Dog',
+            species='dog',
             breed='Shepherd',
             color='Tan',
             date_of_birth='2020-01-01',

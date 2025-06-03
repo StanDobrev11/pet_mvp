@@ -2,7 +2,8 @@ from django.urls import path, include
 from django.contrib.auth.decorators import login_not_required
 
 from pet_mvp.pets.views import ApprovePetAdditionView, PetDetailView, PetEditView, PetAddView, PetDeleteView, \
-    MarkingAddView, MarkingDetailsView, AddExistingPetView, GenerateShareTokenView, AcceptShareTokenView
+    MarkingAddView, MarkingDetailsView, AddExistingPetView, GenerateShareTokenView, AcceptShareTokenView, \
+    PetAccessHistoryView
 
 urlpatterns = [
     path('add/', PetAddView.as_view(), name='pet-add'),
@@ -13,6 +14,7 @@ urlpatterns = [
     path('<int:pk>/',
          include([
              path('details/', PetDetailView.as_view(), name='pet-details'),
+             path('access-history/', PetAccessHistoryView.as_view(), name='pet-access-history'),
              path('edit/', PetEditView.as_view(), name='pet-edit'),
              path('delete/', PetDeleteView.as_view(), name='pet-delete'),
              path('marking/',

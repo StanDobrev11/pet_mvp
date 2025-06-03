@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'pet_mvp.api.apps.ApiConfig',
     'pet_mvp.common.apps.CommonConfig',
     'pet_mvp.drugs.apps.DrugsConfig',
+    'pet_mvp.logs.apps.LogsConfig',
     'pet_mvp.pets.apps.PetsConfig',
     'pet_mvp.records.apps.RecordsConfig',
     'pet_mvp.notifications.apps.NotificationsConfig',
