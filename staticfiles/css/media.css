@@ -61,5 +61,10 @@
     .pet-card-header .ms-3 {
         margin-top: 1rem;
     }
+
+    .pet-slider-wrapper {
+        display: none;
+    }
+
 }
 

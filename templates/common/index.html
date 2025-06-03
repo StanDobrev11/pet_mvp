@@ -77,7 +77,30 @@
             </div>
 
 
-            <div class="col-md-6 d-flex align-items-center justify-content-center">
+            <div class="col-md-6 d-flex flex-column align-items-center justify-content-center">
+                <div class="pet-slider-wrapper mb-4 rounded overflow-hidden" style="height: 300px; width: 100%;">
+                    <div id="pet-slider" class="mb-4 position-relative rounded overflow-hidden" style="height: 300px;">
+                        <img src="{% static 'imgs/pets/pet1.jpg' %}"
+                             class="slider-image position-absolute w-100 h-100 object-fit-cover rounded"
+                             style="opacity: 1; z-index: 2; transition: opacity 1s;">
+                        <img src="{% static 'imgs/pets/pet2.jpg' %}"
+                             class="slider-image position-absolute w-100 h-100 object-fit-cover rounded"
+                             style="opacity: 0; z-index: 1; transition: opacity 1s;">
+                        <img src="{% static 'imgs/pets/pet3.jpg' %}"
+                             class="slider-image position-absolute w-100 h-100 object-fit-cover rounded"
+                             style="opacity: 0; z-index: 1; transition: opacity 1s;">
+                        <img src="{% static 'imgs/pets/pet4.jpg' %}"
+                             class="slider-image position-absolute w-100 h-100 object-fit-cover rounded"
+                             style="opacity: 0; z-index: 1; transition: opacity 1s;">
+                        <img src="{% static 'imgs/pets/pet5.jpg' %}"
+                             class="slider-image position-absolute w-100 h-100 object-fit-cover rounded"
+                             style="opacity: 0; z-index: 1; transition: opacity 1s;">
+                        <img src="{% static 'imgs/pets/pet6.jpg' %}"
+                             class="slider-image position-absolute w-100 h-100 object-fit-cover rounded"
+                             style="opacity: 0; z-index: 1; transition: opacity 1s;">
+
+                    </div>
+                </div>
                 <div class="d-grid gap-3 w-100">
                     <a href="{% url 'login' %}" class="btn btn-primary btn-lg">{% trans "Login" %}</a>
                     <a href="{% url 'register' %}" class="btn btn-secondary btn-lg">{% trans "Register" %}</a>
@@ -88,7 +111,35 @@
             </div>
         </div>
     </section>
-{% endblock %}
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const slider = document.getElementById('pet-slider');
+        const images = slider?.querySelectorAll('.slider-image');
 
-{% block scripts %}
+        // Check if slider exists and is visible
+        function isVisible(el) {
+            return !!(el && el.offsetParent !== null);
+        }
+
+        if (slider && images.length > 1 && isVisible(slider)) {
+            let current = 0;
+
+            setInterval(() => {
+                if (!isVisible(slider)) return;
+
+                images[current].style.opacity = 0;
+                images[current].style.zIndex = 1;
+
+                let next;
+                do {
+                    next = Math.floor(Math.random() * images.length);
+                } while (next === current);
+
+                images[next].style.opacity = 1;
+                images[next].style.zIndex = 2;
+                current = next;
+            }, 5000);
+        }
+    });
+</script>
 {% endblock %}
