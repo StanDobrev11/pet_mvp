@@ -2715,7 +2715,7 @@ msgstr "Код за достъп до домашния любимец:"
 
 #: .\templates\pet\pet_details.html:55
 msgid "Co-Owners:"
-msgstr "Собственици"
+msgstr "Собственици:"
 
 #: .\templates\pet\pet_details.html:67
 msgid "Species:"
