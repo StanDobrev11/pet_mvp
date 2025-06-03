@@ -29,8 +29,8 @@ class PetViewsTest(TestCase):
         url = reverse('pet-add')
 
         data = dict(
-            name_en='New Pet',
-            name_bg='Ново Животно',
+            name_en='Test Pet',
+            name_bg='Тестово Животно',
             species='dog',
             breed='German Shepherd',
             color='Black and Tan',
@@ -46,10 +46,8 @@ class PetViewsTest(TestCase):
         )
         response = self.client_owner.post(url, data)
 
-        print(Pet.objects.values_list('name', 'name_en', 'name_bg'))
-        print(Pet.objects.all())
         self.assertRedirects(response, reverse('dashboard'))
-        new_pet = Pet.objects.get(name_en='New Pet')
+        new_pet = Pet.objects.get(name_en='Test Pet')
         self.assertIn(self.owner, new_pet.owners.all())
 
     def test_pet_add_view_missing_passport_number(self):
