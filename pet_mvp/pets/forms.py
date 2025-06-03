@@ -74,7 +74,7 @@ class PetAddForm(forms.ModelForm):
                 field.widget.attrs['placeholder'] = str(
                     placeholder).capitalize()
 
-    def clean_password_number(self):
+    def clean_passport_number(self):
         value = self.cleaned_data.get('passport_number')
         return validate_passport_number(value)
 

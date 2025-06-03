@@ -110,6 +110,7 @@ class AddExistingPetView(views.FormView):
             approval_url=approval_url
         )
 
+        pet.pending_owners.add(self.request.user)
         messages.success(self.request, _(
             "Your request to access the pet has been sent to the owner."))
 
@@ -125,7 +126,7 @@ class ApprovePetAdditionView(views.View):
             user = UserModel.objects.get(id=user_id)
 
             pet.owners.add(user)
-            # pet.pending_owners.remove(user)
+            pet.pending_owners.remove(user)
 
             context = {
                 "pet_name": pet.name,
