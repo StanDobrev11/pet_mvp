@@ -138,7 +138,7 @@ def create_pets():
         max_pet = Pet.objects.create(
             name_en='Max',
             name_bg='Макс',
-            species='Dog',
+            species='dog',
             breed='German Shepherd',
             color='Black and Tan',
             color_en='Black and Tan',
@@ -154,7 +154,7 @@ def create_pets():
         luna_pet = Pet.objects.create(
             name_en='Luna',
             name_bg='Луна',
-            species='Cat',
+            species='cat',
             breed='Persian',
             color='White',
             color_en='White',

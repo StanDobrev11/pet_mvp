@@ -7,3 +7,4 @@ class PetsConfig(AppConfig):
 
     def ready(self):
         import pet_mvp.pets.signals
+        import pet_mvp.pets.translation

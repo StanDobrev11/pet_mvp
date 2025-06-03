@@ -1,0 +1,1 @@
+default_app_config = 'pet_mvp.pets.apps.PetsConfig'

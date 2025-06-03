@@ -1,6 +1,7 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from django.utils.translation import activate
 
 from pet_mvp.pets.models import Pet
 
@@ -8,6 +9,8 @@ UserModel = get_user_model()
 
 class PetViewsTest(TestCase):
     def setUp(self):
+        activate('en')
+
         self.owner = UserModel.objects.create_owner(
             email='owner@example.com',
             password='testpass123',
@@ -20,23 +23,31 @@ class PetViewsTest(TestCase):
 
         self.client_owner = Client()
         self.client_owner.login(email='owner@example.com', password='testpass123')
-
+        self.client_owner.cookies.load({'django_language': 'en'})
 
     def test_pet_add_view(self):
         url = reverse('pet-add')
 
         data = dict(
             name_en='New Pet',
+            name_bg='Ново Животно',
             species='dog',
-            breed='Retriever',
-            color='Golden',
-            date_of_birth='2020-05-01',
+            breed='German Shepherd',
+            color='Black and Tan',
+            color_en='Black and Tan',
+            color_bg='Черно и кафяво',
+            date_of_birth='2020-01-01',
             sex='male',
-            current_weight='30',
+            current_weight='28',
             passport_number='BG01VP123456',
+            features='Friendly, energetic, loyal',
+            features_en='Friendly, energetic, loyal',
+            features_bg='Приятелски настроен, енергичен, лоялен',
         )
         response = self.client_owner.post(url, data)
 
+        print(Pet.objects.values_list('name', 'name_en', 'name_bg'))
+        print(Pet.objects.all())
         self.assertRedirects(response, reverse('dashboard'))
         new_pet = Pet.objects.get(name_en='New Pet')
         self.assertIn(self.owner, new_pet.owners.all())

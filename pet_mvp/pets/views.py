@@ -82,6 +82,8 @@ class PetAddView(views.CreateView):
 
         return redirect('dashboard')
 
+    def form_invalid(self, form):
+        return super().form_invalid(form)
 
 class AddExistingPetView(views.FormView):
     form_class = AddExistingPetForm
