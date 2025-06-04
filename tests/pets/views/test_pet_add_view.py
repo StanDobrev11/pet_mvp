@@ -50,40 +50,51 @@ class PetViewsTest(TestCase):
         new_pet = Pet.objects.get(name_en='Test Pet')
         self.assertIn(self.owner, new_pet.owners.all())
 
-    def test_pet_add_view_missing_passport_number(self):
+    def test_pet_add_view_missing_name_fields(self):
         url = reverse('pet-add')
 
         data = dict(
-            name_en='Missing Passport Pet',
+            # missing name
             species='dog',
-            breed='Retriever',
-            color='Golden',
-            date_of_birth='2020-05-01',
+            breed='German Shepherd',
+            color='Black and Tan',
+            color_en='Black and Tan',
+            color_bg='Черно и кафяво',
+            date_of_birth='2020-01-01',
             sex='male',
-            current_weight='30',
-            # passport_number omitted
+            current_weight='28',
+            passport_number='BG01VP123456',
+            features='Friendly, energetic, loyal',
+            features_en='Friendly, energetic, loyal',
+            features_bg='Приятелски настроен, енергичен, лоялен',
         )
         response = self.client_owner.post(url, data)
 
         self.assertEqual(response.status_code, 200)
         form = response.context['form']
-        self.assertIn('passport_number', form.errors)
-        self.assertIn('This field is required.', form.errors['passport_number'])
+        self.assertIn('This field is required.', form.errors['__all__'])
 
 
     def test_pet_add_view_invalid_passport_number(self):
         url = reverse('pet-add')
 
         data = dict(
-            name_en='Invalid Passport Pet',
+            name_en='Test Pet',
+            name_bg='Тестово Животно',
             species='dog',
-            breed='Retriever',
-            color='Golden',
-            date_of_birth='2020-05-01',
+            breed='German Shepherd',
+            color='Black and Tan',
+            color_en='Black and Tan',
+            color_bg='Черно и кафяво',
+            date_of_birth='2020-01-01',
             sex='male',
-            current_weight='30',
-            passport_number='INVALID$$$',  # assuming you validate format
+            current_weight='28',
+            passport_number='INVALID$$$',
+            features='Friendly, energetic, loyal',
+            features_en='Friendly, energetic, loyal',
+            features_bg='Приятелски настроен, енергичен, лоялен',
         )
+
         response = self.client_owner.post(url, data)
         form = response.context['form']
         self.assertEqual(response.status_code, 200)

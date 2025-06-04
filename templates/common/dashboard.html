@@ -47,10 +47,13 @@
                 <li class="list-group-item text-muted">{% trans "No pets added yet." %}</li>
             {% endfor %}
         </ul>
-
         <div class="d-flex justify-content-center gap-3">
             <a href="{% url 'pet-add' %}" class="btn btn-success">{% trans "Add Pet" %}</a>
             <a href="{% url 'logout' %}" class="btn btn-outline-danger">{% trans "Logout" %}</a>
+        </div>
+        <div class="mt-5 text-center">
+            <h4 class="mb-3">{% trans "Upcoming Vaccines & Medications" %}</h4>
+            <div id="calendar" class="custom-calendar"></div>
         </div>
     </section>
 
@@ -64,4 +67,30 @@
             {% endfor %}
         </div>
     {% endif %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const calendarEl = document.getElementById('calendar');
+            const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: isMobile ? 'listWeek' : 'dayGridMonth',
+                locale: getDjangoLanguageFromCookie(),
+                events: '{% url "get-pet-events" %}',
+                height: 'auto',
+                headerToolbar: {
+                    left: 'title',
+                    right: 'prev,next'
+                },
+            });
+            calendar.render();
+        });
+
+        function getDjangoLanguageFromCookie() {
+            const match = document.cookie.match(/(^| )django_language=([^;]+)/);
+            return match ? decodeURIComponent(match[2]) : 'en'; // fallback to 'en'
+        }
+    </script>
+
+
 {% endblock %}

@@ -3,9 +3,13 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from datetime import timedelta
-
+from django.utils.translation import gettext_lazy as _
+from pet_mvp.drugs.models import Vaccine, Drug
 from pet_mvp.pets.models import Pet
 from pet_mvp.access_codes.models import VetPetAccess
+from pet_mvp.records.models import VaccinationRecord, MedicationRecord
+
+
 # Create your views here.
 @require_POST
 @login_required
@@ -44,3 +48,91 @@ def verify_access_code(request):
             for owner in pet.owners.all()
         ]
     })
+
+from django.utils import timezone
+from django.db.models import Prefetch
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from datetime import timedelta
+
+@login_required
+def get_pet_events(request):
+    if not request.user.is_owner:
+        return JsonResponse({'error': 'Not authorized'}, status=401)
+
+    today = timezone.now()
+    two_years_ago = today - timedelta(days=730)
+
+    pets = request.user.pets.all()
+
+    # Prefetch vaccination and medication records, filtered
+    pets = pets.prefetch_related(
+        Prefetch(
+            'vaccine_records',
+            queryset=VaccinationRecord.objects.filter(valid_until__gte=two_years_ago).select_related('vaccine')
+        ),
+        Prefetch(
+            'medication_records',
+            queryset=MedicationRecord.objects.filter(
+                date__gte=two_years_ago
+            ).select_related('medication')
+        )
+    )
+
+    events = []
+    for pet in pets:
+        # Vaccination Records
+        for v in pet.vaccine_records.all():
+            due_date = v.valid_until
+            days_remaining = (due_date - today.date()).days
+
+            if days_remaining <= 7:
+                # Vaccination due soon
+                events.append({
+                    "title": f"💉 {pet.name} – {v.vaccine.name} ({_('Due Soon')})",
+                    "start": v.valid_until.isoformat(),
+                    "color": "#ffc107",  # orange/yellow
+                    "textColor": "#000",
+                    "borderColor": "#ffcd39",
+                    "allDay": True,
+                    "classNames": ["urgent-vaccine"],
+                })
+            else:
+                # Not urgent
+                events.append({
+                    "title": f"💉 {pet.name} – {v.vaccine.name} ({_('Due Date')})",
+                    "start": v.valid_until.isoformat(),
+                    "color": "#e2e3e5",  # muted gray
+                    "textColor": "#6c757d",  # muted text
+                    "borderColor": "#ced4da",
+                    "allDay": True,
+                    "classNames": ["dimmed-vaccine"],
+                })
+
+        # Medication Records
+        for m in pet.medication_records.all():
+            due_date = m.valid_until
+            days_remaining = (due_date - today.date()).days
+
+            if days_remaining <= 7:
+                events.append({
+                    "title": f"💊 {pet.name} – {m.medication.name} ({_('Due Soon')})",
+                    "start": m.valid_until.isoformat(),
+                    "color": "#dc3545",  # red
+                    "textColor": "#fff",
+                    "borderColor": "#b02a37",
+                    "allDay": True,
+                    "classNames": ["urgent-medication"],
+                   })
+            else:
+                events.append({
+                    "title": f"💊 {pet.name} – {m.medication.name} ({_('Due Date')})",
+                    "start": m.valid_until.isoformat(),
+                    "color": "#dee2e6",  # light gray-blue
+                    "textColor": "#495057",
+                    "borderColor": "#adb5bd",
+                    "allDay": True,
+                    "classNames": ["dimmed-medication"],
+                  })
+
+    return JsonResponse(events, safe=False)
