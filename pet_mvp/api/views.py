@@ -93,9 +93,10 @@ def get_pet_events(request):
                 "title": f"💊 {pet.name} – {m.medication.name} ({_('Due Date')})",
                 "start": m.valid_until.isoformat(),
                 "color": "#17a2b8",
+                "textColor": "red",
+                "borderColor": "#0d6efd",
                 "allDay": True,
-                "display": "background", 
-                "textColor": "rgb(255, 0, 0)"
+                "display": "background",
             })
 
     return JsonResponse(events, safe=False)

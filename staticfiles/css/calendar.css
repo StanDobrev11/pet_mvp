@@ -3,3 +3,11 @@
     padding: 10px;
     border-radius: 8px;
 }
+
+.fc .fc-event-title {
+    white-space: break-spaces;
+}
+
+.fc .fc-bg-event {
+    opacity: 80%;
+}

@@ -74,13 +74,12 @@
             const calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 locale: '{{ LANGUAGE_CODE }}',
-                events: '{% url "get-pet-events" %}', // Your Django JSON endpoint
+                events: '{% url "get-pet-events" %}',
                 height: 'auto',
                 headerToolbar: {
                     left: 'title',
                     right: 'prev,next'
                 },
-                eventBackgroundColor: 'red',
             });
             calendar.render();
         });

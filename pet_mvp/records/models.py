@@ -33,16 +33,21 @@ class VaccinationRecord(TimeStampMixin):
     manufacturer = models.CharField(
         max_length=50,
         verbose_name=_('Manufacturer'),
+        blank=True,
     )
 
     manufacture_date = models.DateField(
         verbose_name=_('Manufacture date'),
         help_text=_('Manufacture date'),
+        blank=True,
+        null=True,
     )
 
     batch_number = models.CharField(
         max_length=50,
-        verbose_name=_('Batch number')
+        verbose_name=_('Batch number'),
+        blank=True,
+        null=True,
     )
 
     pet = models.ForeignKey(
@@ -90,7 +95,8 @@ class MedicationRecord(TimeStampMixin):
     manufacturer = models.CharField(
         max_length=50,
         verbose_name=_('Manufacturer'),
-        blank=True
+        blank=True,
+        null=True,
     )
 
     pet = models.ForeignKey(

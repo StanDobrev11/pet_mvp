@@ -128,8 +128,9 @@ class Pet(TimeStampMixin):
 
     passport_number = models.CharField(
         max_length=PASSPORT_NUMBER_MAX_LENGTH,
-        validators=[validate_passport_number],
         verbose_name=_('Passport Number'),
+        null=True,
+        blank=True,
         unique=True,
         error_messages={
             "unique": _("A pet with this details already exists."),
