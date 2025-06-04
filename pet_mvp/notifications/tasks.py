@@ -226,7 +226,7 @@ def send_medical_record_email(exam, lang):
     )
 
     if clinic.default_language != lang:
-        context['lant'] = clinic.default_language
+        context['lang'] = clinic.default_language
 
     EmailService.send_template_email_async.delay(
         subject=_("Medical Examination Report for {} - {}").format(exam.pet.name,
