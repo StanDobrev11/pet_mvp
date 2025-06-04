@@ -20,42 +20,42 @@ UserModel = get_user_model()
 
 
 def create_pet_markings():
-    max_pet = Pet.objects.get(name_en='Max')
-    luna_pet = Pet.objects.get(name_en='Luna')
+    dog_pet = Pet.objects.get(name_en='Test Dog')
+    cat_pet = Pet.objects.get(name_en='Test Cat')
 
-    # Create a transponder for Max
+    # Create a transponder for Test Dog
     try:
         Transponder.objects.create(
             code='123456789012345',
-            pet=max_pet,
+            pet=dog_pet,
             date_of_application='2020-01-15',
             date_of_reading='2020-01-15',
             location='Left side of the neck',
             location_en='Left side of the neck',
             location_bg='Лява страна на врата',
         )
-        print(f"Transponder created for {max_pet.name}")
+        print(f"Transponder created for {dog_pet.name}")
     except Exception:
-        print(f"Transponder already exists for {max_pet.name}")
+        print(f"Transponder already exists for {dog_pet.name}")
 
-    # Create a tattoo for Luna
+    # Create a tattoo for Test Cat
     try:
         Tattoo.objects.create(
             code='ABC123',
-            pet=luna_pet,
+            pet=cat_pet,
             date_of_application='2021-04-01',
             date_of_reading='2021-04-01',
             location='Inside of right ear',
             location_en='Inside of right ear',
             location_bg='Вътрешна страна на дясното ухо',
         )
-        print(f"Tattoo created for {luna_pet.name}")
+        print(f"Tattoo created for {cat_pet.name}")
     except Exception:
-        print(f"Transponder already exists for {luna_pet.name}")
+        print(f"Transponder already exists for {cat_pet.name}")
 
 
-def create_complete_examination_record_for_max():
-    max_pet = Pet.objects.get(name='Max')
+def create_complete_examination_record_for_test_dog():
+    dog_pet = Pet.objects.get(name_en='Test Dog')
     clinic = Clinic.objects.get(email='dianavet@pet-mvp.com')
     try:
         blood_test = BloodTest.objects.create(
@@ -86,13 +86,13 @@ def create_complete_examination_record_for_max():
         fecal_test = FecalTest.objects.get(
             result="Parasites detected, blood in sample found")
 
-    medication_record = MedicationRecord.objects.filter(pet=max_pet).first()
-    vaccination_record = VaccinationRecord.objects.filter(pet=max_pet).first()
+    medication_record = MedicationRecord.objects.filter(pet=dog_pet).first()
+    vaccination_record = VaccinationRecord.objects.filter(pet=dog_pet).first()
 
     medical_record = MedicalExaminationRecord.objects.get_or_create(
         date_of_entry=make_aware(datetime.strptime('15.03.2025', '%d.%m.%Y')),
-        doctor="Dr. John Doe",
-        pet=max_pet,
+        doctor="Dr.John Doe",
+        pet=dog_pet,
         clinic=clinic,
         reason_for_visit="Routine checkup and swelling on left leg",
         general_health="Good overall health",
@@ -116,7 +116,7 @@ def create_complete_examination_record_for_max():
     medical_record[0].vaccinations.add(vaccination_record)
     medical_record[0].medications.add(medication_record)
 
-    print(f"Medical Examination Record created for {max_pet.name}.")
+    print(f"Medical Examination Record created for {dog_pet.name}.")
 
 
 def create_user(email, password):
@@ -135,9 +135,9 @@ def create_user(email, password):
 def create_pets():
 
     try:
-        max_pet = Pet.objects.create(
-            name_en='Max',
-            name_bg='Макс',
+        dog_pet = Pet.objects.create(
+            name_en='Test Dog',
+            name_bg='Тест Куче',
             species='dog',
             breed='German Shepherd',
             color='Black and Tan',
@@ -151,9 +151,9 @@ def create_pets():
             features_en='Friendly, energetic, loyal',
             features_bg='Приятелски настроен, енергичен, лоялен',
         )
-        luna_pet = Pet.objects.create(
-            name_en='Luna',
-            name_bg='Луна',
+        cat_pet = Pet.objects.create(
+            name_en='Test Cat',
+            name_bg='Тест Коте',
             species='cat',
             breed='Persian',
             color='White',
@@ -168,7 +168,7 @@ def create_pets():
             features_bg='Дълга козина, спокойна, независима',
         )
 
-        pets = [max_pet, luna_pet]
+        pets = [dog_pet, cat_pet]
 
         owner = UserModel.objects.get(email__icontains='admin')
 
@@ -180,7 +180,7 @@ def create_pets():
 
 
 def populate_medication_records():
-    pet = Pet.objects.get(name='Max')
+    pet = Pet.objects.get(name_en='Test Dog')
     medication_data = [
         # Medication already given
         dict(
@@ -225,11 +225,11 @@ def populate_medication_records():
         # Ensure unique records using get_or_create
         MedicationRecord.objects.get_or_create(**data)
 
-    print('Medication records for Max populated')
+    print('Medication records for Test Dog populated')
 
 
 def populate_vaccination_records():
-    pet = Pet.objects.get(name='Max')
+    pet = Pet.objects.get(name_en='Test Dog')
     vaccines_data = [
         dict(
             pet=pet,
@@ -370,7 +370,7 @@ def populate_vaccination_records():
         # Use get_or_create with unpacked data to ensure no duplicates
         VaccinationRecord.objects.get_or_create(**data)
 
-    print('Vaccination records for Max populated')
+    print('Vaccination records for Test Dog populated')
 
 
 if __name__ == '__main__':
@@ -378,4 +378,4 @@ if __name__ == '__main__':
     create_pet_markings()
     populate_vaccination_records()
     populate_medication_records()
-    create_complete_examination_record_for_max()
+    create_complete_examination_record_for_test_dog()
