@@ -105,7 +105,7 @@ class BaseUserRegisterView(views.CreateView):
 
 class ClinicRegistrationView(BaseUserRegisterView):
     form_class = ClinicRegistrationForm
-    template_name = 'accounts/clinc-register.html'
+    template_name = 'accounts/clinic-register.html'
 
     def get_initial(self):
         return {
