@@ -63,7 +63,6 @@ class QRShareToken(models.Model):
         default=False
     )
 
-    @property
     def is_valid(self):
         return (
                 not self.used and
