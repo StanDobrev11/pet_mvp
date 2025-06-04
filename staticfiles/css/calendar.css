@@ -11,3 +11,41 @@
 .fc .fc-bg-event {
     opacity: 80%;
 }
+
+/* Hides the "All-day" label in list view */
+.fc .fc-list-event-time {
+    display: none !important;
+}
+
+.fc .fc-list-event-graphic {
+    display: none !important;
+}
+
+
+/* MEDICATION EVENTS */
+.fc-event.dimmed-medication {
+    opacity: 1;
+    font-style: italic;
+    font-size: 13px;
+}
+
+.fc-event.urgent-medication {
+    font-weight: bold;
+    background-color: #dc3545 !important;
+    border-color: #b02a37 !important;
+    color: #000 !important;
+}
+
+/* VACCINE EVENTS */
+.fc-event.dimmed-vaccine {
+    opacity: 1;
+    font-style: italic;
+    font-size: 13px;
+}
+
+.fc-event.urgent-vaccine {
+    font-weight: bold;
+    background-color: #ffc107 !important;
+    border-color: #ffcd39 !important;
+    color: #000 !important;
+}

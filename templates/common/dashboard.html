@@ -71,9 +71,11 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const calendarEl = document.getElementById('calendar');
+            const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
             const calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                locale: '{{ LANGUAGE_CODE }}',
+                initialView: isMobile ? 'listWeek' : 'dayGridMonth',
+                locale: getDjangoLanguageFromCookie(),
                 events: '{% url "get-pet-events" %}',
                 height: 'auto',
                 headerToolbar: {
@@ -83,5 +85,12 @@
             });
             calendar.render();
         });
+
+        function getDjangoLanguageFromCookie() {
+            const match = document.cookie.match(/(^| )django_language=([^;]+)/);
+            return match ? decodeURIComponent(match[2]) : 'en'; // fallback to 'en'
+        }
     </script>
+
+
 {% endblock %}

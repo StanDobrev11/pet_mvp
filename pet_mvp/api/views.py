@@ -81,22 +81,58 @@ def get_pet_events(request):
 
     events = []
     for pet in pets:
+        # Vaccination Records
         for v in pet.vaccine_records.all():
-            events.append({
-                "title": f"💉 {pet.name}\n{v.vaccine.name} " + _('Due Date'),
-                "start": v.valid_until.isoformat(),
-                "color": "#28a745",
-            })
+            due_date = v.valid_until
+            days_remaining = (due_date - today.date()).days
 
+            if days_remaining <= 7:
+                # Vaccination due soon
+                events.append({
+                    "title": f"💉 {pet.name} – {v.vaccine.name} ({_('Due Soon')})",
+                    "start": v.valid_until.isoformat(),
+                    "color": "#ffc107",  # orange/yellow
+                    "textColor": "#000",
+                    "borderColor": "#ffcd39",
+                    "allDay": True,
+                    "classNames": ["urgent-vaccine"],
+                })
+            else:
+                # Not urgent
+                events.append({
+                    "title": f"💉 {pet.name} – {v.vaccine.name} ({_('Due Date')})",
+                    "start": v.valid_until.isoformat(),
+                    "color": "#e2e3e5",  # muted gray
+                    "textColor": "#6c757d",  # muted text
+                    "borderColor": "#ced4da",
+                    "allDay": True,
+                    "classNames": ["dimmed-vaccine"],
+                })
+
+        # Medication Records
         for m in pet.medication_records.all():
-            events.append({
-                "title": f"💊 {pet.name} – {m.medication.name} ({_('Due Date')})",
-                "start": m.valid_until.isoformat(),
-                "color": "#17a2b8",
-                "textColor": "red",
-                "borderColor": "#0d6efd",
-                "allDay": True,
-                "display": "background",
-            })
+            due_date = m.valid_until
+            days_remaining = (due_date - today.date()).days
+
+            if days_remaining <= 7:
+                events.append({
+                    "title": f"💊 {pet.name} – {m.medication.name} ({_('Due Soon')})",
+                    "start": m.valid_until.isoformat(),
+                    "color": "#dc3545",  # red
+                    "textColor": "#fff",
+                    "borderColor": "#b02a37",
+                    "allDay": True,
+                    "classNames": ["urgent-medication"],
+                   })
+            else:
+                events.append({
+                    "title": f"💊 {pet.name} – {m.medication.name} ({_('Due Date')})",
+                    "start": m.valid_until.isoformat(),
+                    "color": "#dee2e6",  # light gray-blue
+                    "textColor": "#495057",
+                    "borderColor": "#adb5bd",
+                    "allDay": True,
+                    "classNames": ["dimmed-medication"],
+                  })
 
     return JsonResponse(events, safe=False)
