@@ -3,7 +3,7 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from datetime import timedelta
-
+from django.utils.translation import gettext_lazy as _
 from pet_mvp.drugs.models import Vaccine, Drug
 from pet_mvp.pets.models import Pet
 from pet_mvp.access_codes.models import VetPetAccess
@@ -61,7 +61,7 @@ def get_pet_events(request):
         return JsonResponse({'error': 'Not authorized'}, status=401)
 
     today = timezone.now()
-    one_month_ago = today - timedelta(days=30)
+    two_years_ago = today - timedelta(days=730)
 
     pets = request.user.pets.all()
 
@@ -69,32 +69,33 @@ def get_pet_events(request):
     pets = pets.prefetch_related(
         Prefetch(
             'vaccine_records',
-            queryset=VaccinationRecord.objects.filter(valid_until__gte=one_month_ago).select_related('vaccine')
+            queryset=VaccinationRecord.objects.filter(valid_until__gte=two_years_ago).select_related('vaccine')
         ),
         Prefetch(
             'medication_records',
             queryset=MedicationRecord.objects.filter(
-                created_at__gte=one_month_ago
+                date__gte=two_years_ago
             ).select_related('medication')
         )
     )
 
     events = []
-
     for pet in pets:
         for v in pet.vaccine_records.all():
             events.append({
-                "title": f"💉 {pet.name} – {v.vaccine.name}",
+                "title": f"💉 {pet.name}\n{v.vaccine.name} " + _('Due Date'),
                 "start": v.valid_until.isoformat(),
                 "color": "#28a745",
             })
 
         for m in pet.medication_records.all():
             events.append({
-                "title": f"💊 {pet.name} – {m.medication.name}",
-                "start": m.created_at.date().isoformat(),
-                "end": m.valid_until.isoformat() if m.valid_until else None,
+                "title": f"💊 {pet.name} – {m.medication.name} ({_('Due Date')})",
+                "start": m.valid_until.isoformat(),
                 "color": "#17a2b8",
+                "allDay": True,
+                "display": "background", 
+                "textColor": "rgb(255, 0, 0)"
             })
 
     return JsonResponse(events, safe=False)

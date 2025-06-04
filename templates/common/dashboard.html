@@ -51,9 +51,9 @@
             <a href="{% url 'pet-add' %}" class="btn btn-success">{% trans "Add Pet" %}</a>
             <a href="{% url 'logout' %}" class="btn btn-outline-danger">{% trans "Logout" %}</a>
         </div>
-        <div class="mt-5">
-            <h4 class="mb-3 text-center">{% trans "Upcoming Vaccines & Medications" %}</h4>
-            <div id="calendar"></div>
+        <div class="mt-5 text-center">
+            <h4 class="mb-3">{% trans "Upcoming Vaccines & Medications" %}</h4>
+            <div id="calendar" class="custom-calendar"></div>
         </div>
     </section>
 
@@ -77,10 +77,10 @@
                 events: '{% url "get-pet-events" %}', // Your Django JSON endpoint
                 height: 'auto',
                 headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,listMonth'
-                }
+                    left: 'title',
+                    right: 'prev,next'
+                },
+                eventBackgroundColor: 'red',
             });
             calendar.render();
         });
