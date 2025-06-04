@@ -1245,7 +1245,7 @@ msgid "Continue"
 msgstr "Продължи"
 
 #: .\templates\accounts\access_code_email.html:44
-#: .\templates\accounts\clinc-register.html:44
+#: .\templates\accounts\clinic-register.html:44
 #: .\templates\accounts\login.html:48 .\templates\accounts\register.html:47
 #: .\templates\partials\back_buttons.html:4
 #: .\templates\partials\back_buttons.html:6
@@ -1255,11 +1255,11 @@ msgstr "Продължи"
 msgid "Back"
 msgstr "Назад"
 
-#: .\templates\accounts\clinc-register.html:10
+#: .\templates\accounts\clinic-register.html:10
 msgid "Clinic Registration"
 msgstr "Регистрация на клиника"
 
-#: .\templates\accounts\clinc-register.html:43
+#: .\templates\accounts\clinic-register.html:43
 #: .\templates\accounts\register.html:45 .\templates\base.html:56
 #: .\templates\common\about.html:28 .\templates\common\index.html:106
 #: .\templates\partials\nav_bar.html:33

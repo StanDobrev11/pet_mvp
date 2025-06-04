@@ -233,7 +233,7 @@ class ClinicRegistrationViewTests(TestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'accounts/clinc-register.html')
+        self.assertTemplateUsed(response, 'accounts/clinic-register.html')
         self.assertIsInstance(response.context['form'], ClinicRegistrationForm)
 
         # Email should be pre-filled
