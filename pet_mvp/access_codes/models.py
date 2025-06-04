@@ -63,6 +63,7 @@ class QRShareToken(models.Model):
         default=False
     )
 
+    @property
     def is_valid(self):
         return (
                 not self.used and
@@ -70,4 +71,4 @@ class QRShareToken(models.Model):
         )
 
     def __str__(self):
-        return f'Created at: {self.created_at.strftime("%H%M%S")}, Valid: {self.is_valid()}'
+        return f'Created at: {self.created_at.strftime("%H%M%S")}, Valid: {self.is_valid}'
