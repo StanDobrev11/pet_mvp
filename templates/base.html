@@ -15,112 +15,114 @@
     <title>{% trans "My Pet's Passport" %}</title>
 </head>
 <body class="d-flex flex-column min-vh-100">
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark"
-             style="background-color: #1f8b62">
-            <div class="container">
-                <a class="navbar-brand" href="/">{% trans "My Pet's Passport" %}</a>
-                <button class="navbar-toggler ms-auto"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#navbarNav"
-                        aria-controls="navbarNav"
-                        aria-expanded="false"
-                        aria-label="{% trans 'Toggle navigation' %}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        {% if user.is_authenticated and user.is_owner %}
-                            <li class="nav-item ms-auto">
-                                <a class="nav-link" href="{% url 'dashboard' %}">{% trans "Dashboard" %}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'pet-add' %}">{% trans "Add Pet" %}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'owner-details' pk=user.pk %}">{% trans "Profile" %}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'logout' %}">{% trans "Logout" %}</a>
-                            </li>
-                        {% elif user.is_authenticated and not user.is_owner %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'logout' %}">{% trans "Finish and logout" %}</a>
-                            </li>
-                        {% else %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'login' %}">{% trans "Login" %}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'register' %}">{% trans "Register" %}</a>
-                            </li>
-                        {% endif %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'about' %}">{% trans "About Us" %}</a>
-                        </li>
-                        <!-- Language Switcher -->
-                        <li class="nav-item">
-                            <a class="nav-link language-switcher" href="#" data-language="en">
-                                <img src="{% static 'svgs/uk-flag.svg' %}"
-                                     alt="English"
-                                     width="24"
-                                     height="24">
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link language-switcher" href="#" data-language="bg">
-                                <img src="{% static 'svgs/bg-flag.svg' %}"
-                                     alt="Bulgarian"
-                                     width="24"
-                                     height="24">
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <main class="flex-grow-1 d-flex flex-column justify-content-center">
-        {% block content %}{% endblock %}
-        <div class="pb-5"></div>
-    </main>
-    <footer class="py-4 text-white" style="background-color: #1f8b62;">
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark"
+         style="background-color: #1f8b62">
         <div class="container">
-            <div class="row mt-3">
-                <div class="col-12 text-center">
-                    <p class="small mb-0">&copy; {% now "Y" %} {% trans "My Pet's Passport. All rights reserved." %}</p>
-                </div>
+            <a class="navbar-brand" href="/">{% trans "My Pet's Passport" %}</a>
+            <button class="navbar-toggler ms-auto"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav"
+                    aria-controls="navbarNav"
+                    aria-expanded="false"
+                    aria-label="{% trans 'Toggle navigation' %}">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    {% if user.is_authenticated and user.is_owner %}
+                        <li class="nav-item ms-auto">
+                            <a class="nav-link" href="{% url 'dashboard' %}">{% trans "Dashboard" %}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'pet-add' %}">{% trans "Add Pet" %}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'owner-details' pk=user.pk %}">{% trans "Profile" %}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">{% trans "Logout" %}</a>
+                        </li>
+                    {% elif user.is_authenticated and not user.is_owner %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">{% trans "Finish and logout" %}</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">{% trans "Login" %}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}">{% trans "Register" %}</a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">{% trans "About Us" %}</a>
+                    </li>
+                    <!-- Language Switcher -->
+                    <li class="nav-item">
+                        <a class="nav-link language-switcher" href="#" data-language="en">
+                            <img src="{% static 'svgs/uk-flag.svg' %}"
+                                 alt="English"
+                                 width="24"
+                                 height="24">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link language-switcher" href="#" data-language="bg">
+                            <img src="{% static 'svgs/bg-flag.svg' %}"
+                                 alt="Bulgarian"
+                                 width="24"
+                                 height="24">
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
-    </footer>
-    <!-- CSRF Token for language switcher -->
-    {% csrf_token %}
-    {% if not request.COOKIES.accepted_cookies %}
-        <div id="cookie-notice"
-             class="position-fixed bottom-0 end-0 m-4"
-             style="z-index: 1080">
-            <div class="card shadow border-success" style="min-width: 300px;">
-                <div class="card-body text-center">
-                    <p class="card-text mb-3">
-                        {% trans "We use cookies to ensure you get the best experience on our website." %}
-                        <a href="{% url 'about' %}" class="text-decoration-underline">{% trans "Learn more" %}</a>
-                    </p>
-                    <button id="accept-cookies" class="btn btn-success">{% trans "Accept" %}</button>
-                </div>
+    </nav>
+</header>
+<main class="flex-grow-1 d-flex flex-column justify-content-center">
+    {% block content %}{% endblock %}
+    <div class="pb-5"></div>
+</main>
+<footer class="py-4 text-white" style="background-color: #1f8b62;">
+    <div class="container">
+        <div class="row mt-3">
+            <div class="col-12 text-center">
+                <p class="small mb-0">&copy; {% now "Y" %} {% trans "My Pet's Passport. All rights reserved." %}</p>
             </div>
         </div>
-    {% endif %}
-    <!-- Bootstrap JS Bundle -->
-    <script src={% static 'scripts/bootstrap.bundle.min.js' %}></script>
-    <!-- Language Switcher JS -->
-    <script src="{% static 'scripts/language-switcher.js' %}"></script>
-    <script>
-        document.getElementById('accept-cookies')?.addEventListener('click', function () {
-    const d = new Date();
-    d.setFullYear(d.getFullYear() + 1);
-    document.cookie = "accepted_cookies=true; path=/; expires=" + d.toUTCString() + ";";
-    document.getElementById('cookie-notice').remove();
-});
-    </script>
+    </div>
+</footer>
+<!-- CSRF Token for language switcher -->
+{% csrf_token %}
+{% if not request.COOKIES.accepted_cookies %}
+    <div id="cookie-notice"
+         class="position-fixed bottom-0 end-0 m-4"
+         style="z-index: 1080">
+        <div class="card shadow border-success" style="min-width: 300px;">
+            <div class="card-body text-center">
+                <p class="card-text mb-3">
+                    {% trans "We use cookies to ensure you get the best experience on our website." %}
+                    <a href="{% url 'about' %}" class="text-decoration-underline">{% trans "Learn more" %}</a>
+                </p>
+                <button id="accept-cookies" class="btn btn-success">{% trans "Accept" %}</button>
+            </div>
+        </div>
+    </div>
+{% endif %}
+<script src="{% static 'scripts/index.global.min.js' %}"></script>
+<!-- Bootstrap JS Bundle -->
+<script src={% static 'scripts/bootstrap.bundle.min.js' %}></script>
+<!-- Language Switcher JS -->
+<script src="{% static 'scripts/language-switcher.js' %}"></script>
+<script>
+    document.getElementById('accept-cookies')?.addEventListener('click', function () {
+        const d = new Date();
+        d.setFullYear(d.getFullYear() + 1);
+        document.cookie = "accepted_cookies=true; path=/; expires=" + d.toUTCString() + ";";
+        document.getElementById('cookie-notice').remove();
+    });
+</script>
+
 </body>

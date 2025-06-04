@@ -47,10 +47,13 @@
                 <li class="list-group-item text-muted">{% trans "No pets added yet." %}</li>
             {% endfor %}
         </ul>
-
         <div class="d-flex justify-content-center gap-3">
             <a href="{% url 'pet-add' %}" class="btn btn-success">{% trans "Add Pet" %}</a>
             <a href="{% url 'logout' %}" class="btn btn-outline-danger">{% trans "Logout" %}</a>
+        </div>
+        <div class="mt-5">
+            <h4 class="mb-3 text-center">{% trans "Upcoming Vaccines & Medications" %}</h4>
+            <div id="calendar"></div>
         </div>
     </section>
 
@@ -64,4 +67,22 @@
             {% endfor %}
         </div>
     {% endif %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const calendarEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: '{{ LANGUAGE_CODE }}',
+                events: '{% url "get-pet-events" %}', // Your Django JSON endpoint
+                height: 'auto',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,listMonth'
+                }
+            });
+            calendar.render();
+        });
+    </script>
 {% endblock %}
