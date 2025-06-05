@@ -229,3 +229,28 @@ Replace `'HASHED_PASSWORD_HERE'` with the hash you generated.
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Running Tests
+
+To run the project's test suite, use Django's built-in ``test`` command. The
+``manage.py`` script automatically switches to the test settings when invoked
+with this command, so no additional environment configuration is needed:
+
+```bash
+python manage.py test
+```
+
+The tests use an in-memory SQLite database defined in ``tests/settings.py``.
+
+## Using Docker Compose
+
+You can also run the project using Docker Compose. This will start the Django
+application along with Redis, Celery workers, Celery Beat, Mailhog and Nginx:
+
+```bash
+docker-compose up --build
+```
+
+The site will be available at ``http://localhost:8000`` and Mailhog can be
+accessed at ``http://localhost:8025``. Stop the containers with
+``docker-compose down`` when you are finished.
