@@ -2,57 +2,77 @@ from django.contrib.auth import forms as auth_forms, get_user_model
 from django import forms
 from django.core.validators import validate_email
 from django.utils.translation import gettext as _
+
+from pet_mvp.accounts.models import Clinic, Owner
 from pet_mvp.accounts.validators import normalize_bulgarian_phone
 from pet_mvp.pets.models import Pet
 
 UserModel = get_user_model()
 
-
 class BaseOwnerForm(forms.ModelForm):
+    first_name = forms.CharField(label=_("First name"))
+    last_name = forms.CharField(label=_("Last name"))
+
     class Meta:
         model = UserModel
-        fields = ('email', 'first_name', 'last_name',
-                  'phone_number', 'city', 'country')
+        fields = ('email', 'phone_number', 'city', 'country')
 
     def __init__(self, *args, **kwargs):
+        profile_instance = kwargs.pop('profile_instance', None)
         super().__init__(*args, **kwargs)
 
-        for field_name in self.fields:
-            field = self.fields[field_name]
+        # Add profile fields if instance is provided
+        if profile_instance:
+            self.fields['first_name'].initial = profile_instance.first_name
+            self.fields['last_name'].initial = profile_instance.last_name
 
-            if field_name == 'password1':
-                field.widget.attrs['placeholder'] = _('Enter a password')
-            elif field_name == 'password2':
-                field.widget.attrs['placeholder'] = _('Repeat the password')
-            elif field_name == 'phone_number':
+        for field_name, field in self.fields.items():
+            if field_name == 'phone_number':
                 field.widget.attrs['placeholder'] = _('Phone number (e.g. 0887123456)')
             else:
-                placeholder = self._meta.model._meta.get_field(field_name).verbose_name
+                placeholder = field.label or self._meta.model._meta.get_field(field_name).verbose_name
                 field.widget.attrs['placeholder'] = str(placeholder).capitalize()
 
     def clean_phone_number(self):
         value = self.cleaned_data.get('phone_number')
-        if not value:
-            return
-        return normalize_bulgarian_phone(value)
+        if value:
+            return normalize_bulgarian_phone(value)
+        return value
+
+    def save(self, commit=True):
+        user = super().save(commit)
+        first_name = self.cleaned_data.get('first_name')
+        last_name = self.cleaned_data.get('last_name')
+
+        if hasattr(user, 'owner_profile'):
+            profile = user.owner_profile
+        else:
+            profile = Owner(user=user)
+
+        profile.first_name = first_name
+        profile.last_name = last_name
+        if commit:
+            profile.save()
+
+        return user
 
 
 class OwnerCreateForm(auth_forms.UserCreationForm, BaseOwnerForm):
     class Meta(auth_forms.UserCreationForm.Meta, BaseOwnerForm.Meta):
         model = UserModel
-        fields = ('email', 'first_name', 'last_name',
-                  'phone_number', 'city', 'country')
-
+        fields = ('email', 'phone_number', 'city', 'country', 'first_name', 'last_name')
 
 class OwnerEditForm(BaseOwnerForm):
     pass
 
 
 class ClinicRegistrationForm(auth_forms.UserCreationForm):
+    clinic_name = forms.CharField(label=_("Clinic name"))
+    clinic_address = forms.CharField(label=_("Clinic address"))
+
     class Meta:
         model = UserModel
-        fields = ['email', 'clinic_name', 'clinic_address',
-                  'phone_number', 'city', 'country']
+        fields = ['email', 'phone_number', 'city', 'country', 'clinic_name', 'clinic_address']
 
         widgets = {
             'email': forms.EmailInput(attrs={'readonly': 'readonly'}),
@@ -60,13 +80,11 @@ class ClinicRegistrationForm(auth_forms.UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Ensure is_owner defaults to False on the instance
-        if self.instance:  # If we have a model instance, set is_owner to False here
-            self.instance.is_owner = False
 
-        for field_name in self.fields:
-            field = self.fields[field_name]
+        if self.instance:
+            self.instance.is_owner = False  # enforce clinic flag
 
+        for field_name, field in self.fields.items():
             if field_name == 'password1':
                 field.widget.attrs['placeholder'] = _('Enter a password')
             elif field_name == 'password2':
@@ -74,15 +92,28 @@ class ClinicRegistrationForm(auth_forms.UserCreationForm):
             elif field_name == 'phone_number':
                 field.widget.attrs['placeholder'] = _('Phone number (e.g. 0887123456)')
             else:
-                placeholder = self._meta.model._meta.get_field(field_name).verbose_name
+                placeholder = field.label or self._meta.model._meta.get_field(field_name).verbose_name
                 field.widget.attrs['placeholder'] = str(placeholder).capitalize()
 
     def clean_phone_number(self):
-
         value = self.cleaned_data.get('phone_number')
-        if not value:
-            return
-        return normalize_bulgarian_phone(value)
+        if value:
+            return normalize_bulgarian_phone(value)
+        return value
+
+    def save(self, commit=True):
+        user = super().save(commit=commit)
+        clinic_name = self.cleaned_data.get('clinic_name')
+        clinic_address = self.cleaned_data.get('clinic_address')
+
+        profile, created = Clinic.objects.get_or_create(user=user)
+        profile.clinic_name = clinic_name
+        profile.clinic_address = clinic_address
+        if commit:
+            profile.save()
+
+        return user
+
 
 
 class AccessCodeEmailForm(forms.Form):

@@ -93,8 +93,8 @@ class BaseUserRegisterView(views.CreateView):
 
         password = form.cleaned_data.get('password1')
         user.set_password(password)
-        user.first_name = form.cleaned_data['first_name']
-        user.last_name = form.cleaned_data['last_name']
+        user.owner.first_name = form.cleaned_data['first_name']
+        user.owner.last_name = form.cleaned_data['last_name']
         user.is_active = True
         user.save()
 

@@ -1,19 +1,16 @@
-from django.contrib.auth import models as auth_models
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from pet_mvp.accounts.managers import UserManager
-from pet_mvp.accounts.validators import normalize_bulgarian_phone, phone_number_validator
-from pet_mvp.common.mixins import TimeStampMixin
 
 
-# Create your models here.
-class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
+class AppUser(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     PHONE_NUMBER_LENGTH = 32
-    
+
     LANGUAGE_CHOICES = [
         ('bg', 'BG'),
         ('en', 'EN')
@@ -21,20 +18,19 @@ class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
 
     email = models.EmailField(
         unique=True,
-        error_messages={
-            "unique": _("A user with that email already exists."),
-        },
-        verbose_name=_('Email')
+        error_messages={"unique": _("A user with that email already exists.")},
+        verbose_name=_("Email")
     )
 
     date_joined = models.DateTimeField(
-        default=timezone.now, verbose_name=_("Date joined"))
+        default=timezone.now,
+        verbose_name=_("Date joined")
+    )
 
     is_staff = models.BooleanField(
         default=False,
-        help_text=_(
-            "Designates whether the user can log into this admin site."),
-        verbose_name=_("Staff status"),
+        help_text=_("Designates whether the user can log into this admin site."),
+        verbose_name=_("Staff status")
     )
 
     is_active = models.BooleanField(
@@ -43,115 +39,163 @@ class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
             "Designates whether this user should be treated as active. "
             "Unselect this instead of deleting accounts. "
             "If the user is vet clinic and not active, an email with activation link will be sent "
-            "one valid email address is entered"
+            "once a valid email address is entered."
         ),
-        verbose_name=_("Active"),
+        verbose_name=_("Active")
     )
 
     is_owner = models.BooleanField(
         default=True,
-        verbose_name=_("Owner status"),
+        verbose_name=_("Owner status")
     )
-
-    objects = UserManager()
 
     phone_number = models.CharField(
         max_length=PHONE_NUMBER_LENGTH,
-        verbose_name=_("Phone number"),
         blank=True,
         null=True,
+        verbose_name=_("Phone number")
     )
 
     city = models.CharField(
         max_length=255,
-        verbose_name=_("City"),
         blank=True,
         null=True,
+        verbose_name=_("City")
     )
 
     country = models.CharField(
         max_length=255,
-        verbose_name=_("Country"),
         blank=True,
         null=True,
+        verbose_name=_("Country")
     )
-    
+
     default_language = models.CharField(
         default='bg',
         choices=LANGUAGE_CHOICES,
         verbose_name=_("Default language")
     )
-    
-    # Owner-specific fields
-    first_name = models.CharField(
-        max_length=255, null=True, blank=True, verbose_name=_("First name"))
-    last_name = models.CharField(
-        max_length=255, null=True, blank=True, verbose_name=_("Last name"))
 
-    # Clinic-specific fields
-    clinic_name = models.CharField(
-        max_length=255, null=True, blank=True, verbose_name=_("Clinic name"))
-    clinic_address = models.CharField(
-        max_length=255, null=True, blank=True, verbose_name=_("Clinic address"))
-    is_approved = models.BooleanField(
-        verbose_name=_("Clinic approved"),
+    objects = UserManager()
+
+    first_name = models.CharField(
+        max_length=255,
+        verbose_name=_("First name"),
         null=True,
-        blank=True
+        blank=True,
+    )
+
+    last_name = models.CharField(
+        max_length=255,
+        verbose_name=_("Last name"),
+        null=True,
+        blank=True,
     )
 
 
     def clean(self):
-        """
-        Custom validation for field requirements based on is_owner.
-        """        
-        if self.is_owner:
-            # Validate that first_name and last_name are provided for owners
-            if not self.first_name or not self.last_name:
-                raise ValidationError(
-                    _("Owners must have a first name and last name."))
-            # Ensure clinic-specific fields remain empty for owners
-            if self.clinic_name or self.clinic_address:
-                raise ValidationError(
-                    _("Owners cannot have clinic-related information."))
-        else:
-            # Validate that clinic_name and clinic_address are provided for clinics
-            if not self.clinic_name or not self.clinic_address:
-                raise ValidationError(
-                    _("Clinics must have a name and address."))
-            # Ensure owner-specific fields remain empty for clinics
-            if self.first_name or self.last_name:
-                raise ValidationError(
-                    _("Clinics cannot have owner-related information."))
-            # Ensure is_approved is set to False for clinic creation
-            if self.is_approved is None:
-                self.is_approved = False
-
+        if self.is_owner and hasattr(self, 'clinic_profile'):
+            raise ValidationError(_("An owner cannot have a clinic profile."))
+        if not self.is_owner and hasattr(self, 'owner_profile'):
+            raise ValidationError(_("A clinic cannot have an owner profile."))
         super().clean()
 
     def save(self, *args, **kwargs):
-        # Ensure validation rules are applied before saving
-        self.full_clean()  # This calls the `clean` method
+        self.full_clean()
         super().save(*args, **kwargs)
 
     def get_full_name(self):
-        return f'{self.first_name} {self.last_name}'
-
-
-class Owner(AppUser):
-    class Meta:
-        proxy = True
-        verbose_name = _("Owner")
-        verbose_name_plural = _("Owners")
+        if self.is_owner and hasattr(self, 'owner_profile'):
+            return f"{self.owner_profile.first_name} {self.owner_profile.last_name}"
+        elif not self.is_owner and hasattr(self, 'clinic_profile'):
+            return self.clinic_profile.clinic_name
+        return self.email
 
     def __str__(self):
-        return f'{self.first_name} {self.last_name} {self.email}'
+        return self.get_full_name()
 
+    clinic_name = models.CharField(
+        max_length=255,
+        verbose_name=_("Clinic name"),
+        null=True,
+        blank=True,
+    )
 
-class Clinic(AppUser):
-    class Meta:
-        proxy = True
-        verbose_name = _("Clinic")
-        verbose_name_plural = _("Clinics")
+    clinic_address = models.CharField(
+        max_length=255,
+        verbose_name=_("Clinic address"),
+        null=True,
+        blank=True,
+    )
+
+    is_approved = models.BooleanField(
+        default=False,
+        verbose_name=_("Clinic approved"),
+    )
+
+class Owner(models.Model):
+    user = models.OneToOneField(
+        AppUser,
+        on_delete=models.CASCADE,
+        related_name='owner_profile',
+        limit_choices_to={'is_owner': True},
+        verbose_name=_("User")
+    )
+
+    first_name = models.CharField(
+        max_length=255,
+        verbose_name=_("First name")
+    )
+
+    last_name = models.CharField(
+        max_length=255,
+        verbose_name=_("Last name")
+    )
 
     def __str__(self):
-        return f'{self.clinic_name} {self.email}'
+        return f"{self.first_name} {self.last_name}"
+
+
+class Clinic(models.Model):
+    user = models.OneToOneField(
+        AppUser,
+        on_delete=models.CASCADE,
+        related_name='clinic_profile',
+        limit_choices_to={'is_owner': False},
+        verbose_name=_("User")
+    )
+
+    clinic_name = models.CharField(
+        max_length=255,
+        verbose_name=_("Clinic name")
+    )
+
+    clinic_address = models.CharField(
+        max_length=255,
+        verbose_name=_("Clinic address")
+    )
+
+    is_approved = models.BooleanField(
+        default=False,
+        verbose_name=_("Clinic approved")
+    )
+
+    latitude = models.FloatField(
+        null=True,
+        blank=True,
+        verbose_name=_("Latitude")
+    )
+
+    longitude = models.FloatField(
+        null=True,
+        blank=True,
+        verbose_name=_("Longitude")
+    )
+
+    def clean(self):
+        if not self.clinic_name or not self.clinic_address:
+            raise ValidationError(_("Clinics must have a name and address."))
+        super().clean()
+
+    def __str__(self):
+        return self.clinic_name
