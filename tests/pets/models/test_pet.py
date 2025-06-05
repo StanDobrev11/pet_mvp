@@ -125,9 +125,9 @@ class PetModelTests(TestCase):
             passport_number="AB12345678"  # Same passport number
         )
 
-        # Since we're using an in-memory database for tests, we'll skip this test
-        # In a real database, this would raise an IntegrityError
-        pass
+        from django.db.utils import IntegrityError
+        with self.assertRaises(IntegrityError):
+            duplicate_pet.save()
 
     def test_photo_handling(self):
         """Test that the save method handles photo renaming correctly."""
