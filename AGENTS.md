@@ -6,10 +6,17 @@ This project requires specific setup steps to ensure all dependencies (like Djan
 ## General instruction
 
 1. Use following command to activate the environment before running any tests:
-```bash 
-source .venv/bin/activate
-```
-2. Run test using:
+The virtual environment `.venv` is created in the project root (/workspace). Always activate it before running commands:
+
 ```bash
-python3 manage.py test
+cd /workspace
+source .venv/bin/activate
+cd pet_mvp
+python manage.py test
+```
+If this does not work, try to activate venv in /workspace/pet_mvp
+```bash
+cd workspace/pet_mvp
+source .venv/bin/activate
+python manage.py test
 ```
