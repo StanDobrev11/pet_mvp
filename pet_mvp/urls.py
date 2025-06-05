@@ -21,7 +21,7 @@ from django.urls import path, include
 from django.views.i18n import JavaScriptCatalog
 from django.contrib.sitemaps.views import sitemap
 from pet_mvp.common.sitemaps import StaticViewSitemap
-
+from django.contrib.auth.decorators import login_not_required
 urlpatterns = [
     # For the set_language view
     path('i18n/', include('django.conf.urls.i18n')),
@@ -45,7 +45,7 @@ urlpatterns = [
 sitemaps = {
     'static': StaticViewSitemap,
 }
-from django.contrib.auth.decorators import login_not_required
+
 urlpatterns += [
     path('sitemap.xml', login_not_required(sitemap), {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 ]
