@@ -211,6 +211,52 @@ class Migration(migrations.Migration):
 
 Replace `'HASHED_PASSWORD_HERE'` with the hash you generated.
 
+## Clinic Model and Access Workflow
+
+The application defines two proxy models over the main `AppUser` model: `Owner`
+and `Clinic`. Clinics use the same authentication fields as owners but store
+clinic-specific information such as the clinic name and address. These fields
+are defined in `pet_mvp/accounts/models.py` and a boolean `is_approved` keeps
+track of administrator approval:
+
+```python
+class Clinic(AppUser):
+    class Meta:
+        proxy = True
+        verbose_name = _("Clinic")
+        verbose_name_plural = _("Clinics")
+```
+
+Clinics register through the **Access Code** workflow. When a clinic submits an
+access code and email address, the application checks if that email already
+exists. New clinics are redirected to a registration form where their account is
+created inactive and a request for approval is sent to the pet owners:
+
+```python
+def form_valid(self, form):
+    clinic = form.instance
+    clinic.is_active = False
+    ...
+    send_clinic_owner_access_request_email(...)
+    send_clinic_admin_approval_request_email(...)
+```
+
+Owners approve access via a link that activates the clinic account:
+
+```python
+if not clinic.is_active:
+    clinic.is_active = True
+    clinic.save()
+```
+
+Once approved and active, clinics enter their password to access the pet’s
+records. The **Clinic Dashboard** lists all pets the clinic has temporary access
+to via the `VetPetAccess` model.
+
+Clinics are therefore intended for veterinary practices that manage medical
+records on behalf of pet owners. They can view and add examinations only while a
+valid access grant is active.
+
 ## Project Structure
 
 - `pet_mvp/` - Main Django project directory
