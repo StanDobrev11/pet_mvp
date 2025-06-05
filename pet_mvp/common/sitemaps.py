@@ -1,3 +1,5 @@
+from django.conf import settings
+from types import SimpleNamespace
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
 
@@ -19,3 +21,8 @@ class StaticViewSitemap(Sitemap):
 
     def location(self, item):
         return reverse(item)
+
+    def get_urls(self, site=None, **kwargs):
+        domain = settings.BASE_URL.replace("http://", "").replace("https://", "").rstrip("/")
+        site = SimpleNamespace(domain=domain, name="My Pet Passport")
+        return super().get_urls(site=site, **kwargs)
