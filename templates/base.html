@@ -78,9 +78,6 @@
                             <a class="nav-link" href="{% url 'register' %}">{% trans "Register" %}</a>
                         </li>
                     {% endif %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'about' %}">{% trans "About Us" %}</a>
-                    </li>
                     <!-- Language Switcher -->
                     <li class="nav-item">
                         <a class="nav-link language-switcher" href="#" data-language="en">
@@ -110,8 +107,9 @@
 <footer class="py-4 text-white" style="background-color: #1f8b62;">
     <div class="container">
         <div class="row mt-3">
-            <div class="col-12 text-center">
+            <div class="col-12 d-flex justify-content-between align-items-center flex-wrap text-center text-md-start">
                 <p class="small mb-0">&copy; {% now "Y" %} {% trans "My Pet's Passport. All rights reserved." %}</p>
+                <a class="nav-link text-white p-0" href="{% url 'about' %}">{% trans "About Us" %}</a>
             </div>
         </div>
     </div>
