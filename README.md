@@ -254,3 +254,12 @@ docker-compose up --build
 The site will be available at ``http://localhost:8000`` and Mailhog can be
 accessed at ``http://localhost:8025``. Stop the containers with
 ``docker-compose down`` when you are finished.
+
+## Configuring the Site domain
+
+If your generated ``sitemap.xml`` contains ``example.com`` URLs, update the
+default ``Site`` entry in the Django admin. Navigate to ``/admin/sites/site/1``
+and set the ``domain`` and ``name`` fields to match your real deployment
+domain. This ensures the sitemap links use the correct hostname and avoids
+errors like "This url is not allowed for a Sitemap at this location" during
+sitemap validation.
