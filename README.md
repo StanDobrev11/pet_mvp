@@ -309,3 +309,18 @@ and set the ``domain`` and ``name`` fields to match your real deployment
 domain. This ensures the sitemap links use the correct hostname and avoids
 errors like "This url is not allowed for a Sitemap at this location" during
 sitemap validation.
+
+## Sitemap and robots.txt
+
+The project provides SEO resources for search engines. A dynamic sitemap is available at `/sitemap.xml` and is generated using Django's sitemap framework. The `StaticViewSitemap` in `pet_mvp/common/sitemaps.py` lists important public URLs, and the URL pattern for the sitemap is defined in `pet_mvp/urls.py`.
+
+A plain-text `robots.txt` is served at `/robots.txt` through the `robots_txt` view in `pet_mvp/common/views.py`. It allows all pages to be indexed and points crawlers to the sitemap:
+
+```
+User-Agent: *
+Disallow:
+Sitemap: https://<your-domain>/sitemap.xml
+```
+
+Ensure the domain configured in the Django `Site` model matches your deployment so the generated URLs in these files are correct.
+
