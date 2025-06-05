@@ -4,19 +4,31 @@ This project requires specific setup steps to ensure all dependencies (like Djan
 
 ---
 ## General instruction
+1. Create virtual environment
+``` bash 
+ python3 -m venv .venv
+ ```
 
-1. Use following command to activate the environment before running any tests:
+
+2. Use following command to activate the environment before running any tests:
 The virtual environment `.venv` is created in the project root (/workspace). Always activate it before running commands:
 
 ```bash
-cd /workspace
 source .venv/bin/activate
-cd pet_mvp
-python manage.py test
 ```
-If this does not work, try to activate venv in /workspace/pet_mvp
-```bash
-cd workspace/pet_mvp
-source .venv/bin/activate
-python manage.py test
-```
+
+# Install requirements and prepare Django
+pip install --upgrade pip
+pip install -r requirements.txt
+
+python manage.py migrate
+python manage.py compilemessages
+python load_fixtures.py
+python caller.py
+
+# Start Celery worker and beat
+# (Consider using tmux or separate terminals if needed)
+celery -A pet_mvp worker --loglevel=info &
+celery -A pet_mvp beat --loglevel=info &
+
+## Run tests
