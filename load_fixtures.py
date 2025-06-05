@@ -9,6 +9,7 @@ django.setup()
 
 from pet_mvp.drugs.models import Drug, Vaccine
 from pet_mvp.accounts.models import Clinic, AppUser
+from pet_mvp.common.models import Testimonial
 
 # Maps model label to actual Django model
 MODEL_MAP = {
@@ -16,6 +17,7 @@ MODEL_MAP = {
     "drugs.vaccine": Vaccine,
     "accounts.clinic": Clinic,
     "accounts.user": AppUser,
+    "common.testimonial": Testimonial,
 }
 
 # Paths to your fixtures
@@ -26,6 +28,7 @@ fixture_paths = [
     "pet_mvp/drugs/fixtures/dog_vaccines.json",
     "pet_mvp/drugs/fixtures/cat_treatments.json",
     "pet_mvp/drugs/fixtures/dog_treatments.json",
+    "pet_mvp/common/fixtures/testimonials.json",
 ]
 
 # Main loader

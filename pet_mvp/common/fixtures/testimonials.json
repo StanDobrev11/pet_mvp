@@ -1,0 +1,302 @@
+[
+  {
+    "model": "common.testimonial",
+    "pk": 1,
+    "fields": {
+      "name": "Анна П.",
+      "city": "София",
+      "content": "Приложението ми помогна да следя ваксинациите и лечението на кучето ми. Всичко е много удобно!",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 2,
+    "fields": {
+      "name": "Иван М.",
+      "city": "Пловдив",
+      "content": "Функцията с QR кода е страхотна! Споделям медицинските данни на котката ми с ветеринаря само с едно сканиране.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 3,
+    "fields": {
+      "name": "Мария Г.",
+      "city": "Варна",
+      "content": "Най-доброто приложение за домашни любимци! Вече не забравям кога са следващите ваксини.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 4,
+    "fields": {
+      "name": "Калин Т.",
+      "city": "Русе",
+      "content": "Достъпът до историята на лечението на моята котка е лесен и сигурен. Препоръчвам на всички!",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 5,
+    "fields": {
+      "name": "Елена С.",
+      "city": "Бургас",
+      "content": "Много удобно приложение! Моето куче има хроничен проблем и следя всичко чрез него.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 6,
+    "fields": {
+      "name": "Георги Н.",
+      "city": "Стара Загора",
+      "content": "Обожавам, че мога да давам достъп до досието на домашния любимец директно на ветеринаря!",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 7,
+    "fields": {
+      "name": "Николета Ж.",
+      "city": "Плевен",
+      "content": "Прекрасно изживяване! Интерфейсът е лесен, а функционалността е на високо ниво.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 8,
+    "fields": {
+      "name": "Симеон В.",
+      "city": "Видин",
+      "content": "Сега имам пълен контрол над здравния статус на моето куче. Благодаря за това приложение!",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 9,
+    "fields": {
+      "name": "Теодора Р.",
+      "city": "Благоевград",
+      "content": "Не очаквах, че ще ми е толкова полезно. Всички данни са на едно място.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 10,
+    "fields": {
+      "name": "Христо К.",
+      "city": "Кюстендил",
+      "content": "Използвам приложението от няколко месеца и съм много доволен. Вече няма забравени прегледи!",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 11,
+    "fields": {
+      "name": "Силвия К.",
+      "city": "Пловдив",
+      "content": "Много полезно приложение за хора с повече от един домашен любимец.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 12,
+    "fields": {
+      "name": "Тодор Ц.",
+      "city": "София",
+      "content": "След като открих това приложение, вече не закъснявам за нито една ваксина.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 13,
+    "fields": {
+      "name": "Моника Л.",
+      "city": "Шумен",
+      "content": "Изключително лесно за използване и много удобно за споделяне с ветеринаря.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 14,
+    "fields": {
+      "name": "Венцислав Й.",
+      "city": "Варна",
+      "content": "QR кодът е най-удобната функция, която съм виждал до сега!",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 15,
+    "fields": {
+      "name": "Росица П.",
+      "city": "Плевен",
+      "content": "Препоръчах го на всички приятели с домашни любимци. Прекрасна идея!",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 16,
+    "fields": {
+      "name": "Християн Г.",
+      "city": "Перник",
+      "content": "Интуитивен интерфейс и реална помощ за проследяване на лечението.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 17,
+    "fields": {
+      "name": "Галя Б.",
+      "city": "Стара Загора",
+      "content": "Спестява ми време и притеснение, всичко е на едно място.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 18,
+    "fields": {
+      "name": "Александър З.",
+      "city": "Русе",
+      "content": "Много съм впечатлен. Страхотна поддръжка и полезни функции.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 19,
+    "fields": {
+      "name": "Йоана Т.",
+      "city": "Габрово",
+      "content": "Следя всичко свързано с кучето ми без усилие. Горещо препоръчвам!",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 20,
+    "fields": {
+      "name": "Димитър Ш.",
+      "city": "Казанлък",
+      "content": "Добре направено и мислено приложение. Работи чудесно.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 21,
+    "fields": {
+      "name": "Яна И.",
+      "city": "Сандански",
+      "content": "Удобство, което всеки собственик на животно трябва да има.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 22,
+    "fields": {
+      "name": "Николай Д.",
+      "city": "Ловеч",
+      "content": "Всичко е под ръка — медицинска история, ваксини и напомняния.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 23,
+    "fields": {
+      "name": "Биляна Х.",
+      "city": "Добрич",
+      "content": "Благодарение на приложението следя всичко без да водя бележки.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 24,
+    "fields": {
+      "name": "Стефан К.",
+      "city": "Търговище",
+      "content": "Просто и ефективно. Идеално за всеки стопанин.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 25,
+    "fields": {
+      "name": "Кристина Ж.",
+      "city": "Сливен",
+      "content": "Не мислех, че ще го използвам често, но сега не мога без него.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 26,
+    "fields": {
+      "name": "Петър В.",
+      "city": "Хасково",
+      "content": "Всичко работи перфектно. Изключително доволен съм.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 27,
+    "fields": {
+      "name": "Мирослава П.",
+      "city": "Враца",
+      "content": "Прекрасен начин да бъда отговорен собственик.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 28,
+    "fields": {
+      "name": "Григор Д.",
+      "city": "Пазарджик",
+      "content": "Вече не нося хартиени картони, всичко е дигитално!",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 29,
+    "fields": {
+      "name": "Людмила А.",
+      "city": "Смолян",
+      "content": "Обожавам това приложение — толкова е полезно за мен и моята котка.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "common.testimonial",
+    "pk": 30,
+    "fields": {
+      "name": "Радослав И.",
+      "city": "Кюстендил",
+      "content": "Отлична идея и реализация. Дава ми спокойствие.",
+      "is_active": true
+    }
+  }
+]
