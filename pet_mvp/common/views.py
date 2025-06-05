@@ -4,7 +4,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.utils.translation import gettext as _
 from django.views import generic as views
 from django.utils import timezone
-from pet_mvp.access_codes.models import PetAccessCode
+from django.http import HttpResponse
 from pet_mvp.pets.models import Pet
 
 UserModel = get_user_model()
@@ -80,3 +80,11 @@ class ClinicDashboardView(views.TemplateView):
 
         context['accessible_pets'] = accessible_pets
         return context
+
+def robots_txt(request):
+    lines = [
+        "User-Agent: *",
+        "Disallow:",
+        f"Sitemap: https://{request.get_host()}/sitemap.xml",
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")

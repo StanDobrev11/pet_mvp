@@ -5,6 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="description"
+          content="Free digital pet medical record app. Track vaccines, treatments, and share with your vet using QR codes. Secure and cloud-based.">
+    <meta name="keywords"
+          content="pet medical record, pet passport, pet health app, digital pet passport, free pet health tracker, vet QR code">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="My Pet's Passport">
+
+    <!-- Open Graph for Facebook/link previews -->
+    <meta property="og:title" content="My Pet's Passport">
+    <meta property="og:description"
+          content="Manage your pet’s health online. Free digital records, vaccine tracking, and vet QR access.">
+    <meta property="og:image" content="{% static 'imgs/pets/pet1.jpg' %}">
+    <meta property="og:url" content="https://{{ request.get_host }}/">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="My Pet's Passport">
+    <meta name="twitter:description" content="Digital pet health records & QR vet access. Free & secure.">
+    <meta name="twitter:image" content="{% static 'imgs/pets/pet1.jpg' %}">
+
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- Bootstrap CSS (v5.3) -->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
@@ -12,6 +32,8 @@
     <link rel="shortcut icon"
           href="{% static 'icons/favicon.ico' %}"
           type="image/x-icon">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="{% url 'django.contrib.sitemaps.views.sitemap' %}">
+
     <title>{% trans "My Pet's Passport" %}</title>
 </head>
 <body class="d-flex flex-column min-vh-100">

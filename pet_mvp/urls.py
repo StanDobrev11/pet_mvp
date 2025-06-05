@@ -18,8 +18,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from django.conf.urls.i18n import i18n_patterns
 from django.views.i18n import JavaScriptCatalog
+from django.contrib.sitemaps.views import sitemap
+from pet_mvp.common.sitemaps import StaticViewSitemap
 
 urlpatterns = [
     # For the set_language view
@@ -41,4 +42,13 @@ urlpatterns = [
          ])),
 ]
 
+sitemaps = {
+    'static': StaticViewSitemap,
+}
+from django.contrib.auth.decorators import login_not_required
+urlpatterns += [
+    path('sitemap.xml', login_not_required(sitemap), {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+]
+
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
