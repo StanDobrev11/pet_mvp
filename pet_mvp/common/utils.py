@@ -40,7 +40,7 @@ def resize_image(image_path, output_path, size=(300, 300)):
 
     :param image_path: Path to the input image.
     :param output_path: Path to save the resized image.
-    :param size: Desired size (width, height) tuple. Default is (150, 150).
+    :param size: Desired size (width, height) tuple. Default is (300, 300).
     """
     try:
         with Image.open(image_path) as img:
