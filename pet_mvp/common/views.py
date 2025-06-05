@@ -1,10 +1,14 @@
+import random
+
 from django.contrib.auth import get_user_model
 from django.contrib import messages
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect
 from django.utils.translation import gettext as _
 from django.views import generic as views
 from django.utils import timezone
 from django.http import HttpResponse
+
+from pet_mvp.common.models import Testimonial
 from pet_mvp.pets.models import Pet
 
 UserModel = get_user_model()
@@ -33,6 +37,10 @@ class IndexView(views.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        active_testimonials = Testimonial.objects.filter(is_active=True)
+        testimonials = random.choices(active_testimonials, k=6)
+
+        context['testimonials'] = testimonials
         context['pet_image_numbers'] = range(1, 7)  # generates 1 through 6
 
         return context

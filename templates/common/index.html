@@ -3,127 +3,184 @@
 {% load i18n %}
 
 {% block content %}
-<main class="container mt-5" role="main" aria-label="Landing Page">
-    <h1 class="visually-hidden">Free Digital Pet Medical Records – My Pet's Passport</h1>
+    <main class="container mt-5" role="main" aria-label="Landing Page">
+        <h1 class="visually-hidden">Free Digital Pet Medical Records – My Pet's Passport</h1>
 
-    <section class="text-center mb-4" aria-labelledby="intro-heading">
-        <h2 id="intro-heading">{% trans "My Pet's Medical Records" %}</h2>
-    </section>
+        <section class="text-center mb-4" aria-labelledby="intro-heading">
+            <h2 id="intro-heading">{% trans "My Pet's Medical Records" %}</h2>
+        </section>
 
-    <section class="row" aria-labelledby="features-heading">
-        <div class="col-md-6 mb-4">
-            <article class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h3 class="card-title text-success mb-3 text-center" id="features-heading">
-                        {% trans "Why Join My Pet's Passport?" %}
-                    </h3>
-                    <p class="card-text text-muted mb-4">
-                        {% trans "Experience seamless pet care management with features designed to keep your furry friends healthy and happy." %}
-                    </p>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex align-items-start">
+        <section class="row" aria-labelledby="features-heading">
+            <div class="col-md-6 mb-4">
+                <article class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h3 class="card-title text-success mb-3 text-center" id="features-heading">
+                            {% trans "Why Join My Pet's Passport?" %}
+                        </h3>
+                        <p class="card-text text-muted mb-4">
+                            {% trans "Experience seamless pet care management with features designed to keep your furry friends healthy and happy." %}
+                        </p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex align-items-start">
                             <span class="me-3 text-success">
                                 <i class="bi bi-calendar-check-fill fs-4" aria-hidden="true"></i>
                             </span>
-                            <div>
-                                <strong>{% trans "Vaccination & Medication Tracking" %}</strong><br>
-                                <small class="text-muted">{% trans "Stay updated with timely reminders for your pet's health needs." %}</small>
-                            </div>
-                        </li>
-                        <li class="list-group-item d-flex align-items-start">
+                                <div>
+                                    <strong>{% trans "Vaccination & Medication Tracking" %}</strong><br>
+                                    <small class="text-muted">{% trans "Stay updated with timely reminders for your pet's health needs." %}</small>
+                                </div>
+                            </li>
+                            <li class="list-group-item d-flex align-items-start">
                             <span class="me-3 text-success">
                                 <i class="bi bi-cloud-upload-fill fs-4" aria-hidden="true"></i>
                             </span>
-                            <div>
-                                <strong>{% trans "Secure Cloud-Based Records" %}</strong><br>
-                                <small class="text-muted">{% trans "Access your pet's medical history anytime, anywhere." %}</small>
-                            </div>
-                        </li>
-                        <li class="list-group-item d-flex align-items-start">
+                                <div>
+                                    <strong>{% trans "Secure Cloud-Based Records" %}</strong><br>
+                                    <small class="text-muted">{% trans "Access your pet's medical history anytime, anywhere." %}</small>
+                                </div>
+                            </li>
+                            <li class="list-group-item d-flex align-items-start">
                             <span class="me-3 text-success">
                                 <i class="bi bi-share-fill fs-4" aria-hidden="true"></i>
                             </span>
-                            <div>
-                                <strong>{% trans "Shared Pet Management" %}</strong><br>
-                                <small class="text-muted">{% trans "Collaborate with co-owners or family members to manage your pet's care." %}</small>
-                            </div>
-                        </li>
-                        <li class="list-group-item d-flex align-items-start">
+                                <div>
+                                    <strong>{% trans "Shared Pet Management" %}</strong><br>
+                                    <small class="text-muted">{% trans "Collaborate with co-owners or family members to manage your pet's care." %}</small>
+                                </div>
+                            </li>
+                            <li class="list-group-item d-flex align-items-start">
                             <span class="me-3 text-success">
                                 <i class="bi bi-envelope-fill fs-4" aria-hidden="true"></i>
                             </span>
-                            <div>
-                                <strong>{% trans "Clinic Communication" %}</strong><br>
-                                <small class="text-muted">{% trans "Receive notifications and updates directly from your veterinary clinic." %}</small>
-                            </div>
-                        </li>
-                        <li class="list-group-item d-flex align-items-start">
+                                <div>
+                                    <strong>{% trans "Clinic Communication" %}</strong><br>
+                                    <small class="text-muted">{% trans "Receive notifications and updates directly from your veterinary clinic." %}</small>
+                                </div>
+                            </li>
+                            <li class="list-group-item d-flex align-items-start">
                             <span class="me-3 text-success">
                                 <i class="bi bi-qr-code-scan fs-4" aria-hidden="true"></i>
                             </span>
-                            <div>
-                                <strong>{% trans "Quick Access via QR Codes" %}</strong><br>
-                                <small class="text-muted">{% trans "Easily share your pet's medical records with vets using QR codes." %}</small>
-                            </div>
-                        </li>
-                        <li class="list-group-item d-flex align-items-start">
+                                <div>
+                                    <strong>{% trans "Quick Access via QR Codes" %}</strong><br>
+                                    <small class="text-muted">{% trans "Easily share your pet's medical records with vets using QR codes." %}</small>
+                                </div>
+                            </li>
+                            <li class="list-group-item d-flex align-items-start">
                             <span class="me-3 text-success">
                                 <i class="bi bi-geo-alt-fill fs-4" aria-hidden="true"></i>
                             </span>
-                            <div>
-                                <strong>{% trans "Find Nearby Clinics" %}</strong><br>
-                                <small class="text-muted">{% trans "Locate and book appointments with top-rated clinics near you." %}</small>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </article>
-        </div>
+                                <div>
+                                    <strong>{% trans "Find Nearby Clinics" %}</strong><br>
+                                    <small class="text-muted">{% trans "Locate and book appointments with top-rated clinics near you." %}</small>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </article>
+            </div>
 
-        <div class="col-md-6 d-flex flex-column align-items-center justify-content-center">
-            <div class="pet-slider-wrapper mb-4 rounded overflow-hidden" style="height: 300px; width: 100%;">
-                <div id="pet-slider" class="mb-4 position-relative rounded overflow-hidden" style="height: 300px;">
-                    <img src="{% static 'imgs/pets/pet1.jpg' %}" alt="Golden Retriever with digital passport" class="slider-image position-absolute w-100 h-100 object-fit-cover rounded" style="opacity: 1; z-index: 2; transition: opacity 1s;">
-                    <img src="{% static 'imgs/pets/pet2.jpg' %}" alt="Vet scanning QR code on pet's tag" class="slider-image position-absolute w-100 h-100 object-fit-cover rounded" style="opacity: 0; z-index: 1; transition: opacity 1s;">
-                    <img src="{% static 'imgs/pets/pet3.jpg' %}" alt="Owner checking pet vaccine reminders" class="slider-image position-absolute w-100 h-100 object-fit-cover rounded" style="opacity: 0; z-index: 1; transition: opacity 1s;">
-                    <img src="{% static 'imgs/pets/pet4.jpg' %}" alt="Healthy cat in clinic with digital profile" class="slider-image position-absolute w-100 h-100 object-fit-cover rounded" style="opacity: 0; z-index: 1; transition: opacity 1s;">
-                    <img src="{% static 'imgs/pets/pet5.jpg' %}" alt="Vet entering pet data online" class="slider-image position-absolute w-100 h-100 object-fit-cover rounded" style="opacity: 0; z-index: 1; transition: opacity 1s;">
-                    <img src="{% static 'imgs/pets/pet6.jpg' %}" alt="Puppy with medical record QR tag" class="slider-image position-absolute w-100 h-100 object-fit-cover rounded" style="opacity: 0; z-index: 1; transition: opacity 1s;">
+            <div class="col-md-6 d-flex flex-column align-items-center justify-content-center">
+                <div class="pet-slider-wrapper mb-4 rounded overflow-hidden" style="height: 300px; width: 100%;">
+                    <div id="pet-slider" class="mb-4 position-relative rounded overflow-hidden" style="height: 300px;">
+                        <img src="{% static 'imgs/pets/pet1.jpg' %}" alt="Golden Retriever with digital passport"
+                             class="slider-image position-absolute w-100 h-100 object-fit-cover rounded"
+                             style="opacity: 1; z-index: 2; transition: opacity 1s;">
+                        <img src="{% static 'imgs/pets/pet2.jpg' %}" alt="Vet scanning QR code on pet's tag"
+                             class="slider-image position-absolute w-100 h-100 object-fit-cover rounded"
+                             style="opacity: 0; z-index: 1; transition: opacity 1s;">
+                        <img src="{% static 'imgs/pets/pet3.jpg' %}" alt="Owner checking pet vaccine reminders"
+                             class="slider-image position-absolute w-100 h-100 object-fit-cover rounded"
+                             style="opacity: 0; z-index: 1; transition: opacity 1s;">
+                        <img src="{% static 'imgs/pets/pet4.jpg' %}" alt="Healthy cat in clinic with digital profile"
+                             class="slider-image position-absolute w-100 h-100 object-fit-cover rounded"
+                             style="opacity: 0; z-index: 1; transition: opacity 1s;">
+                        <img src="{% static 'imgs/pets/pet5.jpg' %}" alt="Vet entering pet data online"
+                             class="slider-image position-absolute w-100 h-100 object-fit-cover rounded"
+                             style="opacity: 0; z-index: 1; transition: opacity 1s;">
+                        <img src="{% static 'imgs/pets/pet6.jpg' %}" alt="Puppy with medical record QR tag"
+                             class="slider-image position-absolute w-100 h-100 object-fit-cover rounded"
+                             style="opacity: 0; z-index: 1; transition: opacity 1s;">
+                    </div>
+                </div>
+                <nav class="d-grid gap-3 w-100" aria-label="Primary Call to Actions">
+                    <a href="{% url 'login' %}" class="btn btn-primary btn-lg">{% trans "Login" %}</a>
+                    <a href="{% url 'register' %}" class="btn btn-secondary btn-lg">{% trans "Register" %}</a>
+                    {% include 'partials/social_login.html' %}
+                    <a href="{% url 'clinic-login' %}"
+                       class="btn btn-outline-secondary btn-lg">{% trans "Veterinarian Access" %}</a>
+                </nav>
+            </div>
+        </section>
+        <section class="mt-5" aria-labelledby="testimonial-heading">
+            <div class="text-center mb-2">
+                <h2 class="mb-1" id="testimonial-heading">{% trans "What Our Users Say" %}</h2>
+                <p class="text-muted mb-1">{% trans "Real feedback from pet owners using My Pet’s Passport" %}</p>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-6 d-flex justify-content-center">
+                    <div class="testimonial-rotator w-100 d-flex justify-content-center align-items-start"
+                         style="min-height: 180px;">
+                        {% for t in testimonials %}
+                            <div class="testimonial-item d-none w-100">
+                                <div class="card shadow-sm text-center">
+                                    <div class="card-body py-3 px-4">
+                                        <blockquote class="blockquote mb-0">
+                                            <p class="mb-2">{{ t.content }}</p>
+                                            <footer class="blockquote-footer mt-2">{{ t.name }}, {{ t.city }}</footer>
+                                        </blockquote>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
-            <nav class="d-grid gap-3 w-100" aria-label="Primary Call to Actions">
-                <a href="{% url 'login' %}" class="btn btn-primary btn-lg">{% trans "Login" %}</a>
-                <a href="{% url 'register' %}" class="btn btn-secondary btn-lg">{% trans "Register" %}</a>
-                {% include 'partials/social_login.html' %}
-                <a href="{% url 'clinic-login' %}" class="btn btn-outline-secondary btn-lg">{% trans "Veterinarian Access" %}</a>
-            </nav>
-        </div>
-    </section>
-</main>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const slider = document.getElementById('pet-slider');
-        const images = slider?.querySelectorAll('.slider-image');
+        </section>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            petSlider()
+            testimonialSlider()
+        });
 
-        function isVisible(el) {
-            return !!(el && el.offsetParent !== null);
+        function petSlider() {
+            const slider = document.getElementById('pet-slider');
+            const images = slider?.querySelectorAll('.slider-image');
+
+            function isVisible(el) {
+                return !!(el && el.offsetParent !== null);
+            }
+
+            if (slider && images.length > 1 && isVisible(slider)) {
+                let current = 0;
+                setInterval(() => {
+                    if (!isVisible(slider)) return;
+                    images[current].style.opacity = 0;
+                    images[current].style.zIndex = 1;
+                    let next;
+                    do {
+                        next = Math.floor(Math.random() * images.length);
+                    } while (next === current);
+                    images[next].style.opacity = 1;
+                    images[next].style.zIndex = 2;
+                    current = next;
+                }, 5000);
+            }
         }
 
-        if (slider && images.length > 1 && isVisible(slider)) {
-            let current = 0;
+        function testimonialSlider() {
+            const items = document.querySelectorAll('.testimonial-item');
+            if (!items.length) return;
+
+            let index = 0;
+            items[0].classList.remove('d-none');
+
             setInterval(() => {
-                if (!isVisible(slider)) return;
-                images[current].style.opacity = 0;
-                images[current].style.zIndex = 1;
-                let next;
-                do {
-                    next = Math.floor(Math.random() * images.length);
-                } while (next === current);
-                images[next].style.opacity = 1;
-                images[next].style.zIndex = 2;
-                current = next;
-            }, 5000);
+                items[index].classList.add('d-none');
+                index = (index + 1) % items.length;
+                items[index].classList.remove('d-none');
+            }, 5000); // change every 5 seconds
         }
-    });
-</script>
+    </script>
 {% endblock %}

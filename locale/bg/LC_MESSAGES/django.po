@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-04 21:38+0000\n"
+"POT-Creation-Date: 2025-06-05 17:49+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -279,7 +279,7 @@ msgstr "Скоро изтича"
 msgid "Due Date"
 msgstr "Крайна дата"
 
-#: .\pet_mvp\common\views.py:46 .\pet_mvp\common\views.py:66
+#: .\pet_mvp\common\views.py:54 .\pet_mvp\common\views.py:74
 msgid "You do not have permission to access this page."
 msgstr "Нямате разрешение за достъп до тази страница."
 
@@ -1198,11 +1198,11 @@ msgstr "Формулярът за фекален тест съдържа гре�
 msgid "Examination data saved successfully!"
 msgstr "Данните от прегледа бяха успешно запазени!"
 
-#: .\pet_mvp\settings.py:143 .\templates\partials\nav_bar.html:16
+#: .\pet_mvp\settings.py:144 .\templates\partials\nav_bar.html:16
 msgid "English"
 msgstr "Английски"
 
-#: .\pet_mvp\settings.py:144 .\templates\partials\nav_bar.html:19
+#: .\pet_mvp\settings.py:145 .\templates\partials\nav_bar.html:19
 msgid "Bulgarian"
 msgstr "Български"
 
@@ -1247,7 +1247,7 @@ msgstr "Продължи"
 #: .\templates\accounts\access_code_email.html:44
 #: .\templates\accounts\clinic-register.html:44
 #: .\templates\accounts\login.html:48 .\templates\accounts\register.html:47
-#: .\templates\partials\back_buttons.html:4
+#: .\templates\common\about.html:29 .\templates\partials\back_buttons.html:4
 #: .\templates\partials\back_buttons.html:6
 #: .\templates\partials\back_buttons.html:8
 #: .\templates\partials\back_buttons.html:10
@@ -1260,8 +1260,8 @@ msgid "Clinic Registration"
 msgstr "Регистрация на клиника"
 
 #: .\templates\accounts\clinic-register.html:43
-#: .\templates\accounts\register.html:45 .\templates\base.html:56
-#: .\templates\common\about.html:28 .\templates\common\index.html:106
+#: .\templates\accounts\register.html:45 .\templates\base.html:78
+#: .\templates\common\about.html:28 .\templates\common\index.html:108
 #: .\templates\partials\nav_bar.html:33
 msgid "Register"
 msgstr "Регистрация"
@@ -1472,61 +1472,61 @@ msgstr "Всички полета са задължителни"
 msgid "Login instead?"
 msgstr "Вход вместо това?"
 
-#: .\templates\base.html:15 .\templates\base.html:22
+#: .\templates\base.html:37 .\templates\base.html:44
 msgid "My Pet's Passport"
 msgstr "Паспортът на моя домашен любимец"
 
-#: .\templates\base.html:29
+#: .\templates\base.html:51
 msgid "Toggle navigation"
 msgstr "Превключване на навигацията"
 
-#: .\templates\base.html:36 .\templates\partials\nav_bar.html:23
+#: .\templates\base.html:58 .\templates\partials\nav_bar.html:23
 msgid "Dashboard"
 msgstr "Табло"
 
-#: .\templates\base.html:39 .\templates\common\clinic_dashboard.html:23
+#: .\templates\base.html:61 .\templates\common\clinic_dashboard.html:23
 #: .\templates\common\dashboard.html:51
 msgid "Add Pet"
 msgstr "Добави домашен любимец"
 
-#: .\templates\base.html:42 .\templates\partials\nav_bar.html:26
+#: .\templates\base.html:64 .\templates\partials\nav_bar.html:26
 #: .\templates\partials\nav_bar.html:29
 msgid "Profile"
 msgstr "Профил"
 
-#: .\templates\base.html:45 .\templates\common\dashboard.html:52
+#: .\templates\base.html:67 .\templates\common\dashboard.html:52
 #: .\templates\partials\nav_bar.html:27 .\templates\partials\nav_bar.html:30
 msgid "Logout"
 msgstr "Изход"
 
-#: .\templates\base.html:49
+#: .\templates\base.html:71
 msgid "Finish and logout"
 msgstr "Завърши и излез"
 
-#: .\templates\base.html:53 .\templates\common\index.html:105
+#: .\templates\base.html:75 .\templates\common\index.html:107
 #: .\templates\partials\nav_bar.html:32
 msgid "Login"
 msgstr "Вход"
 
-#: .\templates\base.html:60 .\templates\common\about.html:8
+#: .\templates\base.html:82 .\templates\common\about.html:8
 msgid "About Us"
 msgstr "За нас"
 
-#: .\templates\base.html:92
+#: .\templates\base.html:114
 msgid "My Pet's Passport. All rights reserved."
 msgstr "Паспортът на моя домашен любимец. Всички права запазени."
 
-#: .\templates\base.html:106
+#: .\templates\base.html:128
 msgid "We use cookies to ensure you get the best experience on our website."
 msgstr ""
 "Използваме бисквитки, за да ви осигурим най-доброто изживяване на нашия "
 "уебсайт."
 
-#: .\templates\base.html:107
+#: .\templates\base.html:129
 msgid "Learn more"
 msgstr "Научете повече"
 
-#: .\templates\base.html:109
+#: .\templates\base.html:131
 msgid "Accept"
 msgstr "Приеми"
 
@@ -1574,27 +1574,27 @@ msgstr ""
 "собствениците на домашни любимци да ви намират лесно и да записват прегледи "
 "онлайн."
 
-#: .\templates\common\about.html:33
+#: .\templates\common\about.html:34
 msgid "Privacy & Cookies Policy"
 msgstr "Политика за поверителност и бисквитки"
 
-#: .\templates\common\about.html:34
+#: .\templates\common\about.html:35
 msgid ""
 "We respect your privacy and are committed to protecting your personal data."
 msgstr ""
 "Уважаваме вашата поверителност и се ангажираме да защитаваме личните ви "
 "данни."
 
-#: .\templates\common\about.html:35
+#: .\templates\common\about.html:36
 msgid "Cookies We Use"
 msgstr "Бисквитки, които използваме"
 
-#: .\templates\common\about.html:39
+#: .\templates\common\about.html:40
 msgid "Stores your consent to use cookies. It expires after 1 year."
 msgstr ""
 "Съхранява вашето съгласие за използване на бисквитки. Изтича след 1 година."
 
-#: .\templates\common\about.html:43
+#: .\templates\common\about.html:44
 msgid ""
 "A security cookie used to protect against cross-site request forgery (CSRF) "
 "attacks. It is essential and does not contain personal data."
@@ -1602,7 +1602,7 @@ msgstr ""
 "Защитна бисквитка, използвана за защита от атаки чрез фалшифициране на "
 "заявки (CSRF). Тя е съществена и не съдържа лични данни."
 
-#: .\templates\common\about.html:47
+#: .\templates\common\about.html:48
 msgid ""
 "Stores your language preference so the website displays content in your "
 "chosen language."
@@ -1610,11 +1610,11 @@ msgstr ""
 "Съхранява вашите езикови предпочитания, така че уебсайтът да показва "
 "съдържание на избрания от вас език."
 
-#: .\templates\common\about.html:50
+#: .\templates\common\about.html:51
 msgid "How We Use Your Data"
 msgstr "Как използваме вашите данни"
 
-#: .\templates\common\about.html:52
+#: .\templates\common\about.html:53
 msgid ""
 "We do not share your data with third parties. Any information collected is "
 "solely for the operation of the platform, such as managing login sessions, "
@@ -1624,11 +1624,11 @@ msgstr ""
 "използва само за функционирането на платформата, като управление на сесии, "
 "езикови предпочитания и сигурност."
 
-#: .\templates\common\about.html:54
+#: .\templates\common\about.html:55
 msgid "Managing Cookies"
 msgstr "Управление на бисквитки"
 
-#: .\templates\common\about.html:56
+#: .\templates\common\about.html:57
 msgid ""
 "You can manage or delete cookies through your browser settings. Please note "
 "that disabling essential cookies may affect website functionality."
@@ -1637,11 +1637,11 @@ msgstr ""
 "браузър. Имайте предвид, че деактивирането на основни бисквитки може да "
 "повлияе на функционалността на сайта."
 
-#: .\templates\common\about.html:58
+#: .\templates\common\about.html:59
 msgid "Contact"
 msgstr "Контакт"
 
-#: .\templates\common\about.html:60
+#: .\templates\common\about.html:61
 msgid "For questions about privacy or data protection, contact us at"
 msgstr ""
 "При въпроси относно поверителността или защитата на данните, свържете се с "
@@ -1743,15 +1743,15 @@ msgstr "Все още няма добавени домашни любимци."
 msgid "Upcoming Vaccines & Medications"
 msgstr "Предстоящи ваксини и лекарства"
 
-#: .\templates\common\index.html:8
+#: .\templates\common\index.html:10
 msgid "My Pet's Medical Records"
 msgstr "Медицински досиета на моя любимец"
 
-#: .\templates\common\index.html:15
+#: .\templates\common\index.html:18
 msgid "Why Join My Pet's Passport?"
 msgstr "Защо да се присъедините към Паспорт на моя домашен любимец?"
 
-#: .\templates\common\index.html:17
+#: .\templates\common\index.html:21
 msgid ""
 "Experience seamless pet care management with features designed to keep your "
 "furry friends healthy and happy."
@@ -1759,65 +1759,75 @@ msgstr ""
 "Изживейте безпроблемно управление на грижите за домашни любимци с функции, "
 "създадени да поддържат вашите космати приятели здрави и щастливи."
 
-#: .\templates\common\index.html:25
+#: .\templates\common\index.html:29
 msgid "Vaccination & Medication Tracking"
 msgstr "Проследяване на ваксини и лекарства"
 
-#: .\templates\common\index.html:26
+#: .\templates\common\index.html:30
 msgid "Stay updated with timely reminders for your pet's health needs."
 msgstr ""
 "Бъдете информирани с навременни напомняния за здравословните нужди на вашия "
 "домашен любимец."
 
-#: .\templates\common\index.html:34
+#: .\templates\common\index.html:38
 msgid "Secure Cloud-Based Records"
 msgstr "Сигурни записи в облака"
 
-#: .\templates\common\index.html:35
+#: .\templates\common\index.html:39
 msgid "Access your pet's medical history anytime, anywhere."
 msgstr ""
 "Достъп до медицинската история на вашия домашен любимец по всяко време и от "
 "всяко място."
 
-#: .\templates\common\index.html:43
+#: .\templates\common\index.html:47
 msgid "Shared Pet Management"
 msgstr "Споделено управление на домашен любимец"
 
-#: .\templates\common\index.html:44
+#: .\templates\common\index.html:48
 msgid "Collaborate with co-owners or family members to manage your pet's care."
 msgstr ""
 "Сътрудничете си със съсобственици или членове на семейството за управление "
 "на грижите за домашния любимец."
 
-#: .\templates\common\index.html:52
+#: .\templates\common\index.html:56
 msgid "Clinic Communication"
 msgstr "Комуникация с клиниката"
 
-#: .\templates\common\index.html:53
+#: .\templates\common\index.html:57
 msgid "Receive notifications and updates directly from your veterinary clinic."
 msgstr "Получавайте известия и актуализации директно от ветеринарната клиника."
 
-#: .\templates\common\index.html:61
+#: .\templates\common\index.html:65
 msgid "Quick Access via QR Codes"
 msgstr "Бърз достъп чрез QR кодове"
 
-#: .\templates\common\index.html:62
+#: .\templates\common\index.html:66
 msgid "Easily share your pet's medical records with vets using QR codes."
 msgstr ""
 "Споделяйте лесно медицинските записи на вашия домашен любимец с ветеринари "
 "чрез QR кодове."
 
-#: .\templates\common\index.html:70
+#: .\templates\common\index.html:74
 msgid "Find Nearby Clinics"
 msgstr "Намерете близки клиники"
 
-#: .\templates\common\index.html:71
+#: .\templates\common\index.html:75
 msgid "Locate and book appointments with top-rated clinics near you."
 msgstr "Намерете и запишете час в най-добрите клиники близо до вас."
 
-#: .\templates\common\index.html:109
+#: .\templates\common\index.html:111
 msgid "Veterinarian Access"
 msgstr "Достъп за ветеринарен лекар"
+
+#: .\templates\common\index.html:117
+msgid "What Our Users Say"
+msgstr "Какво казват нашите потребители"
+
+#: .\templates\common\index.html:118
+msgid "Real feedback from pet owners using My Pet’s Passport"
+msgstr ""
+"Истински отзиви от собственици на домашни любимци, използващи Паспортът на "
+"моя домашен любимец"
 
 #: .\templates\emails\clinic_activation_email.html:6
 #: .\templates\emails\clinic_activation_email.html:59
