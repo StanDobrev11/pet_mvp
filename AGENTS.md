@@ -1,6 +1,9 @@
 # 🧠 Codex Agent Instructions: Environment Activation & Commands
 
 This project requires specific setup steps to ensure all dependencies (like Django, Redis, Celery) are available and working in Codex or any containerized environment.
+Track how the environment is created, how the .venv and where is created, activate it and only then execute python commands.
+
+# FOLLOW THE BELOW INSTRUCTION IN CASE THAT VENV CANNOT BE ACTIVATED
 
 ---
 ## General instruction

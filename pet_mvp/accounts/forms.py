@@ -9,6 +9,7 @@ from pet_mvp.pets.models import Pet
 
 UserModel = get_user_model()
 
+
 class BaseOwnerForm(forms.ModelForm):
     first_name = forms.CharField(label=_("First name"))
     last_name = forms.CharField(label=_("Last name"))
@@ -18,20 +19,17 @@ class BaseOwnerForm(forms.ModelForm):
         fields = ('email', 'phone_number', 'city', 'country')
 
     def __init__(self, *args, **kwargs):
-        profile_instance = kwargs.pop('profile_instance', None)
+        if 'instance' in kwargs and kwargs['instance']:
+            instance = kwargs['instance']
+            profile_instance = getattr(instance, 'owner', None)
+        else:
+            profile_instance = kwargs.pop('profile_instance', None)
+
         super().__init__(*args, **kwargs)
 
-        # Add profile fields if instance is provided
         if profile_instance:
             self.fields['first_name'].initial = profile_instance.first_name
             self.fields['last_name'].initial = profile_instance.last_name
-
-        for field_name, field in self.fields.items():
-            if field_name == 'phone_number':
-                field.widget.attrs['placeholder'] = _('Phone number (e.g. 0887123456)')
-            else:
-                placeholder = field.label or self._meta.model._meta.get_field(field_name).verbose_name
-                field.widget.attrs['placeholder'] = str(placeholder).capitalize()
 
     def clean_phone_number(self):
         value = self.cleaned_data.get('phone_number')
@@ -61,6 +59,7 @@ class OwnerCreateForm(auth_forms.UserCreationForm, BaseOwnerForm):
     class Meta(auth_forms.UserCreationForm.Meta, BaseOwnerForm.Meta):
         model = UserModel
         fields = ('email', 'phone_number', 'city', 'country', 'first_name', 'last_name')
+
 
 class OwnerEditForm(BaseOwnerForm):
     pass
@@ -113,7 +112,6 @@ class ClinicRegistrationForm(auth_forms.UserCreationForm):
             profile.save()
 
         return user
-
 
 
 class AccessCodeEmailForm(forms.Form):
