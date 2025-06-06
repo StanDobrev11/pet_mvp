@@ -56,7 +56,7 @@ def create_pet_markings():
 
 def create_complete_examination_record_for_test_dog():
     dog_pet = Pet.objects.get(name_en='Test Dog')
-    clinic = Clinic.objects.get(email='dianavet@pet-mvp.com')
+    clinic = UserModel.objects.get(email='dianavet@pet-mvp.com')
     try:
         blood_test = BloodTest.objects.create(
             result="WBC and RBC levels normal, low platelets detected",

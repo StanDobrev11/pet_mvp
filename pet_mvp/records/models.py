@@ -2,12 +2,14 @@ import datetime
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth import get_user_model
 
-from pet_mvp.accounts.models import Clinic
 from pet_mvp.common.mixins import TimeStampMixin
 from pet_mvp.drugs.models import Vaccine, BloodTest, UrineTest, FecalTest, Drug
 from pet_mvp.pets.models import Pet
 
+
+UserModel = get_user_model()
 
 class VaccinationRecord(TimeStampMixin):
 
@@ -141,7 +143,7 @@ class MedicalExaminationRecord(TimeStampMixin):
     )
 
     clinic = models.ForeignKey(
-        to=Clinic,
+        to=UserModel,
         related_name='clinic_records',
         on_delete=models.CASCADE,
         verbose_name=_('Clinic'),

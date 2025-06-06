@@ -15,7 +15,7 @@ class PetModelTests(TestCase):
 
     def setUp(self):
         """Set up test data."""
-        self.owner = UserModel.objects.create(
+        self.owner = UserModel.objects.create_owner(
             email="owner@example.com",
             password="testpass123",
             first_name="Test",

@@ -134,9 +134,10 @@ class BaseUserRegisterViewTests(TestCase):
 
         # User should be reactivated
         reactivated_user = UserModel.objects.get(email='deleted@example.com')
+        reactivated_user.owner.refresh_from_db()
         self.assertTrue(reactivated_user.is_active)
-        self.assertEqual(reactivated_user.first_name, 'Reactivated')
-        self.assertEqual(reactivated_user.last_name, 'User')
+        self.assertEqual(reactivated_user.owner.first_name, 'Reactivated')
+        self.assertEqual(reactivated_user.owner.last_name, 'User')
 
 
 class RegisterOwnerViewTests(TestCase):

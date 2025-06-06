@@ -37,10 +37,12 @@ class IndexView(views.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        active_testimonials = Testimonial.objects.filter(is_active=True)
-        testimonials = random.choices(active_testimonials, k=6)
 
-        context['testimonials'] = testimonials
+        active_testimonials = Testimonial.objects.filter(is_active=True)
+        total = active_testimonials.count()
+        count = min(total, 6)
+
+        context["testimonials"] = random.sample(list(active_testimonials), count)
         context['pet_image_numbers'] = range(1, 7)  # generates 1 through 6
 
         return context

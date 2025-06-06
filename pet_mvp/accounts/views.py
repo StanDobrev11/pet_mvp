@@ -93,8 +93,8 @@ class BaseUserRegisterView(views.CreateView):
 
         password = form.cleaned_data.get('password1')
         user.set_password(password)
-        user.first_name = form.cleaned_data['first_name']
-        user.last_name = form.cleaned_data['last_name']
+        user.owner.first_name = form.cleaned_data['first_name']
+        user.owner.last_name = form.cleaned_data['last_name']
         user.is_active = True
         user.save()
 
@@ -156,7 +156,7 @@ class ClinicRegistrationView(BaseUserRegisterView):
 
         # sending email to the admin for review of the clinic and mark as approved
         send_clinic_admin_approval_request_email(
-            clinic=self.object,
+            user_clinic=self.object,
             pet=pet,
         )
 
@@ -260,14 +260,14 @@ class AccessCodeEmailView(views.FormView):
         )
 
         # If clinic is registered but not approved yet
-        if not user.is_approved:
+        if not user.clinic.is_approved:
             approval_url = self.request.build_absolute_uri(
                 reverse('approve-temp-clinic') + f'?clinic_id={user.id}&pet_id={pet.id}')
 
             for owner in owners:
                 send_clinic_owner_access_request_email(
-                    owner=owner,
-                    clinic=user,
+                    user_owner=owner,
+                    user_clinic=user,
                     pet=pet,
                     url=approval_url,
                     lang=owner.default_language

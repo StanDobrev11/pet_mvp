@@ -47,7 +47,7 @@ class PetShareTokenViewsTest(TestCase):
             passport_number='BG99CO123456',
         )
 
-        self.vet = Clinic.objects.create(
+        self.vet = UserModel.objects.create_clinic(
             email='test-clinic@test.com',
             password='1234',
             clinic_name='Test Clinic',

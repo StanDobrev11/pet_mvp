@@ -13,15 +13,15 @@ from pet_mvp.notifications.email_service import EmailService
 UserModel = get_user_model()
 
 @shared_task
-def send_clinic_owner_access_request_email(owner, clinic, pet, url, lang):
+def send_clinic_owner_access_request_email(user_owner, user_clinic, pet, url, lang):
 
     context = {
-        "owner_name": owner.get_full_name(),
-        "clinic_name": clinic.clinic_name,
-        "clinic_email": clinic.email,
-        "clinic_phone": clinic.phone_number,
-        "clinic_city": clinic.city,
-        "clinic_country": clinic.country,
+        "owner_name": user_owner.owner.get_full_name(),
+        "clinic_name": user_clinic.clinic.clinic_name,
+        "clinic_email": user_clinic.clinic.email,
+        "clinic_phone": user_clinic.clinic.phone_number,
+        "clinic_city": user_clinic.clinic.city,
+        "clinic_country": user_clinic.clinic.country,
         "pet_name": pet.name,
         "approval_url": url,
         "lang": lang,
@@ -33,26 +33,26 @@ def send_clinic_owner_access_request_email(owner, clinic, pet, url, lang):
 
     EmailService.send_template_email_async(
         subject=subject,
-        to_email=owner.email,
+        to_email=user_owner.email,
         template_name="emails/clinic_owner_access_request_email.html",
         context=context,
     )
 
 # sending email to the admin for review of the clinic and mark as approved
 @shared_task
-def send_clinic_admin_approval_request_email(clinic, pet):
+def send_clinic_admin_approval_request_email(user_clinic, pet):
 
     context = {
-        "clinic_name": clinic.clinic_name,
-        "clinic_email": clinic.email,
-        "clinic_phone": clinic.phone_number,
-        "clinic_city": clinic.city,
-        "clinic_country": clinic.country,
+        "clinic_name": user_clinic.clinic.clinic_name,
+        "clinic_email": user_clinic.email,
+        "clinic_phone": user_clinic.phone_number,
+        "clinic_city": user_clinic.city,
+        "clinic_country": user_clinic.country,
         "pet_name": pet.name,
     }
 
     EmailService.send_template_email_async(
-        subject=_("Clinic approval request: {}").format(clinic.clinic_name),
+        subject=_("Clinic approval request: {}").format(user_clinic.clinic.clinic_name),
         to_email=os.getenv("ADMIN_EMAIL"),
         template_name='emails/clinic_admin_approval_request_email.html',
         context=context
@@ -81,22 +81,22 @@ def send_treatment_expiration_notifications():
         )
 
         for record in expiring_treatments:
-            owners = record.pet.owners.all()
+            user_owners = record.pet.owners.all()
 
             time_left = _("in 1 week") if interval_name == 'one_week' else _("tomorrow")
             
-            for owner in owners:
+            for user in user_owners:
                 EmailService.send_template_email_async.delay(
                     subject=_("Treatment Expiration Reminder for {}").format(
                         record.pet.name),
-                    to_email=owner.email,
+                    to_email=user.email,
                     template_name="emails/treatment_expiration_notification.html",
                     context={
                         "pet_name": record.pet.name,
                         "medication": record.medication.name,
                         "expiration_date": record.valid_until,
                         "time_left": time_left,
-                        "lang": owner.default_language,
+                        "lang": user.default_language,
                     }
                 )
                 notifications_sent += 1
@@ -129,18 +129,18 @@ def send_vaccine_expiration_notifications():
             valid_until=check_date)
 
         for record in expiring_vaccinations:
-            for owner in record.pet.owners.all():
+            for user in record.pet.owners.all():
                 EmailService.send_template_email_async.delay(
                     subject=_("Vaccine Expiration Notice for {}").format(
                         record.pet.name),
-                    to_email=owner.email,
+                    to_email=user.email,
                     template_name="emails/vaccine_expiration_notification.html",
                     context={
                         "pet_name": record.pet.name,
                         "vaccine": record.vaccine.name,
                         "expiration_date": record.valid_until,
                         "time_left": time_left,
-                        "lang": owner.default_language,
+                        "lang": user.default_language,
                     }
                 )
                 notifications_sent += 1
@@ -166,31 +166,31 @@ def send_medical_record_email(exam, lang):
     """task to send one-time notification on creation of a medical record to owners and the clinic"""
 
     # get owners' details
-    owners_details = [owner for owner in exam.pet.owners.all()]
+    owners_details = [user for user in exam.pet.owners.all()]
 
     owner_details = [{
-        "first_name": owner.first_name,
-        "last_name": owner.last_name,
-        "email": owner.email,
-        "phone_number": owner.phone_number,
-        "city": owner.city,
-        "country": owner.country
-    } for owner in owners_details]
+        "first_name": user.owner.first_name,
+        "last_name": user.owner.last_name,
+        "email": user.email,
+        "phone_number": user.phone_number,
+        "city": user.city,
+        "country": user.country
+    } for user in owners_details]
 
     # get the owners emails of the pet
     owners_emails = [owner.email for owner in owners_details]
 
-    clinic = exam.clinic
+    user_clinic = exam.clinic
     context = {
         "owners": owner_details,
         "pet_name": exam.pet.name,
         "date_of_entry": exam.date_of_entry.strftime("%Y-%m-%d"),
         "doctor": exam.doctor,
-        "clinic_name": clinic.clinic_name,
-        "clinic_address": clinic.clinic_address,
-        "clinic_city": clinic.city,
-        "clinic_country": clinic.country,
-        "clinic_phone": clinic.phone_number,
+        "clinic_name": user_clinic.clinic.clinic_name,
+        "clinic_address": user_clinic.clinic.clinic_address,
+        "clinic_city": user_clinic.city,
+        "clinic_country": user_clinic.country,
+        "clinic_phone": user_clinic.phone_number,
         "reason_for_visit": exam.reason_for_visit,
         "general_health": exam.general_health or _("N/A"),
         "body_condition_score": exam.body_condition_score,
@@ -225,13 +225,13 @@ def send_medical_record_email(exam, lang):
         context=context
     )
 
-    if clinic.default_language != lang:
-        context['lang'] = clinic.default_language
+    if user_clinic.default_language != lang:
+        context['lang'] = user_clinic.default_language
 
     EmailService.send_template_email_async.delay(
         subject=_("Medical Examination Report for {} - {}").format(exam.pet.name,
                                                                    exam.date_of_entry.strftime('%Y-%m-%d')),
-        to_email=clinic.email,
+        to_email=user_clinic.email,
         template_name='emails/medical_report_email.html',
         context=context
     )
@@ -252,12 +252,12 @@ def send_user_registration_email(user, lang):
     # Send owner welcome email
     if user.is_owner:
         context = {
-            "first_name": user.first_name,
-            "last_name": user.last_name,
+            "first_name": user.owner.first_name,
+            "last_name": user.owner.last_name,
             "lang": lang,
         }
         EmailService.send_template_email_async.delay(
-            subject=_("Welcome {} {}").format(user.first_name, user.last_name),
+            subject=_("Welcome {} {}").format(user.owner.first_name, user.owner.last_name),
             to_email=user_email,
             template_name='emails/user_registration_email.html',
             context=context,
@@ -267,8 +267,8 @@ def send_user_registration_email(user, lang):
     # Send clinic registration notification email
 
     context = {
-        "clinic_name": user.clinic_name,
-        "clinic_address": user.clinic_address,
+        "clinic_name": user.clinic.clinic_name,
+        "clinic_address": user.clinic.clinic_address,
         "clinic_email": user.email,
         "clinic_country": user.country,
         "city": user.city,
@@ -292,8 +292,8 @@ def send_clinic_activation_email(user, lang, url):
         
     context = {
         "clinic_email": user_email,
-        "clinic_name": user.clinic_name,
-        "clinic_address": user.clinic_address,
+        "clinic_name": user.clinic.clinic_name,
+        "clinic_address": user.clinic.clinic_address,
         "city": user.city,
         "country": user.country,
         "phone_number": user.phone_number,
@@ -314,8 +314,8 @@ def send_clinic_activation_email(user, lang, url):
 def send_owner_pet_addition_request(existing_owner, new_owner, pet, approval_url):
 
     context = {
-        "first_name": new_owner.first_name,
-        "last_name": new_owner.last_name,
+        "first_name": new_owner.owner.first_name,
+        "last_name": new_owner.owner.last_name,
         "lang": existing_owner.default_language,
         "pet_name": pet.name,
         "pet_passport": pet.passport_number,

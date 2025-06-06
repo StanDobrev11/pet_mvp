@@ -19,7 +19,7 @@ class ApprovePetAdditionTests(TestCase):
             country='Bulgaria'
         )
 
-        self.pending_owner = UserModel.objects.create(
+        self.pending_owner = UserModel.objects.create_owner(
             email='pending@example.com',
             password='testpass123',
             first_name='Pending',

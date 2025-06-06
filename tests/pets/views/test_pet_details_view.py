@@ -30,7 +30,7 @@ class PetDetailViewTests(TestCase):
             country='Bulgaria'
         )
 
-        self.clinic = Clinic.objects.create(
+        self.clinic = UserModel.objects.create_clinic(
             email='test-clinic@test.com',
             password='1234',
             clinic_name='Test Clinic',
