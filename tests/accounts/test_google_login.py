@@ -1,7 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.sites.models import Site
-from allauth.socialaccount.models import SocialApp
 from django.test.utils import override_settings
 
 class GoogleLoginTest(TestCase):

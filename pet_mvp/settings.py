@@ -191,6 +191,8 @@ SOCIALACCOUNT_QUERY_EMAIL = True
 # provides additional confirmation page before login
 SOCIALACCOUNT_LOGIN_ON_GET = True
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+SOCIALACCOUNT_ADAPTER = "pet_mvp.accounts.adapters.CustomSocialAccountAdapter"
+
 
 # login url, logout redirect and login redirect should be set
 LOGIN_REDIRECT_URL = reverse_lazy('index')
