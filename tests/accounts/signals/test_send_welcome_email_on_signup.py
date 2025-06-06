@@ -14,7 +14,7 @@ class SendWelcomeEmailSignalTest(TestCase):
     def test_send_user_registration_email_called_on_signup(self, mock_send_email):
         # Arrange: create a dummy request and user
         request = self.factory.get('/')
-        user = UserModel.objects.create(
+        user = UserModel.objects.create_owner(
             email='newuser@example.com',
             password='securepass123',
             first_name='Test',

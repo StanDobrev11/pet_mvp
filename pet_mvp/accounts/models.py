@@ -78,21 +78,6 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-    first_name = models.CharField(
-        max_length=255,
-        verbose_name=_("First name"),
-        null=True,
-        blank=True,
-    )
-
-    last_name = models.CharField(
-        max_length=255,
-        verbose_name=_("Last name"),
-        null=True,
-        blank=True,
-    )
-
-
     def clean(self):
         if self.is_owner and hasattr(self, 'clinic_profile'):
             raise ValidationError(_("An owner cannot have a clinic profile."))
@@ -114,30 +99,12 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.get_full_name()
 
-    clinic_name = models.CharField(
-        max_length=255,
-        verbose_name=_("Clinic name"),
-        null=True,
-        blank=True,
-    )
-
-    clinic_address = models.CharField(
-        max_length=255,
-        verbose_name=_("Clinic address"),
-        null=True,
-        blank=True,
-    )
-
-    is_approved = models.BooleanField(
-        default=False,
-        verbose_name=_("Clinic approved"),
-    )
 
 class Owner(models.Model):
     user = models.OneToOneField(
         AppUser,
         on_delete=models.CASCADE,
-        related_name='owner_profile',
+        related_name='owner',
         limit_choices_to={'is_owner': True},
         verbose_name=_("User")
     )
@@ -160,7 +127,7 @@ class Clinic(models.Model):
     user = models.OneToOneField(
         AppUser,
         on_delete=models.CASCADE,
-        related_name='clinic_profile',
+        related_name='clinic',
         limit_choices_to={'is_owner': False},
         verbose_name=_("User")
     )
@@ -177,7 +144,7 @@ class Clinic(models.Model):
 
     is_approved = models.BooleanField(
         default=False,
-        verbose_name=_("Clinic approved")
+        verbose_name=_("Clinic approved"),
     )
 
     latitude = models.FloatField(

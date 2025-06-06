@@ -4,13 +4,16 @@ from django.db import models
 
 from pet_mvp.accounts.models import Clinic
 from pet_mvp.pets.models import Pet
+from django.contrib.auth import get_user_model
+
+UserModel = get_user_model()
 
 
 # Create your models here.
 class VetPetAccess(models.Model):
 
     vet = models.ForeignKey(
-        to=Clinic,
+        to=UserModel,
         on_delete=models.CASCADE
     )
     pet = models.ForeignKey(

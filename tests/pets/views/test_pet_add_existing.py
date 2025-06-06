@@ -32,7 +32,7 @@ class AddExistingPetTests(TestCase):
             passport_number='BG01VP112233'
         )
 
-        self.pending_owner = UserModel.objects.create(
+        self.pending_owner = UserModel.objects.create_owner(
             email='pending@example.com',
             password='testpass123',
             first_name='Pending',

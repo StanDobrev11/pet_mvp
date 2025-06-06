@@ -208,7 +208,7 @@ class AccessCodeEmailViewTests(TestCase):
             city='Sofia',
             country='Bulgaria',
             is_active=True,
-            is_approved=True
+            is_approved=True,
         )
 
         self.inactive_clinic = UserModel.objects.create_clinic(
@@ -220,7 +220,7 @@ class AccessCodeEmailViewTests(TestCase):
             city='Plovdiv',
             country='Bulgaria',
             is_active=False,
-            is_approved=True
+            is_approved=True,
         )
 
         self.unapproved_clinic = UserModel.objects.create_clinic(
@@ -328,7 +328,7 @@ class OwnerDetailsViewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'accounts/owner_details.html')
-        self.assertContains(response, self.user.first_name)
+        self.assertContains(response, self.user.owner.first_name)
         self.assertContains(response, self.user.email)
 
 

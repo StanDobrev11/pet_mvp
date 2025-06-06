@@ -56,8 +56,8 @@ class UserRegistrationEmailTestCase(TestCase):
 
         # Check that the context contains the expected data
         context = kwargs['context']
-        self.assertEqual(context['first_name'], self.test_user.first_name)
-        self.assertEqual(context['last_name'], self.test_user.last_name)
+        self.assertEqual(context['first_name'], self.test_user.owner.first_name)
+        self.assertEqual(context['last_name'], self.test_user.owner.last_name)
 
     def test_run_task_manually(self):
         """Test running the task manually (for demonstration purposes)."""

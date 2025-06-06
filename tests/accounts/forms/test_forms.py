@@ -57,8 +57,8 @@ class OwnerCreationFormTests(TestCase):
         form = OwnerCreateForm(data=form_data)
         self.assertFalse(form.is_valid())
         # Check that the non-field error about first_name and last_name is present
-        self.assertIn('__all__', form.errors)
-        self.assertIn('Owners must have a first name and last name', str(form.errors['__all__']))
+        self.assertIn('first_name', form.errors)
+        self.assertIn('This field is required.', str(form.errors['first_name']))
 
 
 class ClinicRegistrationFormTests(TestCase):
@@ -108,8 +108,8 @@ class ClinicRegistrationFormTests(TestCase):
         form = ClinicRegistrationForm(data=form_data)
         self.assertFalse(form.is_valid())
         # Check that the non-field error about clinic_name and clinic_address is present
-        self.assertIn('__all__', form.errors)
-        self.assertIn('Clinics must have a name and address', str(form.errors['__all__']))
+        self.assertIn('clinic_name', form.errors)
+        self.assertIn('This field is required.', str(form.errors['clinic_name']))
 
     def test_is_owner_set_to_false(self):
         """Test that is_owner is set to False on the instance."""
