@@ -99,6 +99,18 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.get_full_name()
 
+    @property
+    def first_name(self):
+        if hasattr(self, 'owner'):
+            return self.owner.first_name
+        return ''
+
+    @property
+    def last_name(self):
+        if hasattr(self, 'owner'):
+            return self.owner.last_name
+        return ''
+
 
 class Owner(models.Model):
     user = models.OneToOneField(

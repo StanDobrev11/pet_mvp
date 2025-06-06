@@ -91,11 +91,13 @@ class BaseUserRegisterView(views.CreateView):
         except UserModel.DoesNotExist:
             return False  # User does not exist or is not inactive
 
-        password = form.cleaned_data.get('password1')
+        password = form.data.get('password1')
         user.set_password(password)
-        user.owner.first_name = form.cleaned_data['first_name']
-        user.owner.last_name = form.cleaned_data['last_name']
+        owner = user.owner
+        owner.first_name = form.data.get('first_name')
+        owner.last_name = form.data.get('last_name')
         user.is_active = True
+        owner.save()
         user.save()
 
         login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')

@@ -44,8 +44,8 @@ class BaseOwnerForm(forms.ModelForm):
         first_name = self.cleaned_data.get('first_name')
         last_name = self.cleaned_data.get('last_name')
 
-        if hasattr(user, 'owner_profile'):
-            profile = user.owner_profile
+        if hasattr(user, 'owner'):
+            profile = user.owner
         else:
             profile = Owner(user=user)
 
