@@ -16,12 +16,12 @@ UserModel = get_user_model()
 def send_clinic_owner_access_request_email(user_owner, user_clinic, pet, url, lang):
 
     context = {
-        "owner_name": user_owner.owner.get_full_name(),
+        "owner_name": user_owner.get_full_name(),
         "clinic_name": user_clinic.clinic.clinic_name,
-        "clinic_email": user_clinic.clinic.email,
-        "clinic_phone": user_clinic.clinic.phone_number,
-        "clinic_city": user_clinic.clinic.city,
-        "clinic_country": user_clinic.clinic.country,
+        "clinic_email": user_clinic.email,
+        "clinic_phone": user_clinic.phone_number,
+        "clinic_city": user_clinic.city,
+        "clinic_country": user_clinic.country,
         "pet_name": pet.name,
         "approval_url": url,
         "lang": lang,
