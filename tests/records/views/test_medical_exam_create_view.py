@@ -1,32 +1,30 @@
 import datetime
-from unittest.mock import patch
 
+from django.contrib.auth import get_user_model
 from django.contrib.messages.storage.fallback import FallbackStorage
 from django.test import TestCase, RequestFactory
 from django.urls import reverse
 
 from pet_mvp.access_codes.utils import generate_access_code
-from pet_mvp.accounts.models import Clinic
-from pet_mvp.access_codes.models import PetAccessCode
-from pet_mvp.drugs.models import Vaccine, Drug, BloodTest, UrineTest, FecalTest
+from pet_mvp.drugs.models import Vaccine, Drug, UrineTest
 from pet_mvp.pets.models import Pet
-from pet_mvp.records.forms import MedicalExaminationRecordForm, VaccineFormSet, TreatmentFormSet, BloodTestForm, \
-    UrineTestForm, FecalTestForm
+from pet_mvp.records.forms import MedicalExaminationRecordForm, UrineTestForm
 from pet_mvp.records.models import MedicalExaminationRecord, VaccinationRecord, MedicationRecord
 from pet_mvp.records.views import MedicalExaminationReportCreateView
 
+UserModel = get_user_model()
 
 class MedicalExaminationReportCreateViewTest(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
 
-        self.clinic = Clinic.objects.create(
+        self.clinic = UserModel.objects.create_clinic(
             email='test-clinic@test.com',
             password='1234',
             clinic_name='Test Clinic',
+            clinic_address='123 Some Address',
             is_owner=False,
             phone_number='0887142536',
-            clinic_address='123 Some Address',
             city='Varna',
             country='Bulgaria',
         )
