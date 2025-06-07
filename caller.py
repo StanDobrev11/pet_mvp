@@ -376,10 +376,10 @@ def populate_vaccination_records():
 def set_site_domain():
     from django.contrib.sites.models import Site
 
-    debug = os.environ.get('DEBUG', 'True').lower()
+    DEBUG = os.getenv("DEBUG", "False") == "True"
     base_url = os.environ.get('BASE_URL', 'localhost')
 
-    if debug == 'true':
+    if DEBUG:
         domain = f'{base_url}:8000'
     else:
         domain = base_url
