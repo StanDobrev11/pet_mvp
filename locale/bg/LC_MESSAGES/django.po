@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 16:03+0000\n"
+"POT-Creation-Date: 2025-06-07 00:00+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -113,19 +113,13 @@ msgid "Staff status"
 msgstr "Статус на персонала"
 
 #: .\pet_mvp\accounts\models.py:39
-#, fuzzy
-#| msgid ""
-#| "Designates whether this user should be treated as active. Unselect this "
-#| "instead of deleting accounts. If the user is vet clinic and not active, "
-#| "an email with activation link will be sent one valid email address is "
-#| "entered"
 msgid ""
 "Designates whether this user should be treated as active. Unselect this "
 "instead of deleting accounts. If the user is vet clinic and not active, an "
 "email with activation link will be sent once a valid email address is "
 "entered."
 msgstr ""
-"Определя дали този потребител трябва да се третира като активен. Премахнете "
+"Определя дали този потребител трябва да се счита за активен. Премахнете "
 "отметката вместо да изтривате акаунта. Ако потребителят е ветеринарна "
 "клиника и не е активен, ще бъде изпратен имейл с линк за активация при "
 "въведен валиден имейл адрес."
@@ -157,16 +151,12 @@ msgid "Default language"
 msgstr "Език по подразбиране"
 
 #: .\pet_mvp\accounts\models.py:83
-#, fuzzy
-#| msgid "Owners cannot have clinic-related information."
 msgid "An owner cannot have a clinic profile."
-msgstr "Собствениците не могат да имат информация, свързана с клиника."
+msgstr "Собственикът не може да има профил на клиника."
 
 #: .\pet_mvp\accounts\models.py:85
-#, fuzzy
-#| msgid "Clinics cannot have owner-related information."
 msgid "A clinic cannot have an owner profile."
-msgstr "Клиниките не могат да имат информация, свързана със собственик."
+msgstr "Клиниката не може да има профил на собственик."
 
 #: .\pet_mvp\accounts\models.py:121 .\pet_mvp\accounts\models.py:144
 msgid "User"
@@ -205,11 +195,11 @@ msgid "Enter a valid Bulgarian mobile number (e.g. 0887123456, +359887123456)."
 msgstr ""
 "Въведете валиден български мобилен номер (напр. 0887123456, +359887123456)."
 
-#: .\pet_mvp\accounts\views.py:142 .\pet_mvp\accounts\views.py:252
+#: .\pet_mvp\accounts\views.py:141 .\pet_mvp\accounts\views.py:253
 msgid "Invalid access code."
 msgstr "Невалиден код за достъп."
 
-#: .\pet_mvp\accounts\views.py:166
+#: .\pet_mvp\accounts\views.py:165
 msgid ""
 "Your registration was successful. An approval request has been sent to the "
 "pet's owner."
@@ -217,29 +207,44 @@ msgstr ""
 "Регистрацията ви беше успешна. Заявка за одобрение е изпратена до "
 "собственика на домашния любимец."
 
-#: .\pet_mvp\accounts\views.py:208
+#: .\pet_mvp\accounts\views.py:207
 msgid "Must be a registered pet owner or active and approved vet clinic"
 msgstr ""
 "Трябва да сте регистриран собственик на домашен любимец или активна и "
 "одобрена ветеринарна клиника."
 
 #: .\pet_mvp\accounts\views.py:221
+msgid "Please login using the access code"
+msgstr "Моля, влезте в системата с помощта на кода за достъп"
+
+#: .\pet_mvp\accounts\views.py:225
+msgid "You must be approved by the pet's owner first"
+msgstr "Първо трябва да бъдете одобрени от собственика на домашния любимец"
+
+#: .\pet_mvp\accounts\views.py:236
 msgid "Invalid email or password."
 msgstr "Невалиден имейл или парола."
 
-#: .\pet_mvp\accounts\views.py:238
+#: .\pet_mvp\accounts\views.py:261
 msgid ""
 "This clinic is not in the system. Please complete the registration form "
-"below to request temporary 7-day access."
+"below to request temporary access."
 msgstr ""
-"Тази клиника не е в системата. Моля, попълнете формата по-долу, за да "
-"заявите временно 7-дневно разрешение за достъп."
+"Тази клиника не е в системата. Моля, попълнете формуляра по-долу, за да "
+"заявите временно разрешение за достъп."
 
-#: .\pet_mvp\accounts\views.py:244
+#: .\pet_mvp\accounts\views.py:267
 msgid "Owners cannot access the website as vets."
 msgstr "Собствениците не могат да влизат в сайта като ветеринарни лекари."
 
-#: .\pet_mvp\accounts\views.py:279
+#: .\pet_mvp\accounts\views.py:297
+msgid ""
+"Activation email sent. Please check your inbox to confirm your clinic access."
+msgstr ""
+"Изпратен е имейл за активация. Моля, проверете входящата си поща, за да "
+"потвърдите достъпа на вашата клиника."
+
+#: .\pet_mvp\accounts\views.py:319
 msgid ""
 "This clinic is awaiting approval. An access request was sent to the pet's "
 "owner."
@@ -247,30 +252,23 @@ msgstr ""
 "Тази клиника очаква одобрение. Заявка за достъп беше изпратена до "
 "собственика на домашния любимец."
 
-#: .\pet_mvp\accounts\views.py:298
-msgid ""
-"Activation email sent. Please check your inbox to confirm your clinic access."
-msgstr ""
-"Изпратен е имейл за активация. Моля, проверете входящата си поща, за да "
-"потвърдите достъпа на вашата клиника."
-
-#: .\pet_mvp\accounts\views.py:302
+#: .\pet_mvp\accounts\views.py:323
 msgid "Please correct the errors below."
 msgstr "Моля, коригирайте грешките по-долу."
 
-#: .\pet_mvp\accounts\views.py:313
+#: .\pet_mvp\accounts\views.py:334
 msgid "Invalid approval request."
 msgstr "Невалидна заявка за одобрение."
 
-#: .\pet_mvp\accounts\views.py:327
+#: .\pet_mvp\accounts\views.py:348
 msgid "This clinic was already activated."
 msgstr "Тази клиника вече беше активирана."
 
-#: .\pet_mvp\accounts\views.py:343
+#: .\pet_mvp\accounts\views.py:364
 msgid "Password set successfully. Please continue."
 msgstr "Паролата е зададена успешно. Моля, продължете."
 
-#: .\pet_mvp\accounts\views.py:429
+#: .\pet_mvp\accounts\views.py:460
 msgid "You are not allowed to edit the owner."
 msgstr "Нямате право да редактирате собственика."
 
@@ -1271,8 +1269,8 @@ msgid "Clinic Registration"
 msgstr "Регистрация на клиника"
 
 #: .\templates\accounts\clinic-register.html:43
-#: .\templates\accounts\register.html:45 .\templates\base.html:78
-#: .\templates\common\about.html:28 .\templates\common\index.html:108
+#: .\templates\accounts\register.html:45 .\templates\base.html:89
+#: .\templates\common\about.html:28 .\templates\common\index.html:122
 #: .\templates\partials\nav_bar.html:33
 msgid "Register"
 msgstr "Регистрация"
@@ -1483,61 +1481,62 @@ msgstr "Всички полета са задължителни"
 msgid "Login instead?"
 msgstr "Вход вместо това?"
 
-#: .\templates\base.html:37 .\templates\base.html:44
+#: .\templates\base.html:37 .\templates\base.html:45 .\templates\base.html:47
 msgid "My Pet's Passport"
 msgstr "Паспортът на моя домашен любимец"
 
-#: .\templates\base.html:51
+#: .\templates\base.html:55
 msgid "Toggle navigation"
 msgstr "Превключване на навигацията"
 
-#: .\templates\base.html:58 .\templates\partials\nav_bar.html:23
+#: .\templates\base.html:62 .\templates\base.html:79
+#: .\templates\partials\nav_bar.html:23
 msgid "Dashboard"
 msgstr "Табло"
 
-#: .\templates\base.html:61 .\templates\common\clinic_dashboard.html:23
+#: .\templates\base.html:65 .\templates\common\clinic_dashboard.html:23
 #: .\templates\common\dashboard.html:75
 msgid "Add Pet"
 msgstr "Добави домашен любимец"
 
-#: .\templates\base.html:64 .\templates\partials\nav_bar.html:26
+#: .\templates\base.html:68 .\templates\partials\nav_bar.html:26
 #: .\templates\partials\nav_bar.html:29
 msgid "Profile"
 msgstr "Профил"
 
-#: .\templates\base.html:67 .\templates\common\dashboard.html:76
+#: .\templates\base.html:71 .\templates\common\dashboard.html:76
 #: .\templates\partials\nav_bar.html:27 .\templates\partials\nav_bar.html:30
 msgid "Logout"
 msgstr "Изход"
 
-#: .\templates\base.html:71
+#: .\templates\base.html:75 .\templates\base.html:82
 msgid "Finish and logout"
 msgstr "Завърши и излез"
 
-#: .\templates\base.html:75 .\templates\common\index.html:107
+#: .\templates\base.html:86 .\templates\common\index.html:121
 #: .\templates\partials\nav_bar.html:32
 msgid "Login"
 msgstr "Вход"
 
-#: .\templates\base.html:111
+#: .\templates\base.html:122
 msgid "My Pet's Passport. All rights reserved."
 msgstr "Паспортът на моя домашен любимец. Всички права запазени."
 
-#: .\templates\base.html:112 .\templates\common\about.html:8
+#: .\templates\base.html:123 .\templates\common\about.html:8
 msgid "About Us"
 msgstr "За нас"
 
-#: .\templates\base.html:126
+#: .\templates\base.html:137
 msgid "We use cookies to ensure you get the best experience on our website."
 msgstr ""
 "Използваме бисквитки, за да ви осигурим най-доброто изживяване на нашия "
 "уебсайт."
 
-#: .\templates\base.html:127
+#: .\templates\base.html:138
 msgid "Learn more"
 msgstr "Научете повече"
 
-#: .\templates\base.html:129
+#: .\templates\base.html:140
 msgid "Accept"
 msgstr "Приеми"
 
@@ -1778,11 +1777,11 @@ msgstr "Предстоящи ваксини и лекарства"
 msgid "My Pet's Medical Records"
 msgstr "Медицински досиета на моя любимец"
 
-#: .\templates\common\index.html:18
+#: .\templates\common\index.html:32
 msgid "Why Join My Pet's Passport?"
 msgstr "Защо да се присъедините към Паспорт на моя домашен любимец?"
 
-#: .\templates\common\index.html:21
+#: .\templates\common\index.html:35
 msgid ""
 "Experience seamless pet care management with features designed to keep your "
 "furry friends healthy and happy."
@@ -1790,71 +1789,71 @@ msgstr ""
 "Изживейте безпроблемно управление на грижите за домашни любимци с функции, "
 "създадени да поддържат вашите космати приятели здрави и щастливи."
 
-#: .\templates\common\index.html:29
+#: .\templates\common\index.html:43
 msgid "Vaccination & Medication Tracking"
 msgstr "Проследяване на ваксини и лекарства"
 
-#: .\templates\common\index.html:30
+#: .\templates\common\index.html:44
 msgid "Stay updated with timely reminders for your pet's health needs."
 msgstr ""
 "Бъдете информирани с навременни напомняния за здравословните нужди на вашия "
 "домашен любимец."
 
-#: .\templates\common\index.html:38
+#: .\templates\common\index.html:52
 msgid "Secure Cloud-Based Records"
 msgstr "Сигурни записи в облака"
 
-#: .\templates\common\index.html:39
+#: .\templates\common\index.html:53
 msgid "Access your pet's medical history anytime, anywhere."
 msgstr ""
 "Достъп до медицинската история на вашия домашен любимец по всяко време и от "
 "всяко място."
 
-#: .\templates\common\index.html:47
+#: .\templates\common\index.html:61
 msgid "Shared Pet Management"
 msgstr "Споделено управление на домашен любимец"
 
-#: .\templates\common\index.html:48
+#: .\templates\common\index.html:62
 msgid "Collaborate with co-owners or family members to manage your pet's care."
 msgstr ""
 "Сътрудничете си със съсобственици или членове на семейството за управление "
 "на грижите за домашния любимец."
 
-#: .\templates\common\index.html:56
+#: .\templates\common\index.html:70
 msgid "Clinic Communication"
 msgstr "Комуникация с клиниката"
 
-#: .\templates\common\index.html:57
+#: .\templates\common\index.html:71
 msgid "Receive notifications and updates directly from your veterinary clinic."
 msgstr "Получавайте известия и актуализации директно от ветеринарната клиника."
 
-#: .\templates\common\index.html:65
+#: .\templates\common\index.html:79
 msgid "Quick Access via QR Codes"
 msgstr "Бърз достъп чрез QR кодове"
 
-#: .\templates\common\index.html:66
+#: .\templates\common\index.html:80
 msgid "Easily share your pet's medical records with vets using QR codes."
 msgstr ""
 "Споделяйте лесно медицинските записи на вашия домашен любимец с ветеринари "
 "чрез QR кодове."
 
-#: .\templates\common\index.html:74
+#: .\templates\common\index.html:88
 msgid "Find Nearby Clinics"
 msgstr "Намерете близки клиники"
 
-#: .\templates\common\index.html:75
+#: .\templates\common\index.html:89
 msgid "Locate and book appointments with top-rated clinics near you."
 msgstr "Намерете и запишете час в най-добрите клиники близо до вас."
 
-#: .\templates\common\index.html:111
+#: .\templates\common\index.html:125
 msgid "Veterinarian Access"
 msgstr "Достъп за ветеринарен лекар"
 
-#: .\templates\common\index.html:117
+#: .\templates\common\index.html:131
 msgid "What Our Users Say"
 msgstr "Какво казват нашите потребители"
 
-#: .\templates\common\index.html:118
+#: .\templates\common\index.html:132
 msgid "Real feedback from pet owners using My Pet’s Passport"
 msgstr ""
 "Истински отзиви от собственици на домашни любимци, използващи Паспортът на "
