@@ -9,7 +9,8 @@ from pet_mvp.settings import MEDIA_ROOT
 from pet_mvp.common.mixins import TimeStampMixin
 from pet_mvp.common.utils import resize_image
 from pet_mvp.pets.utils import pet_directory_path, delete_pet_photo
-from pet_mvp.pets.validators import validate_passport_number, validate_transponder_code
+from pet_mvp.pets.validators import validate_transponder_code
+
 
 UserModel = get_user_model()
 

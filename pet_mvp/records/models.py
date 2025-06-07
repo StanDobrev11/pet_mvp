@@ -11,6 +11,7 @@ from pet_mvp.pets.models import Pet
 
 UserModel = get_user_model()
 
+
 class VaccinationRecord(TimeStampMixin):
 
     date_of_vaccination = models.DateField(
@@ -164,7 +165,8 @@ class MedicalExaminationRecord(TimeStampMixin):
     general_health = models.TextField(
         verbose_name=_('General health'),
         blank=True,
-        null=True
+        null=True,
+        default=_('Not measured')
     )
 
     body_condition_score = models.IntegerField(
@@ -172,7 +174,8 @@ class MedicalExaminationRecord(TimeStampMixin):
         help_text=_(
             'Assessment of body condition (1 = underweight, 9 = obese)'),
         blank=True,
-        null=True
+        null=True,
+        default=_('Not measured')
     )
 
     temperature = models.DecimalField(
@@ -181,53 +184,61 @@ class MedicalExaminationRecord(TimeStampMixin):
         verbose_name=_('Temperature (°C)'),
         help_text=_('Body temperature of the animal'),
         blank=True,
-        null=True
+        null=True,
+        default=_('Not measured')
     )
 
     heart_rate = models.IntegerField(
         verbose_name=_('Heart rate (bpm)'),
         help_text=_('Heart rate in beats per minute'),
         blank=True,
-        null=True
+        null=True,
+        default=_('Not measured')
     )
 
     respiratory_rate = models.IntegerField(
         verbose_name=_('Respiratory rate'),
         help_text=_('Respiratory rate in breaths per minute'),
         blank=True,
-        null=True
+        null=True,
+        default=_('Not measured')
     )
 
     mucous_membrane_color = models.CharField(
         max_length=50,
         verbose_name=_('Mucous Membrane Color'),
         blank=True,
-        null=True
+        null=True,
+        default=_('Not examined')
     )
 
     hydration_status = models.CharField(
         max_length=50,
         verbose_name=_('Hydration Status'),
         blank=True,
-        null=True
+        null=True,
+        default=_('Not examined')
     )
 
     skin_and_coat_condition = models.TextField(
         verbose_name=_('Skin and Coat Condition'),
         blank=True,
-        null=True
+        null=True,
+        default=_('Not examined')
     )
 
     teeth_and_gums = models.TextField(
         verbose_name=_('Teeth and Gums'),
         blank=True,
-        null=True
+        null=True,
+        default=_('Not examined')
     )
 
     eyes_ears_nose = models.TextField(
         verbose_name=_('Eyes, Ears, and Nose'),
         blank=True,
-        null=True
+        null=True,
+        default=_('Not examined')
     )
 
     medications = models.ManyToManyField(
@@ -277,7 +288,8 @@ class MedicalExaminationRecord(TimeStampMixin):
         verbose_name=_('Diagnosis'),
         help_text=_('Description of the final diagnosis'),
         blank=True,
-        null=True
+        null=True,
+        default=_('Not diagnosed')
     )
 
     follow_up = models.BooleanField(

@@ -11,7 +11,7 @@
                 <p><strong>{% trans "Date of Entry:" %}</strong> {{ object.date_of_entry }}</p>
                 <p><strong>{% trans "Doctor:" %}</strong> {{ object.doctor }}</p>
                 <p>
-                    <strong>{% trans "Clinic:" %}</strong> {{ clinic.clinic_name }}, {{ clinic.clinic_address }}, {{ clinic.city }}, {{ clinic.country }}, {{ clinic.phone_number }}
+                    <strong>{% trans "Clinic:" %}</strong> {{ clinic.clinic.clinic_name }}, {{ clinic.clinic_address }}, {{ clinic.city }}, {{ clinic.country }}, {{ clinic.phone_number }}
                 </p>
                 <p><strong>{% trans "Reason for Visit:" %}</strong> {{ object.reason_for_visit }}</p>
                 <p><strong>{% trans "General Health:" %}</strong> {{ object.general_health }}</p>
