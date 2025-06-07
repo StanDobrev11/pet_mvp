@@ -36,6 +36,7 @@ class ApproveTempClinicViewTests(TestCase):
             species='Dog',
             breed='Breed',
             color='Tan',
+            features='',
             date_of_birth='2020-01-01',
             sex='male',
             current_weight='10',
