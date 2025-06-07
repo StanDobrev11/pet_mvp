@@ -178,11 +178,11 @@ msgstr "Клиниката е одобрена"
 
 #: .\pet_mvp\accounts\models.py:165
 msgid "Latitude"
-msgstr "Ширина"
+msgstr "Географска ширина"
 
 #: .\pet_mvp\accounts\models.py:171
 msgid "Longitude"
-msgstr "Дължина"
+msgstr "Географска дължина"
 
 #: .\pet_mvp\accounts\models.py:176
 msgid "Clinics must have a name and address."

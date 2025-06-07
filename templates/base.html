@@ -41,7 +41,11 @@
     <nav class="navbar navbar-expand-lg navbar-dark"
          style="background-color: #1f8b62">
         <div class="container">
-            <a class="navbar-brand" href="/">{% trans "My Pet's Passport" %}</a>
+            {% if user.clinic.is_approved %}
+                <a class="navbar-brand" href="{% url 'clinic-dashboard' %}">{% trans "My Pet's Passport" %}</a>
+            {% else %}
+                <a class="navbar-brand" href="/">{% trans "My Pet's Passport" %}</a>
+            {% endif %}
             <button class="navbar-toggler ms-auto"
                     type="button"
                     data-bs-toggle="collapse"
@@ -66,7 +70,14 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'logout' %}">{% trans "Logout" %}</a>
                         </li>
-                    {% elif user.is_authenticated and not user.is_owner %}
+                    {% elif user.is_authenticated and not user.clinic.is_approved %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">{% trans "Finish and logout" %}</a>
+                        </li>
+                    {% elif user.is_authenticated and user.clinic.is_approved %}
+                        <li class="nav-item ms-auto">
+                            <a class="nav-link" href="{% url 'clinic-dashboard' %}">{% trans "Dashboard" %}</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'logout' %}">{% trans "Finish and logout" %}</a>
                         </li>

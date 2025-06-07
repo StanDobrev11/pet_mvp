@@ -1,22 +1,23 @@
 from datetime import timedelta
-from django.utils import timezone
+
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth import views as auth_views, login, logout
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.tokens import default_token_generator
 from django.core.signing import Signer
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
+from django.utils import timezone
 from django.utils.decorators import method_decorator
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+from django.utils.translation import gettext as _
 from django.views import generic as views
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
-from django.utils.translation import gettext as _
-from django.contrib.auth.tokens import default_token_generator
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
 
 from pet_mvp.access_codes.models import VetPetAccess
 from pet_mvp.accounts.forms import OwnerCreateForm, AccessCodeEmailForm, ClinicRegistrationForm, OwnerEditForm
@@ -115,9 +116,7 @@ class ClinicRegistrationView(BaseUserRegisterView):
         }
 
     def get_success_url(self):
-        code = self.request.GET.get('code')
-        pet_id = Pet.objects.get(pet_access_code__code=code).pk
-        return reverse_lazy('pet-details', kwargs={'pk': pet_id})
+        return reverse_lazy('clinic-login')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -149,8 +148,8 @@ class ClinicRegistrationView(BaseUserRegisterView):
 
         for owner in owners:
             send_clinic_owner_access_request_email(
-                owner=owner,
-                clinic=self.object,
+                user_owner=owner,
+                user_clinic=self.object,
                 pet=pet,
                 url=approval_url,
                 lang=owner.default_language
@@ -202,14 +201,30 @@ class BaseLoginView(auth_views.LoginView):
         if self.request.user.is_owner:
             return reverse_lazy('dashboard')
 
-        if self.request.user.is_approved and self.request.user.is_active:
+        if self.request.user.clinic.is_approved and self.request.user.is_active:
             return reverse_lazy('clinic-dashboard')
 
         messages.error(self.request, _('Must be a registered pet owner or active and approved vet clinic'))
         return reverse_lazy('index')
 
-
     def form_valid(self, form):
+        # check for clinic object
+        user_email = form.cleaned_data.get('username')
+        user = UserModel.objects.get(email=user_email)
+
+        # redirect bss type of clinic
+        if hasattr(user, 'clinic'):
+            if user.clinic.is_approved:
+                self.success_url = reverse_lazy('clinic-dashboard')
+
+            elif user.is_active:
+                messages.error(self.request, _('Please login using the access code'))
+                return redirect('clinic-login')
+
+            else:
+                messages.error(self.request, _('You must be approved by the pet\'s owner first'))
+                return redirect('index')
+
         # attempting to clear the messages
         storage = messages.get_messages(self.request)
         storage.used = True
@@ -230,20 +245,6 @@ class AccessCodeEmailView(views.FormView):
         access_code = form.cleaned_data.get('access_code')
         email = form.cleaned_data.get('email')['email']
 
-        # Lookup clinic user
-        try:
-            user = UserModel.objects.get(email=email)
-        except UserModel.DoesNotExist:
-            messages.info(self.request, _(
-                "This clinic is not in the system. "
-                "Please complete the registration form below to request temporary 7-day access."))
-            return redirect(f"{reverse('clinic-register')}?email={email}&code={access_code}")
-
-        # Owners cannot act as clinics
-        if user.is_owner:
-            messages.error(self.request, _("Owners cannot access the website as vets."))
-            return self.form_invalid(form)
-
         # Lookup pet & owner
         try:
             pet = Pet.objects.get(pet_access_code__code=access_code)
@@ -252,18 +253,57 @@ class AccessCodeEmailView(views.FormView):
             messages.error(self.request, _("Invalid access code."))
             return self.form_invalid(form)
 
-        VetPetAccess.objects.update_or_create(
-            vet=user,
-            pet=pet,
-            defaults={
-                'expires_at': timezone.now() + timedelta(minutes=10),
-                'granted_by': 'qr'
-            }
-        )
+        # Lookup clinic user
+        try:
+            user = UserModel.objects.get(email=email)
+        except UserModel.DoesNotExist:
+            messages.info(self.request, _(
+                "This clinic is not in the system. "
+                "Please complete the registration form below to request temporary access."))
+            return redirect(f"{reverse('clinic-register')}?email={email}&code={access_code}")
 
-        # If clinic is registered but not approved yet
-        if not user.clinic.is_approved:
-            approval_url = self.request.build_absolute_uri(
+        # Owners cannot act as clinics
+        if hasattr(user, 'owner'):
+            messages.error(self.request, _("Owners cannot access the website as vets."))
+            return self.form_invalid(form)
+
+        # approved is considered a clinic authorized by the admin, no access to pets.If an owner is providing access
+        # code for the first time to that clinic, clinic self-activation will take place
+
+        # approved clinic has 2 options - either wait for admin approval or enter pet access code and receive the
+        # self-activation email
+
+        # activated is a clinic that is authorized by user to access temporary their pet
+        # approved and activated is a clinic with full and permanent access
+
+        # approved and activated - simple login with password
+        if user.clinic.is_approved and user.is_active:
+            return redirect(f"{reverse('password-entry')}?email={email}&code={access_code}")
+
+        # approved but not yet activated -> send mail clinic to self activate using the link
+        elif user.clinic.is_approved:
+
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = default_token_generator.make_token(user)
+            activation_url = self.request.build_absolute_uri(
+                reverse('password_reset_confirm', kwargs={'uidb64': uid, 'token': token})
+            )
+            send_clinic_activation_email(
+                user=user,
+                lang=user.default_language,
+                url=activation_url,
+            )
+            messages.success(self.request, _(
+                "Activation email sent. Please check your inbox to confirm your clinic access."))
+            return redirect('clinic-login')
+
+        # not approved, newly created, but owner activated -> password entry
+        elif user.is_active:
+            return redirect(f"{reverse('password-entry')}?email={email}&code={access_code}")
+
+        # not approved and not activated but existing -> send email to owner for temp activation
+        else:
+            activation_url = self.request.build_absolute_uri(
                 reverse('approve-temp-clinic') + f'?clinic_id={user.id}&pet_id={pet.id}')
 
             for owner in owners:
@@ -271,32 +311,13 @@ class AccessCodeEmailView(views.FormView):
                     user_owner=owner,
                     user_clinic=user,
                     pet=pet,
-                    url=approval_url,
+                    url=activation_url,
                     lang=owner.default_language
                 )
 
             messages.info(self.request, _(
                 "This clinic is awaiting approval. An access request was sent to the pet's owner."))
             return redirect('clinic-login')
-
-        # If approved and active, send to password entry
-        if user.is_active:
-            return redirect(f"{reverse('password-entry')}?email={email}&code={access_code}")
-
-        # If approved but not activated, send password set email
-        uid = urlsafe_base64_encode(force_bytes(user.pk))
-        token = default_token_generator.make_token(user)
-        activation_url = self.request.build_absolute_uri(
-            reverse('password_reset_confirm', kwargs={'uidb64': uid, 'token': token})
-        )
-        send_clinic_activation_email(
-            user=user,
-            lang=user.default_language,
-            url=activation_url,
-        )
-        messages.success(self.request, _(
-            "Activation email sent. Please check your inbox to confirm your clinic access."))
-        return redirect('clinic-login')
 
     def form_invalid(self, form):
         messages.error(self.request, _("Please correct the errors below."))
@@ -314,14 +335,14 @@ class ApproveTempClinicView(views.View):
             return redirect('index')
 
         # Get clinic and pet
-        clinic = get_object_or_404(UserModel, id=clinic_id, is_owner=False)
+        user = get_object_or_404(UserModel, id=clinic_id, is_owner=False)
         pet = get_object_or_404(Pet, id=pet_id)
 
-        if not clinic.is_active:
-            clinic.is_active = True
-            clinic.save()
+        if not user.is_active:
+            user.is_active = True
+            user.save()
             messages.success(request, _(
-                f"Access for clinic '{clinic.clinic_name}' has been activated. They can now manage records for '{pet.name}'."
+                f"Access for clinic '{user.clinic.clinic_name}' has been activated. They can now manage records for '{pet.name}'."
             ))
         else:
             messages.info(request, _("This clinic was already activated."))
@@ -363,13 +384,23 @@ class PasswordEntryView(BaseLoginView):
         login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
 
         # Get the pet ID
-        pet_id = Pet.objects.get(pet_access_code__code=code).pk
+        pet = Pet.objects.get(pet_access_code__code=code)
 
+        VetPetAccess.objects.update_or_create(
+            vet=user,
+            pet=pet,
+            defaults={
+                'expires_at': timezone.now() + timedelta(minutes=10),
+                'granted_by': 'access code'
+            }
+        )
         # Create the redirect response
-        response = redirect(reverse_lazy('pet-details', kwargs={'pk': pet_id}))
+        if user.clinic.is_approved:
+            response = redirect('clinic-dashboard')
+        else:
+            response = redirect(reverse_lazy('pet-details', kwargs={'pk': pet.id}))
 
         # Set the cookie on the response
-        # response.set_cookie('code', code)
         self.request.session['code'] = code
 
         return response

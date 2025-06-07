@@ -53,8 +53,8 @@
                                 {% if pet.owners.all %}
                                     <div class="small text-muted">
                                         <strong>{% trans "Co-Owners:" %}</strong>
-                                        {% for owner in pet.owners.all %}
-                                            {{ owner.get_full_name }}{% if not forloop.last %}, {% endif %}
+                                        {% for user in pet.owners.all %}
+                                            {{ user.owner }}{% if not forloop.last %}, {% endif %}
                                         {% endfor %}
                                     </div>
                                 {% endif %}

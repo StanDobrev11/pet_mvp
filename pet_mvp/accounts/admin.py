@@ -1,20 +1,27 @@
 from django.contrib import admin
 from pet_mvp.accounts.models import AppUser, Owner, Clinic
+from django.utils.translation import gettext_lazy as _
+class OwnerInline(admin.StackedInline):
+    model = Owner
+    can_delete = False
+    fk_name = 'user'
 
-@admin.register(Owner)
-class OwnerAdmin(admin.ModelAdmin):
-    list_display = ('get_email', 'first_name', 'last_name')
-    search_fields = ('user__email', 'first_name', 'last_name')
+class ClinicInline(admin.StackedInline):
+    model = Clinic
+    can_delete = False
+    fk_name = 'user'
 
-    def get_email(self, obj):
-        return obj.user.email
-    get_email.short_description = 'Email'
 
-@admin.register(Clinic)
-class ClinicAdmin(admin.ModelAdmin):
-    list_display = ('get_email', 'clinic_name', 'clinic_address', 'is_approved')
-    search_fields = ('user__email', 'clinic_name', 'clinic_address')
+@admin.register(AppUser)
+class AppUserAdmin(admin.ModelAdmin):
+    list_display = ('email', 'is_owner', 'is_active', 'default_language')
+    search_fields = ('email', 'phone_number', 'city', 'country')
+    list_filter = ('is_owner', 'is_active')
 
-    def get_email(self, obj):
-        return obj.user.email
-    get_email.short_description = 'Email'
+    def get_inline_instances(self, request, obj=None):
+        if not obj:
+            return []
+        if obj.is_owner:
+            return [OwnerInline(self.model, self.admin_site)]
+        else:
+            return [ClinicInline(self.model, self.admin_site)]
