@@ -373,6 +373,7 @@ def populate_vaccination_records():
     print('Vaccination records for Test Dog populated')
 
 
+
 def set_site_domain():
     from django.contrib.sites.models import Site
 
