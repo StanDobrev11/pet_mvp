@@ -380,6 +380,7 @@ def set_site_domain():
         domain = f'{os.environ.get('BASE_URL')}:8000'
     else:
         domain = f'{os.environ.get('BASE_URL')}'
+        print(os.environ.get('DEBUG'))
 
     Site.objects.update_or_create(id=1, defaults={
         'domain': domain,
