@@ -373,7 +373,24 @@ def populate_vaccination_records():
     print('Vaccination records for Test Dog populated')
 
 
+def set_site_domain():
+    from django.contrib.sites.models import Site
+
+    if os.environ.get('DEBUG'):
+        domain = f'{os.environ.get('BASE_URL')}:8000'
+    else:
+        domain = f'{os.environ.get('BASE_URL')}'
+
+    Site.objects.update_or_create(id=1, defaults={
+        'domain': domain,
+        'name': 'PetMedical'
+    })
+
+    print('Site domain updated to {}'.format(domain))
+
+
 if __name__ == '__main__':
+    set_site_domain()
     create_pets()
     create_pet_markings()
     populate_vaccination_records()

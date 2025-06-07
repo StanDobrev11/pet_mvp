@@ -79,7 +79,8 @@ class CustomPasswordResetConfirmViewTests(TestCase):
             phone_number='0887654323',
             city='Sofia',
             country='Bulgaria',
-            is_active=False
+            is_active=False,
+            is_approved=True,
         )
         self.owner = UserModel.objects.create_owner(
             email='owner2@example.com',
