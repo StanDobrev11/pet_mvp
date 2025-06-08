@@ -21,7 +21,13 @@
                 <p><strong>{% trans "Respiratory Rate:" %}</strong> {{ object.respiratory_rate }}</p>
                 <p><strong>{% trans "Treatment Performed:" %}</strong> {{ object.treatment_performed }}</p>
                 <p><strong>{% trans "Diagnosis:" %}</strong> {{ object.diagnosis }}</p>
-                <p><strong>{% trans "Follow-up Required:" %}</strong> {{ object.follow_up|yesno:"{% trans 'Yes' %},{% trans 'No' %}" }}</p>
+                <p><strong>{% trans "Follow-up Required:" %}</strong>
+                    {% if object.follow_up %}
+                        {% trans "Yes" %}
+                    {% else %}
+                        {% trans "No" %}
+                    {% endif %}
+                </p>
                 <p><strong>{% trans "Additional Notes:" %}</strong> {{ object.notes }}</p>
             </div>
         </div>
