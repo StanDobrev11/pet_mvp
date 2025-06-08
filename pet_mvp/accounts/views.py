@@ -351,10 +351,15 @@ class ApproveTempClinicView(views.View):
 
 
 class CustomPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.validlink:
+            context['validlink'] = True
+        return context
 
     def form_valid(self, form):
         # Save the new password
-        super().form_valid(form)
+        response = super().form_valid(form)
 
         # Activate vet clinic on first-time activation
         if not self.user.is_owner and not self.user.is_active:
@@ -362,12 +367,11 @@ class CustomPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
             self.user.save()
 
         messages.success(self.request, _("Password set successfully. Please continue."))
-        # Redirect depending on user type
-        if self.user.is_owner:
-            return redirect('login')
-        else:
-            return redirect('clinic-login')
+        return response
 
+    def get_success_url(self):
+        # Override default to prevent redirect to /set-password/
+        return reverse('login' if self.user.is_owner else 'clinic-login')
 
 class PasswordEntryView(BaseLoginView):
     template_name = 'accounts/password_entry.html'

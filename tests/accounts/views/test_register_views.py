@@ -258,8 +258,8 @@ class ClinicRegistrationViewTests(TestCase):
         }
         response = self.client.post(url, data=form_data)
 
-        # Should redirect to pet details page
-        self.assertRedirects(response, reverse('pet-details', kwargs={'pk': self.pet.pk}), fetch_redirect_response=False)
+        # Should redirect to access code login page
+        self.assertRedirects(response, reverse('clinic-login'), fetch_redirect_response=False)
 
         # User should be created
         self.assertTrue(UserModel.objects.filter(email='clinic@example.com').exists())

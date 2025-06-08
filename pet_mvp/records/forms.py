@@ -1,5 +1,4 @@
 from datetime import timedelta
-from sys import prefix
 
 from pet_mvp.drugs.models import Vaccine, Drug, FecalTest, UrineTest, BloodTest
 from pet_mvp.records.models import VaccinationRecord, MedicationRecord, MedicalExaminationRecord

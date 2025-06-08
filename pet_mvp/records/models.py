@@ -175,7 +175,6 @@ class MedicalExaminationRecord(TimeStampMixin):
             'Assessment of body condition (1 = underweight, 9 = obese)'),
         blank=True,
         null=True,
-        default=_('Not measured')
     )
 
     temperature = models.DecimalField(
@@ -185,7 +184,6 @@ class MedicalExaminationRecord(TimeStampMixin):
         help_text=_('Body temperature of the animal'),
         blank=True,
         null=True,
-        default=_('Not measured')
     )
 
     heart_rate = models.IntegerField(
@@ -193,7 +191,6 @@ class MedicalExaminationRecord(TimeStampMixin):
         help_text=_('Heart rate in beats per minute'),
         blank=True,
         null=True,
-        default=_('Not measured')
     )
 
     respiratory_rate = models.IntegerField(
@@ -201,7 +198,6 @@ class MedicalExaminationRecord(TimeStampMixin):
         help_text=_('Respiratory rate in breaths per minute'),
         blank=True,
         null=True,
-        default=_('Not measured')
     )
 
     mucous_membrane_color = models.CharField(

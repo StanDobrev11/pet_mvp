@@ -1,10 +1,6 @@
 from abc import ABC, abstractmethod
 from datetime import timedelta
-from uuid import UUID
 
-import qrcode
-import base64
-from io import BytesIO
 from django.contrib import messages
 from django.db import transaction
 from django.http import HttpResponseForbidden
@@ -22,11 +18,6 @@ from pet_mvp.records.forms import FecalTestForm, UrineTestForm, \
 from pet_mvp.records.models import VaccinationRecord, MedicalExaminationRecord, MedicationRecord
 
 
-
-
-
-
-# Create your views here.
 class RecordListView(views.ListView):
     template_name = 'records/record_list.html'
 
