@@ -21,6 +21,7 @@ from django.views.decorators.debug import sensitive_post_parameters
 
 from pet_mvp.access_codes.models import VetPetAccess
 from pet_mvp.accounts.forms import OwnerCreateForm, AccessCodeEmailForm, ClinicRegistrationForm, OwnerEditForm
+from pet_mvp.accounts.models import Clinic
 from pet_mvp.notifications.tasks import send_user_registration_email, send_clinic_admin_approval_request_email, \
     send_clinic_owner_access_request_email, send_clinic_activation_email
 from pet_mvp.pets.models import Pet
@@ -373,6 +374,7 @@ class CustomPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
         # Override default to prevent redirect to /set-password/
         return reverse('login' if self.user.is_owner else 'clinic-login')
 
+
 class PasswordEntryView(BaseLoginView):
     template_name = 'accounts/password_entry.html'
     form_class = AuthenticationForm
@@ -473,3 +475,9 @@ class OwnerEditView(views.UpdateView):
         if self.request.user.socialaccount_set.filter(provider='google').exists():
             form.fields['email'].disabled = True
         return form
+
+
+class ClinicDetailsView(views.DetailView):
+    model = Clinic
+    template_name = 'accounts/clinic_details.html'
+    context_object_name = 'clinic'

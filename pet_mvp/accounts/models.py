@@ -49,6 +49,11 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
         verbose_name=_("Owner status")
     )
 
+    is_clinic = models.BooleanField(
+        default=False,
+        verbose_name=_('Clinic status')
+    )
+    
     phone_number = models.CharField(
         max_length=PHONE_NUMBER_LENGTH,
         blank=True,
