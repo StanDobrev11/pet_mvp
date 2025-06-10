@@ -21,8 +21,8 @@
     "pk": 2,
     "fields": {
       "user": 2,
-      "clinic_name": "Дианавет",
-      "clinic_address": "кв.Галата, ул.Панорамна 24",
+      "name": "Зоо-Вет",
+      "address": "кв.Галата, ул.Панорамна 24",
       "is_approved": true,
       "latitude": null,
       "longitude": null
@@ -50,8 +50,8 @@
     "pk": 3,
     "fields": {
       "user": 3,
-      "clinic_name": "Зоо-Вет",
-      "clinic_address": "кв.Аспарухово, ул.Моряшка 19",
+      "name": "Дианавет",
+      "address": "кв.Аспарухово, ул.Моряшка 19",
       "is_approved": true,
       "latitude": null,
       "longitude": null

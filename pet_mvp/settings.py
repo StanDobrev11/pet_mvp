@@ -217,6 +217,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 # GOOGLE PLATFORM API KEY
 GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY')
+GOOGLE_GEOCODING_API_KEY = os.getenv('GOOGLE_GEOCODING_API_KEY')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -276,7 +277,7 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': crontab(hour='0', minute='0'),
     },
     'get_clinics_geocode_weekly': {
-        'task': 'pet_mvp.common.tasks.geocode_clinics_task',
+        'task': 'pet_mvp.common.tasks.geocode_venues_coordinates_task',
         'schedule': crontab(day_of_week='1' , hour='1', minute='0'),
     },
 }

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-07 21:34+0000\n"
+"POT-Creation-Date: 2025-06-10 03:22+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\pet_mvp\access_codes\admin.py:17 .\pet_mvp\accounts\forms.py:118
+#: .\pet_mvp\access_codes\admin.py:17 .\pet_mvp\accounts\forms.py:119
 #: .\templates\accounts\access_code_email.html:30
 msgid "Access Code"
 msgstr "Код за достъп"
@@ -49,70 +49,71 @@ msgstr "Времеви данни"
 msgid "Is Active"
 msgstr "Активен"
 
-#: .\pet_mvp\accounts\forms.py:14 .\pet_mvp\accounts\models.py:126
+#: .\pet_mvp\accounts\forms.py:14 .\pet_mvp\accounts\models.py:142
 msgid "First name"
 msgstr "Име"
 
-#: .\pet_mvp\accounts\forms.py:15 .\pet_mvp\accounts\models.py:131
+#: .\pet_mvp\accounts\forms.py:15 .\pet_mvp\accounts\models.py:147
 msgid "Last name"
 msgstr "Фамилия"
 
-#: .\pet_mvp\accounts\forms.py:69 .\pet_mvp\accounts\models.py:149
+#: .\pet_mvp\accounts\forms.py:69
 msgid "Clinic name"
 msgstr "Име на клиниката"
 
-#: .\pet_mvp\accounts\forms.py:70 .\pet_mvp\accounts\models.py:154
+#: .\pet_mvp\accounts\forms.py:70
 msgid "Clinic address"
 msgstr "Адрес на клиниката"
 
-#: .\pet_mvp\accounts\forms.py:88
+#: .\pet_mvp\accounts\forms.py:89
 msgid "Enter a password"
 msgstr "Въведи парола"
 
-#: .\pet_mvp\accounts\forms.py:90
+#: .\pet_mvp\accounts\forms.py:91
 msgid "Repeat the password"
 msgstr "Повтори паролата"
 
-#: .\pet_mvp\accounts\forms.py:92
+#: .\pet_mvp\accounts\forms.py:93
 msgid "Phone number (e.g. 0887123456)"
 msgstr "Мобилен номер (напр. 0887123456)."
 
-#: .\pet_mvp\accounts\forms.py:119
+#: .\pet_mvp\accounts\forms.py:120
 #: .\templates\accounts\access_code_email.html:35
 #: .\templates\accounts\password\password_reset_form.html:29
 msgid "Email Address"
 msgstr "Имейл адрес"
 
-#: .\pet_mvp\accounts\forms.py:133
+#: .\pet_mvp\accounts\forms.py:134
 msgid "Invalid Access Code"
 msgstr "Невалиден код за достъп."
 
-#: .\pet_mvp\accounts\forms.py:141
+#: .\pet_mvp\accounts\forms.py:142
 msgid "Enter a valid email address."
 msgstr "Въведи валиден имейл адрес"
 
-#: .\pet_mvp\accounts\models.py:21
+#: .\pet_mvp\accounts\models.py:22
 msgid "A user with that email already exists."
 msgstr "Потребител с този имейл вече съществува."
 
-#: .\pet_mvp\accounts\models.py:22 .\templates\accounts\owner_details.html:17
+#: .\pet_mvp\accounts\models.py:23 .\templates\accounts\clinic_details.html:17
+#: .\templates\accounts\owner_details.html:17
 #: .\templates\accounts\owner_profile.html:22
 msgid "Email"
 msgstr "Имейл"
 
-#: .\pet_mvp\accounts\models.py:27
+#: .\pet_mvp\accounts\models.py:28
 msgid "Date joined"
 msgstr "Дата на присъединяване"
 
-#: .\pet_mvp\accounts\models.py:32
+#: .\pet_mvp\accounts\models.py:33
 msgid "Designates whether the user can log into this admin site."
 msgstr "Определя дали потребителят може да влиза в този административен сайт."
 
-#: .\pet_mvp\accounts\models.py:33
+#: .\pet_mvp\accounts\models.py:34
 msgid "Staff status"
 msgstr "Статус на персонала"
 
-#: .\pet_mvp\accounts\models.py:39
+#: .\pet_mvp\accounts\models.py:40
 msgid ""
 "Designates whether this user should be treated as active. Unselect this "
 "instead of deleting accounts. If the user is vet clinic and not active, an "
@@ -124,59 +125,106 @@ msgstr ""
 "клиника и не е активен, ще бъде изпратен имейл с линк за активация при "
 "въведен валиден имейл адрес."
 
-#: .\pet_mvp\accounts\models.py:44
+#: .\pet_mvp\accounts\models.py:45
 msgid "Active"
 msgstr "Активен"
 
-#: .\pet_mvp\accounts\models.py:49
+#: .\pet_mvp\accounts\models.py:50
 msgid "Owner status"
 msgstr "Статус на собственика"
 
-#: .\pet_mvp\accounts\models.py:56
+#: .\pet_mvp\accounts\models.py:55
+#, fuzzy
+#| msgid "Clinic details:"
+msgid "Clinic status"
+msgstr "Детайли за клиниката:"
+
+#: .\pet_mvp\accounts\models.py:60
+#, fuzzy
+#| msgid "Owner status"
+msgid "Groomer status"
+msgstr "Статус на собственика"
+
+#: .\pet_mvp\accounts\models.py:65
+#, fuzzy
+#| msgid "Staff status"
+msgid "Store status"
+msgstr "Статус на персонала"
+
+#: .\pet_mvp\accounts\models.py:72
 msgid "Phone number"
 msgstr "Телефонен номер"
 
-#: .\pet_mvp\accounts\models.py:63 .\templates\accounts\owner_details.html:29
+#: .\pet_mvp\accounts\models.py:79 .\templates\accounts\clinic_details.html:29
+#: .\templates\accounts\owner_details.html:29
 #: .\templates\accounts\owner_profile.html:28
 msgid "City"
 msgstr "Град"
 
-#: .\pet_mvp\accounts\models.py:70 .\templates\accounts\owner_details.html:32
+#: .\pet_mvp\accounts\models.py:86 .\templates\accounts\clinic_details.html:32
+#: .\templates\accounts\owner_details.html:32
 #: .\templates\accounts\owner_profile.html:31
 msgid "Country"
 msgstr "Държава"
 
-#: .\pet_mvp\accounts\models.py:76
+#: .\pet_mvp\accounts\models.py:92
 msgid "Default language"
 msgstr "Език по подразбиране"
 
-#: .\pet_mvp\accounts\models.py:83
+#: .\pet_mvp\accounts\models.py:99
 msgid "An owner cannot have a clinic profile."
 msgstr "Собственикът не може да има профил на клиника."
 
-#: .\pet_mvp\accounts\models.py:85
+#: .\pet_mvp\accounts\models.py:101
 msgid "A clinic cannot have an owner profile."
 msgstr "Клиниката не може да има профил на собственик."
 
-#: .\pet_mvp\accounts\models.py:121 .\pet_mvp\accounts\models.py:144
+#: .\pet_mvp\accounts\models.py:137 .\pet_mvp\accounts\models.py:213
+#: .\pet_mvp\accounts\models.py:223 .\pet_mvp\accounts\models.py:233
 msgid "User"
 msgstr "Потребител"
 
 #: .\pet_mvp\accounts\models.py:159
-msgid "Clinic approved"
-msgstr "Клиниката е одобрена"
+msgid "Groomer"
+msgstr "Груминг салон"
+
+#: .\pet_mvp\accounts\models.py:160
+#, fuzzy
+#| msgid "Pet Store"
+msgid "Store"
+msgstr "Магазин за домашни любимци"
 
 #: .\pet_mvp\accounts\models.py:165
+msgid "Venue name"
+msgstr "Име на обекта"
+
+#: .\pet_mvp\accounts\models.py:170
+#, fuzzy
+#| msgid "Clinic address"
+msgid "Venue address"
+msgstr "Адрес на клиниката"
+
+#: .\pet_mvp\accounts\models.py:175
+#, fuzzy
+#| msgid "Clinic approved"
+msgid "Is approved"
+msgstr "Клиниката е одобрена"
+
+#: .\pet_mvp\accounts\models.py:181
 msgid "Latitude"
 msgstr "Географска ширина"
 
-#: .\pet_mvp\accounts\models.py:171
+#: .\pet_mvp\accounts\models.py:187
 msgid "Longitude"
 msgstr "Географска дължина"
 
-#: .\pet_mvp\accounts\models.py:176
-msgid "Clinics must have a name and address."
-msgstr "Клиниките трябва да имат име и адрес."
+#: .\pet_mvp\accounts\models.py:193
+msgid "Website"
+msgstr "Уебсайт"
+
+#: .\pet_mvp\accounts\models.py:199
+msgid "Additional services provided"
+msgstr "Допълнително предлагани услуги"
 
 #: .\pet_mvp\accounts\validators.py:8
 msgid "Phone number must be of 10 digits"
@@ -195,11 +243,11 @@ msgid "Enter a valid Bulgarian mobile number (e.g. 0887123456, +359887123456)."
 msgstr ""
 "Въведете валиден български мобилен номер (напр. 0887123456, +359887123456)."
 
-#: .\pet_mvp\accounts\views.py:141 .\pet_mvp\accounts\views.py:253
+#: .\pet_mvp\accounts\views.py:142 .\pet_mvp\accounts\views.py:254
 msgid "Invalid access code."
 msgstr "Невалиден код за достъп."
 
-#: .\pet_mvp\accounts\views.py:165
+#: .\pet_mvp\accounts\views.py:166
 msgid ""
 "Your registration was successful. An approval request has been sent to the "
 "pet's owner."
@@ -207,25 +255,25 @@ msgstr ""
 "Регистрацията ви беше успешна. Заявка за одобрение е изпратена до "
 "собственика на домашния любимец."
 
-#: .\pet_mvp\accounts\views.py:207
+#: .\pet_mvp\accounts\views.py:208
 msgid "Must be a registered pet owner or active and approved vet clinic"
 msgstr ""
 "Трябва да сте регистриран собственик на домашен любимец или активна и "
 "одобрена ветеринарна клиника."
 
-#: .\pet_mvp\accounts\views.py:221
+#: .\pet_mvp\accounts\views.py:222
 msgid "Please login using the access code"
 msgstr "Моля, влезте в системата с помощта на кода за достъп"
 
-#: .\pet_mvp\accounts\views.py:225
+#: .\pet_mvp\accounts\views.py:226
 msgid "You must be approved by the pet's owner first"
 msgstr "Първо трябва да бъдете одобрени от собственика на домашния любимец"
 
-#: .\pet_mvp\accounts\views.py:236
+#: .\pet_mvp\accounts\views.py:237
 msgid "Invalid email or password."
 msgstr "Невалиден имейл или парола."
 
-#: .\pet_mvp\accounts\views.py:261
+#: .\pet_mvp\accounts\views.py:262
 msgid ""
 "This clinic is not in the system. Please complete the registration form "
 "below to request temporary access."
@@ -233,18 +281,18 @@ msgstr ""
 "Тази клиника не е в системата. Моля, попълнете формуляра по-долу, за да "
 "заявите временно разрешение за достъп."
 
-#: .\pet_mvp\accounts\views.py:267
+#: .\pet_mvp\accounts\views.py:268
 msgid "Owners cannot access the website as vets."
 msgstr "Собствениците не могат да влизат в сайта като ветеринарни лекари."
 
-#: .\pet_mvp\accounts\views.py:297
+#: .\pet_mvp\accounts\views.py:298
 msgid ""
 "Activation email sent. Please check your inbox to confirm your clinic access."
 msgstr ""
 "Изпратен е имейл за активация. Моля, проверете входящата си поща, за да "
 "потвърдите достъпа на вашата клиника."
 
-#: .\pet_mvp\accounts\views.py:319
+#: .\pet_mvp\accounts\views.py:320
 msgid ""
 "This clinic is awaiting approval. An access request was sent to the pet's "
 "owner."
@@ -252,31 +300,31 @@ msgstr ""
 "Тази клиника очаква одобрение. Заявка за достъп беше изпратена до "
 "собственика на домашния любимец."
 
-#: .\pet_mvp\accounts\views.py:323
+#: .\pet_mvp\accounts\views.py:324
 msgid "Please correct the errors below."
 msgstr "Моля, коригирайте грешките по-долу."
 
-#: .\pet_mvp\accounts\views.py:334
+#: .\pet_mvp\accounts\views.py:335
 msgid "Invalid approval request."
 msgstr "Невалидна заявка за одобрение."
 
-#: .\pet_mvp\accounts\views.py:348
+#: .\pet_mvp\accounts\views.py:349
 msgid "This clinic was already activated."
 msgstr "Тази клиника вече беше активирана."
 
-#: .\pet_mvp\accounts\views.py:364
+#: .\pet_mvp\accounts\views.py:370
 msgid "Password set successfully. Please continue."
 msgstr "Паролата е зададена успешно. Моля, продължете."
 
-#: .\pet_mvp\accounts\views.py:460
+#: .\pet_mvp\accounts\views.py:466
 msgid "You are not allowed to edit the owner."
 msgstr "Нямате право да редактирате собственика."
 
-#: .\pet_mvp\api\views.py:92 .\pet_mvp\api\views.py:119
+#: .\pet_mvp\api\views.py:90 .\pet_mvp\api\views.py:117
 msgid "Due Soon"
 msgstr "Скоро изтича"
 
-#: .\pet_mvp\api\views.py:103 .\pet_mvp\api\views.py:129
+#: .\pet_mvp\api\views.py:101 .\pet_mvp\api\views.py:127
 msgid "Due Date"
 msgstr "Крайна дата"
 
@@ -574,19 +622,21 @@ msgstr "Обработени {} известия за изтичане на ва
 msgid "N/A"
 msgstr "Не е приложимо"
 
-#: .\pet_mvp\notifications\tasks.py:202 .\pet_mvp\records\forms.py:180
-#: .\pet_mvp\records\forms.py:222
+#: .\pet_mvp\notifications\tasks.py:202 .\pet_mvp\records\forms.py:179
+#: .\pet_mvp\records\forms.py:221
 #: .\templates\emails\medical_report_email.html:177
 #: .\templates\partials\fecal_test_card.html:13
 #: .\templates\partials\fecal_test_card.html:19
+#: .\templates\records\examination_details.html:26
 msgid "Yes"
 msgstr "Да"
 
-#: .\pet_mvp\notifications\tasks.py:202 .\pet_mvp\records\forms.py:180
-#: .\pet_mvp\records\forms.py:222
+#: .\pet_mvp\notifications\tasks.py:202 .\pet_mvp\records\forms.py:179
+#: .\pet_mvp\records\forms.py:221
 #: .\templates\emails\medical_report_email.html:179
 #: .\templates\partials\fecal_test_card.html:13
 #: .\templates\partials\fecal_test_card.html:19
+#: .\templates\records\examination_details.html:28
 #: .\tests\notifications\tasks\test_medical_record_email.py:105
 #: .\tests\notifications\tasks\test_medical_record_email.py:118
 msgid "No"
@@ -778,7 +828,7 @@ msgstr "Шотландска клепоуха"
 msgid "Burmese"
 msgstr "Бурманска"
 
-#: .\pet_mvp\pets\models.py:63
+#: .\pet_mvp\pets\models.py:63 .\templates\accounts\clinic_details.html:20
 msgid "Name"
 msgstr "Име"
 
@@ -935,27 +985,27 @@ msgstr "Лечение и диагноза"
 msgid "Prescribed Records"
 msgstr "Предписани записи"
 
-#: .\pet_mvp\records\forms.py:29 .\templates\partials\vaccine_add_card.html:22
+#: .\pet_mvp\records\forms.py:28 .\templates\partials\vaccine_add_card.html:22
 #: .\templates\records\vaccine_record_add.html:46
 msgid "Select Vaccine"
 msgstr "Избери ваксина"
 
-#: .\pet_mvp\records\forms.py:41 .\pet_mvp\records\models.py:18
+#: .\pet_mvp\records\forms.py:40 .\pet_mvp\records\models.py:18
 #: .\pet_mvp\records\models.py:19
 msgid "Date of vaccination"
 msgstr "Дата на ваксинация"
 
-#: .\pet_mvp\records\forms.py:44 .\pet_mvp\records\forms.py:104
+#: .\pet_mvp\records\forms.py:43 .\pet_mvp\records\forms.py:103
 #: .\pet_mvp\records\models.py:33 .\pet_mvp\records\models.py:81
 msgid "Valid until date"
 msgstr "Валидно до дата"
 
-#: .\pet_mvp\records\forms.py:47 .\pet_mvp\records\models.py:43
+#: .\pet_mvp\records\forms.py:46 .\pet_mvp\records\models.py:43
 #: .\pet_mvp\records\models.py:44
 msgid "Manufacture date"
 msgstr "Дата на производство"
 
-#: .\pet_mvp\records\forms.py:56
+#: .\pet_mvp\records\forms.py:55
 msgid ""
 "This field is automatically filled for Rabies vaccine (21 days after "
 "vaccination)."
@@ -963,21 +1013,21 @@ msgstr ""
 "Това поле се попълва автоматично за ваксината срещу бяс (21 дни след "
 "ваксинацията)."
 
-#: .\pet_mvp\records\forms.py:91
+#: .\pet_mvp\records\forms.py:90
 msgid "Select Medication/Treatment"
 msgstr "Избери лекарство/лечение"
 
-#: .\pet_mvp\records\forms.py:100 .\pet_mvp\records\models.py:74
+#: .\pet_mvp\records\forms.py:99 .\pet_mvp\records\models.py:74
 #: .\pet_mvp\records\models.py:75
 msgid "Date of intake"
 msgstr "Дата на прилагане"
 
-#: .\pet_mvp\records\forms.py:108 .\pet_mvp\records\models.py:85
+#: .\pet_mvp\records\forms.py:107 .\pet_mvp\records\models.py:85
 #: .\pet_mvp\records\models.py:86
 msgid "Time of intake"
 msgstr "Час на прилагане"
 
-#: .\pet_mvp\records\forms.py:122
+#: .\pet_mvp\records\forms.py:121
 msgid "Please select a medication or enter a custom one."
 msgstr "Моля, изберете лекарство или въведете име на ръчно добавено."
 
@@ -1061,9 +1111,7 @@ msgstr "Описание на проблема или причина за пос
 msgid "General health"
 msgstr "Общо здравословно състояние"
 
-#: .\pet_mvp\records\models.py:169 .\pet_mvp\records\models.py:178
-#: .\pet_mvp\records\models.py:188 .\pet_mvp\records\models.py:196
-#: .\pet_mvp\records\models.py:204 .\templates\partials\blood_test_card.html:13
+#: .\pet_mvp\records\models.py:169 .\templates\partials\blood_test_card.html:13
 #: .\templates\partials\blood_test_card.html:20
 #: .\templates\partials\blood_test_card.html:27
 #: .\templates\partials\blood_test_card.html:34
@@ -1087,151 +1135,151 @@ msgstr "Оценка на телесното състояние (1-9)"
 msgid "Assessment of body condition (1 = underweight, 9 = obese)"
 msgstr "Оценка на телесното състояние (1 = поднормено тегло, 9 = затлъстяване)"
 
-#: .\pet_mvp\records\models.py:184
+#: .\pet_mvp\records\models.py:183
 msgid "Temperature (°C)"
 msgstr "Температура (°C)"
 
-#: .\pet_mvp\records\models.py:185
+#: .\pet_mvp\records\models.py:184
 msgid "Body temperature of the animal"
 msgstr "Телесна температура на животното"
 
-#: .\pet_mvp\records\models.py:192
+#: .\pet_mvp\records\models.py:190
 msgid "Heart rate (bpm)"
 msgstr "Пулс (уд/мин)"
 
-#: .\pet_mvp\records\models.py:193
+#: .\pet_mvp\records\models.py:191
 msgid "Heart rate in beats per minute"
 msgstr "Честота на сърдечния ритъм в удари в минута"
 
-#: .\pet_mvp\records\models.py:200
+#: .\pet_mvp\records\models.py:197
 msgid "Respiratory rate"
 msgstr "Дихателна честота"
 
-#: .\pet_mvp\records\models.py:201
+#: .\pet_mvp\records\models.py:198
 msgid "Respiratory rate in breaths per minute"
 msgstr "Брой вдишвания в минута"
 
-#: .\pet_mvp\records\models.py:209
+#: .\pet_mvp\records\models.py:205
 msgid "Mucous Membrane Color"
 msgstr "Цвят на лигавиците"
 
-#: .\pet_mvp\records\models.py:212 .\pet_mvp\records\models.py:220
-#: .\pet_mvp\records\models.py:227 .\pet_mvp\records\models.py:234
-#: .\pet_mvp\records\models.py:241
+#: .\pet_mvp\records\models.py:208 .\pet_mvp\records\models.py:216
+#: .\pet_mvp\records\models.py:223 .\pet_mvp\records\models.py:230
+#: .\pet_mvp\records\models.py:237
 msgid "Not examined"
 msgstr "Не е прегледано"
 
-#: .\pet_mvp\records\models.py:217
+#: .\pet_mvp\records\models.py:213
 msgid "Hydration Status"
 msgstr "Ниво на хидратация"
 
-#: .\pet_mvp\records\models.py:224
+#: .\pet_mvp\records\models.py:220
 msgid "Skin and Coat Condition"
 msgstr "Състояние на кожата и козината"
 
-#: .\pet_mvp\records\models.py:231
+#: .\pet_mvp\records\models.py:227
 msgid "Teeth and Gums"
 msgstr "Зъби и венци"
 
-#: .\pet_mvp\records\models.py:238
+#: .\pet_mvp\records\models.py:234
 msgid "Eyes, Ears, and Nose"
 msgstr "Очи, уши и нос"
 
-#: .\pet_mvp\records\models.py:247
+#: .\pet_mvp\records\models.py:243
 msgid "Medications Prescribed"
 msgstr "Предписани медикаменти"
 
-#: .\pet_mvp\records\models.py:254
+#: .\pet_mvp\records\models.py:250
 msgid "Vaccinations Applied"
 msgstr "Поставени ваксини"
 
-#: .\pet_mvp\records\models.py:260
+#: .\pet_mvp\records\models.py:256
 #: .\templates\emails\medical_report_email.html:110
 #: .\templates\records\examination_add.html:108
 msgid "Blood Test"
 msgstr "Кръвно изследване"
 
-#: .\pet_mvp\records\models.py:268
+#: .\pet_mvp\records\models.py:264
 msgid "Urine Analysis"
 msgstr "Анализ на урина"
 
-#: .\pet_mvp\records\models.py:276
+#: .\pet_mvp\records\models.py:272
 msgid "Fecal Analysis"
 msgstr "Анализ на изпражнения"
 
-#: .\pet_mvp\records\models.py:283
+#: .\pet_mvp\records\models.py:279
 msgid "Treatment Carried Out"
 msgstr "Извършено лечение"
 
-#: .\pet_mvp\records\models.py:284
+#: .\pet_mvp\records\models.py:280
 msgid "Description of the Treatment"
 msgstr "Описание на лечението"
 
-#: .\pet_mvp\records\models.py:288
+#: .\pet_mvp\records\models.py:284
 msgid "Diagnosis"
 msgstr "Диагноза"
 
-#: .\pet_mvp\records\models.py:289
+#: .\pet_mvp\records\models.py:285
 msgid "Description of the final diagnosis"
 msgstr "Описание на крайната диагноза"
 
-#: .\pet_mvp\records\models.py:292
+#: .\pet_mvp\records\models.py:288
 msgid "Not diagnosed"
 msgstr "Няма поставена диагноза"
 
-#: .\pet_mvp\records\models.py:297 .\pet_mvp\records\models.py:298
+#: .\pet_mvp\records\models.py:293 .\pet_mvp\records\models.py:294
 msgid "Follow-up Required?"
 msgstr "Необходимо ли е проследяване?"
 
-#: .\pet_mvp\records\models.py:302
+#: .\pet_mvp\records\models.py:298
 msgid "Examination Notes"
 msgstr "Бележки от прегледа"
 
-#: .\pet_mvp\records\models.py:308
+#: .\pet_mvp\records\models.py:304
 msgid "Unknown Pet"
 msgstr "Неизвестен любимец"
 
-#: .\pet_mvp\records\models.py:309
+#: .\pet_mvp\records\models.py:305
 msgid "Unknown Date"
 msgstr "Неизвестна дата"
 
-#: .\pet_mvp\records\models.py:310
+#: .\pet_mvp\records\models.py:306
 msgid "Medical Record for {} on {}"
 msgstr "Медицински запис за {} на {}"
 
-#: .\pet_mvp\records\views.py:65
+#: .\pet_mvp\records\views.py:56
 msgid "Record saved. You can now add another."
 msgstr "Записът е запазен. Можете да добавите нов."
 
-#: .\pet_mvp\records\views.py:82
+#: .\pet_mvp\records\views.py:73
 msgid "You can no longer add records for this pet."
 msgstr "Вече не можете да добавяте записи за това животно."
 
-#: .\pet_mvp\records\views.py:190
+#: .\pet_mvp\records\views.py:181
 msgid "Please correct the errors in the form."
 msgstr "Моля, коригирайте грешките във формуляра."
 
-#: .\pet_mvp\records\views.py:205
+#: .\pet_mvp\records\views.py:196
 msgid "Vaccine information contains errors."
 msgstr "Информацията за ваксината съдържа грешки."
 
-#: .\pet_mvp\records\views.py:210
+#: .\pet_mvp\records\views.py:201
 msgid "Treatment information contains errors."
 msgstr "Информацията за лечението съдържа грешки."
 
-#: .\pet_mvp\records\views.py:218
+#: .\pet_mvp\records\views.py:209
 msgid "Blood test form contains errors."
 msgstr "Формулярът за кръвен тест съдържа грешки."
 
-#: .\pet_mvp\records\views.py:225
+#: .\pet_mvp\records\views.py:216
 msgid "Urine test form contains errors."
 msgstr "Формулярът за изследване на урина съдържа грешки."
 
-#: .\pet_mvp\records\views.py:232
+#: .\pet_mvp\records\views.py:223
 msgid "Fecal test form contains errors."
 msgstr "Формулярът за фекален тест съдържа грешки."
 
-#: .\pet_mvp\records\views.py:279
+#: .\pet_mvp\records\views.py:270
 msgid "Examination data saved successfully!"
 msgstr "Данните от прегледа бяха успешно запазени!"
 
@@ -1303,6 +1351,29 @@ msgstr "Регистрация на клиника"
 msgid "Register"
 msgstr "Регистрация"
 
+#: .\templates\accounts\clinic_details.html:12
+msgid "Clinic Profile"
+msgstr "Профил на клиниката"
+
+#: .\templates\accounts\clinic_details.html:13
+msgid "Clinic details and contacts"
+msgstr "Детайли и контакти на клиниката"
+
+#: .\templates\accounts\clinic_details.html:23
+msgid "Address"
+msgstr "Адрес"
+
+#: .\templates\accounts\clinic_details.html:26
+#: .\templates\accounts\owner_details.html:26
+#: .\templates\accounts\owner_profile.html:25
+msgid "Phone Number"
+msgstr "Телефонен номер"
+
+#: .\templates\accounts\clinic_details.html:41
+#: .\templates\accounts\owner_details.html:41
+msgid "Back to Dashboard"
+msgstr "Обратно към таблото"
+
 #: .\templates\accounts\login.html:10
 msgid "Welcome to your pet's medical records!"
 msgstr "Добре дошли в медицинските досиета на вашия любимец!"
@@ -1358,19 +1429,10 @@ msgstr "Име"
 msgid "Last Name"
 msgstr "Фамилия"
 
-#: .\templates\accounts\owner_details.html:26
-#: .\templates\accounts\owner_profile.html:25
-msgid "Phone Number"
-msgstr "Телефонен номер"
-
 #: .\templates\accounts\owner_details.html:38
 #: .\templates\accounts\owner_profile.html:37
 msgid "Edit Profile"
 msgstr "Редактирай профила"
-
-#: .\templates\accounts\owner_details.html:41
-msgid "Back to Dashboard"
-msgstr "Обратно към таблото"
 
 #: .\templates\accounts\owner_edit.html:12
 msgid "Edit Owner Profile"
@@ -1523,7 +1585,7 @@ msgid "Dashboard"
 msgstr "Табло"
 
 #: .\templates\base.html:65 .\templates\common\clinic_dashboard.html:23
-#: .\templates\common\dashboard.html:75
+#: .\templates\common\dashboard.html:59
 msgid "Add Pet"
 msgstr "Добави домашен любимец"
 
@@ -1532,7 +1594,7 @@ msgstr "Добави домашен любимец"
 msgid "Profile"
 msgstr "Профил"
 
-#: .\templates\base.html:71 .\templates\common\dashboard.html:76
+#: .\templates\base.html:71 .\templates\common\dashboard.html:60
 #: .\templates\partials\nav_bar.html:27 .\templates\partials\nav_bar.html:30
 msgid "Logout"
 msgstr "Изход"
@@ -1726,39 +1788,35 @@ msgstr "Собственик(ци):"
 msgid "No pets accessible at this moment."
 msgstr "Нямате достъп до домашни любимци в момента."
 
-#: .\templates\common\dashboard.html:16
+#: .\templates\common\dashboard.html:21
 msgid "Pets"
 msgstr "Домашни любимци"
 
-#: .\templates\common\dashboard.html:17
+#: .\templates\common\dashboard.html:22
 msgid "Welcome"
 msgstr "Добре дошли"
 
-#: .\templates\common\dashboard.html:21
-msgid "Find Nearby Pet Services"
-msgstr "Намерете близки услуги за домашни любимци"
+#: .\templates\common\dashboard.html:32
+msgid "Your Pets"
+msgstr "Вашите любимци"
 
-#: .\templates\common\dashboard.html:24
-msgid "Vet Clinic"
-msgstr "Ветеринарна клиника"
+#: .\templates\common\dashboard.html:43
+msgid "Access Code:"
+msgstr "Код за достъп:"
 
-#: .\templates\common\dashboard.html:25
-msgid "Pet Store"
-msgstr "Магазин за домашни любимци"
+#: .\templates\common\dashboard.html:48 .\templates\pet\pet_details.html:49
+msgid "Generate QR Code"
+msgstr "Генериране на QR код"
 
-#: .\templates\common\dashboard.html:26
-msgid "Grooming Salon"
-msgstr "Салон за подстригване"
+#: .\templates\common\dashboard.html:55
+msgid "No pets added yet."
+msgstr "Все още няма добавени домашни любимци."
 
-#: .\templates\common\dashboard.html:29
-msgid "Find Nearby"
-msgstr "Намери наблизо"
-
-#: .\templates\common\dashboard.html:36
+#: .\templates\common\dashboard.html:68
 msgid "Access Codes & QR Codes"
 msgstr "Кодове за достъп и QR кодове"
 
-#: .\templates\common\dashboard.html:38
+#: .\templates\common\dashboard.html:70
 msgid ""
 "Each pet has a unique access code that can be shared with veterinarians or "
 "caregivers to give them access to view or update your pet's medical records."
@@ -1767,7 +1825,7 @@ msgstr ""
 "споделен с ветеринари или лица, полагащи грижи, за да могат да преглеждат "
 "или актуализират медицинските му досиета."
 
-#: .\templates\common\dashboard.html:41
+#: .\templates\common\dashboard.html:73
 msgid ""
 "For faster access at clinics, you can also generate a QR code. When scanned "
 "by a vet, it opens a secure form to create a new medical record — no typing "
@@ -1777,7 +1835,7 @@ msgstr ""
 "Когато бъде сканиран от ветеринар, той отваря защитен формуляр за създаване "
 "на нов медицински запис — без писане."
 
-#: .\templates\common\dashboard.html:45
+#: .\templates\common\dashboard.html:77
 msgid ""
 "Access codes are valid for 4 hours after generation and refresh when viewed. "
 "QR codes are single-use and expire after 10 minutes."
@@ -1785,21 +1843,29 @@ msgstr ""
 "Кодовете за достъп са валидни 4 часа след създаване и се обновяват при "
 "преглед. QR кодовете са за еднократна употреба и изтичат след 10 минути."
 
-#: .\templates\common\dashboard.html:58
-msgid "Access Code:"
-msgstr "Код за достъп:"
-
-#: .\templates\common\dashboard.html:63 .\templates\pet\pet_details.html:49
-msgid "Generate QR Code"
-msgstr "Генериране на QR код"
-
-#: .\templates\common\dashboard.html:71
-msgid "No pets added yet."
-msgstr "Все още няма добавени домашни любимци."
-
-#: .\templates\common\dashboard.html:79
+#: .\templates\common\dashboard.html:87
 msgid "Upcoming Vaccines & Medications"
 msgstr "Предстоящи ваксини и лекарства"
+
+#: .\templates\common\dashboard.html:97
+msgid "Find Nearby Pet Services"
+msgstr "Намерете близки услуги за домашни любимци"
+
+#: .\templates\common\dashboard.html:100
+msgid "Vet Clinic"
+msgstr "Ветеринарна клиника"
+
+#: .\templates\common\dashboard.html:101
+msgid "Pet Store"
+msgstr "Магазин за домашни любимци"
+
+#: .\templates\common\dashboard.html:102
+msgid "Grooming Salon"
+msgstr "Салон за подстригване"
+
+#: .\templates\common\dashboard.html:110
+msgid "Find Nearby"
+msgstr "Намери наблизо"
 
 #: .\templates\common\index.html:10
 msgid "My Pet's Medical Records"
@@ -2245,7 +2311,7 @@ msgid "Follow-up Required:"
 msgstr "Необходимо ли е проследяване?:"
 
 #: .\templates\emails\medical_report_email.html:183
-#: .\templates\records\examination_details.html:25
+#: .\templates\records\examination_details.html:31
 msgid "Additional Notes:"
 msgstr "Допълнителни бележки:"
 
@@ -2255,7 +2321,7 @@ msgid "Vaccinations"
 msgstr "Ваксинации"
 
 #: .\templates\emails\medical_report_email.html:189
-#: .\templates\records\examination_details.html:34
+#: .\templates\records\examination_details.html:40
 msgid "No vaccination records available."
 msgstr "Няма налични записи за ваксинации."
 
@@ -2264,7 +2330,7 @@ msgid "Medications"
 msgstr "Медикаменти"
 
 #: .\templates\emails\medical_report_email.html:195
-#: .\templates\records\examination_details.html:41
+#: .\templates\records\examination_details.html:47
 msgid "No medication records available."
 msgstr "Няма налични записи за медикаменти."
 
@@ -3121,19 +3187,19 @@ msgstr "Премахни изследване на изпражнения"
 msgid "Medical Examination Record for"
 msgstr "Медицински преглед за"
 
-#: .\templates\records\examination_details.html:29
+#: .\templates\records\examination_details.html:35
 msgid "Related Records"
 msgstr "Свързани записи"
 
-#: .\templates\records\examination_details.html:47
+#: .\templates\records\examination_details.html:53
 msgid "No blood test records available."
 msgstr "Няма налични записи за кръвни изследвания."
 
-#: .\templates\records\examination_details.html:53
+#: .\templates\records\examination_details.html:59
 msgid "No urine test records available."
 msgstr "Няма налични записи за изследвания на урина."
 
-#: .\templates\records\examination_details.html:59
+#: .\templates\records\examination_details.html:65
 msgid "No fecal test records available."
 msgstr "Няма налични записи за изследвания на изпражнения."
 
@@ -3281,6 +3347,9 @@ msgstr ""
 #: .\templates\records\vaccine_record_add.html:78
 msgid "Finish Adding Vaccines"
 msgstr "Завърши добавянето на ваксини"
+
+#~ msgid "Clinics must have a name and address."
+#~ msgstr "Клиниките трябва да имат име и адрес."
 
 #~ msgid "Owners must have a first name and last name."
 #~ msgstr "Собствениците трябва да имат име и фамилия."

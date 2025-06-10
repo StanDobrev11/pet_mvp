@@ -21,7 +21,78 @@
             <h2>{% trans "Pets" %}</h2>
             <p class="text-muted">{% trans "Welcome" %}, {{ user.first_name }} {{ user.last_name }}</p>
         </div>
-        <div class="card mb-4 shadow-sm border-0">
+
+        <!-- Two column layout -->
+        <div class="row mb-4">
+            <!-- Left column: Pets and Info -->
+            <div class="col-lg-7">
+                <!-- Pets Card -->
+                <div class="card mb-4 shadow-sm border-0">
+                    <div class="card-body">
+                        <h4 class="card-title text-center mb-4">{% trans "Your Pets" %}</h4>
+                        <ul class="list-group mb-4">
+                            {% for pet in pets %}
+                                <li class="list-group-item">
+                                    <div class="pet-div d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                        <a href="{% url 'pet-details' pk=pet.pk %}" class="fs-5">{{ pet.name }}</a>
+                                        <div class="d-flex gap-3 align-items-center">
+                                            {% with access_code=pet.pet_access_code.first %}
+                                                {% if access_code %}
+                                                    <span class="bg-success text-white rounded px-3 py-2 fs-6"
+                                                          style="letter-spacing: 1px">
+                                                        {% trans "Access Code:" %} {{ access_code.code }}
+                                                    </span>
+                                                    <a href="{% url 'generate-share-qr' pet.pk %}"
+                                                       class="text-white text-decoration-none fs-6 px-3 py-2 rounded"
+                                                       style="background-color: #198754;
+                                                              letter-spacing: 1px">{% trans "Generate QR Code" %}</a>
+                                                {% endif %}
+                                            {% endwith %}
+                                        </div>
+                                    </div>
+                                </li>
+                            {% empty %}
+                                <li class="list-group-item text-muted">{% trans "No pets added yet." %}</li>
+                            {% endfor %}
+                        </ul>
+                        <div class="d-flex justify-content-center gap-3">
+                            <a href="{% url 'pet-add' %}" class="btn btn-success">{% trans "Add Pet" %}</a>
+                            <a href="{% url 'logout' %}" class="btn btn-outline-danger">{% trans "Logout" %}</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Card -->
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title">{% trans "Access Codes & QR Codes" %}</h5>
+                        <p>
+                            {% trans "Each pet has a unique access code that can be shared with veterinarians or caregivers to give them access to view or update your pet's medical records." %}
+                        </p>
+                        <p>
+                            {% trans "For faster access at clinics, you can also generate a QR code. When scanned by a vet, it opens a secure form to create a new medical record — no typing required." %}
+                        </p>
+                        <hr>
+                        <p class="mb-0">
+                            {% trans "Access codes are valid for 4 hours after generation and refresh when viewed. QR codes are single-use and expire after 10 minutes." %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right column: Calendar -->
+            <div class="col-lg-5">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h4 class="card-title text-center mb-4">{% trans "Upcoming Vaccines & Medications" %}</h4>
+                        <div id="calendar" class="custom-calendar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map section below -->
+        <div class="card shadow-sm border-0 mb-4">
             <div class="card-body text-center">
                 <h5 class="card-title mb-3">{% trans "Find Nearby Pet Services" %}</h5>
                 <div class="d-flex justify-content-center align-items-center gap-3 flex-wrap mb-3">
@@ -38,66 +109,11 @@
                     </select>
                     <button id="find-nearby" class="btn btn-primary">🔍 {% trans "Find Nearby" %}</button>
                 </div>
-                <div id="map" style="height: 500px; width: 100%;"></div>
-                {#                This is the basic map search #}
-                {#                <div class="d-flex justify-content-center align-items-center gap-3 flex-wrap">#}
-                {#                    <select id="placeType" class="form-select w-auto">#}
-                {#                        <option value="vet clinic">{% trans "Vet Clinic" %}</option>#}
-                {#                        <option value="pet store">{% trans "Pet Store" %}</option>#}
-                {#                        <option value="pet grooming">{% trans "Grooming Salon" %}</option>#}
-                {#                    </select>#}
-                {#                    <button onclick="locateSelected()" class="btn btn-primary">#}
-                {#                        🔍 {% trans 'Find Nearby' %}#}
-                {#                    </button>#}
-                {##}
-                {#                </div>#}
+                <div id="map-container" style="display: none;">
+                    <div id="map" style="width: 100%; height: 500px;"></div>
+                </div>
             </div>
-            <div class="alert alert-info mb-4" role="alert">
-                <h5 class="alert-heading">{% trans "Access Codes & QR Codes" %}</h5>
-                <p>
-                    {% trans "Each pet has a unique access code that can be shared with veterinarians or caregivers to give them access to view or update your pet's medical records." %}
-                </p>
-                <p>
-                    {% trans "For faster access at clinics, you can also generate a QR code. When scanned by a vet, it opens a secure form to create a new medical record — no typing required." %}
-                </p>
-                <hr>
-                <p class="mb-0">
-                    {% trans "Access codes are valid for 4 hours after generation and refresh when viewed. QR codes are single-use and expire after 10 minutes." %}
-                </p>
-            </div>
-            <ul class="list-group mb-4">
-                {% for pet in pets %}
-                    <li class="list-group-item">
-                        <div class="pet-div d-flex justify-content-between align-items-center flex-wrap gap-2">
-                            <a href="{% url 'pet-details' pk=pet.pk %}" class="fs-5">{{ pet.name }}</a>
-                            <div class="d-flex gap-3 align-items-center">
-                                {% with access_code=pet.pet_access_code.first %}
-                                    {% if access_code %}
-                                        <span class="bg-success text-white rounded px-3 py-2 fs-6"
-                                              style="letter-spacing: 1px">
-                                            {% trans "Access Code:" %} {{ access_code.code }}
-                                        </span>
-                                        <a href="{% url 'generate-share-qr' pet.pk %}"
-                                           class="text-white text-decoration-none fs-6 px-3 py-2 rounded"
-                                           style="background-color: #198754;
-                                                  letter-spacing: 1px">{% trans "Generate QR Code" %}</a>
-                                    {% endif %}
-                                {% endwith %}
-                            </div>
-                        </div>
-                    </li>
-                {% empty %}
-                    <li class="list-group-item text-muted">{% trans "No pets added yet." %}</li>
-                {% endfor %}
-            </ul>
-            <div class="d-flex justify-content-center gap-3">
-                <a href="{% url 'pet-add' %}" class="btn btn-success">{% trans "Add Pet" %}</a>
-                <a href="{% url 'logout' %}" class="btn btn-outline-danger">{% trans "Logout" %}</a>
-            </div>
-            <div class="mt-5 text-center">
-                <h4 class="mb-3">{% trans "Upcoming Vaccines & Medications" %}</h4>
-                <div id="calendar" class="custom-calendar"></div>
-            </div>
+        </div>
     </section>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -209,10 +225,10 @@
         let ownMarker
         let newLocationMarker
         const zoomMapper = {
-            '2': 19,
-            '5': 17,
-            '10': 15,
-            '20': 13,
+            '2': 15,
+            '5': 13,
+            '10': 11,
+            '20': 9,
         }
 
         const iconMapper = {
@@ -290,11 +306,204 @@
                 })
             }
 
-    </script>
-    <script>
+        </script>
+        <script>
+        // Constants
+        const MAP_CONFIG = {
+            testLocation: { lat: 43.18179, lng: 27.89163 }, // Fixed location for testing
+            zoomLevels: {
+                '2': 17,
+                '5': 15,
+                '10': 13,
+                '20': 11,
+            },
+            iconPaths: {
+                'clinic': "{% static 'svgs/clinic.svg' %}",
+                'groomer': "{% static 'svgs/groomer.svg' %}",
+                'store': "{% static 'svgs/store.svg' %}"
+            }
+        };
+
+        // Map state management
+        const MapState = {
+            map: null,
+            ownMarker: null,
+            
+            async initialize(lat, lng, zoom) {
+                const { Map } = await google.maps.importLibrary("maps");
+                const position = { lat, lng };
+                
+                this.map = new Map(document.getElementById("map"), {
+                    center: position,
+                    zoom: zoom,
+                    mapId: "DEMO_MAP_ID",
+                });
+
+                await this.setOwnMarker(position);
+                this.setupMapClickHandler();
+                
+                return this.map;
+            },
+
+            async setOwnMarker(position) {
+                const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+                
+                if (this.ownMarker) {
+                    this.ownMarker.map = null;
+                }
+                
+                this.ownMarker = new AdvancedMarkerElement({
+                    map: this.map,
+                    position: position,
+                    title: "Current position",
+                });
+                
+                this.map.panTo(position);
+            },
+
+            setupMapClickHandler() {
+                this.map.addListener("click", (e) => {
+                    this.setOwnMarker(e.latLng);
+                });
+            },
+
+            getPosition() {
+                return this.ownMarker ? 
+                    { lat: this.ownMarker.position.lat, lng: this.ownMarker.position.lng } : 
+                    MAP_CONFIG.testLocation;
+            }
+        };
+
+        // Venue management
+        const VenueManager = {
+            markers: [],
+            icons: {},
+
+            async fetch(lat, lng, radius, type) {
+                const url = `/api/venues/nearby/?lat=${lat}&lng=${lng}&radius=${radius}&type=${type}`;
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const data = await response.json();
+                    return data.results;
+                } catch (error) {
+                    console.error('Error fetching venues:', error);
+                    throw error;
+                }
+            },
+
+            clearMarkers() {
+                this.markers.forEach(marker => marker.map = null);
+                this.markers = [];
+            },
+
+            createVenueIcon(type) {
+                if (!this.icons) this.icons = {};
+
+                // Create and cache only once
+                if (!this.icons[type]) {
+                    const img = document.createElement("img");
+                    const src = MAP_CONFIG.iconPaths[type] || MAP_CONFIG.iconPaths["clinic"];
+                    img.src = src;
+                    img.style.width = "40px";
+                    img.style.height = "40px";
+                    img.style.objectFit = "contain";
+                    this.icons[type] = img;
+                }
+
+                return this.icons[type].cloneNode(true);
+            },
+            
+            async render(venues, type) {
+                const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+
+
+                try {
+                    // Clear existing markers before adding new ones
+                    this.clearMarkers();
+
+                    venues.forEach(venue => {
+                        if (!venue.lat || !venue.lng) {
+                            console.warn('Venue missing coordinates:', venue);
+                            return;
+                        }
+                        
+                        const marker = new google.maps.marker.AdvancedMarkerElement({
+                            position: {
+                                lat: parseFloat(venue.lat),
+                                lng: parseFloat(venue.lng)
+                            },
+                            map: MapState.map,
+                            content: this.createVenueIcon(type),
+                            title: venue.name
+                        });
+
+                        // Add info window for each marker
+                        const infoWindow = new google.maps.InfoWindow({
+                            content: `
+                                <div class="venue-info">
+                                    <h5>${venue.name}</h5>
+                                    <p>${venue.address || 'Address not available'}</p>
+                                </div>
+                            `
+                        });
+
+                        marker.addListener('gmp-click', () => {
+                            infoWindow.open(MapState.map, marker);
+                        });
+
+                        this.markers.push(marker);
+                    });
+                } catch (error) {
+                    console.error('Error rendering venues:', error);
+                }
+            }
+        };
+
+        // Event handlers
+        async function handleFindNearby(e) {
+            e.preventDefault();
+
+            // Show the map container
+            document.getElementById('map-container').style.display = 'block';
+
+            const type = document.getElementById('placeType').value;
+            const radius = document.getElementById('radiusKm').value;
+
+            await renderMap(radius, type);
+        }
+
+        async function renderMap(radius, type) {
+            try {
+                const position = MapState.map ? 
+                    MapState.getPosition() : 
+                    MAP_CONFIG.testLocation;
+
+                
+                if (!MapState.map) {
+                    await MapState.initialize(position.lat, position.lng, MAP_CONFIG.zoomLevels[radius]);
+                }
+
+                const venues = await VenueManager.fetch(position.lat, position.lng, radius, type);
+                await VenueManager.render(venues, type);
+
+            } catch (error) {
+                console.error('Error rendering map:', error);
+                alert('There was an error loading the map. Please try again.');
+            }
+        }
+
+        // Initialize event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttonFindNearby = document.getElementById('find-nearby');
+            buttonFindNearby?.addEventListener('click', handleFindNearby);
+        });
+
+        // Google Maps API loader
         (g => {
-            var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__",
-                m = document, b = window;
+            var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window;
             b = b[c] || (b[c] = {});
             var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams,
                 u = () => h || (h = new Promise(async (f, n) => {
@@ -312,8 +521,6 @@
         })({
             key: "AIzaSyA-yvuGMHsMRG_PeDlEt1C437ppjkSWRag",
             v: "weekly",
-            // Use the 'v' parameter to indicate the version to use (weekly, beta, alpha, etc.).
-            // Add other bootstrap parameters as needed, using camel case.
         });
     </script>
-{% endblock %}
+{% endblock content %}

@@ -7,8 +7,8 @@ from pet_mvp import settings
 from pet_mvp.accounts.models import Clinic
 
 @shared_task
-def geocode_clinics_task():
-    api_key = settings.GOOGLE_MAPS_API_KEY
+def geocode_venues_coordinates_task():
+    api_key = settings.GOOGLE_GEOCODING_API_KEY
     updated_count = 0
     failures = []
 
