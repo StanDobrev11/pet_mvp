@@ -99,7 +99,7 @@ class MedicalRecordEmailTestCase(TestCase):
         owner_context = call1_kwargs['context']
         self.assertEqual(owner_context['pet_name'], self.test_pet.name)
         self.assertEqual(owner_context['doctor'], self.test_exam.doctor)
-        self.assertEqual(owner_context['clinic_name'], self.test_clinic.clinic.clinic_name)
+        self.assertEqual(owner_context['clinic_name'], self.test_clinic.clinic.name)
         self.assertEqual(owner_context['reason_for_visit'], self.test_exam.reason_for_visit)
         self.assertEqual(owner_context['diagnosis'], self.test_exam.diagnosis)
         self.assertEqual(owner_context['follow_up'], _('No'))
@@ -114,7 +114,7 @@ class MedicalRecordEmailTestCase(TestCase):
         clinic_context = call2_kwargs['context']
         self.assertEqual(clinic_context['pet_name'], self.test_pet.name)
         self.assertEqual(clinic_context['doctor'], self.test_exam.doctor)
-        self.assertEqual(clinic_context['clinic_name'], self.test_clinic.clinic.clinic_name)
+        self.assertEqual(clinic_context['clinic_name'], self.test_clinic.clinic.name)
         self.assertEqual(clinic_context['follow_up'], _('No'))
         self.assertEqual(clinic_context['lang'], 'bg')
 

@@ -17,7 +17,7 @@ def send_clinic_owner_access_request_email(user_owner, user_clinic, pet, url, la
 
     context = {
         "owner_name": user_owner.get_full_name(),
-        "clinic_name": user_clinic.clinic.clinic_name,
+        "clinic_name": user_clinic.clinic.name,
         "clinic_email": user_clinic.email,
         "clinic_phone": user_clinic.phone_number,
         "clinic_city": user_clinic.city,
@@ -43,7 +43,7 @@ def send_clinic_owner_access_request_email(user_owner, user_clinic, pet, url, la
 def send_clinic_admin_approval_request_email(user_clinic, pet):
 
     context = {
-        "clinic_name": user_clinic.clinic.clinic_name,
+        "clinic_name": user_clinic.clinic.name,
         "clinic_email": user_clinic.email,
         "clinic_phone": user_clinic.phone_number,
         "clinic_city": user_clinic.city,
@@ -52,7 +52,7 @@ def send_clinic_admin_approval_request_email(user_clinic, pet):
     }
 
     EmailService.send_template_email_async(
-        subject=_("Clinic approval request: {}").format(user_clinic.clinic.clinic_name),
+        subject=_("Clinic approval request: {}").format(user_clinic.clinic.name),
         to_email=os.getenv("ADMIN_EMAIL"),
         template_name='emails/clinic_admin_approval_request_email.html',
         context=context
@@ -186,8 +186,8 @@ def send_medical_record_email(exam, lang):
         "pet_name": exam.pet.name,
         "date_of_entry": exam.date_of_entry.strftime("%Y-%m-%d"),
         "doctor": exam.doctor,
-        "clinic_name": user_clinic.clinic.clinic_name,
-        "clinic_address": user_clinic.clinic.clinic_address,
+        "clinic_name": user_clinic.clinic.name,
+        "clinic_address": user_clinic.clinic.address,
         "clinic_city": user_clinic.city,
         "clinic_country": user_clinic.country,
         "clinic_phone": user_clinic.phone_number,
@@ -267,8 +267,8 @@ def send_user_registration_email(user, lang):
     # Send clinic registration notification email
 
     context = {
-        "clinic_name": user.clinic.clinic_name,
-        "clinic_address": user.clinic.clinic_address,
+        "clinic_name": user.clinic.name,
+        "clinic_address": user.clinic.address,
         "clinic_email": user.email,
         "clinic_country": user.country,
         "city": user.city,
@@ -277,7 +277,7 @@ def send_user_registration_email(user, lang):
     }
 
     EmailService.send_template_email_async.delay(
-        subject=_("Activate your clinic account: {}").format(user.clinic_name),
+        subject=_("Activate your clinic account: {}").format(user.name),
         to_email=user_email,
         template_name='emails/clinic_registration_notification_email.html',
         context=context,
@@ -292,8 +292,8 @@ def send_clinic_activation_email(user, lang, url):
         
     context = {
         "clinic_email": user_email,
-        "clinic_name": user.clinic.clinic_name,
-        "clinic_address": user.clinic.clinic_address,
+        "clinic_name": user.clinic.name,
+        "clinic_address": user.clinic.address,
         "city": user.city,
         "country": user.country,
         "phone_number": user.phone_number,

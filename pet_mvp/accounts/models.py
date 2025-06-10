@@ -5,9 +5,10 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from pet_mvp.accounts.managers import UserManager
+from pet_mvp.common.mixins import TimeStampMixin
 
 
-class AppUser(AbstractBaseUser, PermissionsMixin):
+class AppUser(AbstractBaseUser, PermissionsMixin, TimeStampMixin):
     USERNAME_FIELD = 'email'
     PHONE_NUMBER_LENGTH = 32
 
@@ -53,7 +54,17 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
         default=False,
         verbose_name=_('Clinic status')
     )
-    
+
+    is_groomer = models.BooleanField(
+        default=False,
+        verbose_name=_('Groomer status')
+    )
+
+    is_store = models.BooleanField(
+        default=False,
+        verbose_name=_('Store status')
+    )
+
     phone_number = models.CharField(
         max_length=PHONE_NUMBER_LENGTH,
         blank=True,
@@ -98,7 +109,7 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
         if self.is_owner and hasattr(self, 'owner_profile'):
             return f"{self.owner_profile.first_name} {self.owner_profile.last_name}"
         elif not self.is_owner and hasattr(self, 'clinic_profile'):
-            return self.clinic_profile.clinic_name
+            return self.clinic_profile.name
         return self.email
 
     def __str__(self):
@@ -140,28 +151,28 @@ class Owner(models.Model):
         return f"{self.first_name} {self.last_name}"
 
 
-class Clinic(models.Model):
-    user = models.OneToOneField(
-        AppUser,
-        on_delete=models.CASCADE,
-        related_name='clinic',
-        limit_choices_to={'is_owner': False},
-        verbose_name=_("User")
+class Venue(models.Model):
+    class Meta:
+        abstract = True
+
+    ADDITIONAL_SERVICE_CHOICE = (
+        ('groomer', _('Groomer')),
+        ('store', _('Store')),
     )
 
-    clinic_name = models.CharField(
+    name = models.CharField(
         max_length=255,
-        verbose_name=_("Clinic name")
+        verbose_name=_("Venue name")
     )
 
-    clinic_address = models.CharField(
+    address = models.CharField(
         max_length=255,
-        verbose_name=_("Clinic address")
+        verbose_name=_("Venue address")
     )
 
     is_approved = models.BooleanField(
         default=False,
-        verbose_name=_("Clinic approved"),
+        verbose_name=_("Is approved"),
     )
 
     latitude = models.FloatField(
@@ -176,10 +187,48 @@ class Clinic(models.Model):
         verbose_name=_("Longitude")
     )
 
-    def clean(self):
-        if not self.clinic_name or not self.clinic_address:
-            raise ValidationError(_("Clinics must have a name and address."))
-        super().clean()
+    website = models.URLField(
+        null=True,
+        blank=True,
+        verbose_name=_("Website")
+    )
+
+    additional_services = models.JSONField(
+        default=list,
+        blank=True,
+        verbose_name=_("Additional services provided"),
+        choices=ADDITIONAL_SERVICE_CHOICE
+    )
 
     def __str__(self):
-        return self.clinic_name
+        return self.name
+
+
+class Clinic(Venue):
+    user = models.OneToOneField(
+        AppUser,
+        on_delete=models.CASCADE,
+        related_name='clinic',
+        limit_choices_to={'is_clinic': True, 'is_owner': False},
+        verbose_name=_("User")
+    )
+
+
+class Groomer(Venue):
+    user = models.OneToOneField(
+        AppUser,
+        on_delete=models.CASCADE,
+        related_name='groomer',
+        limit_choices_to={'is_groomer': True, 'is_owner': False},
+        verbose_name=_("User")
+    )
+
+
+class Store(Venue):
+    user = models.OneToOneField(
+        AppUser,
+        on_delete=models.CASCADE,
+        related_name='store',
+        limit_choices_to={'is_store': True, 'is_owner': False},
+        verbose_name=_("User")
+    )

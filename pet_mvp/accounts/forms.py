@@ -66,12 +66,12 @@ class OwnerEditForm(BaseOwnerForm):
 
 
 class ClinicRegistrationForm(auth_forms.UserCreationForm):
-    clinic_name = forms.CharField(label=_("Clinic name"))
-    clinic_address = forms.CharField(label=_("Clinic address"))
+    name = forms.CharField(label=_("Clinic name"))
+    address = forms.CharField(label=_("Clinic address"))
 
     class Meta:
         model = UserModel
-        fields = ['email', 'phone_number', 'city', 'country', 'clinic_name', 'clinic_address']
+        fields = ['email', 'phone_number', 'city', 'country', 'name', 'address']
 
         widgets = {
             'email': forms.EmailInput(attrs={'readonly': 'readonly'}),
@@ -82,6 +82,7 @@ class ClinicRegistrationForm(auth_forms.UserCreationForm):
 
         if self.instance:
             self.instance.is_owner = False  # enforce clinic flag
+            self.instance.is_clinic = True
 
         for field_name, field in self.fields.items():
             if field_name == 'password1':
@@ -102,12 +103,12 @@ class ClinicRegistrationForm(auth_forms.UserCreationForm):
 
     def save(self, commit=True):
         user = super().save(commit=commit)
-        clinic_name = self.cleaned_data.get('clinic_name')
-        clinic_address = self.cleaned_data.get('clinic_address')
+        name = self.cleaned_data.get('name')
+        address = self.cleaned_data.get('address')
 
         profile, created = Clinic.objects.get_or_create(user=user)
-        profile.clinic_name = clinic_name
-        profile.clinic_address = clinic_address
+        profile.name = name
+        profile.address = address
         if commit:
             profile.save()
 

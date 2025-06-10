@@ -1,13 +1,17 @@
-from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-from django.contrib.auth.decorators import login_required
-from django.utils import timezone
-from datetime import timedelta
 from django.utils.translation import gettext_lazy as _
-from pet_mvp.drugs.models import Vaccine, Drug
+
+from pet_mvp.common.utils import haversine
 from pet_mvp.pets.models import Pet
 from pet_mvp.access_codes.models import VetPetAccess
 from pet_mvp.records.models import VaccinationRecord, MedicationRecord
+from django.utils import timezone
+from django.db.models import Prefetch
+from django.contrib.auth.decorators import login_required
+from datetime import timedelta
+from django.http import JsonResponse
+from django.views.decorators.http import require_GET
+from pet_mvp.accounts.models import Clinic, Store, Groomer
 
 
 # Create your views here.
@@ -48,12 +52,6 @@ def verify_access_code(request):
             for owner in pet.owners.all()
         ]
     })
-
-from django.utils import timezone
-from django.db.models import Prefetch
-from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
-from datetime import timedelta
 
 @login_required
 def get_pet_events(request):
@@ -136,3 +134,38 @@ def get_pet_events(request):
                   })
 
     return JsonResponse(events, safe=False)
+
+
+@require_GET
+def get_venues_nearby(request):
+    try:
+        user_lat = float(request.GET.get("lat"))
+        user_lng = float(request.GET.get("lng"))
+        radius = float(request.GET.get("radius", 5))
+        venue_type= request.GET.get("type")
+
+    except (TypeError, ValueError):
+        return JsonResponse({"error": "Invalid or missing parameters."}, status=400)
+
+    nearby_venues = []
+
+    venue_class_mapper = {
+        'clinic': Clinic,
+        'store': Store,
+        'groomer': Groomer
+    }
+
+    for venue in venue_class_mapper[venue_type].objects.filter(is_approved=True, latitude__isnull=False, longitude__isnull=False):
+        dist = haversine(user_lat, user_lng, venue.latitude, venue.longitude)
+        if dist <= radius:
+            nearby_venues.append({
+                "id": venue.id,
+                "name": venue.name,
+                "address": venue.address,
+                "lat": venue.latitude,
+                "lng": venue.longitude,
+                "distance_km": round(dist, 2),
+                "website": venue.website,
+            })
+
+    return JsonResponse({"results": nearby_venues})

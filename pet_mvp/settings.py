@@ -193,7 +193,6 @@ SOCIALACCOUNT_LOGIN_ON_GET = True
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 SOCIALACCOUNT_ADAPTER = "pet_mvp.accounts.adapters.CustomSocialAccountAdapter"
 
-
 # login url, logout redirect and login redirect should be set
 LOGIN_REDIRECT_URL = reverse_lazy('index')
 LOGIN_URL = reverse_lazy('login')
@@ -215,6 +214,9 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+# GOOGLE PLATFORM API KEY
+GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -263,14 +265,18 @@ CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 CELERY_BEAT_SCHEDULE = {
     'send-vaccine-expiration-notifications-daily': {
         'task': 'pet_mvp.notifications.tasks.send_vaccine_expiration_notifications',
-        'schedule': crontab(hour=7, minute=0),  # runs daily at 07:00 AM
+        'schedule': crontab(hour='7', minute='0'),  # runs daily at 07:00 AM
     },
     'send-treatment-expiration-notifications-daily': {
         'task': 'pet_mvp.notifications.tasks.send_treatment_expiration_notifications',
-        'schedule': crontab(hour=7, minute=30),  # runs daily at 07:30 AM
+        'schedule': crontab(hour='7', minute='30'),  # runs daily at 07:30 AM
     },
     'cleanup-used-qr-codes-daily': {
         'task': 'pet_mvp.access_codes.tasks.qr_code_cleanup_task',
-        'schedule': crontab(hour=0, minute=0),
+        'schedule': crontab(hour='0', minute='0'),
+    },
+    'get_clinics_geocode_weekly': {
+        'task': 'pet_mvp.common.tasks.geocode_clinics_task',
+        'schedule': crontab(day_of_week='1' , hour='1', minute='0'),
     },
 }

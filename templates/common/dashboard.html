@@ -1,13 +1,18 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load static %}
 {% block content %}
     <section class="container mt-5">
         {% if messages %}
             <div class="container mt-3">
                 {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show"
+                         role="alert">
                         {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert"
+                                aria-label="Close"></button>
                     </div>
                 {% endfor %}
             </div>
@@ -19,66 +24,80 @@
         <div class="card mb-4 shadow-sm border-0">
             <div class="card-body text-center">
                 <h5 class="card-title mb-3">{% trans "Find Nearby Pet Services" %}</h5>
-                <div class="d-flex justify-content-center align-items-center gap-3 flex-wrap">
+                <div class="d-flex justify-content-center align-items-center gap-3 flex-wrap mb-3">
                     <select id="placeType" class="form-select w-auto">
-                        <option value="vet clinic">{% trans "Vet Clinic" %}</option>
-                        <option value="pet store">{% trans "Pet Store" %}</option>
-                        <option value="pet grooming">{% trans "Grooming Salon" %}</option>
+                        <option value="clinic">{% trans "Vet Clinic" %}</option>
+                        <option value="store">{% trans "Pet Store" %}</option>
+                        <option value="groomer">{% trans "Grooming Salon" %}</option>
                     </select>
-                    <button onclick="locateSelected()" class="btn btn-primary">
-                        🔍 {% trans 'Find Nearby' %}
-                    </button>
+                    <select id="radiusKm" class="form-select w-auto">
+                        <option value="2">2 km</option>
+                        <option value="5" selected>5 km</option>
+                        <option value="10">10 km</option>
+                        <option value="20">20 km</option>
+                    </select>
+                    <button id="find-nearby" class="btn btn-primary">🔍 {% trans "Find Nearby" %}</button>
                 </div>
+                <div id="map" style="height: 500px; width: 100%;"></div>
+                {#                This is the basic map search #}
+                {#                <div class="d-flex justify-content-center align-items-center gap-3 flex-wrap">#}
+                {#                    <select id="placeType" class="form-select w-auto">#}
+                {#                        <option value="vet clinic">{% trans "Vet Clinic" %}</option>#}
+                {#                        <option value="pet store">{% trans "Pet Store" %}</option>#}
+                {#                        <option value="pet grooming">{% trans "Grooming Salon" %}</option>#}
+                {#                    </select>#}
+                {#                    <button onclick="locateSelected()" class="btn btn-primary">#}
+                {#                        🔍 {% trans 'Find Nearby' %}#}
+                {#                    </button>#}
+                {##}
+                {#                </div>#}
             </div>
-        </div>
-
-        <div class="alert alert-info mb-4" role="alert">
-            <h5 class="alert-heading">{% trans "Access Codes & QR Codes" %}</h5>
-            <p>
-                {% trans "Each pet has a unique access code that can be shared with veterinarians or caregivers to give them access to view or update your pet's medical records." %}
-            </p>
-            <p>
-                {% trans "For faster access at clinics, you can also generate a QR code. When scanned by a vet, it opens a secure form to create a new medical record — no typing required." %}
-            </p>
-            <hr>
-            <p class="mb-0">
-                {% trans "Access codes are valid for 4 hours after generation and refresh when viewed. QR codes are single-use and expire after 10 minutes." %}
-            </p>
-        </div>
-        <ul class="list-group mb-4">
-            {% for pet in pets %}
-                <li class="list-group-item">
-                    <div class="pet-div d-flex justify-content-between align-items-center flex-wrap gap-2">
-                        <a href="{% url 'pet-details' pk=pet.pk %}" class="fs-5">{{ pet.name }}</a>
-                        <div class="d-flex gap-3 align-items-center">
-                            {% with access_code=pet.pet_access_code.first %}
-                                {% if access_code %}
-                                    <span class="bg-success text-white rounded px-3 py-2 fs-6"
-                                          style="letter-spacing: 1px;">
-                {% trans "Access Code:" %} {{ access_code.code }}
-            </span>
-                                    <a href="{% url 'generate-share-qr' pet.pk %}"
-                                       class="text-white text-decoration-none fs-6 px-3 py-2 rounded"
-                                       style="background-color: #198754; letter-spacing: 1px;">
-                                        {% trans "Generate QR Code" %}
-                                    </a>
-                                {% endif %}
-                            {% endwith %}
+            <div class="alert alert-info mb-4" role="alert">
+                <h5 class="alert-heading">{% trans "Access Codes & QR Codes" %}</h5>
+                <p>
+                    {% trans "Each pet has a unique access code that can be shared with veterinarians or caregivers to give them access to view or update your pet's medical records." %}
+                </p>
+                <p>
+                    {% trans "For faster access at clinics, you can also generate a QR code. When scanned by a vet, it opens a secure form to create a new medical record — no typing required." %}
+                </p>
+                <hr>
+                <p class="mb-0">
+                    {% trans "Access codes are valid for 4 hours after generation and refresh when viewed. QR codes are single-use and expire after 10 minutes." %}
+                </p>
+            </div>
+            <ul class="list-group mb-4">
+                {% for pet in pets %}
+                    <li class="list-group-item">
+                        <div class="pet-div d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <a href="{% url 'pet-details' pk=pet.pk %}" class="fs-5">{{ pet.name }}</a>
+                            <div class="d-flex gap-3 align-items-center">
+                                {% with access_code=pet.pet_access_code.first %}
+                                    {% if access_code %}
+                                        <span class="bg-success text-white rounded px-3 py-2 fs-6"
+                                              style="letter-spacing: 1px">
+                                            {% trans "Access Code:" %} {{ access_code.code }}
+                                        </span>
+                                        <a href="{% url 'generate-share-qr' pet.pk %}"
+                                           class="text-white text-decoration-none fs-6 px-3 py-2 rounded"
+                                           style="background-color: #198754;
+                                                  letter-spacing: 1px">{% trans "Generate QR Code" %}</a>
+                                    {% endif %}
+                                {% endwith %}
+                            </div>
                         </div>
-                    </div>
-                </li>
-            {% empty %}
-                <li class="list-group-item text-muted">{% trans "No pets added yet." %}</li>
-            {% endfor %}
-        </ul>
-        <div class="d-flex justify-content-center gap-3">
-            <a href="{% url 'pet-add' %}" class="btn btn-success">{% trans "Add Pet" %}</a>
-            <a href="{% url 'logout' %}" class="btn btn-outline-danger">{% trans "Logout" %}</a>
-        </div>
-        <div class="mt-5 text-center">
-            <h4 class="mb-3">{% trans "Upcoming Vaccines & Medications" %}</h4>
-            <div id="calendar" class="custom-calendar"></div>
-        </div>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item text-muted">{% trans "No pets added yet." %}</li>
+                {% endfor %}
+            </ul>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{% url 'pet-add' %}" class="btn btn-success">{% trans "Add Pet" %}</a>
+                <a href="{% url 'logout' %}" class="btn btn-outline-danger">{% trans "Logout" %}</a>
+            </div>
+            <div class="mt-5 text-center">
+                <h4 class="mb-3">{% trans "Upcoming Vaccines & Medications" %}</h4>
+                <div id="calendar" class="custom-calendar"></div>
+            </div>
     </section>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -102,7 +121,8 @@
             const match = document.cookie.match(/(^| )django_language=([^;]+)/);
             return match ? decodeURIComponent(match[2]) : 'en'; // fallback to 'en'
         }
-
+    </script>
+    <script>
         function locateNearby(type) {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
@@ -122,9 +142,178 @@
             }
         }
 
-        function locateSelected() {
+        const buttonFindNearby = document.getElementById('find-nearby');
+
+        buttonFindNearby.addEventListener('click', (e) => {
+            e.preventDefault();
             const type = document.getElementById('placeType').value;
-            locateNearby(type);
+            const radius = document.getElementById('radiusKm').value;
+
+            renderMap(radius, type);
+
+        })
+
+        async function renderMap(radius, type) {
+            if (map) {
+                const position = ownMarker.position
+                const venues = await getVenues(position.lat, position.lng, radius, type)
+                await updateMap(venues, type)
+            } else {
+                {#const position = await locateSelected()#}
+                const position = {lat: 43.18179, lng: 27.89163}
+                const venues = await getVenues(position.lat, position.lng, radius, type)
+                await initMap(position.lat, position.lng, radius, venues, type);
+            }
         }
+
+
+        async function updateMap(venues, type) {
+            await renderVenues(venues, type);
+        }
+
+
+        // will get the venus for the current location or the cursor location
+        async function getVenues(lat, lng, radius, type) {
+            const url = `/api/venues/nearby/?lat=${lat}&lng=${lng}&radius=${radius}&type=${type}`
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                return data.results
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        // function that returns user's location
+        function locateSelected() {
+            return new Promise((resolve, reject) => {
+                if (!navigator.geolocation) {
+                    reject("Geolocation not supported.");
+                    return;
+                }
+                navigator.geolocation.getCurrentPosition(
+                    position => {
+                        resolve({
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        });
+                    },
+                    error => reject("Location access denied.")
+                );
+            });
+        }
+
+        // Initialize and add the map
+        let map
+        let ownMarker
+        let newLocationMarker
+        const zoomMapper = {
+            '2': 19,
+            '5': 17,
+            '10': 15,
+            '20': 13,
+        }
+
+        const iconMapper = {
+            'clinic': "{% static 'imgs/veterinarian-svgrepo-com.svg' %}",
+            'groomer': "{% static 'imgs/hair-salon-hairdresser-svgrepo-com.svg' %}",
+            'store': "{% static 'imgs/shopping-cart-svgrepo-com.svg' %}"
+        }
+
+        async function initMap(lat, lng, radius, venues, type) {
+
+            const zoom = zoomMapper[radius];
+
+            const {Map, InfoWindow} = await google.maps.importLibrary("maps");
+            const {AdvancedMarkerElement} = await google.maps.importLibrary("marker")
+
+            const position = {lat: lat, lng: lng}
+
+            // the map centered at the initial user's browser's location
+            map = new Map(document.getElementById("map"), {
+                center: position,
+                zoom: zoom,
+                mapId: "DEMO_MAP_ID",
+            });
+            const infoWindow = new InfoWindow();
+
+
+            // the marker of the user's location
+            ownMarker = new AdvancedMarkerElement({
+                map: map,
+                position: position,
+                title: "Current position",
+            });
+
+            map.addListener("click", (e) => {
+                shiftOwnMarker(e.latLng, map);
+            });
+
+            function shiftOwnMarker(latLng, map) {
+                if (ownMarker) {
+                    ownMarker.map = null
+                }
+                ownMarker = new google.maps.marker.AdvancedMarkerElement({
+                    position: latLng,
+                    map: map,
+                });
+                map.panTo(latLng);
+            }
+
+            await renderVenues(venues, type);
+
+
+
+        }
+        async function renderVenues(venues, type) {
+                const {AdvancedMarkerElement} = await google.maps.importLibrary("marker")
+
+                const img = document.createElement("img");
+                img.src = iconMapper[type];
+                img.width = 32;
+                img.height = 32;
+
+                venues.forEach(venue => {
+
+                    const name = venue.name;
+                    const address = venue.address;
+                    const lat = venue.lat;
+                    const lng = venue.lng;
+
+                    const pinSvgMarkerView = new AdvancedMarkerElement({
+                        map: map,
+                        position: {lat: lat, lng: lng},
+                        content: img,
+                        title: name,
+                    });
+                })
+            }
+
+    </script>
+    <script>
+        (g => {
+            var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__",
+                m = document, b = window;
+            b = b[c] || (b[c] = {});
+            var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams,
+                u = () => h || (h = new Promise(async (f, n) => {
+                    await (a = m.createElement("script"));
+                    e.set("libraries", [...r] + "");
+                    for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]);
+                    e.set("callback", c + ".maps." + q);
+                    a.src = `https://maps.${c}apis.com/maps/api/js?` + e;
+                    d[q] = f;
+                    a.onerror = () => h = n(Error(p + " could not load."));
+                    a.nonce = m.querySelector("script[nonce]")?.nonce || "";
+                    m.head.append(a)
+                }));
+            d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n))
+        })({
+            key: "AIzaSyA-yvuGMHsMRG_PeDlEt1C437ppjkSWRag",
+            v: "weekly",
+            // Use the 'v' parameter to indicate the version to use (weekly, beta, alpha, etc.).
+            // Add other bootstrap parameters as needed, using camel case.
+        });
     </script>
 {% endblock %}

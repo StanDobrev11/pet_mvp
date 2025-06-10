@@ -42,8 +42,8 @@ class AppUserModelTests(TestCase):
 
         self.assertEqual(user.email, "clinic@example.com")
         self.assertFalse(user.is_owner)
-        self.assertEqual(clinic.clinic_name, "Test Clinic")
-        self.assertEqual(clinic.clinic_address, "123 Test Street")
+        self.assertEqual(clinic.name, "Test Clinic")
+        self.assertEqual(clinic.address, "123 Test Street")
 
     def test_missing_owner_profile_fields(self):
         """Owner profile must have first_name and last_name."""

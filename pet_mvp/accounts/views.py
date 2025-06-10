@@ -343,7 +343,7 @@ class ApproveTempClinicView(views.View):
             user.is_active = True
             user.save()
             messages.success(request, _(
-                f"Access for clinic '{user.clinic.clinic_name}' has been activated. They can now manage records for '{pet.name}'."
+                f"Access for clinic '{user.clinic.name}' has been activated. They can now manage records for '{pet.name}'."
             ))
         else:
             messages.info(request, _("This clinic was already activated."))
