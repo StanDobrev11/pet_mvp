@@ -1,6 +1,9 @@
 from django.views.decorators.http import require_POST
 from django.utils.translation import gettext_lazy as _
+from django.db.models import Q
+import requests
 
+from pet_mvp import settings
 from pet_mvp.common.utils import haversine
 from pet_mvp.pets.models import Pet
 from pet_mvp.access_codes.models import VetPetAccess
@@ -142,20 +145,35 @@ def get_venues_nearby(request):
         user_lat = float(request.GET.get("lat"))
         user_lng = float(request.GET.get("lng"))
         radius = float(request.GET.get("radius", 5))
-        venue_type= request.GET.get("type")
+        venue_type = request.GET.get("type")
+        include_external = request.GET.get("external") == "true"
+
+        if venue_type not in ["clinic", "groomer", "store", "all"]:
+            raise ValueError("Invalid venue type")
 
     except (TypeError, ValueError):
         return JsonResponse({"error": "Invalid or missing parameters."}, status=400)
 
-    nearby_venues = []
-
     venue_class_mapper = {
-        'clinic': Clinic,
-        'store': Store,
-        'groomer': Groomer
+        'clinic': [Clinic],
+        'groomer': [Clinic, Groomer],
+        'store': [Clinic, Groomer, Store],
+        'all': [Clinic, Groomer, Store],
     }
 
-    for venue in venue_class_mapper[venue_type].objects.filter(is_approved=True, latitude__isnull=False, longitude__isnull=False):
+    venues_queryset = []
+    nearby_venues = []
+
+    for venue_class in venue_class_mapper[venue_type]:
+        base_query = Q(is_approved=True, latitude__isnull=False, longitude__isnull=False)
+
+        if venue_type != venue_class.__name__.lower() and hasattr(venue_class, 'additional_services'):
+            base_query &= Q(additional_services__icontains=venue_type)
+
+        queryset = venue_class.objects.filter(base_query)
+        venues_queryset.extend(list(queryset))
+
+    for venue in venues_queryset:
         dist = haversine(user_lat, user_lng, venue.latitude, venue.longitude)
         if dist <= radius:
             nearby_venues.append({
@@ -166,6 +184,65 @@ def get_venues_nearby(request):
                 "lng": venue.longitude,
                 "distance_km": round(dist, 2),
                 "website": venue.website,
+                "external": False,
             })
 
+    if include_external:
+        keyword_map = {
+            "clinic": "ветеринарна клиника",
+            "groomer": "груминг салон",
+            "store": "магазин за домашни любимци",
+            "all": "домашни любимци"
+        }
+        keyword = keyword_map.get(venue_type, "домашни любимци")
+
+        external_results = get_google_places(user_lat, user_lng, radius, keyword)
+
+        # Deduplicate based on name and proximity within 50 meters
+        filtered_external = []
+        for ext in external_results:
+            ext_lat = ext["lat"]
+            ext_lng = ext["lng"]
+
+            is_duplicate = any(
+                haversine(venue["lat"], venue["lng"], ext_lat, ext_lng) < 0.05  # 50 meters
+                for venue in nearby_venues
+            )
+
+            if not is_duplicate:
+                filtered_external.append(ext)
+
+        nearby_venues.extend(filtered_external)
+
     return JsonResponse({"results": nearby_venues})
+
+def get_google_places(lat, lng, radius, keyword):
+    try:
+        response = requests.get(
+            "https://maps.googleapis.com/maps/api/place/nearbysearch/json",
+            params={
+                "location": f"{lat},{lng}",
+                "radius": radius * 1000,  # meters
+                "keyword": keyword,
+                "key": settings.GOOGLE_PLACES_API_KEY,
+                "language": "bg",
+            },
+            timeout=5
+        )
+        response.raise_for_status()
+        data = response.json()
+        return [
+            {
+                "id": place["place_id"],
+                "name": place["name"],
+                "address": place.get("vicinity", ""),
+                "lat": place["geometry"]["location"]["lat"],
+                "lng": place["geometry"]["location"]["lng"],
+                "distance_km": round(haversine(lat, lng, place["geometry"]["location"]["lat"], place["geometry"]["location"]["lng"]), 2),
+                "website": None,
+                "external": True
+            }
+            for place in data.get("results", [])
+        ]
+    except Exception as e:
+        return []

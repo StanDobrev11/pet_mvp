@@ -21,8 +21,8 @@ class MedicalExaminationReportCreateViewTest(TestCase):
         self.clinic = UserModel.objects.create_clinic(
             email='test-clinic@test.com',
             password='1234',
-            clinic_name='Test Clinic',
-            clinic_address='123 Some Address',
+            name='Test Clinic',
+            address='123 Some Address',
             is_owner=False,
             phone_number='0887142536',
             city='Varna',

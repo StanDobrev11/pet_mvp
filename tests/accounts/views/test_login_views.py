@@ -81,8 +81,8 @@ class PasswordEntryViewTests(TestCase):
         self.user = UserModel.objects.create_clinic(
             email='clinic@example.com',
             password='testpass123',
-            clinic_name='Test Clinic',
-            clinic_address='123 Test Street',
+            name='Test Clinic',
+            address='123 Test Street',
             phone_number='0887654321',
             city='Sofia',
             country='Bulgaria'
@@ -202,8 +202,8 @@ class AccessCodeEmailViewTests(TestCase):
         self.clinic = UserModel.objects.create_clinic(
             email='clinic@example.com',
             password='testpass123',
-            clinic_name='Test Clinic',
-            clinic_address='123 Test Street',
+            name='Test Clinic',
+            address='123 Test Street',
             phone_number='0887654321',
             city='Sofia',
             country='Bulgaria',
@@ -214,8 +214,8 @@ class AccessCodeEmailViewTests(TestCase):
         self.inactive_clinic = UserModel.objects.create_clinic(
             email='inactive@example.com',
             password='testpass123',
-            clinic_name='Inactive Clinic',
-            clinic_address='Nowhere',
+            name='Inactive Clinic',
+            address='Nowhere',
             phone_number='0887000000',
             city='Plovdiv',
             country='Bulgaria',
@@ -226,8 +226,8 @@ class AccessCodeEmailViewTests(TestCase):
         self.unapproved_clinic = UserModel.objects.create_clinic(
             email='unapproved@example.com',
             password='testpass123',
-            clinic_name='Unapproved Clinic',
-            clinic_address='Unknown',
+            name='Unapproved Clinic',
+            address='Unknown',
             phone_number='0887111111',
             city='Varna',
             country='Bulgaria',

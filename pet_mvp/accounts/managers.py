@@ -37,19 +37,20 @@ class UserManager(BaseUserManager):
         return user
 
     @transaction.atomic
-    def create_clinic(self, email, password=None, clinic_name=None, clinic_address=None, is_approved=False, **extra_fields):
+    def create_clinic(self, email, password=None, name=None, address=None, is_approved=False, **extra_fields):
         from pet_mvp.accounts.models import Clinic  # Avoid circular import
 
         extra_fields.setdefault("is_staff", False)
         extra_fields.setdefault("is_superuser", False)
         extra_fields.setdefault("is_owner", False)
+        extra_fields.setdefault("is_clinic", True)
 
         user = self._create_user(email, password, **extra_fields)
 
-        if not clinic_name or not clinic_address:
+        if not name or not address:
             raise ValueError("Clinic must have clinic_name and clinic_address.")
 
-        Clinic.objects.create(user=user, clinic_name=clinic_name, clinic_address=clinic_address, is_approved=is_approved)
+        Clinic.objects.create(user=user, name=name, address=address, is_approved=is_approved)
         return user
 
     def create_superuser(self, email, password=None, first_name=None, last_name=None, **extra_fields):

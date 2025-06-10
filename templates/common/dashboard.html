@@ -24,7 +24,7 @@
 
         <!-- Two column layout -->
         <div class="row mb-4">
-            <!-- Left column: Pets and Info -->
+            <!-- Left column: Pets and Calendar -->
             <div class="col-lg-7">
                 <!-- Pets Card -->
                 <div class="card mb-4 shadow-sm border-0">
@@ -40,12 +40,12 @@
                                                 {% if access_code %}
                                                     <span class="bg-success text-white rounded px-3 py-2 fs-6"
                                                           style="letter-spacing: 1px">
-                                                        {% trans "Access Code:" %} {{ access_code.code }}
-                                                    </span>
+                                                {% trans "Access Code:" %} {{ access_code.code }}
+                                            </span>
                                                     <a href="{% url 'generate-share-qr' pet.pk %}"
                                                        class="text-white text-decoration-none fs-6 px-3 py-2 rounded"
                                                        style="background-color: #198754;
-                                                              letter-spacing: 1px">{% trans "Generate QR Code" %}</a>
+                                                      letter-spacing: 1px">{% trans "Generate QR Code" %}</a>
                                                 {% endif %}
                                             {% endwith %}
                                         </div>
@@ -62,7 +62,17 @@
                     </div>
                 </div>
 
-                <!-- Info Card -->
+                <!-- Calendar Card -->
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h4 class="card-title text-center mb-4">{% trans "Upcoming Vaccines & Medications" %}</h4>
+                        <div id="calendar" class="custom-calendar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right column: Info and Map Legend -->
+            <div class="col-lg-5">
                 <div class="card shadow-sm border-0">
                     <div class="card-body">
                         <h5 class="card-title">{% trans "Access Codes & QR Codes" %}</h5>
@@ -77,19 +87,44 @@
                             {% trans "Access codes are valid for 4 hours after generation and refresh when viewed. QR codes are single-use and expire after 10 minutes." %}
                         </p>
                     </div>
-                </div>
-            </div>
-
-            <!-- Right column: Calendar -->
-            <div class="col-lg-5">
-                <div class="card shadow-sm border-0">
                     <div class="card-body">
-                        <h4 class="card-title text-center mb-4">{% trans "Upcoming Vaccines & Medications" %}</h4>
-                        <div id="calendar" class="custom-calendar"></div>
+                        <h5 class="card-title">{% trans "Map Legend & Instructions" %}</h5>
+                        <div class="d-flex flex-wrap align-items-center gap-4 mb-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="{% static 'svgs/clinic.svg' %}" alt="Vet Clinic"
+                                     style="width: 30px; height: 30px;">
+                                <span>{% trans "Partner Vet Clinic" %}</span>
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="{% static 'svgs/store.svg' %}" alt="Pet Store"
+                                     style="width: 30px; height: 30px;">
+                                <span>{% trans "Partner Pet Store" %}</span>
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="{% static 'svgs/groomer.svg' %}" alt="Grooming Salon"
+                                     style="width: 30px; height: 30px;">
+                                <span>{% trans "Partner Grooming Salon" %}</span>
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="https://maps.google.com/mapfiles/ms/icons/red-dot.png" alt="Public"
+                                     style="width: 30px; height: 30px;">
+                                <span>{% trans "Public Listing from Google Maps" %}</span>
+                            </div>
+                        </div>
+                        <p class="text-muted mb-1">
+                            {% trans "Partner venues are verified pet service providers who have joined the platform. They appear with custom icons." %}
+                        </p>
+                        <p class="text-muted mb-1">
+                            {% trans "You can click on any marker to view the name and address of the venue. Use the dropdown to filter by service type and radius." %}
+                        </p>
+                        <p class="text-muted mb-0">
+                            {% trans "Check the box to also include results from Google Maps. These are not verified and appear in red." %}
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
+
 
         <!-- Map section below -->
         <div class="card shadow-sm border-0 mb-4">
@@ -108,6 +143,12 @@
                         <option value="20">20 km</option>
                     </select>
                     <button id="find-nearby" class="btn btn-primary">🔍 {% trans "Find Nearby" %}</button>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="includeExternal"/>
+                        <label class="form-check-label" for="includeExternal">
+                            {% trans "Include public venues from Google Maps" %}
+                        </label>
+                    </div>
                 </div>
                 <div id="map-container" style="display: none;">
                     <div id="map" style="width: 100%; height: 500px;"></div>
@@ -125,6 +166,7 @@
                 locale: getDjangoLanguageFromCookie(),
                 events: '{% url "get-pet-events" %}',
                 height: 'auto',
+                fixedWeekCount: false,
                 headerToolbar: {
                     left: 'title',
                     right: 'prev,next'
@@ -138,179 +180,11 @@
             return match ? decodeURIComponent(match[2]) : 'en'; // fallback to 'en'
         }
     </script>
+
     <script>
-        function locateNearby(type) {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const lat = position.coords.latitude;
-                        const lng = position.coords.longitude;
-                        const query = encodeURIComponent(type);
-                        const url = `https://www.google.com/maps/search/${query}/@${lat},${lng},15z`;
-                        window.open(url, '_blank');
-                    },
-                    () => {
-                        alert("Location access denied. Please enable it to find nearby places.");
-                    }
-                );
-            } else {
-                alert("Geolocation is not supported by your browser.");
-            }
-        }
-
-        const buttonFindNearby = document.getElementById('find-nearby');
-
-        buttonFindNearby.addEventListener('click', (e) => {
-            e.preventDefault();
-            const type = document.getElementById('placeType').value;
-            const radius = document.getElementById('radiusKm').value;
-
-            renderMap(radius, type);
-
-        })
-
-        async function renderMap(radius, type) {
-            if (map) {
-                const position = ownMarker.position
-                const venues = await getVenues(position.lat, position.lng, radius, type)
-                await updateMap(venues, type)
-            } else {
-                {#const position = await locateSelected()#}
-                const position = {lat: 43.18179, lng: 27.89163}
-                const venues = await getVenues(position.lat, position.lng, radius, type)
-                await initMap(position.lat, position.lng, radius, venues, type);
-            }
-        }
-
-
-        async function updateMap(venues, type) {
-            await renderVenues(venues, type);
-        }
-
-
-        // will get the venus for the current location or the cursor location
-        async function getVenues(lat, lng, radius, type) {
-            const url = `/api/venues/nearby/?lat=${lat}&lng=${lng}&radius=${radius}&type=${type}`
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-
-                return data.results
-            } catch (error) {
-                console.log(error);
-            }
-        }
-
-        // function that returns user's location
-        function locateSelected() {
-            return new Promise((resolve, reject) => {
-                if (!navigator.geolocation) {
-                    reject("Geolocation not supported.");
-                    return;
-                }
-                navigator.geolocation.getCurrentPosition(
-                    position => {
-                        resolve({
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude
-                        });
-                    },
-                    error => reject("Location access denied.")
-                );
-            });
-        }
-
-        // Initialize and add the map
-        let map
-        let ownMarker
-        let newLocationMarker
-        const zoomMapper = {
-            '2': 15,
-            '5': 13,
-            '10': 11,
-            '20': 9,
-        }
-
-        const iconMapper = {
-            'clinic': "{% static 'imgs/veterinarian-svgrepo-com.svg' %}",
-            'groomer': "{% static 'imgs/hair-salon-hairdresser-svgrepo-com.svg' %}",
-            'store': "{% static 'imgs/shopping-cart-svgrepo-com.svg' %}"
-        }
-
-        async function initMap(lat, lng, radius, venues, type) {
-
-            const zoom = zoomMapper[radius];
-
-            const {Map, InfoWindow} = await google.maps.importLibrary("maps");
-            const {AdvancedMarkerElement} = await google.maps.importLibrary("marker")
-
-            const position = {lat: lat, lng: lng}
-
-            // the map centered at the initial user's browser's location
-            map = new Map(document.getElementById("map"), {
-                center: position,
-                zoom: zoom,
-                mapId: "DEMO_MAP_ID",
-            });
-            const infoWindow = new InfoWindow();
-
-
-            // the marker of the user's location
-            ownMarker = new AdvancedMarkerElement({
-                map: map,
-                position: position,
-                title: "Current position",
-            });
-
-            map.addListener("click", (e) => {
-                shiftOwnMarker(e.latLng, map);
-            });
-
-            function shiftOwnMarker(latLng, map) {
-                if (ownMarker) {
-                    ownMarker.map = null
-                }
-                ownMarker = new google.maps.marker.AdvancedMarkerElement({
-                    position: latLng,
-                    map: map,
-                });
-                map.panTo(latLng);
-            }
-
-            await renderVenues(venues, type);
-
-
-
-        }
-        async function renderVenues(venues, type) {
-                const {AdvancedMarkerElement} = await google.maps.importLibrary("marker")
-
-                const img = document.createElement("img");
-                img.src = iconMapper[type];
-                img.width = 32;
-                img.height = 32;
-
-                venues.forEach(venue => {
-
-                    const name = venue.name;
-                    const address = venue.address;
-                    const lat = venue.lat;
-                    const lng = venue.lng;
-
-                    const pinSvgMarkerView = new AdvancedMarkerElement({
-                        map: map,
-                        position: {lat: lat, lng: lng},
-                        content: img,
-                        title: name,
-                    });
-                })
-            }
-
-        </script>
-        <script>
         // Constants
         const MAP_CONFIG = {
-            testLocation: { lat: 43.18179, lng: 27.89163 }, // Fixed location for testing
+            testLocation: {lat: 43.18179, lng: 27.89163}, // Fixed location for testing
             zoomLevels: {
                 '2': 17,
                 '5': 15,
@@ -320,7 +194,8 @@
             iconPaths: {
                 'clinic': "{% static 'svgs/clinic.svg' %}",
                 'groomer': "{% static 'svgs/groomer.svg' %}",
-                'store': "{% static 'svgs/store.svg' %}"
+                'store': "{% static 'svgs/store.svg' %}",
+                'external': "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
             }
         };
 
@@ -328,11 +203,11 @@
         const MapState = {
             map: null,
             ownMarker: null,
-            
+
             async initialize(lat, lng, zoom) {
-                const { Map } = await google.maps.importLibrary("maps");
-                const position = { lat, lng };
-                
+                const {Map} = await google.maps.importLibrary("maps");
+                const position = {lat, lng};
+
                 this.map = new Map(document.getElementById("map"), {
                     center: position,
                     zoom: zoom,
@@ -341,23 +216,23 @@
 
                 await this.setOwnMarker(position);
                 this.setupMapClickHandler();
-                
+
                 return this.map;
             },
 
             async setOwnMarker(position) {
-                const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-                
+                const {AdvancedMarkerElement} = await google.maps.importLibrary("marker");
+
                 if (this.ownMarker) {
                     this.ownMarker.map = null;
                 }
-                
+
                 this.ownMarker = new AdvancedMarkerElement({
                     map: this.map,
                     position: position,
                     title: "Current position",
                 });
-                
+
                 this.map.panTo(position);
             },
 
@@ -368,8 +243,8 @@
             },
 
             getPosition() {
-                return this.ownMarker ? 
-                    { lat: this.ownMarker.position.lat, lng: this.ownMarker.position.lng } : 
+                return this.ownMarker ?
+                    {lat: this.ownMarker.position.lat, lng: this.ownMarker.position.lng} :
                     MAP_CONFIG.testLocation;
             }
         };
@@ -380,7 +255,10 @@
             icons: {},
 
             async fetch(lat, lng, radius, type) {
-                const url = `/api/venues/nearby/?lat=${lat}&lng=${lng}&radius=${radius}&type=${type}`;
+                const includeExternal = document.getElementById('includeExternal').checked;
+
+                const url = `/api/venues/nearby/?lat=${lat}&lng=${lng}&radius=${radius}&type=${type}&external=${includeExternal}`;
+
                 try {
                     const response = await fetch(url);
                     if (!response.ok) {
@@ -399,65 +277,75 @@
                 this.markers = [];
             },
 
-            createVenueIcon(type) {
+            createVenueIcon(type, isExternal = false) {
                 if (!this.icons) this.icons = {};
 
-                // Create and cache only once
-                if (!this.icons[type]) {
+                const iconKey = isExternal ? `external_${type}` : type;
+
+                if (!this.icons[iconKey]) {
                     const img = document.createElement("img");
-                    const src = MAP_CONFIG.iconPaths[type] || MAP_CONFIG.iconPaths["clinic"];
+                    const src = isExternal
+                        ? MAP_CONFIG.iconPaths["external"]  // fallback icon for non-partners
+                        : MAP_CONFIG.iconPaths[type] || MAP_CONFIG.iconPaths["clinic"];
+
                     img.src = src;
                     img.style.width = "40px";
                     img.style.height = "40px";
                     img.style.objectFit = "contain";
-                    this.icons[type] = img;
+
+                    this.icons[iconKey] = img;
                 }
 
-                return this.icons[type].cloneNode(true);
+                return this.icons[iconKey].cloneNode(true);
             },
-            
-            async render(venues, type) {
-                const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
+            async render(venues, type) {
+                const {AdvancedMarkerElement} = await google.maps.importLibrary("marker");
 
                 try {
-                    // Clear existing markers before adding new ones
                     this.clearMarkers();
+                    this.activeInfoWindow = null;  // reset tracking of open InfoWindow
 
                     venues.forEach(venue => {
                         if (!venue.lat || !venue.lng) {
-                            console.warn('Venue missing coordinates:', venue);
+                            console.warn("Venue missing coordinates:", venue);
                             return;
                         }
-                        
-                        const marker = new google.maps.marker.AdvancedMarkerElement({
+
+                        const isExternal = venue.external === true;
+
+                        const marker = new AdvancedMarkerElement({
                             position: {
                                 lat: parseFloat(venue.lat),
                                 lng: parseFloat(venue.lng)
                             },
                             map: MapState.map,
-                            content: this.createVenueIcon(type),
+                            content: this.createVenueIcon(type, isExternal),
                             title: venue.name
                         });
 
-                        // Add info window for each marker
                         const infoWindow = new google.maps.InfoWindow({
                             content: `
-                                <div class="venue-info">
-                                    <h5>${venue.name}</h5>
-                                    <p>${venue.address || 'Address not available'}</p>
-                                </div>
-                            `
+                    <div class="venue-info">
+                        <h5>${venue.name}</h5>
+                        <p>${venue.address || 'Address not available'}</p>
+                        ${isExternal ? '<small style="color:gray;">(Public Google Maps listing)</small>' : ''}
+                    </div>
+                `
                         });
 
                         marker.addListener('gmp-click', () => {
+                            if (this.activeInfoWindow) {
+                                this.activeInfoWindow.close();
+                            }
                             infoWindow.open(MapState.map, marker);
+                            this.activeInfoWindow = infoWindow;
                         });
 
                         this.markers.push(marker);
                     });
                 } catch (error) {
-                    console.error('Error rendering venues:', error);
+                    console.error("Error rendering venues:", error);
                 }
             }
         };
@@ -477,11 +365,11 @@
 
         async function renderMap(radius, type) {
             try {
-                const position = MapState.map ? 
-                    MapState.getPosition() : 
+                const position = MapState.map ?
+                    MapState.getPosition() :
                     MAP_CONFIG.testLocation;
 
-                
+
                 if (!MapState.map) {
                     await MapState.initialize(position.lat, position.lng, MAP_CONFIG.zoomLevels[radius]);
                 }
@@ -503,7 +391,8 @@
 
         // Google Maps API loader
         (g => {
-            var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window;
+            var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__",
+                m = document, b = window;
             b = b[c] || (b[c] = {});
             var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams,
                 u = () => h || (h = new Promise(async (f, n) => {

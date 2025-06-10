@@ -7,14 +7,15 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.utils.timezone import make_aware
 
-
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pet_mvp.settings')
 django.setup()
 
-from pet_mvp.accounts.models import Clinic
 from pet_mvp.records.models import VaccinationRecord, MedicationRecord, MedicalExaminationRecord
 from pet_mvp.drugs.models import Vaccine, Drug, BloodTest, UrineTest, FecalTest
 from pet_mvp.pets.models import Pet, Transponder, Tattoo
+
+from django.utils.dateparse import parse_datetime
+from pet_mvp.accounts.models import AppUser, Groomer
 
 UserModel = get_user_model()
 
@@ -133,7 +134,6 @@ def create_user(email, password):
 
 
 def create_pets():
-
     try:
         dog_pet = Pet.objects.create(
             name_en='Test Dog',
@@ -392,10 +392,315 @@ def set_site_domain():
     print('Site domain updated to {}'.format(domain))
 
 
+def create_clinics():
+    fixtures = [
+        {
+            "user": {
+                "email": "zoovet@pet-mvp.com",
+                "password": "pbkdf2_sha256$1000000$1F6RG951sX7uL9jjSs5lyO$L3oHgT+oj872IR9T791TdSKGVBjH3gDH296dkljoVlw=",
+                "is_owner": False,
+                "is_clinic": True,
+                "is_active": True,
+                "is_staff": False,
+                "phone_number": "887877746",
+                "city": "Варна",
+                "country": "Българиа",
+                "default_language": "bg",
+                "date_joined": "2024-01-01T00:00:00Z",
+            },
+            "clinic": {
+                "clinic_name": "Зоо-Вет",
+                "clinic_address": "кв.Галата, ул.Панорамна 24",
+                "is_approved": True,
+                "additional_services": ["store"],
+                "website": "https://www.facebook.com/p/%D0%92%D0%B5%D1%82%D0%B5%D1%80%D0%B8%D0%BD%D0%B0%D1%80%D0%BD%D0%B0-%D0%9A%D0%BB%D0%B8%D0%BD%D0%B8%D0%BA%D0%B0-%D0%97%D0%BE%D0%BE-%D0%92%D0%B5%D1%82-%D0%BA%D0%B2-%D0%93%D0%B0%D0%BB%D0%B0%D1%82%D0%B0-100063558821449/"
+            },
+        },
+        {
+            "user": {
+                "email": "dianavet@pet-mvp.com",
+                "password": "pbkdf2_sha256$1000000$h1g5uBeTnqCaqPxcJbN4Gc$pUrd9oM5X7uu8Y/Y59pl9wtfawVOQFZOR0EakBgtKrM=",
+                "is_owner": False,
+                "is_clinic": True,
+                "is_active": False,
+                "is_staff": False,
+                "phone_number": "0884672308",
+                "city": "Варна",
+                "country": "Българиа",
+                "default_language": "bg",
+                "date_joined": "2024-01-01T00:00:00Z",
+            },
+            "clinic": {
+                "clinic_name": "Дианавет",
+                "clinic_address": "кв.Аспарухово, ул.Моряшка 19",
+                "is_approved": True,
+                "additional_services": ["store"],
+                "website": "http://dianavet.com/"
+            },
+        },
+        {
+            "user": {
+                "email": "ovk@pet-mvp.com",
+                "password": "pbkdf2_sha256$1000000$aNfD4HIXOm0a68RIPlrDde$ixQwfRXLQBRBGY11UUzgBn+Duj1uVJyzkj/nSxDMsl4=",
+                "is_owner": False,
+                "is_clinic": True,
+                "is_active": False,
+                "is_staff": False,
+                "phone_number": "",
+                "city": "Варна",
+                "country": "Българиа",
+                "default_language": "bg",
+                "date_joined": "2024-01-01T00:00:00Z",
+            },
+            "clinic": {
+                "clinic_name": "Обединена Ветеринарна Клиника",
+                "clinic_address": "ул. Царевец 34",
+                "is_approved": True,
+                "website": "https://ovk-varna.com/"
+            },
+        },
+        {
+            "user": {
+                "email": "elpida@pet-mvp.com",
+                "password": "pbkdf2_sha256$1000000$pwdAuZNc2NZjgxMet1VCbQ$4Ol3BaJMmgrana82lSIbb2nmJnzpuLLnTMTQS7VD1pE=",
+                "is_owner": False,
+                "is_clinic": True,
+                "is_active": False,
+                "is_staff": False,
+                "phone_number": "0899694299",
+                "city": "Варна",
+                "country": "Българиа",
+                "default_language": "bg",
+                "date_joined": "2024-01-01T00:00:00Z",
+            },
+            "clinic": {
+                "clinic_name": "Елпида",
+                "clinic_address": "ул. Цанко Церковски 5",
+                "is_approved": True,
+                "additional_services": ["store"],
+                "website": "https://elpida-varna.bg/"
+            },
+        },
+    ]
+
+    for entry in fixtures:
+        user_data = entry["user"]
+        clinic_data = entry["clinic"]
+
+        email = user_data.pop("email")
+        password = user_data.pop("password")
+        city = user_data.pop("city")
+        country = user_data.pop("country")
+        phone_number = user_data.pop("phone_number")
+
+        existing_user = UserModel.objects.filter(email=email).first()
+        if existing_user:
+            print(f"✅ Skipping: User '{email}' already exists.")
+            continue
+
+        user = UserModel.objects.create_clinic(
+            email=email,
+            password=password,
+            phone_number=phone_number,
+            country=country,
+            city=city,
+            name=clinic_data["clinic_name"],
+            address=clinic_data["clinic_address"],
+            is_approved=clinic_data.get("is_approved", False),
+            **user_data
+        )
+
+        clinic = user.clinic
+        clinic.additional_services = clinic_data.get("additional_services", [])
+        clinic.save()
+
+        print(f"🆕 Created clinic '{clinic.name}' for user '{user.email}'")
+
+
+
+def create_groomers():
+    fixtures = [
+        {
+            "user": {
+                "email": "lapichka@pet-mvp.com",
+                "password": "pbkdf2_sha256$1000000$6Fo177TLJ3M4XcmiBHuq22$R0uFk/tgUExLe7asVIFifEbuM949XicOkNZ1HkKoPRA=",
+                "is_owner": False,
+                "is_groomer": True,
+                "is_active": True,
+                "is_staff": False,
+                "phone_number": "+359896857522",
+                "city": "Варна",
+                "country": "Българиа",
+                "default_language": "bg",
+                "date_joined": "2024-01-01T00:00:00Z",
+            },
+            "clinic": {
+                "name": "Лапичка",
+                "address": "ул. „Генерал Гурко“ 78",
+                "is_approved": True,
+                "website": "https://www.facebook.com/%D0%97%D0%BE%D0%BE%D1%86%D0%B5%D0%BD%D1%82%D1%8A%D1%80-%D0%9B%D0%B0%D0%BF%D0%B8%D1%87%D0%BA%D0%B0-Grooming-Studio-996140623737127/"
+            },
+        },
+        {
+            "user": {
+                "email": "tedigroomer@pet-mvp.com",
+                "password": "pbkdf2_sha256$1000000$whS5caq9BQLAnEb0JjNrMo$gU/7mViNenrdJHeNZJiP/f37OhLLjHLw4IhwNEsQkOA=",
+                "is_owner": False,
+                "is_groomer": True,
+                "is_active": True,
+                "is_staff": False,
+                "phone_number": "+359889316673",
+                "city": "Варна",
+                "country": "Българиа",
+                "default_language": "bg",
+                "date_joined": "2024-01-01T00:00:00Z",
+            },
+            "clinic": {
+                "name": "Зоо център 'Теди'",
+                "address": "кв. Аспарухово, ул. „Свети Свети Кирил и Методий“ 39",
+                "is_approved": True,
+                "website": ""
+            },
+        },
+    ]
+
+    for entry in fixtures:
+        user_data = entry["user"]
+        groomer_data = entry["clinic"]
+
+        email = user_data["email"]
+
+        if AppUser.objects.filter(email=email).exists():
+            print(f"⏭ User already exists: {email}")
+            continue
+
+        user = AppUser.objects.create(
+            email=email,
+            password=user_data["password"],  # Already hashed
+            is_owner=user_data["is_owner"],
+            is_groomer=user_data["is_groomer"],
+            is_active=user_data["is_active"],
+            is_staff=user_data["is_staff"],
+            phone_number=user_data["phone_number"],
+            city=user_data["city"],
+            country=user_data["country"],
+            default_language=user_data["default_language"],
+            date_joined=parse_datetime(user_data["date_joined"])
+        )
+
+        groomer = Groomer.objects.create(
+            user=user,
+            name=groomer_data["name"],
+            address=groomer_data["address"],
+            website=groomer_data["website"],
+            is_approved=groomer_data["is_approved"]
+        )
+
+        print(f"✅ Created groomer: {groomer.name} ({email})")
+
+
+from django.utils.dateparse import parse_datetime
+from pet_mvp.accounts.models import AppUser, Store  # assuming you have a Store model
+
+def create_stores():
+    fixtures = [
+        {
+            "user": {
+                "email": "alfapet@pet-mvp.com",
+                "password": "pbkdf2_sha256$1000000$pkOFe9pfSEIgqsvWzZeonF$kgAx4rzg+EpgTLn39WODEbdVVAy9ejEucLZJ/4s+558=",
+                "is_owner": False,
+                "is_store": True,
+                "is_active": True,
+                "is_staff": False,
+                "phone_number": "+359879888375",
+                "city": "Варна",
+                "country": "Българиа",
+                "default_language": "bg",
+                "date_joined": "2024-01-01T00:00:00Z",
+            },
+            "clinic": {
+                "name": "Алфа Пет",
+                "address": "кв. Аспарухово, ул. „Моряшка“ 19",
+                "is_approved": True,
+                "website": ""
+            },
+        },
+        {
+            "user": {
+                "email": "zooland@pet-mvp.com",
+                "password": "pbkdf2_sha256$1000000$UOcEHzxPGsybUO9BHiWg7x$SI90UG5dEtAfdyWhxq1u2lK3UoX5gkYALcVMBg6jRuY=",
+                "is_owner": False,
+                "is_store": True,
+                "is_active": True,
+                "is_staff": False,
+                "phone_number": "+359877965422",
+                "city": "Варна",
+                "country": "Българиа",
+                "default_language": "bg",
+                "date_joined": "2024-01-01T00:00:00Z",
+            },
+            "clinic": {
+                "name": "Зооборса Зооланд",
+                "address": "Централна Жп Гара Одесос, ул. „Девня“ 17",
+                "is_approved": True,
+                "website": ""
+            },
+        },
+    ]
+
+    for entry in fixtures:
+        user_data = entry["user"]
+        store_data = entry["clinic"]
+
+        email = user_data["email"]
+
+        if AppUser.objects.filter(email=email).exists():
+            print(f"⏭ User already exists: {email}")
+            continue
+
+        user = AppUser.objects.create(
+            email=email,
+            password=user_data["password"],  # already hashed
+            is_owner=user_data["is_owner"],
+            is_store=user_data["is_store"],
+            is_active=user_data["is_active"],
+            is_staff=user_data["is_staff"],
+            phone_number=user_data["phone_number"],
+            city=user_data["city"],
+            country=user_data["country"],
+            default_language=user_data["default_language"],
+            date_joined=parse_datetime(user_data["date_joined"])
+        )
+
+        store = Store.objects.create(
+            user=user,
+            name=store_data["name"],
+            address=store_data["address"],
+            website=store_data["website"],
+            is_approved=store_data["is_approved"]
+        )
+
+        print(f"✅ Created store: {store.name} ({email})")
+
+
+def set_coordinates():
+    from pet_mvp.common.tasks import geocode_venues_coordinates_task
+
+    try:
+        result = geocode_venues_coordinates_task()
+        print(f'Coordinates fetched {result}')
+    except Exception as e:
+        print(f'Run geocode fetch manually. {e}')
+
+
 if __name__ == '__main__':
     set_site_domain()
     create_pets()
     create_pet_markings()
+    create_clinics()
+    create_groomers()
+    create_stores()
     populate_vaccination_records()
     populate_medication_records()
     create_complete_examination_record_for_test_dog()
+    set_coordinates()

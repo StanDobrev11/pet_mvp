@@ -38,8 +38,8 @@ class MedicalRecordEmailTestCase(TestCase):
         self.test_clinic = User.objects.create_clinic(
             email='clinic@example.com',
             password='testpassword',
-            clinic_name='Test Clinic',
-            clinic_address='123 Test St',
+            name='Test Clinic',
+            address='123 Test St',
             city='Test City',
             country='Test Country',
             phone_number='0987654321',

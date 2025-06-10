@@ -38,7 +38,7 @@ class AppUserModelTests(TestCase):
             city="Sofia",
             country="Bulgaria"
         )
-        clinic = Clinic.objects.create(user=user, clinic_name="Test Clinic", clinic_address="123 Test Street")
+        clinic = Clinic.objects.create(user=user, name="Test Clinic", address="123 Test Street")
 
         self.assertEqual(user.email, "clinic@example.com")
         self.assertFalse(user.is_owner)
@@ -58,7 +58,7 @@ class AppUserModelTests(TestCase):
             owner.full_clean()
 
     def test_missing_clinic_profile_fields(self):
-        """Clinic profile must have clinic_name and clinic_address."""
+        """Clinic profile must have name and address."""
         user = UserModel.objects.create(
             email="clinic2@example.com",
             password="testpass123",
@@ -86,5 +86,5 @@ class AppUserModelTests(TestCase):
             password="testpass123",
             is_owner=False
         )
-        clinic = Clinic.objects.create(user=user, clinic_name="Vet Clinic", clinic_address="Some St.")
+        clinic = Clinic.objects.create(user=user, name="Vet Clinic", address="Some St.")
         self.assertEqual(str(clinic), "Vet Clinic")

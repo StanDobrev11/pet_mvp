@@ -63,8 +63,8 @@ class UserManagerTests(TestCase):
         user = UserModel.objects.create_clinic(
             email="clinic@example.com",
             password="testpass123",
-            clinic_name="Test Clinic",
-            clinic_address="123 Test Street",
+            name="Test Clinic",
+            address="123 Test Street",
             phone_number="0887654321",
             city="Sofia",
             country="Bulgaria"

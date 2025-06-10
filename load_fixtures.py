@@ -24,7 +24,6 @@ MODEL_MAP = {
 # Fixture paths
 fixture_paths = [
     "pet_mvp/accounts/fixtures/superuser.json",
-    "pet_mvp/accounts/fixtures/clinics.json",
     "pet_mvp/drugs/fixtures/cat_vaccines.json",
     "pet_mvp/drugs/fixtures/dog_vaccines.json",
     "pet_mvp/drugs/fixtures/cat_treatments.json",
@@ -79,7 +78,6 @@ for path in fixture_paths:
         identifier = (
             fields.get("name") or
             fields.get("email") or
-            fields.get("clinic_name") or
             str(obj)
         )
 

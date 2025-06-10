@@ -250,8 +250,8 @@ class ClinicRegistrationViewTests(TestCase):
             'email': 'clinic@example.com',
             'password1': 'testpass123',
             'password2': 'testpass123',
-            'clinic_name': 'Test Clinic',
-            'clinic_address': '123 Test Street',
+            'name': 'Test Clinic',
+            'address': '123 Test Street',
             'phone_number': '0887654321',
             'city': 'Sofia',
             'country': 'Bulgaria'

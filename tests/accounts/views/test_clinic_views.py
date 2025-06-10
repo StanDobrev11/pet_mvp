@@ -26,8 +26,8 @@ class ApproveTempClinicViewTests(TestCase):
         self.clinic = UserModel.objects.create_clinic(
             email='clinic@example.com',
             password='testpass123',
-            clinic_name='Clinic',
-            clinic_address='Addr',
+            name='Clinic',
+            address='Addr',
             phone_number='0887654322',
             city='Sofia',
             country='Bulgaria',
@@ -89,8 +89,8 @@ class CustomPasswordResetConfirmViewTests(TestCase):
         self.clinic = UserModel.objects.create_clinic(
             email='clinic2@example.com',
             password='testpass123',
-            clinic_name='Clinic2',
-            clinic_address='Addr2',
+            name='Clinic2',
+            address='Addr2',
             phone_number='0887654323',
             city='Sofia',
             country='Bulgaria',

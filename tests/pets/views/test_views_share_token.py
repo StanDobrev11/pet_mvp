@@ -50,12 +50,12 @@ class PetShareTokenViewsTest(TestCase):
         self.vet = UserModel.objects.create_clinic(
             email='test-clinic@test.com',
             password='1234',
-            clinic_name='Test Clinic',
+            name='Test Clinic',
             is_owner=False,
             is_active=True,
             is_approved=True,
             phone_number='0887142536',
-            clinic_address='123 Some Address',
+            address='123 Some Address',
             city='Varna',
             country='Bulgaria',
         )

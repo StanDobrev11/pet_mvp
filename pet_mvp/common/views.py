@@ -11,7 +11,6 @@ from django.http import HttpResponse
 
 from pet_mvp.common.models import Testimonial
 from pet_mvp.pets.models import Pet
-from pet_mvp.settings import GOOGLE_MAPS_API_KEY
 
 UserModel = get_user_model()
 

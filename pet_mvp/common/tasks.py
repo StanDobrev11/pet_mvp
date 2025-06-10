@@ -1,10 +1,11 @@
+from itertools import chain
 import requests
-from datetime import timedelta
+from django.conf import settings
 from django.utils.timezone import now
+from datetime import timedelta
 from celery import shared_task
 
-from pet_mvp import settings
-from pet_mvp.accounts.models import Clinic
+from pet_mvp.accounts.models import Clinic, Groomer, Store
 
 @shared_task
 def geocode_venues_coordinates_task():
@@ -12,32 +13,43 @@ def geocode_venues_coordinates_task():
     updated_count = 0
     failures = []
 
-    clinics = Clinic.objects.all()
+    # Efficient lazy evaluation
+    all_venues = chain(
+        Clinic.objects.select_related("user"),
+        Groomer.objects.select_related("user"),
+        Store.objects.select_related("user"),
+    )
 
-    for clinic in clinics:
+    for venue in all_venues:
         needs_geocoding = (
-            clinic.latitude is None or
-            clinic.longitude is None or
-            clinic.user.updated_at >= now() - timedelta(days=7)
+            venue.latitude is None or
+            venue.longitude is None or
+            (hasattr(venue.user, "updated_at") and venue.user.updated_at >= now() - timedelta(days=7))
         )
 
         if not needs_geocoding:
             continue
 
-        address = f'{clinic.address}, {clinic.user.city}, {clinic.user.country}'
-        url = 'https://maps.googleapis.com/maps/api/geocode/json'
-        params = {'address': address, 'key': api_key}
-        response = requests.get(url, params=params)
-        data = response.json()
+        address = f"{venue.address}, {venue.user.city}, {venue.user.country}"
+        url = "https://maps.googleapis.com/maps/api/geocode/json"
+        params = {"address": address, "key": api_key}
 
-        if data['status'] == 'OK':
-            location = data['results'][0]['geometry']['location']
-            clinic.latitude = location['lat']
-            clinic.longitude = location['lng']
-            clinic.save()
+        try:
+            response = requests.get(url, params=params, timeout=10)
+            response.raise_for_status()
+            data = response.json()
+        except Exception as e:
+            failures.append((venue.id, str(e)))
+            continue
+
+        if data.get("status") == "OK":
+            location = data["results"][0]["geometry"]["location"]
+            venue.latitude = location["lat"]
+            venue.longitude = location["lng"]
+            venue.save()
             updated_count += 1
         else:
-            failures.append((clinic.id, data['status']))
+            failures.append((venue.id, data.get("status")))
 
     return {
         "updated": updated_count,

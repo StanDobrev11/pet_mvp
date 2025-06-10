@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-10 03:22+0000\n"
+"POT-Creation-Date: 2025-06-10 15:29+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -134,22 +134,16 @@ msgid "Owner status"
 msgstr "Статус на собственика"
 
 #: .\pet_mvp\accounts\models.py:55
-#, fuzzy
-#| msgid "Clinic details:"
 msgid "Clinic status"
-msgstr "Детайли за клиниката:"
+msgstr "Статус на клиниката"
 
 #: .\pet_mvp\accounts\models.py:60
-#, fuzzy
-#| msgid "Owner status"
 msgid "Groomer status"
-msgstr "Статус на собственика"
+msgstr "Статус на груминг салона"
 
 #: .\pet_mvp\accounts\models.py:65
-#, fuzzy
-#| msgid "Staff status"
 msgid "Store status"
-msgstr "Статус на персонала"
+msgstr "Статус на магазина"
 
 #: .\pet_mvp\accounts\models.py:72
 msgid "Phone number"
@@ -189,26 +183,20 @@ msgid "Groomer"
 msgstr "Груминг салон"
 
 #: .\pet_mvp\accounts\models.py:160
-#, fuzzy
-#| msgid "Pet Store"
 msgid "Store"
-msgstr "Магазин за домашни любимци"
+msgstr "Магазин"
 
 #: .\pet_mvp\accounts\models.py:165
 msgid "Venue name"
 msgstr "Име на обекта"
 
 #: .\pet_mvp\accounts\models.py:170
-#, fuzzy
-#| msgid "Clinic address"
 msgid "Venue address"
-msgstr "Адрес на клиниката"
+msgstr "Адрес на обекта"
 
 #: .\pet_mvp\accounts\models.py:175
-#, fuzzy
-#| msgid "Clinic approved"
 msgid "Is approved"
-msgstr "Клиниката е одобрена"
+msgstr "Одобрен"
 
 #: .\pet_mvp\accounts\models.py:181
 msgid "Latitude"
@@ -328,7 +316,7 @@ msgstr "Скоро изтича"
 msgid "Due Date"
 msgstr "Крайна дата"
 
-#: .\pet_mvp\common\views.py:56 .\pet_mvp\common\views.py:76
+#: .\pet_mvp\common\views.py:57 .\pet_mvp\common\views.py:79
 msgid "You do not have permission to access this page."
 msgstr "Нямате разрешение за достъп до тази страница."
 

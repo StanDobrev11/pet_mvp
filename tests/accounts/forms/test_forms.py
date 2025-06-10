@@ -72,8 +72,8 @@ class ClinicRegistrationFormTests(TestCase):
             'email': 'clinic@example.com',
             'password1': 'testpass123',
             'password2': 'testpass123',
-            'clinic_name': 'Test Clinic',
-            'clinic_address': '123 Test Street',
+            'name': 'Test Clinic',
+            'address': '123 Test Street',
             'phone_number': '0887654321',
             'city': 'Sofia',
             'country': 'Bulgaria'
@@ -87,8 +87,8 @@ class ClinicRegistrationFormTests(TestCase):
             'email': 'clinic@example.com',
             'password1': 'testpass123',
             'password2': 'testpass456',  # Different password
-            'clinic_name': 'Test Clinic',
-            'clinic_address': '123 Test Street',
+            'name': 'Test Clinic',
+            'address': '123 Test Street',
             'phone_number': '0887654321',
             'city': 'Sofia',
             'country': 'Bulgaria'
@@ -103,12 +103,12 @@ class ClinicRegistrationFormTests(TestCase):
             'email': 'clinic@example.com',
             'password1': 'testpass123',
             'password2': 'testpass123',
-            # Missing clinic_name, clinic_address, etc.
+            # Missing name, address, etc.
         }
         form = ClinicRegistrationForm(data=form_data)
         self.assertFalse(form.is_valid())
-        # Check that the non-field error about clinic_name and clinic_address is present
-        self.assertIn('clinic_name', form.errors)
+        # Check that the non-field error about name and address is present
+        self.assertIn('name', form.errors)
         self.assertIn('This field is required.', str(form.errors['name']))
 
     def test_is_owner_set_to_false(self):
@@ -117,8 +117,8 @@ class ClinicRegistrationFormTests(TestCase):
             'email': 'clinic@example.com',
             'password1': 'testpass123',
             'password2': 'testpass123',
-            'clinic_name': 'Test Clinic',
-            'clinic_address': '123 Test Street',
+            'name': 'Test Clinic',
+            'address': '123 Test Street',
             'phone_number': '0887654321',
             'city': 'Sofia',
             'country': 'Bulgaria'
