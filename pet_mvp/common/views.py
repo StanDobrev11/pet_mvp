@@ -1,3 +1,4 @@
+import os
 import random
 
 from django.contrib.auth import get_user_model
@@ -10,6 +11,7 @@ from django.http import HttpResponse
 
 from pet_mvp.common.models import Testimonial
 from pet_mvp.pets.models import Pet
+from pet_mvp.settings import GOOGLE_MAPS_API_KEY
 
 UserModel = get_user_model()
 
@@ -60,6 +62,8 @@ class DashboardView(views.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        context['GOOGLE_MAPS_API_KEY'] = os.environ.get('GOOGLE_MAPS_API_KEY')
 
         user = self.request.user
         pets = user.pets.all()
