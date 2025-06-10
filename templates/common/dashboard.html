@@ -184,7 +184,6 @@
     <script>
         // Constants
         const MAP_CONFIG = {
-            testLocation: {lat: 43.18179, lng: 27.89163}, // Fixed location for testing
             zoomLevels: {
                 '2': 17,
                 '5': 15,
@@ -204,9 +203,35 @@
             map: null,
             ownMarker: null,
 
+            async getPosition() {
+                return new Promise((resolve, reject) => {
+                    if (this.ownMarker) {
+                        const position = this.ownMarker.position;
+                        resolve({
+                            lat: typeof position.lat === 'function' ? position.lat() : position.lat,
+                            lng: typeof position.lng === 'function' ? position.lng() : position.lng
+                        });
+                    } else if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(
+                            pos => resolve({
+                                lat: pos.coords.latitude,
+                                lng: pos.coords.longitude
+                            }),
+                            () => {
+                                console.warn("Location access denied, using default location");
+                                resolve({ lat: 43.18179, lng: 27.89163 }); // Default location if geolocation fails
+                            }
+                        );
+                    } else {
+                        console.warn("Geolocation not supported, using default location");
+                        resolve({ lat: 43.18179, lng: 27.89163 }); // Default location if geolocation not supported
+                    }
+                });
+            },
+
             async initialize(lat, lng, zoom) {
-                const {Map} = await google.maps.importLibrary("maps");
-                const position = {lat, lng};
+                const { Map } = await google.maps.importLibrary("maps");
+                const position = { lat, lng };
 
                 this.map = new Map(document.getElementById("map"), {
                     center: position,
@@ -221,7 +246,7 @@
             },
 
             async setOwnMarker(position) {
-                const {AdvancedMarkerElement} = await google.maps.importLibrary("marker");
+                const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
                 if (this.ownMarker) {
                     this.ownMarker.map = null;
@@ -240,12 +265,6 @@
                 this.map.addListener("click", (e) => {
                     this.setOwnMarker(e.latLng);
                 });
-            },
-
-            getPosition() {
-                return this.ownMarker ?
-                    {lat: this.ownMarker.position.lat, lng: this.ownMarker.position.lng} :
-                    MAP_CONFIG.testLocation;
             }
         };
 
@@ -256,7 +275,6 @@
 
             async fetch(lat, lng, radius, type) {
                 const includeExternal = document.getElementById('includeExternal').checked;
-
                 const url = `/api/venues/nearby/?lat=${lat}&lng=${lng}&radius=${radius}&type=${type}&external=${includeExternal}`;
 
                 try {
@@ -300,7 +318,7 @@
             },
 
             async render(venues, type) {
-                const {AdvancedMarkerElement} = await google.maps.importLibrary("marker");
+                const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
                 try {
                     this.clearMarkers();
@@ -365,15 +383,18 @@
 
         async function renderMap(radius, type) {
             try {
-                const position = MapState.map ?
-                    MapState.getPosition() :
-                    MAP_CONFIG.testLocation;
+                // Show the map container first
+                document.getElementById('map-container').style.display = 'block';
 
+                // Get current position
+                const position = await MapState.getPosition();
 
+                // Initialize map if not already initialized
                 if (!MapState.map) {
                     await MapState.initialize(position.lat, position.lng, MAP_CONFIG.zoomLevels[radius]);
                 }
 
+                // Fetch and render venues
                 const venues = await VenueManager.fetch(position.lat, position.lng, radius, type);
                 await VenueManager.render(venues, type);
 

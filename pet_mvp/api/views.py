@@ -189,12 +189,12 @@ def get_venues_nearby(request):
 
     if include_external:
         keyword_map = {
-            "clinic": "ветеринарна клиника",
-            "groomer": "груминг салон",
-            "store": "магазин за домашни любимци",
-            "all": "домашни любимци"
+            "clinic": "veterinary clinic",
+            "groomer": "pets grooming salon",
+            "store": "pets store",
+            "all": "pets all",
         }
-        keyword = keyword_map.get(venue_type, "домашни любимци")
+        keyword = keyword_map.get(venue_type, "pets")
 
         external_results = get_google_places(user_lat, user_lng, radius, keyword)
 
@@ -225,7 +225,7 @@ def get_google_places(lat, lng, radius, keyword):
                 "radius": radius * 1000,  # meters
                 "keyword": keyword,
                 "key": settings.GOOGLE_PLACES_API_KEY,
-                "language": "bg",
+                "language": 'en',
             },
             timeout=5
         )

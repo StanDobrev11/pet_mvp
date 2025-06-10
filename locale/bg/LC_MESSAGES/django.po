@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-10 15:29+0000\n"
+"POT-Creation-Date: 2025-06-10 18:38+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -308,11 +308,11 @@ msgstr "Паролата е зададена успешно. Моля, прод�
 msgid "You are not allowed to edit the owner."
 msgstr "Нямате право да редактирате собственика."
 
-#: .\pet_mvp\api\views.py:90 .\pet_mvp\api\views.py:117
+#: .\pet_mvp\api\views.py:93 .\pet_mvp\api\views.py:120
 msgid "Due Soon"
 msgstr "Скоро изтича"
 
-#: .\pet_mvp\api\views.py:101 .\pet_mvp\api\views.py:127
+#: .\pet_mvp\api\views.py:104 .\pet_mvp\api\views.py:130
 msgid "Due Date"
 msgstr "Крайна дата"
 
@@ -1801,10 +1801,14 @@ msgid "No pets added yet."
 msgstr "Все още няма добавени домашни любимци."
 
 #: .\templates\common\dashboard.html:68
+msgid "Upcoming Vaccines & Medications"
+msgstr "Предстоящи ваксини и лекарства"
+
+#: .\templates\common\dashboard.html:78
 msgid "Access Codes & QR Codes"
 msgstr "Кодове за достъп и QR кодове"
 
-#: .\templates\common\dashboard.html:70
+#: .\templates\common\dashboard.html:80
 msgid ""
 "Each pet has a unique access code that can be shared with veterinarians or "
 "caregivers to give them access to view or update your pet's medical records."
@@ -1813,7 +1817,7 @@ msgstr ""
 "споделен с ветеринари или лица, полагащи грижи, за да могат да преглеждат "
 "или актуализират медицинските му досиета."
 
-#: .\templates\common\dashboard.html:73
+#: .\templates\common\dashboard.html:83
 msgid ""
 "For faster access at clinics, you can also generate a QR code. When scanned "
 "by a vet, it opens a secure form to create a new medical record — no typing "
@@ -1823,7 +1827,7 @@ msgstr ""
 "Когато бъде сканиран от ветеринар, той отваря защитен формуляр за създаване "
 "на нов медицински запис — без писане."
 
-#: .\templates\common\dashboard.html:77
+#: .\templates\common\dashboard.html:87
 msgid ""
 "Access codes are valid for 4 hours after generation and refresh when viewed. "
 "QR codes are single-use and expire after 10 minutes."
@@ -1831,29 +1835,73 @@ msgstr ""
 "Кодовете за достъп са валидни 4 часа след създаване и се обновяват при "
 "преглед. QR кодовете са за еднократна употреба и изтичат след 10 минути."
 
-#: .\templates\common\dashboard.html:87
-msgid "Upcoming Vaccines & Medications"
-msgstr "Предстоящи ваксини и лекарства"
+#: .\templates\common\dashboard.html:91
+msgid "Map Legend & Instructions"
+msgstr "Легенда на картата и инструкции"
 
-#: .\templates\common\dashboard.html:97
+#: .\templates\common\dashboard.html:96
+msgid "Partner Vet Clinic"
+msgstr "Партньорска ветеринарна клиника"
+
+#: .\templates\common\dashboard.html:101
+msgid "Partner Pet Store"
+msgstr "Партньорски магазин за домашни любимци"
+
+#: .\templates\common\dashboard.html:106
+msgid "Partner Grooming Salon"
+msgstr "Партньорски салон за подстригване"
+
+#: .\templates\common\dashboard.html:111
+msgid "Public Listing from Google Maps"
+msgstr "Публичен обект от Google Maps"
+
+#: .\templates\common\dashboard.html:115
+msgid ""
+"Partner venues are verified pet service providers who have joined the "
+"platform. They appear with custom icons."
+msgstr ""
+"Партньорските обекти са проверени доставчици на услуги за домашни любимци, "
+"които са се присъединили към платформата. Те се показват със собствени икони."
+
+#: .\templates\common\dashboard.html:118
+msgid ""
+"You can click on any marker to view the name and address of the venue. Use "
+"the dropdown to filter by service type and radius."
+msgstr ""
+"Можете да щракнете върху всеки маркер, за да видите името и адреса на "
+"обекта. Използвайте падащото меню, за да филтрирате по тип услуга и радиус."
+
+#: .\templates\common\dashboard.html:121
+msgid ""
+"Check the box to also include results from Google Maps. These are not "
+"verified and appear in red."
+msgstr ""
+"Отметнете полето, за да включите и резултати от Google Maps. Те не са "
+"проверени и се показват в червено."
+
+#: .\templates\common\dashboard.html:132
 msgid "Find Nearby Pet Services"
 msgstr "Намерете близки услуги за домашни любимци"
 
-#: .\templates\common\dashboard.html:100
+#: .\templates\common\dashboard.html:135
 msgid "Vet Clinic"
 msgstr "Ветеринарна клиника"
 
-#: .\templates\common\dashboard.html:101
+#: .\templates\common\dashboard.html:136
 msgid "Pet Store"
 msgstr "Магазин за домашни любимци"
 
-#: .\templates\common\dashboard.html:102
+#: .\templates\common\dashboard.html:137
 msgid "Grooming Salon"
 msgstr "Салон за подстригване"
 
-#: .\templates\common\dashboard.html:110
+#: .\templates\common\dashboard.html:145
 msgid "Find Nearby"
 msgstr "Намери наблизо"
+
+#: .\templates\common\dashboard.html:149
+msgid "Include public venues from Google Maps"
+msgstr "Включи публични обекти от Google Maps"
 
 #: .\templates\common\index.html:10
 msgid "My Pet's Medical Records"
