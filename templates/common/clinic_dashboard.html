@@ -91,16 +91,21 @@ document.getElementById('access-code-form').addEventListener('submit', function 
         if (data.error) {
             alert(data.error);
         } else {
-            const noPets = document.getElementById('no-pets')
             const petList = document.getElementById('pet-list');
             const existingItem = document.getElementById(`pet-${data.pet_id}`);
+            const noPets = document.getElementById('no-pets');
+            
             if (existingItem) {
                 alert("This pet is already in the list.");
                 codeInput.value = '';
                 return;
             }
 
-            noPets.remove();
+            // Remove the "no pets" message if it exists
+            if (noPets) {
+                noPets.remove();
+            }
+
             const li = document.createElement('li');
             li.className = "list-group-item";
             li.id = `pet-${data.pet_id}`;
@@ -116,7 +121,7 @@ document.getElementById('access-code-form').addEventListener('submit', function 
                     <div>
                         <a href="/pets/${data.pet_id}/" class="fw-bold">${data.pet_name} – ${data.species}</a>
                         <div class="text-muted">
-                            Owner(s): ${ownerLinks}
+                            {% trans "Owner(s):" %} ${ownerLinks}
                         </div>
                     </div>
                 </div>`;

@@ -17,7 +17,6 @@ from django.views.decorators.http import require_GET
 from pet_mvp.accounts.models import Clinic, Store, Groomer
 
 
-# Create your views here.
 @require_POST
 @login_required
 def verify_access_code(request):
@@ -33,7 +32,7 @@ def verify_access_code(request):
         pet=pet,
         defaults={
             'created_at': timezone.now(),
-            'expires_at': timezone.now() + timedelta(minutes=10),
+            'expires_at': timezone.now() + timedelta(minutes=40), # sets the time to reset the pet list of a vet
             'granted_by': 'code'
         }
     )
