@@ -1,7 +1,7 @@
 from django.contrib.auth import forms as auth_forms, get_user_model
 from django import forms
 from django.core.validators import validate_email
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from pet_mvp.accounts.models import Clinic, Owner
 from pet_mvp.accounts.validators import normalize_bulgarian_phone
@@ -19,17 +19,21 @@ class BaseOwnerForm(forms.ModelForm):
         fields = ('email', 'phone_number', 'city', 'country')
 
     def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
         if 'instance' in kwargs and kwargs['instance']:
             instance = kwargs['instance']
             profile_instance = getattr(instance, 'owner', None)
         else:
             profile_instance = kwargs.pop('profile_instance', None)
 
-        super().__init__(*args, **kwargs)
 
         if profile_instance:
             self.fields['first_name'].initial = profile_instance.first_name
             self.fields['last_name'].initial = profile_instance.last_name
+
+        for field_name, field in self.fields.items():
+            field.widget.attrs['placeholder'] = str(field.label).capitalize()
 
     def clean_phone_number(self):
         value = self.cleaned_data.get('phone_number')
