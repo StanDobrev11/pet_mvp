@@ -204,6 +204,35 @@ class RegisterOwnerViewTests(TestCase):
         self.assertContains(response, 'Invalid Bulgarian mobile number format.')
 
 
+    def test_uppercase_email_is_normalized(self):
+        """Test that an uppercase email is saved in lowercase."""
+        url = reverse('register')
+        form_data = {
+            'email': 'NEWOWNER@EXAMPLE.COM',
+            'password1': 'testpass123',
+            'password2': 'testpass123',
+            'first_name': 'Caps',
+            'last_name': 'Lock',
+            'phone_number': '0887654321',
+            'city': 'Sofia',
+            'country': 'Bulgaria'
+        }
+        response = self.client.post(url, data=form_data)
+
+        # Should redirect to success URL
+        self.assertRedirects(response, reverse('index'), fetch_redirect_response=False)
+
+        # User should be created with lowercase email
+        self.assertTrue(UserModel.objects.filter(email='newowner@example.com').exists())
+
+        # Ensure no user with the original uppercase email
+        self.assertFalse(UserModel.objects.filter(email='NEWOWNER@EXAMPLE.COM').exists())
+
+        # Check that the email stored is lowercase
+        user = UserModel.objects.get(email='newowner@example.com')
+        self.assertEqual(user.email, 'newowner@example.com')
+
+
 class ClinicRegistrationViewTests(TestCase):
     """
     Tests for the ClinicRegistrationView.

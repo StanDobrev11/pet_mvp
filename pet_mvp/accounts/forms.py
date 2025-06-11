@@ -35,6 +35,10 @@ class BaseOwnerForm(forms.ModelForm):
         for field_name, field in self.fields.items():
             field.widget.attrs['placeholder'] = str(field.label).capitalize()
 
+    def clean_email(self):
+        value = self.cleaned_data.get('email')
+        return value.lower()
+
     def clean_phone_number(self):
         value = self.cleaned_data.get('phone_number')
         if value:

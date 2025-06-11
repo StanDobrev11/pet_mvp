@@ -67,6 +67,18 @@ class BaseLoginViewTests(TestCase):
         # User should not be logged in
         self.assertNotIn('_auth_user_id', self.client.session)
 
+    def test_login_with_uppercase_email(self):
+        """Test login with uppercase email (should be normalized)."""
+        url = reverse('login')
+        response = self.client.post(url, {
+            'username': 'OWNER@EXAMPLE.COM',  # Uppercase input
+            'password': 'testpass123'
+        }, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context['user'].is_authenticated)
+        self.assertEqual(response.context['user'].pk, self.user.pk)
+
 
 class PasswordEntryViewTests(TestCase):
     """

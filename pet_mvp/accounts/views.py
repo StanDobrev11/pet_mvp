@@ -211,6 +211,10 @@ class BaseLoginView(auth_views.LoginView):
     def form_valid(self, form):
         # check for clinic object
         user_email = form.cleaned_data.get('username')
+
+        # normalize email address
+        user_email = user_email.lower()
+
         user = UserModel.objects.get(email=user_email)
 
         # redirect bss type of clinic
