@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-13 15:33+0000\n"
+"POT-Creation-Date: 2025-06-13 15:57+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -2858,7 +2858,7 @@ msgstr "според ваксинационния календар."
 msgid "not compulsory"
 msgstr "не е задължителна"
 
-#: .\templates\pet\access_history.html:6 .\templates\pet\pet_details.html:213
+#: .\templates\pet\access_history.html:6 .\templates\pet\pet_details.html:224
 msgid "Access History"
 msgstr "История на достъп"
 
@@ -3130,35 +3130,46 @@ msgstr ""
 "валидност и данни за ветеринаря, ако са налични. След това записът ще бъде "
 "видим в списъка и достъпен за клиники, които имат достъп до това животно."
 
-#: .\templates\pet\pet_details.html:156
+#: .\templates\pet\pet_details.html:158
 msgid "Valid Treatment Records"
 msgstr "Валидни лечения"
 
-#: .\templates\pet\pet_details.html:167
+#: .\templates\pet\pet_details.html:169
 msgid "No treatment records"
 msgstr "Няма записи за лечение"
 
-#: .\templates\pet\pet_details.html:172
+#: .\templates\pet\pet_details.html:174
 msgid "Add Treatment Record"
 msgstr "Добави запис за лечение"
 
-#: .\templates\pet\pet_details.html:179
+#: .\templates\pet\pet_details.html:180
+msgid ""
+"To add a treatment record, click the “Add Treatment Record” button. Fill in "
+"the treatment type, date, medication used, and vet details if available. The "
+"record will be saved and visible to clinics who access this pet."
+msgstr ""
+"За да добавите запис за лечение, кликнете върху бутона „Добави запис за "
+"лечение“. Попълнете типа на лечението, датата, използваните медикаменти и "
+"данни за ветеринаря, ако са налични. Записът ще бъде запазен и видим за "
+"клиники, които имат достъп до това животно."
+
+#: .\templates\pet\pet_details.html:190
 msgid "Last Examination Records"
 msgstr "Последни прегледи"
 
-#: .\templates\pet\pet_details.html:199
+#: .\templates\pet\pet_details.html:210
 msgid "No examination records"
 msgstr "Няма записи за прегледи"
 
-#: .\templates\pet\pet_details.html:204
+#: .\templates\pet\pet_details.html:215
 msgid "New Examination"
 msgstr "Нов преглед"
 
-#: .\templates\pet\pet_details.html:210
+#: .\templates\pet\pet_details.html:221
 msgid "View all history records"
 msgstr "Преглед на всички исторически записи"
 
-#: .\templates\pet\pet_details.html:216
+#: .\templates\pet\pet_details.html:227
 msgid "Finish and Logout"
 msgstr "Завърши и излез"
 
