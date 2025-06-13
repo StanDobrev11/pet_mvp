@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-13 16:14+0000\n"
+"POT-Creation-Date: 2025-06-13 16:44+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -3158,8 +3158,8 @@ msgid "Last Examination Records"
 msgstr "Последни прегледи"
 
 #: .\templates\pet\pet_details.html:215
-msgid "No examination records"
-msgstr "Няма записи за прегледи"
+msgid "No examinations"
+msgstr "Няма прегледи!"
 
 #: .\templates\pet\pet_details.html:221
 msgid "New Examination"
@@ -3413,3 +3413,6 @@ msgstr ""
 #: .\templates\records\vaccine_record_add.html:78
 msgid "Finish Adding Vaccines"
 msgstr "Завърши добавянето на ваксини"
+
+#~ msgid "No examination records"
+#~ msgstr "Няма записи за прегледи"
