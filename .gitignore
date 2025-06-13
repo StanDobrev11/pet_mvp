@@ -175,3 +175,4 @@ cython_debug/
 .idea/
 /collect_static/
 /media/pets/
+/deploy.sh
