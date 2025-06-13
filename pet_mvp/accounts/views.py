@@ -110,14 +110,13 @@ class BaseUserRegisterView(views.CreateView):
 class ClinicRegistrationView(BaseUserRegisterView):
     form_class = ClinicRegistrationForm
     template_name = 'accounts/clinic-register.html'
+    success_url = reverse_lazy('clinic-login')
 
     def get_initial(self):
         return {
             'email': self.request.GET.get('email', ''),
         }
 
-    def get_success_url(self):
-        return reverse_lazy('clinic-login')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -125,13 +124,29 @@ class ClinicRegistrationView(BaseUserRegisterView):
         return context
 
     def form_valid(self, form):
-        # set the clinic not to be active
-        clinic = form.instance
-        clinic.is_active = False
+        """Handle clinic creation via the custom manager, set inactive, send notifications."""
+        # Extract cleaned form data
+        email = form.cleaned_data['email']
+        password = form.cleaned_data['password1']
+        name = form.cleaned_data['name']
+        address = form.cleaned_data['address']
+        phone_number = form.cleaned_data['phone_number']
+        city = form.cleaned_data['city']
+        country = form.cleaned_data['country']
 
-        response = super().form_valid(form)
+        # Create user using custom manager (clinic is not active by default)
+        user = UserModel.objects.create_clinic(
+            email=email,
+            password=password,
+            name=name,
+            address=address,
+            phone_number=phone_number,
+            city=city,
+            country=country,
+            is_active=False  # ensure explicitly set to inactive
+        )
 
-        # Store code for later flow
+        # Store access code
         code = self.request.GET.get('code')
         self.request.session['code'] = code
 
@@ -142,30 +157,26 @@ class ClinicRegistrationView(BaseUserRegisterView):
             messages.error(self.request, _("Invalid access code."))
             return redirect('index')
 
-        # Send access email to owner
+        # Send email to pet owner(s)
         approval_url = self.request.build_absolute_uri(
-            reverse('approve-temp-clinic') + f'?clinic_id={self.object.id}&pet_id={pet.id}'
+            reverse('approve-temp-clinic') + f'?clinic_id={user.id}&pet_id={pet.id}'
         )
-
         for owner in owners:
             send_clinic_owner_access_request_email(
                 user_owner=owner,
-                user_clinic=self.object,
+                user_clinic=user,
                 pet=pet,
                 url=approval_url,
                 lang=owner.default_language
             )
 
-        # sending email to the admin for review of the clinic and mark as approved
-        send_clinic_admin_approval_request_email(
-            user_clinic=self.object,
-            pet=pet,
-        )
+        # Send email to admin
+        send_clinic_admin_approval_request_email(user_clinic=user, pet=pet)
 
         messages.success(self.request, _(
             "Your registration was successful. An approval request has been sent to the pet's owner."))
 
-        return response
+        return redirect(self.get_success_url())
 
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data(form=form))
@@ -178,19 +189,36 @@ class RegisterOwnerView(BaseUserRegisterView):
 
     def form_valid(self, form):
         """
-        All new user with never-existing-in-DB email is handled through form_valid(),
-        after validation, the user is logged in automatically
-        Added mail sending on creation"""
-        valid = super().form_valid(form)
-        login(self.request, self.object, backend='django.contrib.auth.backends.ModelBackend')
+        Create the user using the custom manager to ensure Owner profile is created.
+        Then log them in, send welcome email, and proceed.
+        """
+        # Extract data
+        email = form.cleaned_data['email']
+        password = form.cleaned_data['password1']
+        first_name = form.cleaned_data['first_name']
+        last_name = form.cleaned_data['last_name']
+        phone_number = form.cleaned_data['phone_number']
+        city = form.cleaned_data['city']
+        country = form.cleaned_data['country']
 
-        # get the user
-        user = self.object
-        # set and get the language param
+        # Create user using custom method (this also creates Owner)
+        user = UserModel.objects.create_owner(
+            email=email,
+            password=password,
+            first_name=first_name,
+            last_name=last_name,
+            phone_number=phone_number,
+            city=city,
+            country=country,
+        )
+
+        login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
+        self.object = user
+
         lang = self.set_default_language()
-        # send user welcome email
         send_user_registration_email(user, lang)
-        return valid
+
+        return redirect(self.get_success_url())
 
 
 class BaseLoginView(auth_views.LoginView):

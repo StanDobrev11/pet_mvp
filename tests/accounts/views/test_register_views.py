@@ -232,6 +232,40 @@ class RegisterOwnerViewTests(TestCase):
         user = UserModel.objects.get(email='newowner@example.com')
         self.assertEqual(user.email, 'newowner@example.com')
 
+    def test_user_fields_created_correctly(self):
+        """Test that all user fields are created correctly from form input."""
+        url = reverse('register')
+        form_data = {
+            'email': 'completeuser@example.com',
+            'password1': 'securepass123',
+            'password2': 'securepass123',
+            'first_name': 'John',
+            'last_name': 'Doe',
+            'phone_number': '0887123456',
+            'city': 'Plovdiv',
+            'country': 'Bulgaria'
+        }
+
+        response = self.client.post(url, data=form_data)
+
+        # Should redirect after successful registration
+        self.assertRedirects(response, reverse('index'), fetch_redirect_response=False)
+
+        # Check user exists
+        user_exists = UserModel.objects.filter(email='completeuser@example.com').exists()
+        self.assertTrue(user_exists)
+
+        # Fetch user and check all fields
+        user = UserModel.objects.get(email='completeuser@example.com')
+        owner_profile = user.owner  # Assuming there is a related Owner model via OneToOne
+
+        self.assertEqual(user.email, 'completeuser@example.com')
+        self.assertTrue(user.check_password('securepass123'))
+        self.assertEqual(owner_profile.first_name, 'John')
+        self.assertEqual(owner_profile.last_name, 'Doe')
+        self.assertEqual(user.phone_number, '00359887123456')
+        self.assertEqual(user.city, 'Plovdiv')
+        self.assertEqual(user.country, 'Bulgaria')
 
 class ClinicRegistrationViewTests(TestCase):
     """
@@ -299,3 +333,39 @@ class ClinicRegistrationViewTests(TestCase):
 
         # Access code should be in session
         self.assertEqual(self.client.session['code'], 'TEST123')
+
+    def test_clinic_fields_created_correctly(self):
+        """Test that all clinic fields are correctly created and normalized."""
+        url = reverse('clinic-register') + '?email=CLINIC@EXAMPLE.COM&code=TEST123'
+        form_data = {
+            'email': 'CLINIC@EXAMPLE.COM',
+            'password1': 'testpass123',
+            'password2': 'testpass123',
+            'name': 'test vet clinic',
+            'address': ' 123 Test Street ',
+            'phone_number': '0887123456',
+            'city': 'sofia',
+            'country': 'bulgaria'
+        }
+
+        response = self.client.post(url, data=form_data)
+
+        # Check redirect
+        self.assertRedirects(response, reverse('clinic-login'), fetch_redirect_response=False)
+
+        # User created
+        user = UserModel.objects.get(email='clinic@example.com')  # should be normalized
+        self.assertEqual(user.email, 'clinic@example.com')
+        self.assertFalse(user.is_active)
+        self.assertTrue(user.check_password('testpass123'))
+
+        # Check field normalization
+        self.assertEqual(user.phone_number, '00359887123456')  # assuming your manager normalizes this
+        self.assertEqual(user.city, 'Sofia')
+        self.assertEqual(user.country, 'Bulgaria')
+
+        # Clinic profile created
+        self.assertTrue(hasattr(user, 'clinic'))
+        clinic = user.clinic
+        self.assertEqual(clinic.name, 'Test Vet Clinic')  # should be title-cased
+        self.assertEqual(clinic.address, '123 Test Street')

@@ -10,7 +10,25 @@ from pet_mvp.pets.models import Pet
 UserModel = get_user_model()
 
 
-class BaseOwnerForm(forms.ModelForm):
+class CleanFieldsMixin:
+    def clean(self):
+        cleaned_data = super().clean()
+        for field_name, value in cleaned_data.items():
+            if "password1" in field_name:
+                continue
+
+            elif field_name == 'email':
+                cleaned_data[field_name] = value.lower()
+
+            elif field_name == 'phone_number':
+                cleaned_data[field_name] = normalize_bulgarian_phone(value)
+
+            elif isinstance(value, str):
+                cleaned_data[field_name] = value.strip().title()
+        return cleaned_data
+
+
+class BaseOwnerForm(CleanFieldsMixin, forms.ModelForm):
     first_name = forms.CharField(label=_("First name"))
     last_name = forms.CharField(label=_("Last name"))
 
@@ -27,23 +45,12 @@ class BaseOwnerForm(forms.ModelForm):
         else:
             profile_instance = kwargs.pop('profile_instance', None)
 
-
         if profile_instance:
             self.fields['first_name'].initial = profile_instance.first_name
             self.fields['last_name'].initial = profile_instance.last_name
 
         for field_name, field in self.fields.items():
             field.widget.attrs['placeholder'] = str(field.label).capitalize()
-
-    def clean_email(self):
-        value = self.cleaned_data.get('email')
-        return value.lower()
-
-    def clean_phone_number(self):
-        value = self.cleaned_data.get('phone_number')
-        if value:
-            return normalize_bulgarian_phone(value)
-        return value
 
     def save(self, commit=True):
         user = super().save(commit)
@@ -73,7 +80,7 @@ class OwnerEditForm(BaseOwnerForm):
     pass
 
 
-class ClinicRegistrationForm(auth_forms.UserCreationForm):
+class ClinicRegistrationForm(CleanFieldsMixin, auth_forms.UserCreationForm):
     name = forms.CharField(label=_("Clinic name"))
     address = forms.CharField(label=_("Clinic address"))
 
@@ -102,12 +109,6 @@ class ClinicRegistrationForm(auth_forms.UserCreationForm):
             else:
                 placeholder = field.label or self._meta.model._meta.get_field(field_name).verbose_name
                 field.widget.attrs['placeholder'] = str(placeholder).capitalize()
-
-    def clean_phone_number(self):
-        value = self.cleaned_data.get('phone_number')
-        if value:
-            return normalize_bulgarian_phone(value)
-        return value
 
     def save(self, commit=True):
         user = super().save(commit=commit)
