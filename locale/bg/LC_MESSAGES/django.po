@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-13 14:40+0000\n"
+"POT-Creation-Date: 2025-06-13 15:33+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -2858,7 +2858,7 @@ msgstr "според ваксинационния календар."
 msgid "not compulsory"
 msgstr "не е задължителна"
 
-#: .\templates\pet\access_history.html:6 .\templates\pet\pet_details.html:200
+#: .\templates\pet\access_history.html:6 .\templates\pet\pet_details.html:213
 msgid "Access History"
 msgstr "История на достъп"
 
@@ -3105,48 +3105,60 @@ msgstr "Редактирай"
 msgid "Delete"
 msgstr "Изтрий"
 
-#: .\templates\pet\pet_details.html:120
+#: .\templates\pet\pet_details.html:122
 msgid "Valid Vaccination Records"
 msgstr "Валидни ваксинации"
 
-#: .\templates\pet\pet_details.html:131
+#: .\templates\pet\pet_details.html:133
 msgid "No vaccination records"
 msgstr "Няма записи за ваксинации"
 
-#: .\templates\pet\pet_details.html:135
+#: .\templates\pet\pet_details.html:139
 #: .\templates\records\vaccine_record_add.html:9
 msgid "Add Vaccination Record"
 msgstr "Добави запис за ваксинация"
 
-#: .\templates\pet\pet_details.html:143
+#: .\templates\pet\pet_details.html:146
+msgid ""
+"To add a new vaccination record, click the “Add Vaccination Record” button. "
+"Provide the vaccine name, administration date, validity period, and vet "
+"details if available. This record will then be visible in the list and "
+"accessible to clinics with access to this pet."
+msgstr ""
+"За да добавите нов запис за ваксинация, кликнете върху бутона „Добави запис "
+"за ваксинация“. Въведете името на ваксината, датата на поставяне, срока на "
+"валидност и данни за ветеринаря, ако са налични. След това записът ще бъде "
+"видим в списъка и достъпен за клиники, които имат достъп до това животно."
+
+#: .\templates\pet\pet_details.html:156
 msgid "Valid Treatment Records"
 msgstr "Валидни лечения"
 
-#: .\templates\pet\pet_details.html:154
+#: .\templates\pet\pet_details.html:167
 msgid "No treatment records"
 msgstr "Няма записи за лечение"
 
-#: .\templates\pet\pet_details.html:159
+#: .\templates\pet\pet_details.html:172
 msgid "Add Treatment Record"
 msgstr "Добави запис за лечение"
 
-#: .\templates\pet\pet_details.html:166
+#: .\templates\pet\pet_details.html:179
 msgid "Last Examination Records"
 msgstr "Последни прегледи"
 
-#: .\templates\pet\pet_details.html:186
+#: .\templates\pet\pet_details.html:199
 msgid "No examination records"
 msgstr "Няма записи за прегледи"
 
-#: .\templates\pet\pet_details.html:191
+#: .\templates\pet\pet_details.html:204
 msgid "New Examination"
 msgstr "Нов преглед"
 
-#: .\templates\pet\pet_details.html:197
+#: .\templates\pet\pet_details.html:210
 msgid "View all history records"
 msgstr "Преглед на всички исторически записи"
 
-#: .\templates\pet\pet_details.html:203
+#: .\templates\pet\pet_details.html:216
 msgid "Finish and Logout"
 msgstr "Завърши и излез"
 
