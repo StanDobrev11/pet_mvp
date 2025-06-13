@@ -13,7 +13,7 @@ if ! git diff --quiet HEAD origin/main; then
     docker-compose build
 
     echo "Starting application containers (excluding nginx)..."
-    docker-compose up -d redis celery celery-beat app  # any services EXCEPT nginx
+    docker compose up -d redis celery celery-beat app  # any services EXCEPT nginx
 
     echo "Waiting for backend to become ready..."
 
@@ -24,11 +24,11 @@ if ! git diff --quiet HEAD origin/main; then
             break
         fi
         echo "Waiting... ($i/20)"
-        sleep 3
+        sleep 5
     done
 
     echo "Starting NGINX..."
-    docker-compose up -d nginx
+    docker compose up -d nginx
 else
     echo "No changes found. Everything is up to date."
 fi
