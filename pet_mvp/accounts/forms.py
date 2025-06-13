@@ -2,6 +2,7 @@ from django.contrib.auth import forms as auth_forms, get_user_model
 from django import forms
 from django.core.validators import validate_email
 from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import ValidationError
 
 from pet_mvp.accounts.models import Clinic, Owner
 from pet_mvp.accounts.validators import normalize_bulgarian_phone
@@ -13,7 +14,10 @@ UserModel = get_user_model()
 class CleanFieldsMixin:
     def clean(self):
         cleaned_data = super().clean()
-        for field_name, value in cleaned_data.items():
+        for field_name, value in list(cleaned_data.items()):
+            if value in (None, ''):
+                continue  # skip empty or missing fields
+
             if "password1" in field_name:
                 continue
 
@@ -21,7 +25,11 @@ class CleanFieldsMixin:
                 cleaned_data[field_name] = value.lower()
 
             elif field_name == 'phone_number':
-                cleaned_data[field_name] = normalize_bulgarian_phone(value)
+                try:
+                    cleaned_data[field_name] = normalize_bulgarian_phone(value)
+                except ValidationError as e:
+                    self.add_error(field_name, e)
+                    continue
 
             elif isinstance(value, str):
                 cleaned_data[field_name] = value.strip().title()
@@ -70,7 +78,7 @@ class BaseOwnerForm(CleanFieldsMixin, forms.ModelForm):
         return user
 
 
-class OwnerCreateForm(auth_forms.UserCreationForm, BaseOwnerForm):
+class OwnerCreateForm(BaseOwnerForm, auth_forms.UserCreationForm):
     class Meta(auth_forms.UserCreationForm.Meta, BaseOwnerForm.Meta):
         model = UserModel
         fields = ('email', 'phone_number', 'city', 'country', 'first_name', 'last_name')
