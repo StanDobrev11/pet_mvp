@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-13 15:57+0000\n"
+"POT-Creation-Date: 2025-06-13 16:14+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -1233,7 +1233,7 @@ msgstr "Неизвестна дата"
 
 #: .\pet_mvp\records\models.py:306
 msgid "Medical Record for {} on {}"
-msgstr "Медицински запис за {} на {}"
+msgstr "Преглед за {} на {}"
 
 #: .\pet_mvp\records\views.py:56
 msgid "Record saved. You can now add another."
@@ -2858,7 +2858,7 @@ msgstr "според ваксинационния календар."
 msgid "not compulsory"
 msgstr "не е задължителна"
 
-#: .\templates\pet\access_history.html:6 .\templates\pet\pet_details.html:224
+#: .\templates\pet\access_history.html:6 .\templates\pet\pet_details.html:240
 msgid "Access History"
 msgstr "История на достъп"
 
@@ -3153,23 +3153,32 @@ msgstr ""
 "данни за ветеринаря, ако са налични. Записът ще бъде запазен и видим за "
 "клиники, които имат достъп до това животно."
 
-#: .\templates\pet\pet_details.html:190
+#: .\templates\pet\pet_details.html:192
 msgid "Last Examination Records"
 msgstr "Последни прегледи"
 
-#: .\templates\pet\pet_details.html:210
+#: .\templates\pet\pet_details.html:215
 msgid "No examination records"
 msgstr "Няма записи за прегледи"
 
-#: .\templates\pet\pet_details.html:215
+#: .\templates\pet\pet_details.html:221
 msgid "New Examination"
 msgstr "Нов преглед"
 
-#: .\templates\pet\pet_details.html:221
+#: .\templates\pet\pet_details.html:227
+msgid ""
+"Only veterinary clinics can add or complete medical examination reports. "
+"Owners can view these reports once created by a vet."
+msgstr ""
+"Само ветеринарни клиники могат да добавят или попълват медицински прегледи. "
+"Собствениците могат да ги преглеждат, след като бъдат създадени от "
+"ветеринарен лекар."
+
+#: .\templates\pet\pet_details.html:237
 msgid "View all history records"
 msgstr "Преглед на всички исторически записи"
 
-#: .\templates\pet\pet_details.html:227
+#: .\templates\pet\pet_details.html:243
 msgid "Finish and Logout"
 msgstr "Завърши и излез"
 
