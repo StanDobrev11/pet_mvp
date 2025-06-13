@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pet_mvp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-11 12:38+0000\n"
+"POT-Creation-Date: 2025-06-13 14:40+0000\n"
 "PO-Revision-Date: 2025-05-18 13:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: Bulgarian\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\pet_mvp\access_codes\admin.py:17 .\pet_mvp\accounts\forms.py:126
+#: .\pet_mvp\access_codes\admin.py:17 .\pet_mvp\accounts\forms.py:136
 #: .\templates\accounts\access_code_email.html:30
 msgid "Access Code"
 msgstr "Код за достъп"
@@ -49,50 +49,45 @@ msgstr "Времеви данни"
 msgid "Is Active"
 msgstr "Активен"
 
-#: .\pet_mvp\accounts\forms.py:14 .\pet_mvp\accounts\models.py:142
+#: .\pet_mvp\accounts\forms.py:40 .\pet_mvp\accounts\models.py:142
 msgid "First name"
 msgstr "Име"
 
-#: .\pet_mvp\accounts\forms.py:15 .\pet_mvp\accounts\models.py:147
+#: .\pet_mvp\accounts\forms.py:41 .\pet_mvp\accounts\models.py:147
 msgid "Last name"
 msgstr "Фамилия"
 
-#: .\pet_mvp\accounts\forms.py:37 .\pet_mvp\pets\forms.py:46
-#: .\pet_mvp\pets\models.py:104
-msgid "Date of birth"
-msgstr "Дата на раждане"
-
-#: .\pet_mvp\accounts\forms.py:76
+#: .\pet_mvp\accounts\forms.py:92
 msgid "Clinic name"
 msgstr "Име на клиниката"
 
-#: .\pet_mvp\accounts\forms.py:77
+#: .\pet_mvp\accounts\forms.py:93
 msgid "Clinic address"
 msgstr "Адрес на клиниката"
 
-#: .\pet_mvp\accounts\forms.py:96
+#: .\pet_mvp\accounts\forms.py:112
 msgid "Enter a password"
 msgstr "Въведи парола"
 
-#: .\pet_mvp\accounts\forms.py:98
+#: .\pet_mvp\accounts\forms.py:114
 msgid "Repeat the password"
 msgstr "Повтори паролата"
 
-#: .\pet_mvp\accounts\forms.py:100
+#: .\pet_mvp\accounts\forms.py:116
 msgid "Phone number (e.g. 0887123456)"
 msgstr "Мобилен номер (напр. 0887123456)."
 
-#: .\pet_mvp\accounts\forms.py:127
+#: .\pet_mvp\accounts\forms.py:137
 #: .\templates\accounts\access_code_email.html:35
 #: .\templates\accounts\password\password_reset_form.html:29
 msgid "Email Address"
 msgstr "Имейл адрес"
 
-#: .\pet_mvp\accounts\forms.py:141
+#: .\pet_mvp\accounts\forms.py:151
 msgid "Invalid Access Code"
 msgstr "Невалиден код за достъп."
 
-#: .\pet_mvp\accounts\forms.py:149
+#: .\pet_mvp\accounts\forms.py:159
 msgid "Enter a valid email address."
 msgstr "Въведи валиден имейл адрес"
 
@@ -236,11 +231,11 @@ msgid "Enter a valid Bulgarian mobile number (e.g. 0887123456, +359887123456)."
 msgstr ""
 "Въведете валиден български мобилен номер (напр. 0887123456, +359887123456)."
 
-#: .\pet_mvp\accounts\views.py:142 .\pet_mvp\accounts\views.py:254
+#: .\pet_mvp\accounts\views.py:157 .\pet_mvp\accounts\views.py:286
 msgid "Invalid access code."
 msgstr "Невалиден код за достъп."
 
-#: .\pet_mvp\accounts\views.py:166
+#: .\pet_mvp\accounts\views.py:177
 msgid ""
 "Your registration was successful. An approval request has been sent to the "
 "pet's owner."
@@ -248,25 +243,25 @@ msgstr ""
 "Регистрацията ви беше успешна. Заявка за одобрение е изпратена до "
 "собственика на домашния любимец."
 
-#: .\pet_mvp\accounts\views.py:208
+#: .\pet_mvp\accounts\views.py:236
 msgid "Must be a registered pet owner or active and approved vet clinic"
 msgstr ""
 "Трябва да сте регистриран собственик на домашен любимец или активна и "
 "одобрена ветеринарна клиника."
 
-#: .\pet_mvp\accounts\views.py:222
+#: .\pet_mvp\accounts\views.py:254
 msgid "Please login using the access code"
 msgstr "Моля, влезте в системата с помощта на кода за достъп"
 
-#: .\pet_mvp\accounts\views.py:226
+#: .\pet_mvp\accounts\views.py:258
 msgid "You must be approved by the pet's owner first"
 msgstr "Първо трябва да бъдете одобрени от собственика на домашния любимец"
 
-#: .\pet_mvp\accounts\views.py:237
+#: .\pet_mvp\accounts\views.py:269
 msgid "Invalid email or password."
 msgstr "Невалиден имейл или парола."
 
-#: .\pet_mvp\accounts\views.py:262
+#: .\pet_mvp\accounts\views.py:294
 msgid ""
 "This clinic is not in the system. Please complete the registration form "
 "below to request temporary access."
@@ -274,18 +269,18 @@ msgstr ""
 "Тази клиника не е в системата. Моля, попълнете формуляра по-долу, за да "
 "заявите временно разрешение за достъп."
 
-#: .\pet_mvp\accounts\views.py:268
+#: .\pet_mvp\accounts\views.py:300
 msgid "Owners cannot access the website as vets."
 msgstr "Собствениците не могат да влизат в сайта като ветеринарни лекари."
 
-#: .\pet_mvp\accounts\views.py:298
+#: .\pet_mvp\accounts\views.py:330
 msgid ""
 "Activation email sent. Please check your inbox to confirm your clinic access."
 msgstr ""
 "Изпратен е имейл за активация. Моля, проверете входящата си поща, за да "
 "потвърдите достъпа на вашата клиника."
 
-#: .\pet_mvp\accounts\views.py:320
+#: .\pet_mvp\accounts\views.py:352
 msgid ""
 "This clinic is awaiting approval. An access request was sent to the pet's "
 "owner."
@@ -293,31 +288,31 @@ msgstr ""
 "Тази клиника очаква одобрение. Заявка за достъп беше изпратена до "
 "собственика на домашния любимец."
 
-#: .\pet_mvp\accounts\views.py:324
+#: .\pet_mvp\accounts\views.py:356
 msgid "Please correct the errors below."
 msgstr "Моля, коригирайте грешките по-долу."
 
-#: .\pet_mvp\accounts\views.py:335
+#: .\pet_mvp\accounts\views.py:367
 msgid "Invalid approval request."
 msgstr "Невалидна заявка за одобрение."
 
-#: .\pet_mvp\accounts\views.py:349
+#: .\pet_mvp\accounts\views.py:381
 msgid "This clinic was already activated."
 msgstr "Тази клиника вече беше активирана."
 
-#: .\pet_mvp\accounts\views.py:370
+#: .\pet_mvp\accounts\views.py:402
 msgid "Password set successfully. Please continue."
 msgstr "Паролата е зададена успешно. Моля, продължете."
 
-#: .\pet_mvp\accounts\views.py:466
+#: .\pet_mvp\accounts\views.py:498
 msgid "You are not allowed to edit the owner."
 msgstr "Нямате право да редактирате собственика."
 
-#: .\pet_mvp\api\views.py:92 .\pet_mvp\api\views.py:119
+#: .\pet_mvp\api\views.py:98 .\pet_mvp\api\views.py:125
 msgid "Due Soon"
 msgstr "Скоро изтича"
 
-#: .\pet_mvp\api\views.py:103 .\pet_mvp\api\views.py:129
+#: .\pet_mvp\api\views.py:109 .\pet_mvp\api\views.py:135
 msgid "Due Date"
 msgstr "Крайна дата"
 
@@ -693,9 +688,13 @@ msgstr "Няма снимка"
 msgid "Age"
 msgstr "Възраст"
 
+#: .\pet_mvp\pets\forms.py:46 .\pet_mvp\pets\models.py:104
+msgid "Date of birth"
+msgstr "Дата на раждане"
+
 #: .\pet_mvp\pets\forms.py:48
-msgid "Format BG01VPXXXXXX or blank"
-msgstr "Формат BG01VPXXXXXX или празно"
+msgid "Passport Number in format BG01VPXXXXXX or leave blank"
+msgstr "Номер на паспорт, формат BG01VPXXXXXX или празно"
 
 #: .\pet_mvp\pets\forms.py:53
 msgid "in English"
