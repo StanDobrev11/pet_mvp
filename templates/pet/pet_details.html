@@ -152,25 +152,36 @@
                 </div>
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title">
-                            <strong>{% trans "Valid Treatment Records" %}</strong>
-                        </h5>
-                        {% if valid_treatments %}
-                            {% for treatment in valid_treatments %}
-                                <p>
-                                    <a href="{% url 'treatment-details' pk=treatment.pk %}?source=pet&id={{ pet.id }}"
-                                       class="btn btn-sm btn-outline-success">{{ treatment }}</a>
-                                </p>
-                            {% endfor %}
-                        {% else %}
-                            <p>
-                                <strong>{% trans "No treatment records" %}</strong>
-                            </p>
-                        {% endif %}
-                        {% if user.is_owner %}
-                            <a href="{% url 'treatment-record-add' %}?pet_id={{ pet.id }}"
-                               class="btn btn-sm btn-secondary">{% trans "Add Treatment Record" %}</a>
-                        {% endif %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5 class="card-title">
+                                    <strong>{% trans "Valid Treatment Records" %}</strong>
+                                </h5>
+                                {% if valid_treatments %}
+                                    {% for treatment in valid_treatments %}
+                                        <p>
+                                            <a href="{% url 'treatment-details' pk=treatment.pk %}?source=pet&id={{ pet.id }}"
+                                               class="btn btn-sm btn-outline-success">{{ treatment }}</a>
+                                        </p>
+                                    {% endfor %}
+                                {% else %}
+                                    <p>
+                                        <strong>{% trans "No treatment records" %}</strong>
+                                    </p>
+                                {% endif %}
+                                {% if user.is_owner %}
+                                    <a href="{% url 'treatment-record-add' %}?pet_id={{ pet.id }}"
+                                       class="btn btn-sm btn-secondary mt-2">{% trans "Add Treatment Record" %}</a>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {% if user.is_owner %}
+                                    <div class="alert alert-info small">
+                                        {% trans "To add a treatment record, click the “Add Treatment Record” button. Fill in the treatment type, date, medication used, and vet details if available. The record will be saved and visible to clinics who access this pet." %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="card mb-4">
