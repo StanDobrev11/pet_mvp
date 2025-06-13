@@ -10,11 +10,16 @@ from pet_mvp.access_codes.models import VetPetAccess
 from pet_mvp.records.models import VaccinationRecord, MedicationRecord
 from django.utils import timezone
 from django.db.models import Prefetch
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, login_not_required
 from datetime import timedelta
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
 from pet_mvp.accounts.models import Clinic, Store, Groomer
+
+
+@login_not_required
+def health_check(request):
+    return JsonResponse({"status": "ok"})
 
 
 @require_POST
@@ -32,7 +37,7 @@ def verify_access_code(request):
         pet=pet,
         defaults={
             'created_at': timezone.now(),
-            'expires_at': timezone.now() + timedelta(minutes=40), # sets the time to reset the pet list of a vet
+            'expires_at': timezone.now() + timedelta(minutes=40),  # sets the time to reset the pet list of a vet
             'granted_by': 'code'
         }
     )
@@ -54,6 +59,7 @@ def verify_access_code(request):
             for owner in pet.owners.all()
         ]
     })
+
 
 @login_required
 def get_pet_events(request):
@@ -123,7 +129,7 @@ def get_pet_events(request):
                     "borderColor": "#b02a37",
                     "allDay": True,
                     "classNames": ["urgent-medication"],
-                   })
+                })
             else:
                 events.append({
                     "title": f"💊 {pet.name} – {m.medication.name} ({_('Due Date')})",
@@ -133,7 +139,7 @@ def get_pet_events(request):
                     "borderColor": "#adb5bd",
                     "allDay": True,
                     "classNames": ["dimmed-medication"],
-                  })
+                })
 
     return JsonResponse(events, safe=False)
 
@@ -215,6 +221,7 @@ def get_venues_nearby(request):
 
     return JsonResponse({"results": nearby_venues})
 
+
 def get_google_places(lat, lng, radius, keyword):
     try:
         response = requests.get(
@@ -237,7 +244,8 @@ def get_google_places(lat, lng, radius, keyword):
                 "address": place.get("vicinity", ""),
                 "lat": place["geometry"]["location"]["lat"],
                 "lng": place["geometry"]["location"]["lng"],
-                "distance_km": round(haversine(lat, lng, place["geometry"]["location"]["lat"], place["geometry"]["location"]["lng"]), 2),
+                "distance_km": round(
+                    haversine(lat, lng, place["geometry"]["location"]["lat"], place["geometry"]["location"]["lng"]), 2),
                 "website": None,
                 "external": True
             }

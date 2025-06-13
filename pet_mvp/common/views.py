@@ -94,6 +94,7 @@ class ClinicDashboardView(views.TemplateView):
         context['accessible_pets'] = accessible_pets
         return context
 
+
 def robots_txt(request):
     lines = [
         "User-Agent: *",

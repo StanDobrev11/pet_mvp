@@ -45,7 +45,7 @@ class PetAddForm(forms.ModelForm):
                 field.widget = forms.DateInput(attrs={'type': 'date'})
                 field.help_text = _('Date of birth')
             elif field_name == 'passport_number':
-                field.widget.attrs['placeholder'] = _('Format BG01VPXXXXXX or blank')
+                field.widget.attrs['placeholder'] = _('Passport Number in format BG01VPXXXXXX or leave blank')
                 field.widget.attrs['required'] = False
             elif '_en' in field_name:
                 base_field_name = field_name.replace('_en', '')
