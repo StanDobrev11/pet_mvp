@@ -126,4 +126,4 @@ class MedicalRecordEmailTestCase(TestCase):
         self.assertIn("Processed", result)
 
         # Print the result for manual verification
-        print(f"\nTask result: {result}")
+        print("\nTask executed successfully. Check logs for detailed information.")

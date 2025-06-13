@@ -130,7 +130,7 @@ def create_user(email, password):
     except IntegrityError:
         print('User already exists')
 
-    print(f'email: {email}\npassword: {password}')
+    print(f'email: {email}\npassword: {"*" * len(password)}')
 
 
 def create_pets():
