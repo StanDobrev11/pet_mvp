@@ -324,3 +324,4 @@ Sitemap: https://<your-domain>/sitemap.xml
 
 Ensure the domain configured in the Django `Site` model matches your deployment so the generated URLs in these files are correct.
 
+### Adding an action
