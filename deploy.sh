@@ -1,6 +1,3 @@
-#!/bin/bash
-cd /repo/pet_mvp || exit 1
-
 # Fetch latest changes
 git fetch
 

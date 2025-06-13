@@ -116,25 +116,38 @@
             <div class="col-lg-6">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title">
-                            <strong>{% trans "Valid Vaccination Records" %}</strong>
-                        </h5>
-                        {% if valid_vaccinations %}
-                            {% for vaccine in valid_vaccinations %}
-                                <p>
-                                    <a href="{% url 'vaccine-details' pk=vaccine.pk %}?source=pet&id={{ pet.id }}"
-                                       class="btn btn-sm btn-outline-primary">{{ vaccine }}</a>
-                                </p>
-                            {% endfor %}
-                        {% else %}
-                            <p>
-                                <strong>{% trans "No vaccination records" %}</strong>
-                            </p>
-                            {% if user.is_owner %}
-                                <a href="{% url 'vaccine-record-add' %}?pet_id={{ pet.id }}"
-                                   class="btn btn-sm btn-secondary">{% trans "Add Vaccination Record" %}</a>
-                            {% endif %}
-                        {% endif %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5 class="card-title">
+                                    <strong>{% trans "Valid Vaccination Records" %}</strong>
+                                </h5>
+                                {% if valid_vaccinations %}
+                                    {% for vaccine in valid_vaccinations %}
+                                        <p>
+                                            <a href="{% url 'vaccine-details' pk=vaccine.pk %}?source=pet&id={{ pet.id }}"
+                                               class="btn btn-sm btn-outline-primary">{{ vaccine }}</a>
+                                        </p>
+                                    {% endfor %}
+                                {% else %}
+                                    <p>
+                                        <strong>{% trans "No vaccination records" %}</strong>
+                                    </p>
+                                {% endif %}
+
+                                {% if user.is_owner %}
+                                    <a href="{% url 'vaccine-record-add' %}?pet_id={{ pet.id }}"
+                                       class="btn btn-sm btn-secondary mt-2">{% trans "Add Vaccination Record" %}</a>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-6">
+                                {% if user.is_owner %}
+                                    <div class="alert alert-info small">
+                                        {% trans "To add a new vaccination record, click the “Add Vaccination Record” button. Provide the vaccine name, administration date, validity period, and vet details if available. This record will then be visible in the list and accessible to clinics with access to this pet." %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="card mb-4">
