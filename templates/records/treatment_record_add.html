@@ -52,14 +52,18 @@
                                 {% for drug in form.fields.medication.queryset %}
                                     <option value="{{ drug.pk }}"
                                             data-notes="{{ drug.notes|escape }}"
-                                            data-interval="{{ drug.recommended_interval_days }}">
+                                            data-interval="{{ drug.recommended_interval_days }}"
+                                            data-is-antiparasite="{{ drug.is_antiparasite|yesno:'true,false' }}">
                                         {{ drug.name }}
                                     </option>
                                 {% endfor %}
                                 <option value="custom">{{ _("Other (specify)") }}</option>
                             </select>
+                            {{ form.medication.errors }}
                         </div>
-                        <div id="medication-fields" style="display: none;">
+
+                        <div id="medication-fields">
+                            <!-- Custom medication name -->
                             <div class="mb-3" id="custom-medication-wrapper" style="display: none;">
                                 <label for="id_custom_medication">{{ _("Custom Medication Name") }}</label>
                                 <input type="text"
@@ -68,21 +72,61 @@
                                        class="form-control"
                                        placeholder="{% trans 'Enter custom medication name' %}">
                             </div>
-                            <div id="medication-notes" class="alert alert-info" style="display: none;"></div>
-                            {% for field in form %}
-                                {% if field.name != 'medication' %}
-                                    <div class="mb-3">
-                                        {{ field.label_tag }}
-                                        {{ field|add_class:"form-control" }}
-                                        {% if field.help_text %}<div class="form-text">{{ field.help_text|safe }}</div>{% endif %}
-                                        {% for error in field.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
+
+                            <!-- Custom antiparasite checkbox -->
+                            <div class="mb-3" id="custom-is-antiparasite-wrapper" style="display: none;">
+                                <div class="form-check">
+                                    {{ form.custom_is_antiparasite }}
+                                    <label for="id_custom_is_antiparasite" class="form-check-label">
+                                        {% trans "This is an antiparasite medication" %}
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Medication notes -->
+                            <div id="medication-notes" class="alert alert-info mb-3" style="display: none;"></div>
+
+                            <!-- Common fields -->
+                            <div class="mb-3">
+                                <label for="id_date">{{ form.date.label }}</label>
+                                {{ form.date|add_class:"form-control" }}
+                                {{ form.date.errors }}
+                            </div>
+
+                            <!-- Optional fields (hidden for antiparasites) -->
+                            <div id="optional-fields">
+                                <div class="mb-3" id="time-field">
+                                    <label for="id_time">{{ form.time.label }}</label>
+                                    {{ form.time|add_class:"form-control" }}
+                                    {{ form.time.errors }}
+                                </div>
+
+                                <div class="mb-3" id="dosage-field">
+                                    <label for="id_dosage">{{ form.dosage.label }}</label>
+                                    {{ form.dosage|add_class:"form-control" }}
+                                    {{ form.dosage.errors }}
+                                </div>
+                            </div>
+
+                            <!-- Valid until field -->
+                            <div class="mb-3">
+                                <label for="id_valid_until">{{ form.valid_until.label }}</label>
+                                {{ form.valid_until|add_class:"form-control" }}
+                                {{ form.valid_until.errors }}
+                            </div>
+
+                            <!-- Manufacturer field -->
+                            <div class="mb-3">
+                                <label for="id_manufacturer">{{ form.manufacturer.label }}</label>
+                                {{ form.manufacturer|add_class:"form-control" }}
+                                {{ form.manufacturer.errors }}
+                            </div>
                         </div>
+
                         <div class="d-flex flex-wrap gap-2 justify-content-between mt-4">
                             <button type="submit" class="btn btn-primary">{% trans "Save Record" %}</button>
-                            <a href="{% url 'pet-details' pk=pet_id %}" class="btn btn-secondary">{% trans "Finish Adding Treatments" %}</a>
+                            <a href="{% url 'pet-details' pk=pet_id %}"
+                               class="btn btn-secondary">{% trans "Finish Adding Treatments" %}</a>
                             <button type="reset" class="btn btn-outline-secondary">{% trans "Clear Fields" %}</button>
                         </div>
                     </form>
@@ -90,65 +134,78 @@
             </div>
         </div>
     </section>
+
     <script>
-    const medicationSelect = document.getElementById("id_medication");
-    const notesDiv = document.getElementById("medication-notes");
-    const dateInput = document.getElementById("id_date");
-    const validUntilInput = document.getElementById("id_valid_until");
-    const customInputWrapper = document.getElementById("custom-medication-wrapper");
-    const fieldsWrapper = document.getElementById("medication-fields");
+        const medicationSelect = document.getElementById("id_medication");
+        const notesDiv = document.getElementById("medication-notes");
+        const dateInput = document.getElementById("id_date");
+        const validUntilInput = document.getElementById("id_valid_until");
+        const customInputWrapper = document.getElementById("custom-medication-wrapper");
+        const customAntiparasiteWrapper = document.getElementById("custom-is-antiparasite-wrapper");
+        const customAntiparasiteCheckbox = document.getElementById("id_custom_is_antiparasite");
+        const optionalFieldsWrapper = document.getElementById("optional-fields");
+        const medicationFieldsWrapper = document.getElementById("medication-fields");
+        
+        // Initialize field visibility
+        medicationFieldsWrapper.style.display = "none";
 
-    function updateNotesAndInterval() {
-        const selectedOption = medicationSelect.options[medicationSelect.selectedIndex];
-        const isCustom = selectedOption.value === "custom";
-        const hasSelection = selectedOption.value !== "";
-
-        // Show/hide the rest of the form fields
-        fieldsWrapper.style.display = hasSelection ? "block" : "none";
-
-        if (!hasSelection) {
-            notesDiv.style.display = "none";
-            customInputWrapper.style.display = "none";
-            validUntilInput.value = "";
-            return;
+        function toggleOptionalFields(isAntiparasite) {
+            if (optionalFieldsWrapper) {
+                optionalFieldsWrapper.style.display = isAntiparasite ? "none" : "block";
+            }
         }
 
-        const notes = selectedOption.getAttribute("data-notes");
-        const interval = parseInt(selectedOption.getAttribute("data-interval"));
+        function updateForm() {
+            const selectedOption = medicationSelect.options[medicationSelect.selectedIndex];
+            const isCustom = selectedOption.value === "custom";
+            
+            // Hide all fields if no selection or default option
+            if (!selectedOption.value) {
+                medicationFieldsWrapper.style.display = "none";
+                return;
+            }
 
-        if (isCustom) {
-            customInputWrapper.style.display = "block";
-            notesDiv.style.display = "none";
-            validUntilInput.value = "";
-        } else {
-            customInputWrapper.style.display = "none";
-            if (notes) {
-                notesDiv.textContent = notes;
-                notesDiv.style.display = "block";
-            } else {
+            // Show medication fields wrapper when an option is selected
+            medicationFieldsWrapper.style.display = "block";
+            
+            // Show/hide custom input fields
+            customInputWrapper.style.display = isCustom ? "block" : "none";
+            customAntiparasiteWrapper.style.display = isCustom ? "block" : "none";
+            
+            if (isCustom) {
                 notesDiv.style.display = "none";
-            }
-
-            if (interval && dateInput.value) {
-                const selectedDate = new Date(dateInput.value);
-                selectedDate.setDate(selectedDate.getDate() + interval);
-                validUntilInput.value = selectedDate.toISOString().split('T')[0];
+                toggleOptionalFields(customAntiparasiteCheckbox.checked);
+            } else if (selectedOption.value) {
+                // Handle predefined medication
+                const notes = selectedOption.getAttribute("data-notes");
+                const interval = parseInt(selectedOption.getAttribute("data-interval"));
+                const isAntiparasite = selectedOption.getAttribute("data-is-antiparasite") === "true";
+                
+                // Show/hide notes
+                if (notes) {
+                    notesDiv.textContent = notes;
+                    notesDiv.style.display = "block";
+                } else {
+                    notesDiv.style.display = "none";
+                }
+                
+                // Update valid until date if we have interval and date
+                if (interval && dateInput.value) {
+                    const selectedDate = new Date(dateInput.value);
+                    selectedDate.setDate(selectedDate.getDate() + interval);
+                    validUntilInput.value = selectedDate.toISOString().split('T')[0];
+                }
+                
+                toggleOptionalFields(isAntiparasite);
             }
         }
-    }
 
-    function updateValidUntilOnDateChange() {
-        const selectedOption = medicationSelect.options[medicationSelect.selectedIndex];
-        const interval = parseInt(selectedOption.getAttribute("data-interval"));
+        // Event listeners
+        medicationSelect.addEventListener("change", updateForm);
+        customAntiparasiteCheckbox.addEventListener("change", updateForm);
+        dateInput.addEventListener("change", updateForm);
 
-        if (interval && dateInput.value && selectedOption.value !== "custom") {
-            const selectedDate = new Date(dateInput.value);
-            selectedDate.setDate(selectedDate.getDate() + interval);
-            validUntilInput.value = selectedDate.toISOString().split('T')[0];
-        }
-    }
-
-    medicationSelect.addEventListener("change", updateNotesAndInterval);
-    dateInput.addEventListener("change", updateValidUntilOnDateChange);
+        // Initialize form state when the page loads
+        document.addEventListener("DOMContentLoaded", updateForm);
     </script>
 {% endblock %}

@@ -10,7 +10,6 @@
                     class="form-select">
                 <option value="">{% trans "Select Medication" %}</option>
                 {% for medication in form.fields.medication.queryset %}
-                    {#          <option value="{{ med.pk }}">{{ med.name }}</option>#}
                     <option value="{{ medication.pk }}"
                             data-notes="{{ medication.notes|escape }}"
                             data-interval="{{ medication.recommended_interval_days }}"

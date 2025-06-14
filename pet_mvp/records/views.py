@@ -83,6 +83,7 @@ class VaccineRecordAddView(BaseRecordAddView):
 
 
 class TreatmentRecordAddView(BaseRecordAddView):
+    """ This view will be used to add directly by the owner treatments and medications """
     model = MedicationRecord
     template_name = 'records/treatment_record_add.html'
     form_class = MedicationRecordForm

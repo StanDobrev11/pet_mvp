@@ -6,7 +6,7 @@ from pet_mvp.records.models import VaccinationRecord, MedicationRecord, MedicalE
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from django.forms.models import BaseModelFormSet
-
+from django.core.exceptions import FieldDoesNotExist
 
 class VaccinationRecordForm(forms.ModelForm):
     class Meta:
@@ -72,6 +72,12 @@ class VaccinationRecordForm(forms.ModelForm):
 
 
 class MedicationRecordForm(forms.ModelForm):
+    custom_is_antiparasite = forms.BooleanField(
+        required=False,
+        label=_('Is antiparasite medication?'),
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+    )
+
     class Meta:
         model = MedicationRecord
         exclude = ['pet']
@@ -80,36 +86,35 @@ class MedicationRecordForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         if pet:
-            species = pet.species if hasattr(
-                pet, 'species') else pet  # assume string if not model
-            self.fields['medication'].queryset = Drug.objects.filter(
-                suitable_for=species.lower())
+            species = pet.species if hasattr(pet, 'species') else pet
+            self.fields['medication'].queryset = Drug.objects.filter(suitable_for=species.lower())
         else:
             self.fields['medication'].queryset = Drug.objects.none()
 
         self.fields['medication'].label = _('Select Medication/Treatment')
-        self.fields['medication'].widget.attrs.update(
-            {'class': 'form-control', 'id': 'id_medication'})
-
+        self.fields['medication'].widget.attrs.update({'class': 'form-control', 'id': 'id_medication'})
+        
         for field_name in self.fields:
             field = self.fields[field_name]
             if field_name == 'date':
-                field.widget = forms.DateInput(
-                    attrs={'type': 'date', 'class': 'form-control'})
+                field.widget = forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
                 field.help_text = _('Date of intake')
             elif field_name == 'valid_until':
-                field.widget = forms.DateInput(
-                    attrs={'type': 'date', 'class': 'form-control'})
+                field.widget = forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
                 field.help_text = _('Valid until date')
             elif field_name == 'time':
-                field.widget = forms.TimeInput(
-                    attrs={'type': 'time', 'class': 'form-control'})
+                field.widget = forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'})
                 field.help_text = _('Time of intake')
+                field.required = False  # Make time optional for antiparasitic medications
+            elif field_name == 'dosage':
+                field.required = False  # Make dosage optional for antiparasitic medications
             else:
-                placeholder = self._meta.model._meta.get_field(
-                    field_name).verbose_name
-                field.widget.attrs['placeholder'] = str(
-                    placeholder).capitalize()
+                try:
+                    model_field = self._meta.model._meta.get_field(field_name)
+                    placeholder = model_field.verbose_name
+                    field.widget.attrs['placeholder'] = str(placeholder).capitalize()
+                except FieldDoesNotExist:
+                    pass
 
     def clean(self):
         cleaned_data = super().clean()
@@ -143,12 +148,12 @@ class BaseTestForm(forms.ModelForm):
             else:
                 field.widget.attrs['placeholder'] = str(placeholder).capitalize()
 
+
 class BloodTestForm(BaseTestForm):
     class Meta:
         model = BloodTest
         fields = ['date_conducted', 'result', 'white_blood_cells',
                   'red_blood_cells', 'hemoglobin', 'platelets', 'additional_notes']
-
 
 
 class UrineTestForm(BaseTestForm):

@@ -24,12 +24,12 @@ class VaccineAdmin(admin.ModelAdmin):
 
 @admin.register(Drug)
 class DrugAdmin(admin.ModelAdmin):
-    list_display = ('name', 'suitable_for', 'recommended_interval_days', 'notes')
+    list_display = ('name', 'suitable_for', 'is_antiparasite', 'recommended_interval_days', 'notes')
     list_filter = ('suitable_for',)
     search_fields = ('name', 'notes')
     fieldsets = (
         (_('Basic Information'), {
-            'fields': ('name', 'suitable_for')
+            'fields': ('name', 'suitable_for', 'is_antiparasite')
         }),
         (_('Scheduling'), {
             'fields': ('recommended_interval_days',)

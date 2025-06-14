@@ -10,7 +10,8 @@
             "notes_en": "Broad-spectrum internal parasite treatment for cats. Effective against roundworms and tapeworms. Recommended intake interval: every 30 days.",
             "notes_bg": "Широкоспектърно лечение срещу вътрешни паразити при котки. Ефективен срещу кръгли и тении. Препоръчителен интервал на прием: на всеки 30 дни.",
             "recommended_interval_days": 30,
-            "suitable_for": "cat"
+            "suitable_for": "cat",
+		  	"is_antiparasite": true
         }
     },
     {
@@ -24,7 +25,8 @@
             "notes_en": "Topical dewormer for cats. Treats roundworms, hookworms, and tapeworms with a single application. Recommended intake interval: every 30 days.",
             "notes_bg": "Локален обезпаразитител за котки. Лекува кръгли, анкилостоми и тении с едно нанасяне. Препоръчителен интервал на прием: на всеки 30 дни.",
             "recommended_interval_days": 30,
-            "suitable_for": "cat"
+            "suitable_for": "cat",
+		  	"is_antiparasite": true
         }
     },
     {
@@ -38,7 +40,8 @@
             "notes_en": "Protects cats against fleas, ear mites, hookworms, and roundworms. Monthly spot-on application. Recommended intake interval: every 30 days.",
             "notes_bg": "Предпазва котките от бълхи, ушни акари, анкилостоми и кръгли червеи. Месечно локално приложение. Препоръчителен интервал на прием: на всеки 30 дни.",
             "recommended_interval_days": 30,
-            "suitable_for": "cat"
+            "suitable_for": "cat",
+		  	"is_antiparasite": true
         }
     },
     {
@@ -52,7 +55,8 @@
             "notes_en": "Spot-on solution for cats. Kills fleas and ticks, prevents heartworm and treats intestinal worms. Recommended intake interval: every 30 days.",
             "notes_bg": "Локален разтвор за котки. Убива бълхи и кърлежи, предотвратява дирофилариоза и лекува чревни паразити. Препоръчителен интервал на прием: на всеки 30 дни.",
             "recommended_interval_days": 30,
-            "suitable_for": "cat"
+            "suitable_for": "cat",
+		  	"is_antiparasite": true
         }
     },
     {
