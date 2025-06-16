@@ -91,7 +91,7 @@ class WrongVaccinationReportTestCase(TestCase):
         args, kwargs = mock_send_email.call_args
 
         # Verify email is sent to admin
-        self.assertEqual(kwargs['to_email'], 'admin@test.com')
+        self.assertEqual(kwargs['to_email'], 'admin@petpal.cloudmachine.uk')
 
         # Check that the subject indicates a reset request
         self.assertEqual(kwargs['subject'], "Vaccine reset request")
