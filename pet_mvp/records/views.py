@@ -3,13 +3,17 @@ from datetime import timedelta
 
 from django.contrib import messages
 from django.db import transaction
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import generic as views
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.tokens import default_token_generator
 
-from pet_mvp.notifications.tasks import send_medical_record_email
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+
+from pet_mvp.notifications.tasks import send_medical_record_email, send_wrong_vaccination_report
 from pet_mvp.pets.models import Pet
 from pet_mvp.records.forms import FecalTestForm, UrineTestForm, \
     BloodTestForm, VaccinationRecordAddForm, MedicationRecordAddForm, VaccinationRecordEditForm, VaccineFormSet, \
@@ -93,6 +97,11 @@ class VaccineRecordEditView(views.UpdateView):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_clinic and request.user.clinic.is_approved:
             return super().dispatch(request, *args, **kwargs)
+
+        vaccine_record = self.get_object()
+        if vaccine_record.is_editable:
+            return super().dispatch(request, *args, **kwargs)
+
         return HttpResponseForbidden(_("You cannot edit records for this pet."))
 
     def get_success_url(self):
@@ -104,6 +113,15 @@ class VaccineRecordEditView(views.UpdateView):
         context['source'] = self.request.GET.get('source', '')
         context['id'] = self.request.GET.get('id')
         return context
+
+    def form_valid(self, form):
+
+        form.is_wrong = False
+        form.is_editable = False
+        form.save()
+
+        return super().form_valid(form)
+
 
 class TreatmentRecordEditView(views.UpdateView):
     """
@@ -123,6 +141,72 @@ class TreatmentRecordEditView(views.UpdateView):
         context['source'] = self.request.GET.get('source', '')
         context['id'] = self.request.GET.get('id')
         return context
+
+
+class VaccineResetView(views.View):
+
+    def get(self, request, uidb64, token):
+        if not self.request.user.is_staff:
+            return HttpResponseForbidden('You are not allowed to see this page.')
+
+        try:
+            pk = urlsafe_base64_decode(uidb64).decode()
+            vaccine = VaccinationRecord.objects.get(pk=pk)
+        except (TypeError, ValueError, OverflowError, VaccinationRecord.DoesNotExist):
+            vaccine = None
+
+        if vaccine is None or not default_token_generator.check_token(request.user, token):
+            return HttpResponseForbidden(_("Invalid or expired token."))
+
+        vaccine.is_editable = True
+        vaccine.save(update_fields=["is_editable"])
+
+        messages.success(request, _("Vaccination has been marked as incorrect and can now be edited."))
+        return redirect('vaccine-details', pk=vaccine.pk)
+
+
+class VaccineWrongReportView(views.View):
+    """
+    This view handles POST requests to report a wrong vaccination record.
+    Sends an email to the admin with a reset link.
+    """
+
+    def post(self, request, *args, **kwargs):
+        vaccine_id = request.POST.get("vaccine_id")
+
+        if not vaccine_id:
+            messages.error(request, _("Missing vaccine ID."))
+            return redirect(request.META.get("HTTP_REFERER", "/"))
+
+        vaccine = get_object_or_404(VaccinationRecord, pk=vaccine_id)
+
+        if vaccine.is_wrong:
+            messages.warning(
+                request,
+                _("A report for this vaccination has already been submitted. Pending approval from the administrator.")
+            )
+
+            url = f"{reverse('vaccine-details', kwargs={'pk': vaccine.pk})}?source={request.GET.get('source', '')}&id={request.GET.get('id', '')}"
+            return HttpResponseRedirect(url)
+
+        # mark as wrong
+        vaccine.is_wrong = True
+        vaccine.save(update_fields=["is_wrong"])
+
+        owner = request.user
+
+        uid = urlsafe_base64_encode(force_bytes(vaccine.pk))
+        token = default_token_generator.make_token(owner)
+
+        reset_url = request.build_absolute_uri(
+            reverse("vaccine-record-reset", kwargs={"uidb64": uid, "token": token})
+        )
+
+        send_wrong_vaccination_report.delay(owner.pk, vaccine.pk, reset_url)
+
+        messages.success(request, _("The report has been sent to the administrator."))
+        url = f"{reverse('vaccine-details', kwargs={'pk': vaccine.pk})}?source={request.GET.get('source', '')}&id={request.GET.get('id', '')}"
+        return HttpResponseRedirect(url)
 
 
 class TreatmentRecordAddView(BaseRecordAddView):

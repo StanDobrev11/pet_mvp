@@ -103,6 +103,32 @@ def send_treatment_expiration_notifications():
 
     return _("Processed {} treatment expiration notifications").format(notifications_sent)
 
+@shared_task
+def send_wrong_vaccination_report(owner_id, vaccine_record_id, url):
+    """
+    One-time notification sent to the admin to reset a wrongly entered vaccination.
+    """
+    from django.contrib.auth import get_user_model
+    from pet_mvp.records.models import VaccinationRecord
+
+    User = get_user_model()
+    owner = User.objects.get(pk=owner_id)
+    vaccine_record = VaccinationRecord.objects.get(pk=vaccine_record_id)
+
+    context = {
+        'owner_name': owner.get_full_name(),
+        'vaccine_name': vaccine_record.vaccine.name,
+        'url': url,
+    }
+
+    EmailService.send_template_email_async(
+        subject=_("Vaccine reset request"),
+        to_email=os.getenv("ADMIN_EMAIL"),
+        template_name='emails/vaccine_reset_request_email.html',
+        context=context
+    )
+
+    return _("Processed vaccine reset")
 
 @shared_task
 def send_vaccine_expiration_notifications():

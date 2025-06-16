@@ -4,6 +4,29 @@
         <h5 class="card-title">
             <strong>{% trans "Name of the vaccine:" %}</strong> {{ object.vaccine.name }}
         </h5>
+        {% if user.is_owner %}
+            <div class="alert alert-info small">
+                {% if object.is_editable %}
+                    {% trans "You have added this vaccination and can edit it if needed." %}
+                {% else %}
+                    {% trans "This vaccination record has already been saved. If you believe the details are incorrect, you can request a correction. The admin will review your request and allow you to update the record. Otherwise, an approved vet can edit the record." %}
+                {% endif %}
+            </div>
+        {% endif %}
+        {% if messages %}
+            <div class="container mt-3">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show"
+                         role="alert">
+                        {{ message }}
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
                 <strong>{% trans "Date of vaccination:" %}</strong> {{ object.date_of_vaccination }}
@@ -44,6 +67,21 @@
             <a href="{% url 'vaccine-record-edit' pk=object.pk %}?source={{ source }}&id={{ id }}"
                class="btn btn-outline-primary me-2">{% trans "Edit" %}</a>
         {% endif %}
+        {% if object.is_editable and user.is_owner %}
+            <a href="{% url 'vaccine-record-edit' pk=object.pk %}?source={{ source }}&id={{ id }}"
+               class="btn btn-outline-primary me-2">{% trans "Edit" %}</a>
+        {% else %}
+            <form method="post"
+                  action="{% url 'vaccine-record-report' pk=object.pk %}?source={{ source }}&id={{ id }}"
+                  class="d-inline">
+                {% csrf_token %}
+                <input type="hidden" name="vaccine_id" value="{{ object.pk }}">
+                <button type="submit" class="btn btn-outline-danger me-2">
+                    {% trans "Report as Wrong Entry" %}
+                </button>
+            </form>
+        {% endif %}
+
         {% if source == 'pet' or source == 'hist' %}
             {% if source == 'pet' %}
                 <a href="{% url 'pet-details' pk=id %}"
