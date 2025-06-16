@@ -87,7 +87,7 @@ class VaccinationRecordEditForm(VaccinationRecordForm):
     pass
 
 
-class MedicationRecordForm(forms.ModelForm):
+class MedicationRecordBaseForm(forms.ModelForm):
     custom_is_antiparasite = forms.BooleanField(
         required=False,
         label=_('Is antiparasite medication?'),
@@ -98,22 +98,12 @@ class MedicationRecordForm(forms.ModelForm):
         model = MedicationRecord
         exclude = ['pet']
 
-    def __init__(self, *args, pet=None, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        if pet:
-            species = pet.species if hasattr(pet, 'species') else pet
-            self.fields['medication'].queryset = Drug.objects.filter(
-                suitable_for=species.lower())
-        else:
-            self.fields['medication'].queryset = Drug.objects.none()
-
-        self.fields['medication'].label = _('Select Medication/Treatment')
-        self.fields['medication'].widget.attrs.update(
-            {'class': 'form-control', 'id': 'id_medication'})
 
         for field_name in self.fields:
             field = self.fields[field_name]
+
             if field_name == 'date':
                 field.widget = forms.DateInput(
                     attrs={'type': 'date', 'class': 'form-control'})
@@ -129,6 +119,7 @@ class MedicationRecordForm(forms.ModelForm):
                 field.required = False  # Make time optional for antiparasitic medications
             elif field_name == 'dosage':
                 field.required = False  # Make dosage optional for antiparasitic medications
+                field.widget.attrs['placeholder'] = _('Dosage')
             else:
                 try:
                     model_field = self._meta.model._meta.get_field(field_name)
@@ -148,6 +139,27 @@ class MedicationRecordForm(forms.ModelForm):
                 _("Please select a medication or enter a custom one."))
 
         return cleaned_data
+
+
+class MedicationRecordAddForm(MedicationRecordBaseForm):
+
+    def __init__(self, *args, pet=None, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if pet:
+            species = pet.species if hasattr(pet, 'species') else pet
+            self.fields['medication'].queryset = Drug.objects.filter(
+                suitable_for=species.lower())
+        else:
+            self.fields['medication'].queryset = Drug.objects.none()
+
+        self.fields['medication'].label = _('Select Medication/Treatment')
+        self.fields['medication'].widget.attrs.update(
+            {'class': 'form-control', 'id': 'id_medication'})
+
+
+class MedicationRecordEditForm(MedicationRecordBaseForm):
+    pass
 
 
 class BaseTestForm(forms.ModelForm):
@@ -302,7 +314,7 @@ VaccineFormSet = forms.modelformset_factory(
 
 TreatmentFormSet = forms.modelformset_factory(
     MedicationRecord,
-    form=MedicationRecordForm,
+    form=MedicationRecordAddForm,
     extra=0,
     can_delete=True,
     formset=BaseFormSet,

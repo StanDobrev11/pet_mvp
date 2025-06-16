@@ -12,9 +12,9 @@ from django.utils.translation import gettext_lazy as _
 from pet_mvp.notifications.tasks import send_medical_record_email
 from pet_mvp.pets.models import Pet
 from pet_mvp.records.forms import FecalTestForm, UrineTestForm, \
-    BloodTestForm, VaccinationRecordAddForm, MedicationRecordForm, VaccinationRecordEditForm, VaccineFormSet, \
+    BloodTestForm, VaccinationRecordAddForm, MedicationRecordAddForm, VaccinationRecordEditForm, VaccineFormSet, \
     TreatmentFormSet, \
-    MedicalExaminationRecordForm
+    MedicalExaminationRecordForm, MedicationRecordEditForm
 from pet_mvp.records.models import VaccinationRecord, MedicalExaminationRecord, MedicationRecord
 
 
@@ -83,6 +83,9 @@ class VaccineRecordAddView(BaseRecordAddView):
 
 
 class VaccineRecordEditView(views.UpdateView):
+    """
+    Edit of a vaccination can be done only by an approved vet
+    """
     template_name = 'records/vaccine_record_edit.html'
     form_class = VaccinationRecordEditForm
     model = VaccinationRecord
@@ -102,12 +105,31 @@ class VaccineRecordEditView(views.UpdateView):
         context['id'] = self.request.GET.get('id')
         return context
 
+class TreatmentRecordEditView(views.UpdateView):
+    """
+    The view that handles edit of a treatment
+    The edit of a treatment could be done either by the owner or a vet
+    """
+    template_name = 'records/treatment_record_edit.html'
+    form_class = MedicationRecordEditForm
+    model = MedicationRecord
+
+    def get_success_url(self):
+        base_url = reverse_lazy('treatment-details', kwargs={'pk': self.object.pk})
+        return f'{base_url}?source={self.request.GET.get('source', '')}&id={self.request.GET.get('id')}'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['source'] = self.request.GET.get('source', '')
+        context['id'] = self.request.GET.get('id')
+        return context
+
 
 class TreatmentRecordAddView(BaseRecordAddView):
     """ This view will be used to add directly by the owner treatments and medications """
     model = MedicationRecord
     template_name = 'records/treatment_record_add.html'
-    form_class = MedicationRecordForm
+    form_class = MedicationRecordAddForm
 
     def get_success_url(self):
         pet = self.get_pet()
