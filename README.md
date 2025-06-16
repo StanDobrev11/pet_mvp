@@ -324,4 +324,127 @@ Sitemap: https://<your-domain>/sitemap.xml
 
 Ensure the domain configured in the Django `Site` model matches your deployment so the generated URLs in these files are correct.
 
-### Adding an action
+## GitHub Actions
+
+This project uses GitHub Actions for continuous integration and deployment. The workflow automates testing, linting, and deployment processes.
+
+### Workflow Configuration
+
+The main workflow is defined in `.github/workflows/ci.yml` and includes:
+
+1. Running Tests:
+   ```yaml
+   - name: Run Tests
+     run: |
+       python manage.py test
+   ```
+
+2. Linting with flake8:
+   ```yaml
+   - name: Run Linting
+     run: |
+       flake8 .
+   ```
+
+3. Checking for migrations:
+   ```yaml
+   - name: Check Migrations
+     run: |
+       python manage.py makemigrations --check --dry-run
+   ```
+
+4. Deployment to production (on main branch):
+   ```yaml
+   - name: Deploy to Production
+     if: github.ref == 'refs/heads/main'
+     run: |
+       ./deploy.sh
+   ```
+
+### Automated Tasks
+
+The following tasks are automated through GitHub Actions:
+
+- Running unit tests on every push and pull request
+- Code quality checks with flake8
+- Automated deployment to production when merging to main branch
+- Daily vaccination report generation (via cronjob)
+- Database backups (weekly)
+
+## Deployment
+
+### Prerequisites
+
+1. Set up the following secrets in your GitHub repository:
+   - `SSH_PRIVATE_KEY`: SSH key for server access
+   - `SERVER_HOST`: Production server hostname
+   - `SERVER_USER`: SSH user for deployment
+   - `DJANGO_SECRET_KEY`: Django secret key
+   - `DATABASE_URL`: Production database URL
+   - `BREVO_API_KEY`: Brevo API key for email service
+
+### Deployment Process
+
+1. The `deploy.sh` script handles the deployment:
+   ```bash
+   #!/bin/bash
+   ssh $SERVER_USER@$SERVER_HOST << 'ENDSSH'
+   cd /path/to/pet_mvp
+   git pull origin main
+   source venv/bin/activate
+   pip install -r requirements.txt
+   python manage.py migrate
+   python manage.py collectstatic --noinput
+   sudo systemctl restart gunicorn
+   sudo systemctl restart nginx
+   ENDSSH
+   ```
+
+2. The script:
+   - Pulls the latest code from the main branch
+   - Updates dependencies
+   - Applies database migrations
+   - Collects static files
+   - Restarts the application server (Gunicorn) and web server (Nginx)
+
+### Cronjob Configuration
+
+The following cronjobs are set up on the production server:
+
+1. Daily Vaccination Report (runs at 6 AM UTC):
+   ```crontab
+   0 6 * * * cd /path/to/pet_mvp && source venv/bin/activate && python manage.py generate_vaccination_report
+   ```
+
+2. Weekly Database Backup (runs every Sunday at midnight):
+   ```crontab
+   0 0 * * 0 cd /path/to/pet_mvp && source venv/bin/activate && python manage.py dbbackup
+   ```
+
+### Monitoring
+
+The application is monitored using:
+- Server metrics via Prometheus
+- Application logs through Django logging
+- Email notifications for critical errors
+- Daily health checks for all crucial services
+
+### Rolling Back Changes
+
+In case of deployment issues:
+
+1. Access the server and switch to the last known good commit:
+   ```bash
+   git reset --hard <commit-hash>
+   ```
+
+2. Restore database from backup if needed:
+   ```bash
+   python manage.py dbrestore
+   ```
+
+3. Restart services:
+   ```bash
+   sudo systemctl restart gunicorn
+   sudo systemctl restart nginx
+   ```
