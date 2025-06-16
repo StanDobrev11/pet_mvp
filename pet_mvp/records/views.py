@@ -174,10 +174,6 @@ class VaccineWrongReportView(views.View):
     def post(self, request, *args, **kwargs):
         vaccine_id = request.POST.get("vaccine_id")
 
-        if not vaccine_id:
-            messages.error(request, _("Missing vaccine ID."))
-            return redirect(request.META.get("HTTP_REFERER", "/"))
-
         vaccine = get_object_or_404(VaccinationRecord, pk=vaccine_id)
 
         if vaccine.is_wrong:
