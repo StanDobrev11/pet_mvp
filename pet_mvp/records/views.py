@@ -11,7 +11,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.tokens import default_token_generator
 
 from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode, url_has_allowed_host_and_scheme
 
 from pet_mvp.notifications.tasks import send_medical_record_email, send_wrong_vaccination_report
 from pet_mvp.pets.models import Pet
@@ -182,7 +182,16 @@ class VaccineWrongReportView(views.View):
                 _("A report for this vaccination has already been submitted. Pending approval from the administrator.")
             )
 
-            url = f"{reverse('vaccine-details', kwargs={'pk': vaccine.pk})}?source={request.GET.get('source', '')}&id={request.GET.get('id', '')}"
+            source = request.GET.get('source', '')
+            id = request.GET.get('id', '')
+
+            if not url_has_allowed_host_and_scheme(source, allowed_hosts=None):
+                source = ''
+
+            if not id.isdigit():
+                id = ''
+
+            url = f"{reverse('vaccine-details', kwargs={'pk': vaccine.pk})}?source={source}&id={id}"
             return HttpResponseRedirect(url)
 
         # mark as wrong
