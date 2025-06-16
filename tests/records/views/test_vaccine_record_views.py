@@ -288,12 +288,12 @@ class VaccineRecordViewsTest(TestCase):
 
 class VaccineWrongReportAndResetViewsTest(TestCase):
     def setUp(self):
-        self.factory = RequestFactory()
-
-        # Create admin user
+        self.factory = RequestFactory()        # Create admin user
         self.admin = UserModel.objects.create_superuser(
             email='admin@test.com',
             password='admin1234',
+            first_name='Admin',
+            last_name='User',
             is_staff=True,
             phone_number='0887654321',
             city='Sofia',
