@@ -106,10 +106,10 @@ class AppUser(AbstractBaseUser, PermissionsMixin, TimeStampMixin):
         super().save(*args, **kwargs)
 
     def get_full_name(self):
-        if self.is_owner and hasattr(self, 'owner_profile'):
-            return f"{self.owner_profile.first_name} {self.owner_profile.last_name}"
-        elif not self.is_owner and hasattr(self, 'clinic_profile'):
-            return self.clinic_profile.name
+        if self.is_owner:
+            return f"{self.owner.first_name} {self.owner.last_name}"
+        elif not self.is_owner and hasattr(self, 'clinic'):
+            return self.clinic.name
         return self.email
 
     def __str__(self):

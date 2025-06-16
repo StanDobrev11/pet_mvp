@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% block content %}
+    <section class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="p-4 border rounded bg-light">
+                    <h3 class="mb-3 text-center">{% trans "Edit Treatment Record" %}</h3>
+                    <div class="alert alert-info">
+                        <p class="mb-1">{% trans "Update the treatment record details below." %}</p>
+                        <p class="mb-0">{% trans "You can modify dates, manufacturer information, and dosage while maintaining the treatment type." %}</p>
+                    </div>
+
+                    {% if messages %}
+                        <div class="mb-3">
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <form action="{% url 'treatment-record-edit' pk=object.pk %}?source={{ source }}&id={{ id }}" method="post">
+                        {% csrf_token %}
+                        
+                        <!-- Treatment Info (Read-only) -->
+                        <div class="mb-4">
+                            <h5>{% trans "Treatment Information" %}</h5>
+                            <div class="alert alert-secondary">
+                                <p class="mb-1"><strong>{% trans "Medication:" %}</strong> {{ object.medication.name }}</p>
+                                {% if object.medication.notes %}
+                                    <p class="mb-0"><strong>{% trans "Notes:" %}</strong> {{ object.medication.notes }}</p>
+                                {% endif %}
+                                {% if object.medication.is_antiparasite %}
+                                    <p class="mb-0"><em>{% trans "Antiparasitic medication" %}</em></p>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Editable Fields -->
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="id_date" class="form-label">{% trans "Date of Administration" %}</label>
+                                {{ form.date|add_class:"form-control" }}
+                                {{ form.date.errors }}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="id_time" class="form-label">{% trans "Time of Administration" %}</label>
+                                {{ form.time|add_class:"form-control" }}
+                                <small class="text-muted">{% trans "Optional for antiparasitic medications" %}</small>
+                                {{ form.time.errors }}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="id_valid_until" class="form-label">{% trans "Valid Until" %}</label>
+                                {{ form.valid_until|add_class:"form-control" }}
+                                {{ form.valid_until.errors }}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="id_dosage" class="form-label">{% trans "Dosage" %}</label>
+                                {{ form.dosage|add_class:"form-control" }}
+                                <small class="text-muted">{% trans "Optional for antiparasitic medications" %}</small>
+                                {{ form.dosage.errors }}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="id_manufacturer" class="form-label">{% trans "Manufacturer" %}</label>
+                                {{ form.manufacturer|add_class:"form-control" }}
+                                {{ form.manufacturer.errors }}
+                            </div>
+                        </div>
+
+                        <!-- Hidden field for medication -->
+                        {{ form.medication.as_hidden }}
+
+                        <div class="mt-4 d-flex gap-2 justify-content-between">
+                            <button type="submit" class="btn btn-primary">{% trans "Save Changes" %}</button>
+                            <a href="{% url 'treatment-details' pk=object.pk %}?source={{ source }}&id={{ id }}" class="btn btn-secondary">{% trans "Cancel" %}</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Auto-update valid_until based on medication interval if available
+        const dateInput = document.getElementById('id_date');
+        const validUntilInput = document.getElementById('id_valid_until');
+        const interval = {{ object.medication.recommended_interval_days|default:0 }};
+
+        if (dateInput && validUntilInput && interval) {
+            dateInput.addEventListener('change', function() {
+                if (this.value) {
+                    const selectedDate = new Date(this.value);
+                    selectedDate.setDate(selectedDate.getDate() + interval);
+                    validUntilInput.value = selectedDate.toISOString().split('T')[0];
+                }
+            });
+        }
+    </script>
+{% endblock %}

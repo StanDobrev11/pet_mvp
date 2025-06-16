@@ -3,18 +3,22 @@ from datetime import timedelta
 
 from django.contrib import messages
 from django.db import transaction
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import generic as views
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.tokens import default_token_generator
 
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
-from pet_mvp.notifications.tasks import send_medical_record_email
+from pet_mvp.notifications.tasks import send_medical_record_email, send_wrong_vaccination_report
 from pet_mvp.pets.models import Pet
 from pet_mvp.records.forms import FecalTestForm, UrineTestForm, \
-    BloodTestForm, VaccinationRecordForm, MedicationRecordForm, VaccineFormSet, TreatmentFormSet, \
-    MedicalExaminationRecordForm
+    BloodTestForm, VaccinationRecordAddForm, MedicationRecordAddForm, VaccinationRecordEditForm, VaccineFormSet, \
+    TreatmentFormSet, \
+    MedicalExaminationRecordForm, MedicationRecordEditForm
 from pet_mvp.records.models import VaccinationRecord, MedicalExaminationRecord, MedicationRecord
 
 
@@ -65,7 +69,7 @@ class BaseRecordAddView(views.CreateView, ABC):
 class VaccineRecordAddView(BaseRecordAddView):
     model = VaccinationRecord
     template_name = 'records/vaccine_record_add.html'
-    form_class = VaccinationRecordForm
+    form_class = VaccinationRecordAddForm
 
     def dispatch(self, request, *args, **kwargs):
         pet = self.get_pet()
@@ -82,10 +86,130 @@ class VaccineRecordAddView(BaseRecordAddView):
         return pet.can_add_vaccines
 
 
+class VaccineRecordEditView(views.UpdateView):
+    """
+    Edit of a vaccination can be done only by an approved vet
+    """
+    template_name = 'records/vaccine_record_edit.html'
+    form_class = VaccinationRecordEditForm
+    model = VaccinationRecord
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_clinic and request.user.clinic.is_approved:
+            return super().dispatch(request, *args, **kwargs)
+
+        vaccine_record = self.get_object()
+        if vaccine_record.is_editable:
+            return super().dispatch(request, *args, **kwargs)
+
+        return HttpResponseForbidden(_("You cannot edit records for this pet."))
+
+    def get_success_url(self):
+        base_url = reverse_lazy('vaccine-details', kwargs={'pk': self.object.pk})
+        return f'{base_url}?source={self.request.GET.get('source', '')}&id={self.request.GET.get('id')}'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['source'] = self.request.GET.get('source', '')
+        context['id'] = self.request.GET.get('id')
+        return context
+
+    def form_valid(self, form):
+
+        form.is_wrong = False
+        form.is_editable = False
+        form.save()
+
+        return super().form_valid(form)
+
+
+class TreatmentRecordEditView(views.UpdateView):
+    """
+    The view that handles edit of a treatment
+    The edit of a treatment could be done either by the owner or a vet
+    """
+    template_name = 'records/treatment_record_edit.html'
+    form_class = MedicationRecordEditForm
+    model = MedicationRecord
+
+    def get_success_url(self):
+        base_url = reverse_lazy('treatment-details', kwargs={'pk': self.object.pk})
+        return f'{base_url}?source={self.request.GET.get('source', '')}&id={self.request.GET.get('id')}'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['source'] = self.request.GET.get('source', '')
+        context['id'] = self.request.GET.get('id')
+        return context
+
+
+class VaccineResetView(views.View):
+
+    def get(self, request, uidb64, token):
+        if not self.request.user.is_staff:
+            return HttpResponseForbidden('You are not allowed to see this page.')
+
+        try:
+            pk = urlsafe_base64_decode(uidb64).decode()
+            vaccine = VaccinationRecord.objects.get(pk=pk)
+        except (TypeError, ValueError, OverflowError, VaccinationRecord.DoesNotExist):
+            vaccine = None
+
+        if vaccine is None or not default_token_generator.check_token(request.user, token):
+            return HttpResponseForbidden(_("Invalid or expired token."))
+
+        vaccine.is_editable = True
+        vaccine.save(update_fields=["is_editable"])
+
+        messages.success(request, _("Vaccination has been marked as incorrect and can now be edited."))
+        return redirect('vaccine-details', pk=vaccine.pk)
+
+
+class VaccineWrongReportView(views.View):
+    """
+    This view handles POST requests to report a wrong vaccination record.
+    Sends an email to the admin with a reset link.
+    """
+
+    def post(self, request, *args, **kwargs):
+        vaccine_id = request.POST.get("vaccine_id")
+
+        vaccine = get_object_or_404(VaccinationRecord, pk=vaccine_id)
+
+        if vaccine.is_wrong:
+            messages.warning(
+                request,
+                _("A report for this vaccination has already been submitted. Pending approval from the administrator.")
+            )
+
+            url = f"{reverse('vaccine-details', kwargs={'pk': vaccine.pk})}?source={request.GET.get('source', '')}&id={request.GET.get('id', '')}"
+            return HttpResponseRedirect(url)
+
+        # mark as wrong
+        vaccine.is_wrong = True
+        vaccine.save(update_fields=["is_wrong"])
+
+        owner = request.user
+
+        uid = urlsafe_base64_encode(force_bytes(vaccine.pk))
+        token = default_token_generator.make_token(owner)
+
+        reset_url = request.build_absolute_uri(
+            reverse("vaccine-record-reset", kwargs={"uidb64": uid, "token": token})
+        )
+
+        send_wrong_vaccination_report.delay(owner.pk, vaccine.pk, reset_url)
+
+        messages.success(request, _("The report has been sent to the administrator."))
+        url = f"{reverse('vaccine-details', kwargs={'pk': vaccine.pk})}?source={request.GET.get('source', '')}&id={request.GET.get('id', '')}"
+        return HttpResponseRedirect(url)
+
+
 class TreatmentRecordAddView(BaseRecordAddView):
+    """ This view will be used to add directly by the owner treatments and medications """
     model = MedicationRecord
     template_name = 'records/treatment_record_add.html'
-    form_class = MedicationRecordForm
+    form_class = MedicationRecordAddForm
 
     def get_success_url(self):
         pet = self.get_pet()
@@ -172,20 +296,22 @@ class MedicalExaminationReportCreateView(views.FormView):
 
         return context
 
-
     def form_invalid(self, form):
         """
         If the form is invalid, re-render the context data with the
         data-filled form and errors.
         """
-        messages.error(self.request, _("Please correct the errors in the form."))
+        messages.error(self.request, _(
+            "Please correct the errors in the form."))
         return self.render_to_response(self.get_context_data(form=form))
 
     def form_valid(self, form):
         pet = self.get_pet()
 
-        vaccine_formset = VaccineFormSet(self.request.POST, prefix='vaccines', pet=pet)
-        treatment_formset = TreatmentFormSet(self.request.POST, prefix='treatments', pet=pet)
+        vaccine_formset = VaccineFormSet(
+            self.request.POST, prefix='vaccines', pet=pet)
+        treatment_formset = TreatmentFormSet(
+            self.request.POST, prefix='treatments', pet=pet)
         request_data = self.request.POST
 
         # Check if main form and all formsets are valid
@@ -267,5 +393,6 @@ class MedicalExaminationReportCreateView(views.FormView):
 
         lang = self.request.COOKIES.get('django_language', 'en')
         send_medical_record_email(report, lang)
-        messages.success(self.request, _("Examination data saved successfully!"))
+        messages.success(self.request, _(
+            "Examination data saved successfully!"))
         return redirect(reverse_lazy('pet-details', kwargs={'pk': pet.pk}))

@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% block content %}
+    <section class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="p-4 border rounded bg-light">
+                    <h3 class="mb-3 text-center">{% trans "Edit Vaccination Record" %}</h3>
+                    <div class="alert alert-info">
+                        <p class="mb-1">{% trans "Update the vaccination record details below." %}</p>
+                        <p class="mb-0">{% trans "You can modify dates, manufacturer information, and batch number while maintaining the vaccine type." %}</p>
+                    </div>
+
+                    {% if messages %}
+                        <div class="mb-3">
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <form action="{% url 'vaccine-record-edit' pk=object.pk %}?source={{ source }}&id={{ id }}"
+                          method="post">
+                        {% csrf_token %}
+
+                        <!-- Vaccine Info (Read-only) -->
+                        <div class="mb-4">
+                            <h5>{% trans "Vaccine Information" %}</h5>
+                            <div class="alert alert-secondary">
+                                <p class="mb-1"><strong>{% trans "Vaccine:" %}</strong> {{ object.vaccine.name }}</p>
+                                {% if object.vaccine.notes %}
+                                    <p class="mb-0"><strong>{% trans "Notes:" %}</strong> {{ object.vaccine.notes }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Editable Fields -->
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="id_date_of_vaccination"
+                                       class="form-label">{% trans "Date of Vaccination" %}</label>
+                                {{ form.date_of_vaccination|add_class:"form-control" }}
+                                {{ form.date_of_vaccination.errors }}
+                            </div>
+
+                            {% if object.vaccine.name|lower == 'rabies' %}
+                                <div class="col-md-6">
+                                    <label for="id_valid_from" class="form-label">{% trans "Valid From" %}</label>
+                                    {{ form.valid_from|add_class:"form-control" }}
+                                    <small class="text-muted">{% trans "For rabies vaccines, validity starts 21 days after vaccination" %}</small>
+                                    {{ form.valid_from.errors }}
+                                </div>
+                            {% endif %}
+
+                            <div class="col-md-6">
+                                <label for="id_valid_until" class="form-label">{% trans "Valid Until" %}</label>
+                                {{ form.valid_until|add_class:"form-control" }}
+                                {{ form.valid_until.errors }}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="id_manufacturer" class="form-label">{% trans "Manufacturer" %}</label>
+                                {{ form.manufacturer|add_class:"form-control" }}
+                                {{ form.manufacturer.errors }}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="id_manufacture_date"
+                                       class="form-label">{% trans "Date of Manufacture" %}</label>
+                                {{ form.manufacture_date|add_class:"form-control" }}
+                                {{ form.manufacture_date.errors }}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="id_batch_number" class="form-label">{% trans "Batch Number" %}</label>
+                                {{ form.batch_number|add_class:"form-control" }}
+                                {{ form.batch_number.errors }}
+                            </div>
+                        </div>
+
+                        <!-- Hidden field for vaccine -->
+{#                        {{ form.vaccine|add_class:"form-control" }}#}
+                        {{ form.vaccine.as_hidden }}
+
+                        <div class="mt-4 d-flex gap-2 justify-content-between">
+                            <button type="submit" class="btn btn-primary">{% trans "Save Changes" %}</button>
+                            <a href="{% url 'vaccine-details' pk=object.pk %}?source={{ source }}&id={{ id }}"
+                               class="btn btn-secondary">{% trans "Cancel" %}</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Auto-calculate valid_from for rabies vaccines
+        const dateInput = document.getElementById('id_date_of_vaccination');
+        const validFromInput = document.getElementById('id_valid_from');
+
+        if (dateInput && validFromInput) {
+            dateInput.addEventListener('change', function () {
+                if ('{{ object.vaccine.name|lower }}' === 'rabies' && this.value) {
+                    const vaccineDate = new Date(this.value);
+                    vaccineDate.setDate(vaccineDate.getDate() + 21);
+                    validFromInput.value = vaccineDate.toISOString().split('T')[0];
+                }
+            });
+        }
+    </script>
+{% endblock %}

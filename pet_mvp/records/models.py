@@ -53,6 +53,18 @@ class VaccinationRecord(TimeStampMixin):
         null=True,
     )
 
+    # mark as wrong by the owner
+    is_wrong = models.BooleanField(
+        default=False,
+        verbose_name=_('Is wrong'),
+    )
+
+    # mark as editable by the admin
+    is_editable = models.BooleanField(
+        default=False,
+        verbose_name=_('Is editable'),
+    )
+
     pet = models.ForeignKey(
         to=Pet,
         on_delete=models.CASCADE,

@@ -58,7 +58,11 @@ class Vaccine(BaseMedication):
 
 
 class Drug(BaseMedication):
-    pass
+    """ This model will be split by the is_antiparasite boolean which will """
+    is_antiparasite = models.BooleanField(
+        default=False,
+        verbose_name=_('Is antiparasite')
+    )
 
 
 class BaseTest(models.Model):

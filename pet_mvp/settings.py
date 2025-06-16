@@ -227,6 +227,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 USE_MAILHOG = os.getenv("USE_MAILHOG", "True" if DEBUG else "False") == "True"
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@petpassport.local")
 EMAIL_SUBJECT_PREFIX = os.getenv("EMAIL_SUBJECT_PREFIX", "[PetPal] ")
+ADMIN_EMAIL = os.getenv('ADMIN_EMAIL')
 
 if USE_MAILHOG:
     # MailHog configuration

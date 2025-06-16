@@ -10,7 +10,8 @@
             "notes_en": "Targets roundworms, hookworms, and whipworms. Keeps puppy and family safe from internal parasites. Recommended intake interval: every 30 days.",
             "notes_bg": "Действа срещу кръгли червеи, анкилостоми и камшичести червеи. Предпазва кученцето и семейството от вътрешни паразити. Препоръчителен интервал на прием: на всеки 30 дни.",
             "recommended_interval_days": 30,
-            "suitable_for": "dog"
+            "suitable_for": "dog",
+		  	"is_antiparasite": true
         }
     },
     {
@@ -24,7 +25,8 @@
             "notes_en": "Effective against roundworms, hookworms, tapeworms, and whipworms in dogs and puppies. Recommended intake interval: every 30 days.",
             "notes_bg": "Ефективен срещу кръгли червеи, анкилостоми, тении и камшичести червеи при кучета и кученца. Препоръчителен интервал на прием: на всеки 30 дни.",
             "recommended_interval_days": 30,
-            "suitable_for": "dog"
+            "suitable_for": "dog",
+		  	"is_antiparasite": true
         }
     },
     {
@@ -38,7 +40,8 @@
             "notes_en": "Protects against heartworms, tapeworms, hookworms, and roundworms. A monthly chewable tablet for dogs. Recommended intake interval: every 30 days.",
             "notes_bg": "Предпазва от сърдечни червеи, тении, анкилостоми и кръгли червеи. Месечна дъвчаща таблетка за кучета. Препоръчителен интервал на прием: на всеки 30 дни.",
             "recommended_interval_days": 30,
-            "suitable_for": "dog"
+            "suitable_for": "dog",
+		  	"is_antiparasite": true
         }
     },
     {
@@ -52,7 +55,8 @@
             "notes_en": "Topical treatment protecting dogs from fleas, ticks, and lice. Apply monthly for prevention. Recommended intake interval: every 30 days.",
             "notes_bg": "Локално лечение, предпазващо кучетата от бълхи, кърлежи и въшки. Прилагайте месечно за превенция. Препоръчителен интервал на прием: на всеки 30 дни.",
             "recommended_interval_days": 30,
-            "suitable_for": "dog"
+            "suitable_for": "dog",
+		  	"is_antiparasite": true
         }
     },
     {
@@ -66,7 +70,8 @@
             "notes_en": "Protects against fleas, ticks, mosquitoes, and biting flies. External spot-on treatment for dogs. Recommended intake interval: every 30 days.",
             "notes_bg": "Предпазва от бълхи, кърлежи, комари и хапещи мухи. Външно локално лечение за кучета. Препоръчителен интервал на прием: на всеки 30 дни.",
             "recommended_interval_days": 30,
-            "suitable_for": "dog"
+            "suitable_for": "dog",
+		  	"is_antiparasite": true
         }
     },
     {
@@ -80,7 +85,8 @@
             "notes_en": "Chewable tablet for dogs that kills fleas and ticks. Monthly dosage recommended. Recommended intake interval: every 30 days.",
             "notes_bg": "Дъвчаща таблетка за кучета, която убива бълхи и кърлежи. Препоръчва се месечна доза. Препоръчителен интервал на прием: на всеки 30 дни.",
             "recommended_interval_days": 30,
-            "suitable_for": "dog"
+            "suitable_for": "dog",
+		  	"is_antiparasite": true
         }
     },
     {
