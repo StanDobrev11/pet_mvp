@@ -201,7 +201,15 @@ class VaccineWrongReportView(views.View):
         send_wrong_vaccination_report.delay(owner.pk, vaccine.pk, reset_url)
 
         messages.success(request, _("The report has been sent to the administrator."))
-        url = f"{reverse('vaccine-details', kwargs={'pk': vaccine.pk})}?source={request.GET.get('source', '')}&id={request.GET.get('id', '')}"
+        allowed_sources = ['admin', 'user_dashboard', 'external']
+        source = request.GET.get('source', '')
+        id_param = request.GET.get('id', '')
+
+        if source not in allowed_sources or not id_param.isdigit():
+            # Redirect to a safe default URL if validation fails
+            return redirect('/')
+
+        url = f"{reverse('vaccine-details', kwargs={'pk': vaccine.pk})}?source={source}&id={id_param}"
         return HttpResponseRedirect(url)
 
 
