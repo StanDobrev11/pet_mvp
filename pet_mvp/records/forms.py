@@ -8,12 +8,63 @@ from django.utils.translation import gettext_lazy as _
 from django.forms.models import BaseModelFormSet
 from django.core.exceptions import FieldDoesNotExist
 
+
 class VaccinationRecordForm(forms.ModelForm):
     class Meta:
         model = VaccinationRecord
         exclude = ['pet']
 
-    def __init__(self, *args, pet=None, **kwargs):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Style all fields and set help texts
+        for field_name in self.fields:
+            field = self.fields[field_name]
+
+            if field_name in ['date_of_vaccination']:
+                field.widget = forms.DateInput(
+                    attrs={'type': 'date', 'class': 'form-control'})
+                field.help_text = _('Date of vaccination')
+            elif field_name == 'valid_until':
+                field.widget = forms.DateInput(
+                    attrs={'type': 'date', 'class': 'form-control'})
+                field.help_text = _('Valid until date')
+            elif field_name == 'manufacture_date':
+                field.widget = forms.DateInput(
+                    attrs={'type': 'date', 'class': 'form-control'})
+                field.help_text = _('Manufacture date')
+            elif field_name == 'valid_from':
+                field.widget = forms.DateInput(attrs={
+                    'type': 'date',
+                    'class': 'form-control',
+                    'readonly': 'readonly',
+                    'style': 'background-color: #e9ecef; cursor: not-allowed;',
+                })
+                field.help_text = _(
+                    'This field is automatically filled for Rabies vaccine (21 days after vaccination).')
+            elif field_name != 'vaccine':
+                placeholder = self._meta.model._meta.get_field(
+                    field_name).verbose_name
+                field.widget.attrs.update({
+                    'class': 'form-control',
+                    'placeholder': str(placeholder).capitalize()
+                })
+
+    def clean(self):
+        cleaned_data = super().clean()
+        vaccine = cleaned_data.get("vaccine")
+        date_of_vaccination = cleaned_data.get("date_of_vaccination")
+
+        if vaccine and "rabies" in vaccine.name.lower() and date_of_vaccination:
+            cleaned_data["valid_from"] = date_of_vaccination + \
+                                         timedelta(days=21)
+
+        return cleaned_data
+
+
+class VaccinationRecordAddForm(VaccinationRecordForm):
+
+    def __init__(self, pet=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         # Filter vaccines by species if pet is given
@@ -31,44 +82,9 @@ class VaccinationRecordForm(forms.ModelForm):
             'id': 'id_vaccine',
         })
 
-        # Style all fields and set help texts
-        for field_name in self.fields:
-            field = self.fields[field_name]
 
-            if field_name in ['date_of_vaccination']:
-                field.widget = forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
-                field.help_text = _('Date of vaccination')
-            elif field_name == 'valid_until':
-                field.widget = forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
-                field.help_text = _('Valid until date')
-            elif field_name == 'manufacture_date':
-                field.widget = forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
-                field.help_text = _('Manufacture date')
-            elif field_name == 'valid_from':
-                field.widget = forms.DateInput(attrs={
-                    'type': 'date',
-                    'class': 'form-control',
-                    'readonly': 'readonly',
-                    'style': 'background-color: #e9ecef; cursor: not-allowed;',
-                })
-                field.help_text = _(
-                    'This field is automatically filled for Rabies vaccine (21 days after vaccination).')
-            elif field_name != 'vaccine':
-                placeholder = self._meta.model._meta.get_field(field_name).verbose_name
-                field.widget.attrs.update({
-                    'class': 'form-control',
-                    'placeholder': str(placeholder).capitalize()
-                })
-
-    def clean(self):
-        cleaned_data = super().clean()
-        vaccine = cleaned_data.get("vaccine")
-        date_of_vaccination = cleaned_data.get("date_of_vaccination")
-
-        if vaccine and "rabies" in vaccine.name.lower() and date_of_vaccination:
-            cleaned_data["valid_from"] = date_of_vaccination + timedelta(days=21)
-
-        return cleaned_data
+class VaccinationRecordEditForm(VaccinationRecordForm):
+    pass
 
 
 class MedicationRecordForm(forms.ModelForm):
@@ -87,23 +103,28 @@ class MedicationRecordForm(forms.ModelForm):
 
         if pet:
             species = pet.species if hasattr(pet, 'species') else pet
-            self.fields['medication'].queryset = Drug.objects.filter(suitable_for=species.lower())
+            self.fields['medication'].queryset = Drug.objects.filter(
+                suitable_for=species.lower())
         else:
             self.fields['medication'].queryset = Drug.objects.none()
 
         self.fields['medication'].label = _('Select Medication/Treatment')
-        self.fields['medication'].widget.attrs.update({'class': 'form-control', 'id': 'id_medication'})
-        
+        self.fields['medication'].widget.attrs.update(
+            {'class': 'form-control', 'id': 'id_medication'})
+
         for field_name in self.fields:
             field = self.fields[field_name]
             if field_name == 'date':
-                field.widget = forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+                field.widget = forms.DateInput(
+                    attrs={'type': 'date', 'class': 'form-control'})
                 field.help_text = _('Date of intake')
             elif field_name == 'valid_until':
-                field.widget = forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+                field.widget = forms.DateInput(
+                    attrs={'type': 'date', 'class': 'form-control'})
                 field.help_text = _('Valid until date')
             elif field_name == 'time':
-                field.widget = forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'})
+                field.widget = forms.TimeInput(
+                    attrs={'type': 'time', 'class': 'form-control'})
                 field.help_text = _('Time of intake')
                 field.required = False  # Make time optional for antiparasitic medications
             elif field_name == 'dosage':
@@ -112,7 +133,8 @@ class MedicationRecordForm(forms.ModelForm):
                 try:
                     model_field = self._meta.model._meta.get_field(field_name)
                     placeholder = model_field.verbose_name
-                    field.widget.attrs['placeholder'] = str(placeholder).capitalize()
+                    field.widget.attrs['placeholder'] = str(
+                        placeholder).capitalize()
                 except FieldDoesNotExist:
                     pass
 
@@ -135,18 +157,23 @@ class BaseTestForm(forms.ModelForm):
 
         for field_name in self.fields:
             field = self.fields[field_name]
-            placeholder = self._meta.model._meta.get_field(field_name).verbose_name
+            placeholder = self._meta.model._meta.get_field(
+                field_name).verbose_name
 
             if field_name == 'result':
                 field.widget = forms.TextInput(attrs={'class': 'form-control'})
-                field.widget.attrs['placeholder'] = str(placeholder).capitalize()
+                field.widget.attrs['placeholder'] = str(
+                    placeholder).capitalize()
             elif field_name == 'date_conducted':
-                field.widget = forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+                field.widget = forms.DateInput(
+                    attrs={'type': 'date', 'class': 'form-control'})
             elif field_name == 'additional_notes':
                 field.widget = forms.Textarea(attrs={'rows': 2})
-                field.widget.attrs['placeholder'] = str(placeholder).capitalize()
+                field.widget.attrs['placeholder'] = str(
+                    placeholder).capitalize()
             else:
-                field.widget.attrs['placeholder'] = str(placeholder).capitalize()
+                field.widget.attrs['placeholder'] = str(
+                    placeholder).capitalize()
 
 
 class BloodTestForm(BaseTestForm):
@@ -177,7 +204,8 @@ class FecalTestForm(BaseTestForm):
 
         for field_name in self.fields:
             field = self.fields[field_name]
-            placeholder = self._meta.model._meta.get_field(field_name).verbose_name
+            placeholder = self._meta.model._meta.get_field(
+                field_name).verbose_name
 
             if field_name in self.boolean_select_fields:
                 field.widget = forms.Select(
@@ -266,7 +294,7 @@ class BaseFormSet(BaseModelFormSet):
 
 VaccineFormSet = forms.modelformset_factory(
     VaccinationRecord,
-    form=VaccinationRecordForm,
+    form=VaccinationRecordAddForm,
     extra=0,
     can_delete=True,
     formset=BaseFormSet,

@@ -9,11 +9,11 @@ from django.urls import reverse, reverse_lazy
 from django.views import generic as views
 from django.utils.translation import gettext_lazy as _
 
-
 from pet_mvp.notifications.tasks import send_medical_record_email
 from pet_mvp.pets.models import Pet
 from pet_mvp.records.forms import FecalTestForm, UrineTestForm, \
-    BloodTestForm, VaccinationRecordForm, MedicationRecordForm, VaccineFormSet, TreatmentFormSet, \
+    BloodTestForm, VaccinationRecordAddForm, MedicationRecordForm, VaccinationRecordEditForm, VaccineFormSet, \
+    TreatmentFormSet, \
     MedicalExaminationRecordForm
 from pet_mvp.records.models import VaccinationRecord, MedicalExaminationRecord, MedicationRecord
 
@@ -65,7 +65,7 @@ class BaseRecordAddView(views.CreateView, ABC):
 class VaccineRecordAddView(BaseRecordAddView):
     model = VaccinationRecord
     template_name = 'records/vaccine_record_add.html'
-    form_class = VaccinationRecordForm
+    form_class = VaccinationRecordAddForm
 
     def dispatch(self, request, *args, **kwargs):
         pet = self.get_pet()
@@ -80,6 +80,27 @@ class VaccineRecordAddView(BaseRecordAddView):
 
     def get_pet_attribute(self, pet, value=None):
         return pet.can_add_vaccines
+
+
+class VaccineRecordEditView(views.UpdateView):
+    template_name = 'records/vaccine_record_edit.html'
+    form_class = VaccinationRecordEditForm
+    model = VaccinationRecord
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_clinic and request.user.clinic.is_approved:
+            return super().dispatch(request, *args, **kwargs)
+        return HttpResponseForbidden(_("You cannot edit records for this pet."))
+
+    def get_success_url(self):
+        base_url = reverse_lazy('vaccine-details', kwargs={'pk': self.object.pk})
+        return f'{base_url}?source={self.request.GET.get('source', '')}&id={self.request.GET.get('id')}'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['source'] = self.request.GET.get('source', '')
+        context['id'] = self.request.GET.get('id')
+        return context
 
 
 class TreatmentRecordAddView(BaseRecordAddView):
@@ -173,20 +194,22 @@ class MedicalExaminationReportCreateView(views.FormView):
 
         return context
 
-
     def form_invalid(self, form):
         """
         If the form is invalid, re-render the context data with the
         data-filled form and errors.
         """
-        messages.error(self.request, _("Please correct the errors in the form."))
+        messages.error(self.request, _(
+            "Please correct the errors in the form."))
         return self.render_to_response(self.get_context_data(form=form))
 
     def form_valid(self, form):
         pet = self.get_pet()
 
-        vaccine_formset = VaccineFormSet(self.request.POST, prefix='vaccines', pet=pet)
-        treatment_formset = TreatmentFormSet(self.request.POST, prefix='treatments', pet=pet)
+        vaccine_formset = VaccineFormSet(
+            self.request.POST, prefix='vaccines', pet=pet)
+        treatment_formset = TreatmentFormSet(
+            self.request.POST, prefix='treatments', pet=pet)
         request_data = self.request.POST
 
         # Check if main form and all formsets are valid
@@ -268,5 +291,6 @@ class MedicalExaminationReportCreateView(views.FormView):
 
         lang = self.request.COOKIES.get('django_language', 'en')
         send_medical_record_email(report, lang)
-        messages.success(self.request, _("Examination data saved successfully!"))
+        messages.success(self.request, _(
+            "Examination data saved successfully!"))
         return redirect(reverse_lazy('pet-details', kwargs={'pk': pet.pk}))

@@ -27,9 +27,11 @@
             </li>
             <li class="list-group-item">
                 {% if object.vaccine.core %}
-                    {% trans "This vaccine is" %} <strong class="text-success">{% trans "compulsory" %}</strong> {% trans "as per the vaccination calendar." %}
+                    {% trans "This vaccine is" %} <strong class="text-success">{% trans "compulsory" %}</strong>
+                    {% trans "as per the vaccination calendar." %}
                 {% else %}
-                    {% trans "This vaccine is" %} <strong class="text-danger">{% trans "not compulsory" %}</strong> {% trans "as per the vaccination calendar." %}
+                    {% trans "This vaccine is" %} <strong class="text-danger">{% trans "not compulsory" %}</strong>
+                    {% trans "as per the vaccination calendar." %}
                 {% endif %}
             </li>
             <li class="list-group-item">
@@ -37,7 +39,19 @@
             </li>
         </ul>
     </div>
-    {% if source == 'pet' or source == 'hist' %}
-        {% include 'partials/back_buttons.html' %}
-    {% endif %}
+    <div class="card-footer text-end">
+        {% if user.is_clinic and user.clinic.is_approved %}
+            <a href="{% url 'vaccine-record-edit' pk=object.pk %}?source={{ source }}&id={{ id }}"
+               class="btn btn-outline-primary me-2">{% trans "Edit" %}</a>
+        {% endif %}
+        {% if source == 'pet' or source == 'hist' %}
+            {% if source == 'pet' %}
+                <a href="{% url 'pet-details' pk=id %}"
+                   class="btn btn-secondary">{% trans "Back" %}</a>
+            {% elif source == 'hist' %}
+                <a href="{% url 'record-list' %}?pk={{ id }}"
+                   class="btn btn-secondary">{% trans "Back" %}</a>
+            {% endif %}
+        {% endif %}
+    </div>
 </div>
