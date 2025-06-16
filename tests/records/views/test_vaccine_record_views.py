@@ -6,7 +6,7 @@ from django.contrib.messages.storage.fallback import FallbackStorage
 from django.test import TestCase, RequestFactory
 from django.urls import reverse
 from django.utils.timezone import make_aware
-
+from django.http import Http404
 from pet_mvp.drugs.models import Vaccine
 from pet_mvp.pets.models import Pet
 from pet_mvp.records.models import VaccinationRecord
@@ -368,11 +368,9 @@ class VaccineWrongReportAndResetViewsTest(TestCase):
 
     def test_wrong_report_view_post_valid(self):
         """Test submitting a valid wrong vaccination report"""
-        url = reverse('wrong-vaccine-report')
-        data = {
-            'vaccine_id': self.vaccine_record.pk,
-        }
-        request = self.factory.post(url, data=data)
+
+        url = reverse('vaccine-record-report', kwargs={'pk':self.vaccine_record.pk})
+        request = self.factory.post(url, data={'vaccine_id': self.vaccine_record.pk})
         request.GET = {}  # Add empty GET data for url building
         request = self.setup_request(request, self.owner)
 
@@ -389,11 +387,8 @@ class VaccineWrongReportAndResetViewsTest(TestCase):
         self.vaccine_record.is_wrong = True
         self.vaccine_record.save()
 
-        url = reverse('wrong-vaccine-report')
-        data = {
-            'vaccine_id': self.vaccine_record.pk,
-        }
-        request = self.factory.post(url, data=data)
+        url = reverse('vaccine-record-report', kwargs={'pk': self.vaccine_record.pk})
+        request = self.factory.post(url, data={'vaccine_id': self.vaccine_record.pk})
         request.GET = {}  # Add empty GET data for url building
         request = self.setup_request(request, self.owner)
 
@@ -407,17 +402,14 @@ class VaccineWrongReportAndResetViewsTest(TestCase):
 
     def test_wrong_report_view_post_missing_id(self):
         """Test submitting a wrong report without a vaccine ID"""
-        url = reverse('wrong-vaccine-report')
-        request = self.factory.post(url, {})  # Empty data
-        request.GET = {}  # Add empty GET data for url building
+        url = reverse('vaccine-record-report', kwargs={'pk': self.vaccine_record.pk})
+        request = self.factory.post(url, data={})  # missing vaccine_id
+        request.GET = {}
         request = self.setup_request(request, self.owner)
 
-        response = VaccineWrongReportView.as_view()(request)
-        self.assertEqual(response.status_code, 302)  # Should redirect
+        with self.assertRaises(Http404):
+            VaccineWrongReportView.as_view()(request, pk=self.vaccine_record.pk)
 
-        # Verify error message is set
-        messages = list(request._messages)
-        self.assertTrue(any('Missing vaccine ID' in str(m) for m in messages))
 
     def test_reset_view_get_unauthorized(self):
         """Test that non-staff users cannot access reset view"""
