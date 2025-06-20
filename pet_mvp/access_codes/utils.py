@@ -25,7 +25,10 @@ def generate_access_code(pet):
         if not PetAccessCode.objects.filter(code=code).exclude(pet=pet).exists():
             break
 
-    expiration_time = timezone.now() + datetime.timedelta(minutes=240)
+    # expiration_time = timezone.now() + datetime.timedelta(minutes=240)
+
+    # for testing, removing expiration of the code
+    expiration_time = timezone.now() + datetime.timedelta(days=240)
 
     return PetAccessCode.objects.create(
         code=code,

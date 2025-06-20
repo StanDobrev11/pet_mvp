@@ -428,7 +428,9 @@ class PasswordEntryView(BaseLoginView):
             vet=user,
             pet=pet,
             defaults={
-                'expires_at': timezone.now() + timedelta(minutes=10),
+                # 'expires_at': timezone.now() + timedelta(minutes=10),
+                # adding infinite exp for the code for testing
+                'expires_at': timezone.now() + timedelta(days=240),
                 'granted_by': 'access code'
             }
         )
