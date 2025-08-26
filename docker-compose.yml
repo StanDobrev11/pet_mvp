@@ -24,6 +24,7 @@ services:
 
   redis:
     image: redis:7-alpine
+    restart: always
     ports:
       - "6379:6379"
     volumes:
@@ -42,6 +43,7 @@ services:
 
   celery-beat:
     build: .
+    restart: always
     command: celery -A pet_mvp beat --loglevel=info
     depends_on:
       - redis
@@ -61,6 +63,7 @@ services:
 
   nginx:
     image: nginx:latest
+    restart: always
     ports:
       - "80:80"
     depends_on:
