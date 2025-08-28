@@ -37,6 +37,7 @@ services:
 
   celery:
     build: .
+    restart: always
     command: celery -A pet_mvp worker --loglevel=info
     depends_on:
       redis:
