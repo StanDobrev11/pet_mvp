@@ -1,0 +1,42 @@
+services:
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 20s
+      timeout: 5s
+      retries: 20
+
+  celery:
+    build: .
+    restart: always
+    command: celery -A pet_mvp worker --loglevel=info
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    volumes:
+      - /mnt/tank/media/projects/pet_mvp:/app
+
+  celery-beat:
+    build: .
+    restart: always
+    command: celery -A pet_mvp beat --loglevel=info
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    volumes:
+      - /mnt/tank/media/projects/pet_mvp:/app
+
+volumes:
+  redis_data:
